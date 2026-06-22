@@ -1,0 +1,25 @@
+{
+  "name": "dattero-ecommerce",
+  "version": "1.0.0",
+  "description": "An e-commerce platform built with Node.js and Express",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "ecommerce",
+    "express",
+    "node"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "ejs": "^3.1.10"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

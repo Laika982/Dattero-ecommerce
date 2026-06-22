@@ -1,10 +1,8 @@
 # Ignore Node modules and environment files
 node_modules/
-ecommerce/node_modules/
 .env
-ecommerce/.env
-ecommerce/uploads/*
-!ecommerce/uploads/.gitkeep
+uploads/*
+!uploads/.gitkeep
 
 # IDE files
 .vscode/

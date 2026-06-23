@@ -1,0 +1,116 @@
+<!-- Footer Component -->
+<footer class="bg-surface-container-high w-full pt-section-gap pb-stack-lg border-t border-secondary/10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter px-container-padding max-w-max-width mx-auto">
+<!-- Brand Column -->
+<div class="flex flex-col gap-6 col-span-1 md:col-span-1">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Nutri Burfi</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">
+                    Elevating functional nutrition through the art of traditional craftsmanship. Premium protein sweets for the modern lifestyle.
+                </p>
+<div class="flex gap-4 mt-2">
+<!-- Social Icons placeholders -->
+<a class="text-on-surface-variant hover:text-accent-blue transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</a>
+</div>
+</div>
+<!-- Links Column 1 -->
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">Shop</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Shop All</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Protein Burfi</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Performance Bars</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Wholesale</a>
+</div>
+<!-- Links Column 2 -->
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">About</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Our Story</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Ingredients</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Nutritional Science</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Contact Us</a>
+</div>
+<!-- Links Column 3 -->
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">Support</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">FAQ</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Shipping Info</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Returns</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Privacy Policy</a>
+</div>
+<!-- Bottom Copyright -->
+<div class="col-span-1 md:col-span-4 mt-12 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-label-md text-[10px] text-on-surface-variant font-normal">© 2024 Nutri Burfi. Handcrafted Protein Excellence.</p>
+<div class="flex gap-4 p-8 min-h-[300px]">
+<!-- Payment icons placeholder -->
+<span class="font-label-md text-[10px] text-on-surface-variant font-normal">Secure Checkout</span>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Simple script to handle navigation scroll effect and mobile menu
+        document.addEventListener('DOMContentLoaded', () => {
+            const nav = document.getElementById('main-nav');
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            let isMenuOpen = false;
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    nav.classList.add('shadow-md');
+                    nav.classList.replace('bg-surface/90', 'bg-surface/95');
+                } else {
+                    nav.classList.remove('shadow-md');
+                    nav.classList.replace('bg-surface/95', 'bg-surface/90');
+                }
+            });
+
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenu.classList.add('flex');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // User Profile Menu Dropdown logic
+            const userMenuBtn = document.getElementById('user-menu-btn');
+            const userDropdown = document.getElementById('user-dropdown');
+
+            if (userMenuBtn && userDropdown) {
+                userMenuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('hidden');
+                });
+
+                // Close the dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!userDropdown.classList.contains('hidden') && !userDropdown.contains(e.target) && e.target !== userMenuBtn) {
+                        userDropdown.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
+    {{!-- // from about us --}}
+    <script>
+        const nav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-sm');
+                nav.classList.replace('bg-surface/80', 'bg-surface/95');
+                nav.classList.replace('border-outline-variant/30', 'border-outline-variant/10');
+            } else {
+                nav.classList.remove('shadow-sm');
+                nav.classList.replace('bg-surface/95', 'bg-surface/80');
+                nav.classList.replace('border-outline-variant/10', 'border-outline-variant/30');
+            }
+        });
+    </script>
+</body></html>

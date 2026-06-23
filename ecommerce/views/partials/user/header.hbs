@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nutri Burfi - Premium Protein Sweets</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;1,300&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-balance {
+            text-wrap: balance;
+        }
+        /* Hide scrollbar for slider */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "primary-fixed": "#ffdea4",
+                "outline": "#807665",
+                "surface-dim": "#dbdad5",
+                "primary": "#7b5900",
+                "surface-container-low": "#f5f3ee",
+                "on-primary-fixed-variant": "#5d4200",
+                "on-error-container": "#93000a",
+                "inverse-primary": "#f0bf5c",
+                "on-surface-variant": "#4e4637",
+                "secondary-fixed-dim": "#e1c0ac",
+                "surface-container": "#efeee9",
+                "secondary-container": "#fbd9c4",
+                "tertiary": "#385e9a",
+                "on-secondary": "#ffffff",
+                "on-tertiary-fixed": "#001b3d",
+                "inverse-on-surface": "#f2f1ec",
+                "on-tertiary-container": "#033871",
+                "on-background": "#1b1c19",
+                "background": "#FFFDF8",
+                "surface-container-high": "#eae8e3",
+                "secondary": "#725949",
+                "error": "#ba1a1a",
+                "on-secondary-fixed-variant": "#594233",
+                "on-primary": "#ffffff",
+                "on-primary-fixed": "#261900",
+                "on-tertiary": "#ffffff",
+                "surface": "#FFFDF8",
+                "accent-blue": "#0071E3",
+                "secondary-fixed": "#fedcc7",
+                "primary-fixed-dim": "#f0bf5c",
+                "on-secondary-fixed": "#29180b",
+                "tertiary-fixed-dim": "#a9c7ff",
+                "surface-container-highest": "#e4e2de",
+                "surface-bright": "#fbf9f4",
+                "on-error": "#ffffff",
+                "surface-gray": "#F5F5F7",
+                "tertiary-fixed": "#d6e3ff",
+                "surface-variant": "#e4e2de",
+                "on-tertiary-fixed-variant": "#1b4680",
+                "outline-variant": "#d2c5b1",
+                "inverse-surface": "#30312e",
+                "on-surface": "#2D1B0E",
+                "primary-container": "#c89b3c",
+                "tertiary-container": "#7ea3e3",
+                "on-secondary-container": "#775d4d",
+                "on-primary-container": "#4b3500",
+                "surface-tint": "#7b5900",
+                "error-container": "#ffdad6",
+                "ink-black": "#1D1D1F",
+                "surface-container-lowest": "#ffffff"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "2xl": "1rem",
+                "3xl": "1.5rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "section-gap": "120px",
+                "max-width": "1280px",
+                "section-gap-mobile": "64px",
+                "container-padding": "32px",
+                "stack-md": "16px",
+                "grid-gutter": "24px",
+                "stack-sm": "8px",
+                "stack-lg": "24px"
+        },
+        "fontFamily": {
+                "label-md": [
+                        "Inter"
+                ],
+                "display-lg": [
+                        "Plus Jakarta Sans"
+                ],
+                "headline-xl": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "headline-lg": [
+                        "Plus Jakarta Sans"
+                ],
+                "display-lg-mobile": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-xl": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "56px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-xl": [
+                        "40px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "17px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-md": [
+                        "15px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "1.25",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg-mobile": [
+                        "40px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-xl": [
+                        "20px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+</head>
+<body class="bg-surface text-on-surface antialiased overflow-x-hidden selection:bg-secondary/30 selection:text-primary">
+<!-- TopNavBar Component -->
+<nav class="fixed top-0 w-full z-50 bg-surface/95 dark:bg-surface/90 backdrop-blur-md border-b border-secondary/10 dark:border-secondary-fixed-dim/10 shadow-sm transition-all duration-300 shadow-md" id="main-nav">
+<div class="flex justify-between items-center w-full px-container-padding max-w-max-width mx-auto h-20">
+<!-- Brand Logo -->
+<a class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0" href="#">
+                Nutri Burfi
+            </a>
+<!-- Navigation Links (Desktop) -->
+<div class="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+<a class="text-on-surface font-label-md text-label-md border-b-2 border-on-surface pb-1" href="/">Home</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="products">Products</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="about">About Us</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="contact">Contact</a>
+</div>
+<!-- Trailing Icon Actions -->
+<div class="flex items-center gap-4 text-on-surface z-10 flex-shrink-0">
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 relative">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-accent-blue rounded-full"></span>
+</button>
+<div class="relative hidden md:block">
+<button id="user-menu-btn" class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+<div id="user-dropdown" class="absolute right-0 mt-3 w-48 rounded-2xl bg-white border border-secondary/15 shadow-xl py-2 hidden z-50">
+{{#if user}}
+<a href="/logout" class="flex items-center gap-3 px-4 py-3 text-label-md text-error hover:bg-error-container/20 transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="logout">logout</span>
+Logout
+</a>
+{{else}}
+<a href="/login" class="flex items-center gap-3 px-4 py-3 text-label-md text-on-surface hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="login">login</span>
+Login
+</a>
+{{/if}}
+</div>
+</div>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 ml-2" id="mobile-menu-btn">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Mobile Menu Overlay (Hidden by default) -->
+<div class="fixed inset-0 bg-surface z-40 hidden flex-col pt-24 px-container-padding" id="mobile-menu">
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface" href="#">Home</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Products</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">About Us</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Contact</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between" href="#">Account <span class="material-symbols-outlined">person</span></a>
+</div>

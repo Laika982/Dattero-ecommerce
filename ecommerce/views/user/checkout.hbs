@@ -1,0 +1,199 @@
+{{>user/header}}
+<main class="max-w-max-width mx-auto px-container-padding py-section-gap-mobile md:py-[80px]">
+<div class="flex flex-col lg:flex-row gap-8 relative">
+<!-- Left Column: Checkout Forms -->
+<div class="w-full lg:w-2/3 flex flex-col gap-8">
+<!-- Contact Information -->
+<section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative">
+<h2 class="font-headline-lg text-[24px] text-ink-black mb-6">Contact Information</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="email">Email Address</label>
+<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="email" placeholder="jane.doe@example.com" type="email">
+</div>
+</div>
+</section>
+<!-- Shipping Address -->
+<section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative">
+<h2 class="font-headline-lg text-[24px] text-ink-black mb-6">Shipping Address</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="firstName">First Name</label>
+<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="firstName" type="text">
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="lastName">Last Name</label>
+<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="lastName" type="text">
+</div>
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="address">Address</label>
+<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="address" placeholder="Street address, apartment, suite, etc." type="text">
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="city">City</label>
+<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="city" type="text">
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="state">State / Province</label>
+<select class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%231D1D1F%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[position:right_1rem_center] bg-[length:1.2em_1.2em]" id="state">
+<option value="">Select State</option>
+<option value="NY">New York</option>
+<option value="CA">California</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="zip">ZIP / Postal Code</label>
+<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="zip" type="text">
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="phone">Phone</label>
+<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="phone" type="tel">
+</div>
+</div>
+</section>
+<!-- Delivery Options -->
+<section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative">
+<h2 class="font-headline-lg text-[24px] text-ink-black mb-6">Delivery Method</h2>
+<div class="flex flex-col gap-4">
+<label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors relative">
+<div class="flex items-center gap-4">
+<input checked="" class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="delivery" type="radio" value="standard">
+<div>
+<span class="block font-label-md text-[16px] text-ink-black">Standard Shipping</span>
+<span class="block font-body-md text-body-md text-on-surface-variant text-sm mt-1">3-5 Business Days</span>
+</div>
+</div>
+<span class="font-label-md text-label-md text-ink-black">Free</span>
+</label>
+<label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors relative">
+<div class="flex items-center gap-4">
+<input class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="delivery" type="radio" value="express">
+<div>
+<span class="block font-label-md text-[16px] text-ink-black">Express Shipping</span>
+<span class="block font-body-md text-body-md text-on-surface-variant text-sm mt-1">1-2 Business Days</span>
+</div>
+</div>
+<span class="font-label-md text-label-md text-ink-black">$15.00</span>
+</label>
+</div>
+</section>
+<!-- Payment -->
+<section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative">
+<h2 class="font-headline-lg text-[24px] text-ink-black mb-6">Payment</h2>
+<div class="flex flex-col gap-2 mb-4">
+<label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-t-xl cursor-pointer bg-surface-gray/50">
+<div class="flex items-center gap-4">
+<input checked="" class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="payment" type="radio" value="credit_card">
+<span class="font-label-md text-[16px] text-ink-black">Credit Card</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-outline">credit_card</span>
+</div>
+</label>
+<!-- Credit Card Form -->
+<div class="p-6 border-x border-b border-outline-variant/40 rounded-b-xl bg-surface-container-lowest">
+<div class="grid grid-cols-2 gap-4">
+<div class="col-span-2 flex flex-col gap-2">
+<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="Card Number" type="text">
+</div>
+<div class="flex flex-col gap-2">
+<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="MM / YY" type="text">
+</div>
+<div class="flex flex-col gap-2">
+<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="CVC" type="text">
+</div>
+<div class="col-span-2 flex flex-col gap-2">
+<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="Name on Card" type="text">
+</div>
+</div>
+</div>
+<label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors mt-4">
+<div class="flex items-center gap-4">
+<input class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="payment" type="radio" value="paypal">
+<span class="font-label-md text-[16px] text-ink-black">PayPal</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-outline">account_balance_wallet</span>
+</div>
+</label>
+<label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors mt-2">
+<div class="flex items-center gap-4">
+<input class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="payment" type="radio" value="upi">
+<span class="font-label-md text-[16px] text-ink-black">UPI</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-outline">qr_code_scanner</span>
+</div>
+</label>
+</div>
+</section>
+<div class="flex items-center justify-center gap-2 text-on-surface-variant font-body-md text-body-md mt-6 mb-8">
+<span class="material-symbols-outlined" style="font-size: 18px;">lock</span>
+                    All transactions are secure and encrypted.
+                </div>
+</div>
+<!-- Right Column: Order Summary (Sticky) -->
+<div class="w-full lg:w-1/3">
+<div class="sticky top-28 bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow flex flex-col gap-8">
+<h2 class="font-headline-lg text-[24px] text-ink-black border-b border-outline-variant/20 pb-4">Order Summary</h2>
+<!-- Items -->
+<div class="flex flex-col gap-6 max-h-64 overflow-y-auto pr-2">
+<!-- Item 1 -->
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg overflow-hidden bg-white border border-outline-variant/20 flex-shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="A close-up, high-key editorial photograph of a dark chocolate protein bar on a cream-colored marble surface. The lighting is soft and natural, emphasizing the rich texture of the chocolate and small embedded nuts. The composition is clean, modern, and appetizing, following a premium quiet luxury aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQPe6yFHwkU43cy6MYVCBsEqjR37ID47f6Fj-cyR71kPQciFmSFhijtqsKj4RyvfhxV6-ZGs1UbeMXvo28L2REt6Ysib1WmDxXt5yPklsnqjT8Rtu8a5Z0K2x5tIzHfiJ-JF1szGFBpWUmzJXAQDH8dMknKdk1gFygMkodZO4m_yJ3uIkB8K57VD_bgH4yzrXQnPVtTRq0Fzr0dA6lsAbXRw_I1bgj8ARNgVjzIJcWfeDu4ICUtet6CM30WTsbU8mBGOAOJ6bFapU">
+<div class="absolute -top-2 -right-2 bg-ink-black text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">2</div>
+</div>
+<div class="flex-grow">
+<h3 class="font-label-md text-[15px] text-ink-black line-clamp-1">Classic Dark Chocolate Protein Burfi</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-0.5">Box of 12</p>
+</div>
+<div class="font-label-md text-[15px] text-ink-black">$48.00</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg overflow-hidden bg-white border border-outline-variant/20 flex-shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="A top-down, minimalist shot of a golden almond saffron protein square resting on a textured white linen napkin. The lighting is bright and warm, highlighting the saffron strands on top. The mood is sophisticated and organic, fitting a high-end wellness brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArYMI0U5PoilRR0XJh0U4Y6fVwOonWYHJEjBw6qGA4sWFeVK09PshO5mjAMyNBv3vH6xYe4zayxbr4rAtdmpQs8GAo4wkDEqoFus556ff7kt1vR-AQOf-NpRx4LQ6qtlyya77YVSv1eey3ecyw0zageWb78zFgazKSyZ54hTdRUaPvXjd5Zei5ypioyf9hW6tTmly5JGjTkVx_qihjSVIliraerHjLutLE482_-HXxlx1HWCHKVrk1tXLTsRay7ukcLeT917SzuIM">
+<div class="absolute -top-2 -right-2 bg-ink-black text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">1</div>
+</div>
+<div class="flex-grow">
+<h3 class="font-label-md text-[15px] text-ink-black line-clamp-1">Saffron Almond Elegance</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-0.5">Box of 6</p>
+</div>
+<div class="font-label-md text-[15px] text-ink-black">$28.00</div>
+</div>
+</div>
+<!-- Discount Code -->
+<div class="flex gap-2 border-y border-outline-variant/20 py-6">
+<input class="form-input-premium flex-grow rounded-lg px-4 py-2 font-body-md text-body-md text-on-surface" placeholder="Gift card or discount code" type="text">
+<button class="bg-surface-gray text-ink-black border border-outline-variant/40 px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-variant transition-colors">Apply</button>
+</div>
+<!-- Totals -->
+<div class="flex flex-col gap-3">
+<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
+<span>Subtotal</span>
+<span class="text-ink-black">$76.00</span>
+</div>
+<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
+<span>Shipping</span>
+<span class="text-ink-black">Calculated at next step</span>
+</div>
+<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
+<span>Taxes</span>
+<span class="text-ink-black">$6.08</span>
+</div>
+<div class="flex justify-between font-headline-lg text-[24px] text-ink-black mt-4 pt-4 border-t border-outline-variant/20">
+<span>Total</span>
+<span>$82.08</span>
+</div>
+</div>
+<!-- Action -->
+<button class="w-full bg-ink-black text-white font-label-md text-[16px] py-4 rounded-xl hover:bg-ink-black/90 transition-colors mt-2 flex items-center justify-center gap-2">
+                        Place Order
+                        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+{{>user/footer}}

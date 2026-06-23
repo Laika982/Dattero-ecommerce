@@ -1,0 +1,178 @@
+{{>user/header}}
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-max-width mx-auto px-container-padding py-section-gap-mobile md:py-section-gap">
+<!-- Dashboard Header -->
+<header class="mb-section-gap-mobile md:mb-section-gap flex flex-col md:flex-row justify-between items-start md:items-end border-b border-black/5 pb-stack-lg">
+<div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-ink-black mb-stack-sm tracking-tight">My Orders</h1>
+<p class="font-body-lg text-on-surface-variant">Review your past purchases and track current deliveries.</p>
+</div>
+<div class="mt-stack-lg md:mt-0 flex gap-stack-lg">
+<a class="font-label-md text-ink-black underline underline-offset-4 hover:opacity-70 transition-opacity" href="#">Account Settings</a>
+<a class="font-label-md text-ink-black underline underline-offset-4 hover:opacity-70 transition-opacity" href="#">Payment Methods</a>
+</div>
+</header>
+<!-- Bento Grid Layout for Orders -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-grid-gutter items-start">
+<!-- Left Column: Order List (Master) -->
+<div class="lg:col-span-5 flex flex-col gap-stack-md">
+<h2 class="font-label-md text-on-surface-variant mb-stack-sm uppercase tracking-wider text-[12px]">Order History</h2>
+<!-- Order Item 1 (Active/Selected) -->
+<div class="bg-surface-gray rounded-[24px] p-stack-lg cursor-pointer border-2 border-transparent ambient-shadow transition-transform hover:-translate-y-1 relative overflow-hidden group">
+<div class="absolute inset-0 bg-white/50 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+<div class="relative z-10 flex flex-col h-full justify-between">
+<div class="flex justify-between items-center mb-stack-lg">
+<span class="font-label-md text-ink-black text-[15px]">#NB-8472</span>
+<span class="font-label-md text-[11px] bg-white px-3 py-1 rounded-full text-ink-black subtle-border uppercase tracking-wide">IN TRANSIT</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="font-body-md text-on-surface-variant mb-1">Oct 24, 2024</p>
+<p class="font-headline-lg text-ink-black tracking-tight">$145.00</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-white flex items-center justify-center subtle-border shadow-sm">
+<span class="material-symbols-outlined text-ink-black text-[18px]" style="font-variation-settings: 'FILL' 0;">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Order Item 2 -->
+<div class="bg-white rounded-[24px] p-stack-lg cursor-pointer subtle-border hover:ambient-shadow transition-all hover:-translate-y-1">
+<div class="flex justify-between items-center mb-stack-lg">
+<span class="font-label-md text-ink-black text-[15px]">#NB-8105</span>
+<span class="font-label-md text-[11px] bg-surface-gray px-3 py-1 rounded-full text-on-surface-variant uppercase tracking-wide">DELIVERED</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="font-body-md text-on-surface-variant mb-1">Sep 12, 2024</p>
+<p class="font-headline-lg text-ink-black tracking-tight">$89.50</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-gray flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" style="font-variation-settings: 'FILL' 0;">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Order Item 3 -->
+<div class="bg-white rounded-[24px] p-stack-lg cursor-pointer subtle-border hover:ambient-shadow transition-all hover:-translate-y-1">
+<div class="flex justify-between items-center mb-stack-lg">
+<span class="font-label-md text-ink-black text-[15px]">#NB-7922</span>
+<span class="font-label-md text-[11px] bg-surface-gray px-3 py-1 rounded-full text-on-surface-variant uppercase tracking-wide">DELIVERED</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="font-body-md text-on-surface-variant mb-1">Aug 05, 2024</p>
+<p class="font-headline-lg text-ink-black tracking-tight">$210.00</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-gray flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" style="font-variation-settings: 'FILL' 0;">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Order Details (Detail) -->
+<div class="lg:col-span-7 mt-section-gap-mobile lg:mt-0">
+<div class="bg-white rounded-[32px] p-container-padding subtle-border ambient-shadow h-full flex flex-col">
+<!-- Detail Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-stack-lg pb-stack-lg border-b border-black/5">
+<div>
+<h2 class="font-headline-xl text-ink-black tracking-tight">Order #NB-8472</h2>
+<p class="font-body-lg text-on-surface-variant mt-2">Placed on October 24, 2024</p>
+</div>
+<div class="mt-stack-lg md:mt-0 flex gap-stack-lg items-center">
+<button class="font-label-md text-ink-black hover:opacity-70 transition-opacity flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[18px] group-hover:-translate-y-0.5 transition-transform" style="font-variation-settings: 'FILL' 0;">download</span>
+<span class="underline underline-offset-4">Invoice</span>
+</button>
+<button class="bg-ink-black text-white font-label-md px-6 py-3 rounded-full hover:bg-black/80 transition-colors shadow-sm">
+                                Reorder
+                            </button>
+</div>
+</div>
+<!-- Progress Timeline (In Transit State) -->
+<div class="mb-stack-lg bg-surface-gray p-stack-lg rounded-[24px]">
+<h3 class="font-label-md text-ink-black mb-stack-lg text-[13px] uppercase tracking-wider">Delivery Status</h3>
+<div class="relative flex justify-between items-center w-full mt-stack-lg px-4">
+<!-- Background Track -->
+<div class="absolute left-6 right-6 top-1/2 transform -translate-y-1/2 h-[2px] bg-black/5 z-0"></div>
+<!-- Active Track -->
+<div class="absolute left-6 right-1/3 top-1/2 transform -translate-y-1/2 h-[2px] bg-ink-black z-0"></div>
+<!-- Step 1: Ordered -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-ink-black flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-white text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-label-md text-ink-black text-[12px] mt-3 absolute -bottom-7 whitespace-nowrap">Ordered</span>
+</div>
+<!-- Step 2: Shipped -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-ink-black flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-white text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-label-md text-ink-black text-[12px] mt-3 absolute -bottom-7 whitespace-nowrap">Shipped</span>
+</div>
+<!-- Step 3: Out for Delivery (Active) -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-white border-2 border-ink-black flex items-center justify-center shadow-sm">
+<div class="w-2.5 h-2.5 rounded-full bg-ink-black"></div>
+</div>
+<span class="font-label-md text-ink-black text-[12px] mt-3 absolute -bottom-7 whitespace-nowrap font-bold">Out for Delivery</span>
+</div>
+<!-- Step 4: Delivered (Pending) -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-white subtle-border flex items-center justify-center">
+</div>
+<span class="font-label-md text-on-surface-variant text-[12px] mt-3 absolute -bottom-7 whitespace-nowrap">Delivered</span>
+</div>
+</div>
+<div class="mt-12 pt-stack-sm text-center">
+<p class="font-body-md text-on-surface-variant">Estimated Delivery: <span class="text-ink-black font-medium">Today by 8:00 PM</span></p>
+</div>
+</div>
+<!-- Items List -->
+<div class="flex-grow">
+<h3 class="font-label-md text-on-surface-variant mb-stack-md pb-stack-sm border-b border-black/5 text-[12px] uppercase tracking-wider">Items in this Order</h3>
+<div class="flex items-center justify-between py-stack-md border-b border-black/5">
+<div class="flex items-center gap-stack-lg">
+<div class="w-20 h-20 bg-surface-gray rounded-[16px] overflow-hidden subtle-border">
+<img class="w-full h-full object-cover" data-alt="A macro studio shot of premium artisanal protein burfi sweets arranged neatly on a matte cream surface. The aesthetic is elevated minimalism, bathed in soft, high-key warm lighting that highlights the textures and gold leaf accents. The color palette features whites, creams, and earthy brown tones." src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg">
+</div>
+<div>
+<p class="font-label-md text-[16px] text-ink-black mb-1">Classic Almond Protein Burfi</p>
+<p class="font-body-md text-on-surface-variant">Qty: 2 | 500g Box</p>
+</div>
+</div>
+<p class="font-label-md text-[16px] text-ink-black">$90.00</p>
+</div>
+<div class="flex items-center justify-between py-stack-md border-b border-black/5">
+<div class="flex items-center gap-stack-lg">
+<div class="w-20 h-20 bg-surface-gray rounded-[16px] overflow-hidden subtle-border">
+<img class="w-full h-full object-cover" data-alt="A luxurious top-down studio photograph of dark chocolate infused protein burfi pieces elegantly placed on a textured stone plate. Elevated minimalism style with soft, diffused lighting emphasizing the rich dark brown colors against a pristine white background. A sense of premium quality and health." src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg">
+</div>
+<div>
+<p class="font-label-md text-[16px] text-ink-black mb-1">Dark Cocoa Whey Bites</p>
+<p class="font-body-md text-on-surface-variant">Qty: 1 | 250g Box</p>
+</div>
+</div>
+<p class="font-label-md text-[16px] text-ink-black">$45.00</p>
+</div>
+</div>
+<!-- Order Summary -->
+<div class="mt-stack-lg pt-stack-lg">
+<div class="flex justify-between items-center mb-stack-sm">
+<span class="font-body-lg text-on-surface-variant">Subtotal</span>
+<span class="font-body-lg text-ink-black">$135.00</span>
+</div>
+<div class="flex justify-between items-center mb-stack-md">
+<span class="font-body-lg text-on-surface-variant">Shipping</span>
+<span class="font-body-lg text-ink-black">$10.00</span>
+</div>
+<div class="flex justify-between items-center pt-stack-lg border-t border-black/10">
+<span class="font-headline-lg text-ink-black">Total</span>
+<span class="font-headline-lg text-ink-black">$145.00</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+{{>user/footer}}

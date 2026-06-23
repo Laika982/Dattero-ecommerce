@@ -1,13 +1,20 @@
 const express = require('express');
 const path = require('path');
 require('dotenv').config();
+const connectDB = require("./config/db");
+connectDB()
+
+const userRouter = require("./routes/userRouter");
+const adminRouter = require("./routes/adminRouter")
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // View engine setup
+const hbs = require('hbs');
+hbs.registerPartials(path.join(__dirname, 'views', 'partials'));
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'hbs');
 
 // Middleware
 app.use(express.json());
@@ -17,10 +24,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Uploads static directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Basic routes placeholder
-app.get('/', (req, res) => {
-    res.render('user/index', { title: 'Welcome to Dattero E-commerce' });
-});
+// redirect routes placeholder
+app.use("/", userRouter)
+app.use("/admin", adminRouter)
+
+
+
 
 // Start server
 app.listen(PORT, () => {

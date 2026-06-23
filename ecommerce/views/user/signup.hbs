@@ -1,0 +1,89 @@
+{{>user/header}}
+<!-- Main Content Canvas -->
+<main
+        class="flex-grow pt-[140px] pb-section-gap px-container-padding flex items-center justify-center relative overflow-hidden">
+        <!-- Abstract Background Decorative Elements (Subtle) -->
+        <div
+                class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0 flex items-center justify-center opacity-[0.02]">
+                <span class="material-symbols-outlined" data-icon="nutrition" style="font-size: 800px;">nutrition</span>
+        </div>
+        <!-- Registration Card -->
+        <div
+                class="bg-surface-container-lowest w-full max-w-[540px] rounded-[24px] p-10 md:p-14 relative z-10 border border-surface-variant apple-shadow">
+                <div class="text-center mb-10">
+                        <h1 class="font-headline-xl text-headline-xl text-ink-black mb-stack-sm tracking-tight">Create
+                                Account</h1>
+                        <p class="font-body-lg text-body-lg text-on-surface-variant">Join Nutri Burfi for exclusive
+                                access to premium nutrition.</p>
+                </div>
+                <form class="flex flex-col gap-stack-lg">
+                        <!-- Full Name -->
+                        <div class="flex flex-col gap-2">
+                                <label class="font-label-md text-label-md text-on-surface-variant" for="fullName">Full
+                                        Name</label>
+                                <input class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border-transparent focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors py-3 px-4 rounded-xl"
+                                        id="fullName" placeholder="Jane Doe" required="" type="text">
+                        </div>
+                        <!-- Email -->
+                        <div class="flex flex-col gap-2">
+                                <label class="font-label-md text-label-md text-on-surface-variant" for="email">Email
+                                        Address</label>
+                                <input class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border-transparent focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors py-3 px-4 rounded-xl"
+                                        id="email" placeholder="jane@example.com" required="" type="email">
+                        </div>
+                        <!-- Mobile -->
+                        <div class="flex flex-col gap-2">
+                                <label class="font-label-md text-label-md text-on-surface-variant" for="mobile">Mobile
+                                        Number</label>
+                                <input class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border-transparent focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors py-3 px-4 rounded-xl"
+                                        id="mobile" placeholder="+1 (555) 000-0000" required="" type="tel">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+                                <!-- Password -->
+                                <div class="flex flex-col gap-2">
+                                        <label class="font-label-md text-label-md text-on-surface-variant"
+                                                for="password">Password</label>
+                                        <input class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border-transparent focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors py-3 px-4 rounded-xl"
+                                                id="password" placeholder="••••••••" required="" type="password">
+                                </div>
+                                <!-- Confirm Password -->
+                                <div class="flex flex-col gap-2">
+                                        <label class="font-label-md text-label-md text-on-surface-variant"
+                                                for="confirmPassword">Confirm Password</label>
+                                        <input class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border-transparent focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors py-3 px-4 rounded-xl"
+                                                id="confirmPassword" placeholder="••••••••" required="" type="password">
+                                </div>
+                        </div>
+                        <!-- Terms -->
+                        <div class="flex items-start gap-3 mt-2 mb-2">
+                                <div class="flex items-center h-5">
+                                        <input class="w-4 h-4 rounded border-outline-variant text-ink-black focus:ring-ink-black focus:ring-offset-0 bg-surface-container-lowest"
+                                                id="terms" required="" type="checkbox">
+                                </div>
+                                <label class="font-body-md text-body-md text-on-surface-variant text-sm leading-tight pt-0.5"
+                                        for="terms">
+                                        I agree to the <a
+                                                class="text-ink-black underline hover:text-accent-blue transition-colors"
+                                                href="#">Terms of Service</a> and <a
+                                                class="text-ink-black underline hover:text-accent-blue transition-colors"
+                                                href="#">Privacy Policy</a>.
+                                </label>
+                        </div>
+                        <!-- Submit Button -->
+                        <button class="bg-ink-black text-surface-container-lowest font-label-md w-full py-4 rounded-[16px] hover:bg-ink-black/90 transition-colors flex justify-center items-center gap-2"
+                                type="submit">
+                                Create Account
+                                <span class="material-symbols-outlined text-[18px]"
+                                        data-icon="arrow_forward">arrow_forward</span>
+                        </button>
+                </form>
+                <div class="mt-8 text-center pt-6">
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                                Already have an account?
+                                <a class="font-label-md text-ink-black hover:text-accent-blue transition-colors ml-1"
+                                        href="login">Log In</a>
+                        </p>
+                </div>
+        </div>
+</main>
+{{>user/footer}}

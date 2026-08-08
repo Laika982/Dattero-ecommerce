@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
     },
     phone : {
         type : String,
@@ -22,12 +21,26 @@ const userSchema = new mongoose.Schema({
         sparse:true,
         default:null
     },
+    referalCode:{
+        type:String,
+        required: false,
+        default:null
+    },
+    googleId: {
+    type: String,
+    unique: true,
+    sparse: true
+},
     isAdmin : {
     type: Boolean,
     required: false,
     default:false
-    }
-        
+    },
+    isBlocked: {
+    type : Boolean,
+    required: false,
+    default:false
+    }      
 })
 
 module.exports = mongoose.model("User", userSchema)

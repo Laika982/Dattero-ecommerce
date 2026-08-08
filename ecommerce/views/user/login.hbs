@@ -10,14 +10,14 @@
 <form action="#" class="space-y-6" method="POST">
 <!-- Email Field -->
 <div class="space-y-2">
-<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="email">Email Address</label>
+<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="email" name ="email">Email Address</label>
 <div class="relative">
 <input class="w-full bg-surface-gray border border-outline-variant/30 rounded-[16px] py-4 px-5 font-body-lg text-body-lg text-ink-black focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all" id="email" name="email" placeholder="Enter your email" required="" type="email">
 </div>
 </div>
 <!-- Password Field -->
 <div class="space-y-2">
-<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="password">Password</label>
+<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="password" name = "password">Password</label>
 <div class="relative">
 <input class="w-full bg-surface-gray border border-outline-variant/30 rounded-[16px] py-4 px-5 font-body-lg text-body-lg text-ink-black focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all" id="password" name="password" placeholder="Enter your password" required="" type="password">
 <button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-ink-black transition-colors" type="button">
@@ -31,7 +31,7 @@
 <input id="remember" name="remember" type="checkbox">
 <label class="font-body-md text-body-md text-on-surface-variant cursor-pointer" for="remember">Remember Me</label>
 </div>
-<a class="font-body-md text-body-md text-accent-blue hover:opacity-80 transition-opacity" href="#">Forgot Password?</a>
+<a class="font-body-md text-body-md text-accent-blue hover:opacity-80 transition-opacity" href="forgotPassword">Forgot Password?</a>
 </div>
 <!-- Submit Button -->
 <button class="w-full bg-ink-black text-white font-label-md text-[16px] py-4 rounded-[16px] hover:opacity-90 transition-opacity mt-6 flex items-center justify-center gap-2" type="submit">
@@ -47,6 +47,7 @@
 </div>
 <!-- Social Login -->
 <div class="space-y-3">
+    <a href="/auth/google">
 <button class="w-full bg-surface border border-outline-variant/40 text-ink-black font-label-md text-[16px] py-4 rounded-[16px] hover:bg-surface-gray transition-colors flex items-center justify-center gap-3" type="button">
 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
@@ -56,6 +57,7 @@
 </svg>
                     Continue with Google
                 </button>
+                </a>
 <button class="w-full bg-surface border border-outline-variant/40 text-ink-black font-label-md text-[16px] py-4 rounded-[16px] hover:bg-surface-gray transition-colors flex items-center justify-center gap-3" type="button">
 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.05 2.26.45 3.09.45.71 0 2.04-.43 3.44-.43 1.8 0 3.19.64 4.09 1.84-3.41 2.03-2.82 6.55.51 7.85-.75 1.54-1.63 2.86-3.13 3.26zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"></path>

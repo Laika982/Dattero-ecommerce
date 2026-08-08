@@ -1,0 +1,485 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Verify Your Identity | Nutri Luxe</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "ink-black": "#1D1D1F",
+                    "on-secondary-fixed": "#29180b",
+                    "tertiary-container": "#7ea3e3",
+                    "primary-fixed-dim": "#f0bf5c",
+                    "tertiary": "#385e9a",
+                    "on-background": "#1b1c19",
+                    "tertiary-fixed-dim": "#a9c7ff",
+                    "tertiary-fixed": "#d6e3ff",
+                    "on-tertiary-fixed": "#001b3d",
+                    "surface-container-highest": "#e4e2de",
+                    "surface-dim": "#dbdad5",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-surface-variant": "#4e4637",
+                    "secondary-fixed": "#fedcc7",
+                    "outline-variant": "#d2c5b1",
+                    "on-primary": "#ffffff",
+                    "accent-blue": "#0071E3",
+                    "surface-container-high": "#eae8e3",
+                    "primary-fixed": "#ffdea4",
+                    "primary": "#7b5900",
+                    "background": "#fbf9f4",
+                    "surface-gray": "#F5F5F7",
+                    "secondary": "#725949",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#7b5900",
+                    "inverse-primary": "#f0bf5c",
+                    "on-surface": "#1b1c19",
+                    "primary-container": "#c89b3c",
+                    "on-primary-fixed-variant": "#5d4200",
+                    "surface-container": "#efeee9",
+                    "outline": "#807665",
+                    "on-tertiary-container": "#033871",
+                    "surface": "#fbf9f4",
+                    "on-secondary-container": "#775d4d",
+                    "on-primary-container": "#4b3500",
+                    "error-container": "#ffdad6",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#fbf9f4",
+                    "secondary-container": "#fbd9c4",
+                    "on-tertiary-fixed-variant": "#1b4680",
+                    "surface-container-low": "#f5f3ee",
+                    "inverse-surface": "#30312e",
+                    "on-secondary-fixed-variant": "#594233",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#e1c0ac",
+                    "inverse-on-surface": "#f2f1ec",
+                    "on-primary-fixed": "#261900",
+                    "surface-variant": "#e4e2de"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-gap-mobile": "64px",
+                    "section-gap": "120px",
+                    "max-width": "1280px",
+                    "container-padding": "32px",
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "stack-lg": "24px",
+                    "grid-gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "body-xl": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                    "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: #C89B3C;
+            box-shadow: 0 0 0 1px #C89B3C;
+        }
+
+        /* Ambient Shadow from Design System */
+        .ambient-shadow {
+            box-shadow: 0 40px 40px -20px rgba(45, 27, 14, 0.04);
+        }
+
+        /* Glassmorphism Background */
+        .glass-bg {
+            background: rgba(251, 249, 244, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden">
+<!-- Top Navigation (Shell suppressed due to transactional focus, but keeping brand presence) -->
+<nav class="fixed top-0 w-full z-50 bg-surface/95 dark:bg-surface/90 backdrop-blur-md border-b border-secondary/10 dark:border-secondary-fixed-dim/10 shadow-sm transition-all duration-300 shadow-md" id="main-nav">
+<div class="flex justify-between items-center w-full px-container-padding max-w-max-width mx-auto h-20">
+<a class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0" href="#">
+                Nutri Burfi
+            </a>
+<div class="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+<a class="text-on-surface font-label-md text-label-md border-b-2 border-on-surface pb-1" href="#">Home</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="#">Products</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="#">About Us</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="#">Contact</a>
+</div>
+<div class="flex items-center gap-4 text-on-surface z-10 flex-shrink-0">
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 relative">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-accent-blue rounded-full"></span>
+</button>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 hidden md:block">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+<button class="md:hidden hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 ml-2" id="mobile-menu-btn">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<div class="fixed inset-0 bg-surface z-40 hidden flex-col pt-24 px-container-padding" id="mobile-menu">
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface" href="#">Home</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Products</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">About Us</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Contact</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between" href="#">Account <span class="material-symbols-outlined">person</span></a>
+</div><main class="flex-grow flex items-center justify-center px-container-padding py-section-gap">
+<!-- Verification Card -->
+<div class="w-full max-w-[480px] bg-surface-container-lowest rounded-xl p-8 md:p-12 border border-outline-variant/30 ambient-shadow relative overflow-hidden">
+<!-- Subtle Background Motif -->
+<div class="absolute -top-24 -right-24 w-48 h-48 bg-primary-fixed/20 rounded-full blur-3xl"></div>
+<!-- Content -->
+<div class="relative z-10 text-center">
+<div class="mb-stack-lg inline-flex items-center justify-center w-16 h-16 rounded-full bg-surface-container-high text-primary">
+<span class="material-symbols-outlined text-4xl" data-icon="mark_email_unread">mark_email_unread</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-2">Verify your email</h2>
+<p class="font-body-md text-on-surface-variant mb-10">We've sent a 6-digit verification code to your inbox. Please enter it below to continue your luxury wellness journey.</p>
+<!-- OTP Input Area -->
+<form class="space-y-8" id="otp-form" action="/verify-otp" method="post">
+<input type="hidden" name="otp" id="otp-value">
+<div class="flex justify-between gap-2 md:gap-4">
+<input class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest" maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric" autocomplete="one-time-code">
+<input class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest" maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
+<input class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest" maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
+<input class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest" maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
+<input class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest" maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
+<input class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest" maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
+</div>
+<button class="w-full py-4 font-label-md text-label-md rounded-full hover:opacity-90 active:scale-[0.98] transition-all uppercase tracking-widest shadow-lg shadow-primary-container/20 bg-ink-black text-on-primary" type="submit">
+                        Verify Identity
+                    </button>
+</form>
+<script>
+  const otpForm = document.getElementById('otp-form');
+  const otpInputs = Array.from(otpForm.querySelectorAll('.otp-input'));
+  const otpValueInput = document.getElementById('otp-value');
+
+  otpInputs.forEach((input, index) => {
+    input.addEventListener('input', (event) => {
+      const value = event.target.value.replace(/\D/g, '').slice(0, 1);
+      event.target.value = value;
+
+      if (value && index < otpInputs.length - 1) {
+        otpInputs[index + 1].focus();
+      }
+
+      otpValueInput.value = otpInputs.map((item) => item.value).join('');
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Backspace' && !event.target.value && index > 0) {
+        otpInputs[index - 1].focus();
+      }
+    });
+  });
+
+  otpForm.addEventListener('submit', () => {
+    otpValueInput.value = otpInputs.map((item) => item.value).join('');
+  });
+</script>
+<!-- Resend & Timer Logic -->
+{{!-- <div class="mt-8 pt-8 border-t border-outline-variant/20">
+<p class="font-body-md text-on-surface-variant" id="timer-container">
+                        Didn't receive the code? 
+                        <span class="text-primary font-semibold cursor-not-allowed opacity-50 transition-colors" id="resend-link">Resend Code</span>
+<span class="text-primary font-mono ml-2" id="timer">01:50</span>
+</p>
+</div> --}}
+<div class="mt-8 pt-8 border-t border-outline-variant/20">
+    <p class="font-body-md text-on-surface-variant" id="timer-container">
+        Didn't receive the code?
+
+        <button
+            type="button"
+            id="resend-link"
+            class="text-primary font-semibold cursor-not-allowed opacity-50 transition-colors"
+            disabled
+        >
+            Resend Code
+        </button>
+
+        <span
+            class="text-primary font-mono ml-2"
+            id="timer"
+        >
+            01:50
+        </span>
+    </p>
+</div>
+</div>
+</div>
+<!-- Background Atmospheric Element (Image) -->
+
+</main>
+<!-- Footer (Minimal for Login flow) -->
+<footer class="bg-surface-container-high w-full pt-section-gap pb-stack-lg border-t border-secondary/10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter px-container-padding max-w-max-width mx-auto">
+<div class="flex flex-col gap-6 col-span-1 md:col-span-1">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Nutri Burfi</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">
+                    Elevating functional nutrition through the art of traditional craftsmanship. Premium protein sweets for the modern lifestyle.
+                </p>
+<div class="flex gap-4 mt-2">
+<a class="text-on-surface-variant hover:text-accent-blue transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</a>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">Shop</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Shop All</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Protein Burfi</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Performance Bars</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Wholesale</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">About</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Our Story</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Ingredients</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Nutritional Science</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Contact Us</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">Support</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">FAQ</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Shipping Info</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Returns</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Privacy Policy</a>
+</div>
+<div class="col-span-1 md:col-span-4 mt-12 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-label-md text-[10px] text-on-surface-variant font-normal">© 2024 Nutri Burfi. Handcrafted Protein Excellence.</p>
+<div class="flex gap-4 p-8 min-h-[300px]">
+<span class="font-label-md text-[10px] text-on-surface-variant font-normal">Secure Checkout</span>
+</div>
+</div>
+</div>
+</footer>
+<script>
+   // OTP Focus Logic
+const inputs = document.querySelectorAll(".otp-input");
+
+inputs.forEach((input, index) => {
+
+    input.addEventListener("input", (e) => {
+        if (e.target.value.length === 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+        }
+    });
+
+    input.addEventListener("keydown", (e) => {
+        if (
+            e.key === "Backspace" &&
+            !e.target.value &&
+            index > 0
+        ) {
+            inputs[index - 1].focus();
+        }
+    });
+
+    // Prevent non-numeric input
+    input.addEventListener("keypress", (e) => {
+        if (!/[0-9]/.test(e.key)) {
+            e.preventDefault();
+        }
+    });
+});
+
+
+// Resend OTP
+const resendLink = document.getElementById("resend-link");
+const timer = document.getElementById("timer");
+
+let timeLeft = 110;
+let countdown;
+
+
+// Start timer
+function startTimer() {
+
+    clearInterval(countdown);
+
+    resendLink.disabled = true;
+
+    resendLink.classList.add(
+        "cursor-not-allowed",
+        "opacity-50"
+    );
+
+    resendLink.classList.remove("cursor-pointer");
+
+    timeLeft = 110;
+
+    updateTimer();
+
+    countdown = setInterval(() => {
+
+        timeLeft--;
+
+        updateTimer();
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+
+            timer.textContent = "";
+
+            resendLink.disabled = false;
+
+            resendLink.classList.remove(
+                "cursor-not-allowed",
+                "opacity-50"
+            );
+
+            resendLink.classList.add("cursor-pointer");
+        }
+
+    }, 1000);
+}
+
+
+// Update timer display
+function updateTimer() {
+
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+
+    timer.textContent =
+        `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+
+// Start countdown when page loads
+startTimer();
+
+
+// Resend OTP
+resendLink.addEventListener("click", async () => {
+
+    try {
+
+        // Prevent clicking while disabled
+        if (resendLink.disabled) {
+            return;
+        }
+
+        resendLink.disabled = true;
+
+        const response = await fetch("/resend-signup-otp", {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to resend OTP");
+        }
+
+        // Restart timer
+        startTimer();
+
+        // Optional: clear OTP inputs
+        inputs.forEach(input => {
+            input.value = "";
+        });
+
+        inputs[0].focus();
+
+    } catch (error) {
+
+        console.error("Resend OTP error:", error);
+
+        resendLink.disabled = false;
+
+        resendLink.classList.remove(
+            "cursor-not-allowed",
+            "opacity-50"
+        );
+
+        resendLink.classList.add("cursor-pointer");
+    }
+});
+{{!-- 
+        // Timer Logic
+        let timeLeft = 120; // 2 minutes in seconds
+        const timerElement = document.getElementById('timer');
+        const resendLink = document.getElementById('resend-link');
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            timerElement.textContent = `0${minutes}:${seconds}`;
+
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            } else {
+                resendLink.classList.remove('cursor-not-allowed', 'opacity-50');
+                resendLink.classList.add('cursor-pointer', 'hover:text-primary-fixed-variant');
+                timerElement.classList.add('hidden');
+            }
+        }
+
+        updateTimer();
+
+
+        // Resend Action
+        resendLink.addEventListener('click', () => {
+            if (timeLeft <= 0) {
+                alert('A new code has been sent to your email.');
+                timeLeft = 120;
+                resendLink.classList.add('cursor-not-allowed', 'opacity-50');
+                timerElement.classList.remove('hidden');
+                updateTimer();
+            }
+        }); --}}
+    </script>
+</body></html>

@@ -1,27 +1,85 @@
 const express = require("express");
-const router = express.Router()
-const userContoller = require("../controllers/user/userContoller")
+const jwt = require("jsonwebtoken");
+const router = express.Router();
 
+const isAuthenticated = require("../middleware/auth");
+const userContoller = require("../controllers/user/userContoller");
+const passport = require("passport");
 
-// Load HomePage
+// Home
 router.get("/", userContoller.loadHomepage);
-// Load Login page
-router.get("/login",userContoller.loadLoginpage)
-// Load SignUp page
-router.get("/signup",userContoller.loadsignuppage)
-//Load Products
-router.get("/products",userContoller.loadProducts)
-//Load product detail
-router.get("/productdetail",userContoller.loadProductdetail)
-//Load About us
-router.get("/about",userContoller.loadAbout)
-//Load contact
-router.get("/contact",userContoller.loadcontact)
-//Load cart
-router.get("/cart",userContoller.loadcart)
-//Load orders
-router.get("/orders",userContoller.loadorders)
 
+//load Login
+router.get("/login", isAuthenticated,userContoller.loadLogin);
 
+//load Signup
+router.get("/signup", isAuthenticated, userContoller.loadSignUp);
 
-module.exports = router
+//load forgotPassword
+router.get("/forgotPassword", isAuthenticated, userContoller.loadForgotPassword);
+
+//load forgotPassword verify otp
+router.get("/forgotPassword/verifyOtp", isAuthenticated, userContoller.loadForgotPasswordVarifyOtp);
+
+//load reset password
+router.get("/resetPassword",userContoller.loadResetPassword);
+
+// Register
+router.post("/signup", userContoller.registerUser);
+
+//verify otp
+router.post("/verify-otp", userContoller.verifyOtp);
+
+//resend otp
+router.post("/resend-signup-otp", userContoller.resendSignupOtp);
+
+//login
+router.post("/login",userContoller.loginUser);
+
+//forgot password 
+router.post("/forgotPassword",userContoller.forgotPassword)
+
+//forgot password verify
+router.post("/forgotPassword/verifyOtp",userContoller.forgotPasswordVerifyOtp)
+
+//reset password
+router.post("/resetPassword",userContoller.resetPassword);
+// Google authentication
+router.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    prompt: "select_account"
+  })
+);
+
+// Google callback
+router.get(
+    "/auth/google/callback",
+    passport.authenticate("google", {
+        session: false,
+        failureRedirect: "/signup"
+    }),
+    (req, res) => {
+
+        const token = jwt.sign(
+            {
+                userId: req.user._id
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1d"
+            }
+        );
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            maxAge: 24 * 60 * 60 * 1000
+        });
+
+        return res.redirect("/");
+    }
+);
+
+module.exports = router;

@@ -2,56 +2,118 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
-const isAuthenticated = require("../middleware/auth");
-const userContoller = require("../controllers/user/userContoller");
+const {
+    isAuthenticated,
+    isGuest
+} = require("../middleware/authMidilware");
+
+const userController = require("../controllers/user/userContoller");
 const passport = require("passport");
 
+
+// ==================== PUBLIC ====================
+
 // Home
-router.get("/", userContoller.loadHomepage);
+router.get(
+    "/",
+    userController.loadHomepage
+);
 
-//load Login
-router.get("/login", isAuthenticated,userContoller.loadLogin);
 
-//load Signup
-router.get("/signup", isAuthenticated, userContoller.loadSignUp);
+// ==================== GUEST ROUTES ====================
 
-//load forgotPassword
-router.get("/forgotPassword", isAuthenticated, userContoller.loadForgotPassword);
+// Login page
+router.get(
+    "/login",
+    isGuest,
+    userController.loadLogin
+);
 
-//load forgotPassword verify otp
-router.get("/forgotPassword/verifyOtp", isAuthenticated, userContoller.loadForgotPasswordVarifyOtp);
+// Signup page
+router.get(
+    "/signup",
+    isGuest,
+    userController.loadSignUp
+);
 
-//load reset password
-router.get("/resetPassword",userContoller.loadResetPassword);
+// Forgot password
+router.get(
+    "/forgotPassword",
+    isGuest,
+    userController.loadForgotPassword
+);
+
+// Forgot password OTP
+router.get(
+    "/forgotPassword/verifyOtp",
+    isGuest,
+    userController.loadForgotPasswordVarifyOtp
+);
+
+// Reset password
+router.get(
+    "/resetPassword",
+    isGuest,
+    userController.loadResetPassword
+);
+
+
+// ==================== AUTH ACTIONS ====================
 
 // Register
-router.post("/signup", userContoller.registerUser);
-
-//verify otp
-router.post("/verify-otp", userContoller.verifyOtp);
-
-//resend otp
-router.post("/resend-signup-otp", userContoller.resendSignupOtp);
-
-//login
-router.post("/login",userContoller.loginUser);
-
-//forgot password 
-router.post("/forgotPassword",userContoller.forgotPassword)
-
-//forgot password verify
-router.post("/forgotPassword/verifyOtp",userContoller.forgotPasswordVerifyOtp)
-
-//reset password
-router.post("/resetPassword",userContoller.resetPassword);
-// Google authentication
-router.get(
-  "/auth/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-    prompt: "select_account"
-  })
+router.post(
+    "/signup",
+    userController.registerUser
 );
+
+// Verify signup OTP
+router.post(
+    "/verify-otp",
+    userController.verifyOtp
+);
+
+// Resend signup OTP
+router.post(
+    "/resend-signup-otp",
+    userController.resendSignupOtp
+);
+
+// Login
+router.post(
+    "/login",
+    userController.loginUser
+);
+
+// Forgot password
+router.post(
+    "/forgotPassword",
+    userController.forgotPassword
+);
+
+// Verify forgot password OTP
+router.post(
+    "/forgotPassword/verifyOtp",
+    userController.forgotPasswordVerifyOtp
+);
+
+// Reset password
+router.post(
+    "/resetPassword",
+    userController.resetPassword
+);
+
+
+// ==================== GOOGLE AUTH ====================
+
+// Google login
+router.get(
+    "/auth/google",
+    passport.authenticate("google", {
+        scope: ["profile", "email"],
+        prompt: "select_account"
+    })
+);
+
 
 // Google callback
 router.get(
@@ -74,12 +136,14 @@ router.get(
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
             maxAge: 24 * 60 * 60 * 1000
         });
 
         return res.redirect("/");
     }
 );
+
 
 module.exports = router;

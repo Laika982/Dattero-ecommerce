@@ -1,0 +1,261 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Admin Login | Nutri Luxe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e3e2e2",
+                    "surface": "#fbf9f9",
+                    "outline": "#747878",
+                    "background": "#fbf9f9",
+                    "on-primary-fixed-variant": "#464747",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#c7c6c6",
+                    "inverse-primary": "#c7c6c6",
+                    "surface-container-highest": "#e3e2e2",
+                    "on-secondary-container": "#646464",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#747474",
+                    "surface-bright": "#fbf9f9",
+                    "secondary": "#5e5e5e",
+                    "secondary-container": "#e3e2e2",
+                    "on-primary-container": "#fefcfc",
+                    "on-surface-variant": "#444748",
+                    "outline-variant": "#c4c7c7",
+                    "surface-tint": "#5e5e5e",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-primary": "#ffffff",
+                    "primary": "#5c5c5c",
+                    "on-primary-fixed": "#1b1c1c",
+                    "inverse-on-surface": "#f2f0f0",
+                    "secondary-fixed": "#e3e2e2",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "surface-dim": "#dbdad9",
+                    "primary-fixed": "#e3e2e2",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "inverse-surface": "#303031",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#efeded",
+                    "surface-container-high": "#e9e8e7",
+                    "tertiary": "#5c5c5c",
+                    "surface-container-low": "#f5f3f3",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#1b1c1c",
+                    "primary-container": "#747474",
+                    "on-tertiary-container": "#fcfcfc",
+                    "on-secondary-fixed-variant": "#464747",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "grid-gutter": "24px",
+                    "container-padding": "32px",
+                    "stack-sm": "8px",
+                    "max-width": "1280px",
+                    "section-gap-mobile": "64px",
+                    "stack-md": "16px",
+                    "section-gap": "120px"
+            },
+            "fontFamily": {
+                    "body-xl": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .login-card-shadow {
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.04);
+        }
+        .input-focus-ring {
+            transition: all 0.2s ease-in-out;
+        }
+        .input-focus-ring:focus {
+            outline: none;
+            box-shadow: 0 0 0 1px #5c5c5c;
+        }
+        body {
+            background-color: #fbf9f9;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-container-padding font-body-md text-on-surface">
+<!-- Subtle Ambient Background Decoration -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+<div class="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-surface-container opacity-40 blur-[120px]"></div>
+<div class="absolute bottom-[-10%] left-[-5%] w-[40%] h-[40%] rounded-full bg-surface-container-high opacity-30 blur-[120px]"></div>
+</div>
+<!-- Login Container -->
+<main class="w-full max-w-[440px] flex flex-col gap-stack-lg animate-in fade-in slide-in-from-bottom-4 duration-700">
+<!-- Brand Header -->
+<header class="flex flex-col items-center text-center gap-stack-sm mb-stack-md">
+<div class="w-16 h-16 mb-stack-sm flex items-center justify-center rounded-xl bg-on-surface">
+<span class="material-symbols-outlined text-surface text-4xl" style="font-variation-settings: 'FILL' 1;">nutrition</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg tracking-tight text-on-surface">Nutri Luxe</h1>
+<p class="font-body-md text-on-surface-variant max-w-[280px]">Access the premium wellness administration suite.</p>
+</header>
+<!-- Login Card -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-10 login-card-shadow relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+<div class="flex flex-col gap-6">
+<div class="space-y-1">
+<h2 class="font-headline-lg text-2xl text-on-surface">Secure Entry</h2>
+<p class="font-body-md text-on-surface-variant/80">Please enter your administrator credentials.</p>
+</div>
+
+<!-- Success & Error Messages -->
+{{#if error}}
+<div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
+    {{error}}
+</div>
+{{/if}}
+
+{{#if success}}
+<div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
+    {{success}}
+</div>
+{{/if}}
+<form
+    class="flex flex-col gap-5"
+    id="loginForm"
+    action="/admin/login"
+    method="POST"
+>
+<!-- Email Field -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface uppercase tracking-widest text-[10px]" for="email">Admin Email</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">mail</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-lg font-body-md text-on-surface placeholder:text-on-surface-variant/50 input-focus-ring" id="email" name="email" placeholder="name@nutriluxe.com" required="" type="email">
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<label class="font-label-md text-label-md text-on-surface uppercase tracking-widest text-[10px]" for="password">Password</label>
+<a class="font-label-md text-label-md text-primary hover:text-on-surface transition-colors" href="#">Forgot?</a>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">lock</span>
+<input class="w-full pl-12 pr-12 py-4 bg-surface-container-low border-none rounded-lg font-body-md text-on-surface placeholder:text-on-surface-variant/50 input-focus-ring" id="password" name="password" placeholder="••••••••" required="" type="password">
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined text-xl" id="passwordIcon">visibility</span>
+</button>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="mt-4 w-full py-4 bg-on-surface text-surface font-label-md text-base rounded-lg hover:bg-on-surface/90 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 group" type="submit">
+<span>Login to Dashboard</span>
+<span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</form>
+<div class="flex items-center gap-4 py-2">
+<div class="h-px flex-1 bg-outline-variant/30"></div>
+<span class="font-label-md text-[10px] uppercase tracking-widest text-on-surface-variant/50">Protected Area</span>
+<div class="h-px flex-1 bg-outline-variant/30"></div>
+</div>
+<!-- Footer Actions -->
+<div class="flex justify-center items-center gap-6">
+<div class="flex items-center gap-2 text-on-surface-variant/70">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span class="text-xs font-body-md">SSL Secured</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant/70">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+<span class="text-xs font-body-md">Audit Log Active</span>
+</div>
+</div>
+</div>
+</div>
+<footer class="mt-4 text-center">
+<p class="font-label-md text-xs text-on-surface-variant/40">
+                © 2024 Nutri Luxe Wellness. Reserved for Authorized Personnel Only.
+            </p>
+</footer>
+</main>
+<script>
+    // Show / hide password
+    function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const passwordIcon = document.getElementById("passwordIcon");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            passwordIcon.innerText = "visibility_off";
+        } else {
+            passwordInput.type = "password";
+            passwordIcon.innerText = "visibility";
+        }
+    }
+
+    // Input focus animation
+    const inputs = document.querySelectorAll("input");
+
+    inputs.forEach((input) => {
+
+        input.addEventListener("focus", () => {
+            const icon = input.parentElement.querySelector(
+                ".material-symbols-outlined"
+            );
+
+            if (icon) {
+                icon.style.color = "#5c5c5c";
+            }
+        });
+
+        input.addEventListener("blur", () => {
+            const icon = input.parentElement.querySelector(
+                ".material-symbols-outlined"
+            );
+
+            if (icon) {
+                icon.style.color = "";
+            }
+        });
+
+    });
+</script>
+</body></html>

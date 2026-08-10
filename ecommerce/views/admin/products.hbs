@@ -1,0 +1,411 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Nutri Luxe Admin - All Products</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e3e2e2",
+                        "surface": "#fbf9f9",
+                        "outline": "#747878",
+                        "background": "#fbf9f9",
+                        "on-primary-fixed-variant": "#464747",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#c7c6c6",
+                        "inverse-primary": "#c7c6c6",
+                        "surface-container-highest": "#e3e2e2",
+                        "on-secondary-container": "#646464",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#747474",
+                        "surface-bright": "#fbf9f9",
+                        "secondary": "#5e5e5e",
+                        "secondary-container": "#e3e2e2",
+                        "on-primary-container": "#fefcfc",
+                        "on-surface-variant": "#444748",
+                        "outline-variant": "#c4c7c7",
+                        "surface-tint": "#5e5e5e",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-primary": "#ffffff",
+                        "primary": "#5c5c5c",
+                        "on-primary-fixed": "#1b1c1c",
+                        "inverse-on-surface": "#f2f0f0",
+                        "secondary-fixed": "#e3e2e2",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "surface-dim": "#dbdad9",
+                        "primary-fixed": "#e3e2e2",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "inverse-surface": "#303031",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#efeded",
+                        "surface-container-high": "#e9e8e7",
+                        "tertiary": "#5c5c5c",
+                        "surface-container-low": "#f5f3f3",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "on-surface": "#1b1c1c",
+                        "on-background": "#1b1c1c",
+                        "primary-container": "#747474",
+                        "on-tertiary-container": "#fcfcfc",
+                        "on-secondary-fixed-variant": "#464747",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "24px",
+                        "grid-gutter": "24px",
+                        "container-padding": "32px",
+                        "stack-sm": "8px",
+                        "max-width": "1280px",
+                        "section-gap-mobile": "64px",
+                        "stack-md": "16px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "body-xl": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e3e2e2; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #747878; }
+        
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col h-screen py-container-padding px-stack-md z-50">
+<div class="mb-10 px-2">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface dark:text-on-primary-fixed">Nutri Luxe</h1>
+<p class="font-label-md text-label-md text-on-surface-variant/70">Luxury Wellness Admin</p>
+</div>
+<nav class="flex-1 space-y-1"><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span><span class="font-label-md text-label-md">Dashboard</span></a>
+<!-- Active Tab: Products -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary dark:text-primary-fixed font-bold border-r-2 border-primary dark:border-primary-fixed bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-label-md text-label-md">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+<span class="font-label-md text-label-md">Coupons</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="branding_watermark">branding_watermark</span>
+<span class="font-label-md text-label-md">Banners</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="local_offer">local_offer</span>
+<span class="font-label-md text-label-md">Offers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span><span class="font-label-md text-label-md">Sales Report</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span><span class="font-label-md text-label-md">Logout</span></a></nav>
+<div class="mt-auto border-t border-outline-variant/30 pt-6 px-2">
+<button class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-primary text-on-primary font-label-md transition-all active:scale-95 hover:bg-opacity-90">
+<span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
+                View Store
+            </button>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-0 ml-64 h-16 bg-surface/80 glass-effect border-b border-outline-variant/30 flex justify-between items-center px-container-padding z-40">
+<div class="flex items-center bg-surface-container-low rounded-full px-4 py-1.5 w-96 border border-outline-variant/20">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full placeholder:text-outline/60 ml-2" placeholder="Search products..." type="text">
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<button class="hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant/30"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="font-label-md text-label-md leading-none">Admin User</p>
+<p class="text-[12px] text-on-surface-variant/70">Administrator</p>
+</div>
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/30" data-alt="A clean, professional close-up headshot of a luxury brand administrator in a minimalist studio setting. The lighting is high-key and soft, creating a modern, Apple-inspired look. The person has a serene and authoritative expression, dressed in a sophisticated dark grey blazer. The background is a soft, out-of-focus neutral grey, echoing the Nutri Luxe brand aesthetic of calm, precision, and high-end wellness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjwz2wm4M4x39tLdhsUeqniHXMWAi1kTU2Tvwo5CzwrXvto04sZyeWbFbu3pKR_WqHArnG8zFM2gTMosxBwP3tmktPOKB-uUd46O_zsJK68-K-2E02Jdl6-n8pALqvcTrgN680DUZZpoyD-6bM2pGDO2hocG8nAkRu7Wf0ybTXixp2Yfw6k3D_4jAGIqvBPXuoD8mvq_QX6IoqCCak6q0uywk1LKIDBetI0UbALU8X342iPRpS-yq31uPCoazkMyHkrk9PeCr6r8c">
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-16 min-h-screen">
+<div class="max-w-[1280px] mx-auto p-container-padding">
+<!-- Page Header Actions -->
+<div class="flex justify-between items-end mb-10">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Products</h2>
+<p class="text-body-md text-on-surface-variant">Manage your premium Nutri Burfi collection and inventory status.</p>
+</div>
+<button class="bg-primary text-on-primary px-8 py-3 rounded-full flex items-center gap-2 transition-all hover:bg-on-surface active:scale-95 shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span class="font-label-md">Add Product</span>
+</button>
+</div>
+<!-- Dashboard Stats Brief (Contextual) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-grid-gutter mb-section-gap-mobile">
+<div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10">
+<p class="text-label-md text-outline mb-1">Total Products</p>
+<h3 class="text-headline-lg font-bold">124</h3>
+</div>
+<div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10">
+<p class="text-label-md text-outline mb-1">Out of Stock</p>
+<h3 class="text-headline-lg font-bold text-error">03</h3>
+</div>
+<div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10">
+<p class="text-label-md text-outline mb-1">Active Categories</p>
+<h3 class="text-headline-lg font-bold">08</h3>
+</div>
+</div>
+<!-- Products Table Container -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden border border-outline-variant/10">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container/50 border-b border-outline-variant/20">
+<th class="px-6 py-4 font-label-md text-outline uppercase tracking-wider text-[11px]">Product</th>
+<th class="px-6 py-4 font-label-md text-outline uppercase tracking-wider text-[11px]">Category</th>
+<th class="px-6 py-4 font-label-md text-outline uppercase tracking-wider text-[11px]">Price</th>
+<th class="px-6 py-4 font-label-md text-outline uppercase tracking-wider text-[11px]">Stock Status</th>
+<th class="px-6 py-4 font-label-md text-outline uppercase tracking-wider text-[11px] text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Product Row 1 -->
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg bg-surface-variant overflow-hidden border border-outline-variant/20 flex-shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A high-resolution product shot of a premium Almond Nutri Burfi set on a minimalist ceramic plate. The lighting is crisp and dramatic with soft shadows, highlighting the artisanal texture of the wellness snack. The color palette is composed of warm nutty browns and creamy whites against a clean, technical grey background, embodying a luxurious and healthy lifestyle choice." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6y45XSjTUsowTjAUddIH-A4_o5j3D1ux9DwGmwyU77v60KIBpLHnyGgNdv4HBrQ7UPsZocLnMFD2VtQitytT5-nX2xnVmHKgDTMMBb2zqoDTjxlk2ODN6XT3dzmrP5CJAJJ3YYkoPLXK2aImtU-H2ymgnJDM9woWZm6OG7iQLb1c37tyL7_HmzK0yCUCvE7N45Xioj5kxa1wK8MPzAhBgoiStTcNbg_86aVg6ova_bCt0PCiHkFlVJ8Ksc-FnlhOd9hEs2WQGkAE">
+</div>
+<div>
+<p class="font-label-md text-on-surface">Almond Delight Nutri Burfi</p>
+<p class="text-[12px] text-outline">ID: NB-00124</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-[12px] font-label-md tracking-wider uppercase">Classic</span>
+</td>
+<td class="px-6 py-5">
+<p class="font-label-md text-on-surface">$45.00</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<p class="text-body-md text-on-surface">In Stock (84)</p>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Product Row 2 -->
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg bg-surface-variant overflow-hidden border border-outline-variant/20 flex-shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Close-up of a Pistachio Saffron Nutri Burfi, exhibiting a vibrant green color and delicate saffron threads. The snack is photographed in a high-end boutique style with bright, airy lighting. The composition is clean and focused, emphasizing the organic quality and premium ingredients of the wellness product. Soft ambient shadows create a gentle depth on the minimalist background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuqWRI1ZTUIdyRW36qHwZ-YjBNfYnZqNrJEWPSeM4q9nkKR2rfvDXoDwgJbvBSXdKhPe1xAhGwzwnRQkRCGcTqe1um50O8SjwePKPJ2OQtEEtMmpLO_xtudTUakdYfgnzou3is-gxPFlGBZYp_0a3rBwPcIreZe6BSpZUtMtaYQrJn2VERsHIqovM-YUG5teyW5SykLeNLAUOPHb4LhFrtVTgDkia4xQo3TXHrr3yDmMuSWkp9yIgyqXjZFsrlG-5LWtC_5EDLj3Q">
+</div>
+<div>
+<p class="font-label-md text-on-surface">Pistachio Saffron Burfi</p>
+<p class="text-[12px] text-outline">ID: NB-00125</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-[12px] font-label-md tracking-wider uppercase">Exotic</span>
+</td>
+<td class="px-6 py-5">
+<p class="font-label-md text-on-surface">$52.00</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-orange-400"></span>
+<p class="text-body-md text-on-surface">Low Stock (12)</p>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Product Row 3 -->
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg bg-surface-variant overflow-hidden border border-outline-variant/20 flex-shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Artisanal Dark Chocolate and Sea Salt Nutri Burfi presented on a matte black slate. The texture of the dark chocolate is smooth and rich, with visible crystals of gourmet sea salt. The image uses low-key lighting to highlight the premium quality, creating a moody yet sophisticated aesthetic. The background is a textured grey concrete, reflecting a modern and disciplined design philosophy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYH5qwEu4SA4Ws_uCPAy-x10SaFja5fglHQGSlODOBxpsF0oZek3p5xj-i6dmRq1b32AHprIGlatTLp4L1a5u6Yf3OYW8fckAidADuMSvIIfgFTjx_9g_w2YdHUdoLzlRMEeR1BU-q4XdXQ3AcT5ZkgB4Da2oODQWd2lln91LnWukE8rN8_b3tnMw-87shXcWIjU6YimLaSbA2uRQGBR-5oNeHhP-EOLwClRa31wYxUqExS6t-YtAqjiHDZQ2Z43UdQZy93PPtS8">
+</div>
+<div>
+<p class="font-label-md text-on-surface">Dark Chocolate Sea Salt</p>
+<p class="text-[12px] text-outline">ID: NB-00128</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-[12px] font-label-md tracking-wider uppercase">Indulgence</span>
+</td>
+<td class="px-6 py-5">
+<p class="font-label-md text-on-surface">$48.00</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<p class="text-body-md text-on-surface">Out of Stock</p>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Product Row 4 -->
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg bg-surface-variant overflow-hidden border border-outline-variant/20 flex-shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A minimalist presentation of Rose Petal and Honey Nutri Burfi. The soft pink hues of the organic rose petals are captured in brilliant detail, set against a pristine white marble background. The lighting is warm and inviting, suggesting a morning luxury experience. The product feels light, curated, and highly intentional, aimed at discerning health-conscious consumers." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsbbGZPWxFkV-DbHnoe-6NJILIAM2E3RxM8izsp1GvNaDUGwxYJOeWKG-Q-JvarvOACqAPq37w6A8GySAlGwU9SD2R0ZVmjXPvLZ_egu3HPjg1FenlwRgG5f3P8gBaJgjxWlTH7sLntAIZptbQEv7vELAIWNlT2s95fefPzR1sKm30IDzw1K_2bWSSoDQhn_NBhP0G0C92JdfI3SNuqdXyGlO1dQKmV1i6HtAEwWOOXzpJdTvkRPUYIvQjqQcUtkGXsN5iJ-r0l5E">
+</div>
+<div>
+<p class="font-label-md text-on-surface">Rose Petal Honey Bliss</p>
+<p class="text-[12px] text-outline">ID: NB-00132</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-[12px] font-label-md tracking-wider uppercase">Seasonal</span>
+</td>
+<td class="px-6 py-5">
+<p class="font-label-md text-on-surface">$58.00</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<p class="text-body-md text-on-surface">In Stock (215)</p>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination -->
+<div class="px-6 py-4 flex items-center justify-between bg-surface-container-low/30 border-t border-outline-variant/10">
+<p class="text-[13px] text-outline">Showing 1 to 4 of 124 results</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 rounded border border-outline-variant/30 text-label-md hover:bg-surface-variant transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="px-3 py-1 rounded bg-primary text-on-primary text-label-md">1</button>
+<button class="px-3 py-1 rounded border border-outline-variant/30 text-label-md hover:bg-surface-variant transition-colors">2</button>
+<button class="px-3 py-1 rounded border border-outline-variant/30 text-label-md hover:bg-surface-variant transition-colors">3</button>
+<button class="px-3 py-1 rounded border border-outline-variant/30 text-label-md hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for active row highlight
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', (e) => {
+                if(e.target.closest('button')) return;
+                // Interaction logic could go here
+                console.log('Row clicked');
+            });
+        });
+
+        // Add subtle parallax/hover effect to the product images via script if needed
+        // but the CSS transition handled it effectively for a clean UI.
+    </script>
+
+
+</body></html>

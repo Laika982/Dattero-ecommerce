@@ -1,0 +1,301 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Nutri Luxe Admin - Customers</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e3e2e2",
+                    "surface": "#fbf9f9",
+                    "outline": "#747878",
+                    "background": "#fbf9f9",
+                    "on-primary-fixed-variant": "#464747",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#c7c6c6",
+                    "inverse-primary": "#c7c6c6",
+                    "surface-container-highest": "#e3e2e2",
+                    "on-secondary-container": "#646464",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#747474",
+                    "surface-bright": "#fbf9f9",
+                    "secondary": "#5e5e5e",
+                    "secondary-container": "#e3e2e2",
+                    "on-primary-container": "#fefcfc",
+                    "on-surface-variant": "#444748",
+                    "outline-variant": "#c4c7c7",
+                    "surface-tint": "#5e5e5e",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-primary": "#ffffff",
+                    "primary": "#5c5c5c",
+                    "on-primary-fixed": "#1b1c1c",
+                    "inverse-on-surface": "#f2f0f0",
+                    "secondary-fixed": "#e3e2e2",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "surface-dim": "#dbdad9",
+                    "primary-fixed": "#e3e2e2",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "inverse-surface": "#303031",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#efeded",
+                    "surface-container-high": "#e9e8e7",
+                    "tertiary": "#5c5c5c",
+                    "surface-container-low": "#f5f3f3",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#1b1c1c",
+                    "primary-container": "#747474",
+                    "on-tertiary-container": "#fcfcfc",
+                    "on-secondary-fixed-variant": "#464747",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "grid-gutter": "24px",
+                    "container-padding": "32px",
+                    "stack-sm": "8px",
+                    "max-width": "1280px",
+                    "section-gap-mobile": "64px",
+                    "stack-md": "16px",
+                    "section-gap": "120px"
+            },
+            "fontFamily": {
+                    "body-xl": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fbf9f9;
+            color: #1b1c1c;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            background-color: rgba(251, 249, 249, 0.8);
+        }
+        .bento-card {
+            background: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .bento-card:hover {
+            box-shadow: 0 40px 40px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+        }
+        /* Custom scrollbar for minimalist look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e3e2e2; border-radius: 10px; }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col h-screen py-container-padding px-stack-md z-50">
+<div class="mb-10 px-2">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface dark:text-on-primary-fixed tracking-tight">Nutri Luxe</h1>
+<p class="font-label-md text-label-md text-on-surface-variant/70">Luxury Wellness Admin</p>
+</div>
+<nav class="flex-1 space-y-1"><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span><span class="font-label-md text-label-md">Dashboard</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span><span class="font-label-md text-label-md">Products</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span><span class="font-label-md text-label-md">Orders</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="category">category</span><span class="font-label-md text-label-md">Categories</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span><span class="font-label-md text-label-md">Coupons</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="branding_watermark">branding_watermark</span><span class="font-label-md text-label-md">Banners</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="local_offer">local_offer</span><span class="font-label-md text-label-md">Offers</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary dark:text-primary-fixed font-bold border-r-2 border-primary dark:border-primary-fixed bg-surface-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="group">group</span><span class="font-label-md text-label-md">Customers</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span><span class="font-label-md text-label-md">Sales Report</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span><span class="font-label-md text-label-md">Logout</span></a></nav>
+<div class="mt-auto border-t border-outline-variant/30 pt-6 px-2">
+<button class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-primary text-on-primary font-label-md transition-all active:scale-95 hover:bg-opacity-90"><span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>View Store</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full z-40 flex justify-between items-center h-16 px-container-padding bg-surface/80 backdrop-blur-md border-b border-outline-variant/30">
+<div class="flex items-center gap-6 w-full max-w-xl">
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container border-none rounded-full font-body-md focus:ring-1 focus:ring-primary/20 transition-all outline-none" placeholder="Search customers, emails, or tiers..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer group active:scale-95 transition-transform">
+<div class="text-right">
+<p class="font-label-md text-on-surface leading-tight">Administrator</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Admin Profile</p>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="A sophisticated professional portrait of a wellness brand administrator, high-key studio lighting, clean minimalist aesthetic, neutral tones, focused look, short well-groomed appearance, 8k resolution, Apple-inspired editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2xPG8xQRfEm753Y0Ys6OFtznPa3wJzAWxsk7wQhkUIaazu6xuyW5OS3ryIlKGnexinhNJmeLpF3VBu1-9I8qSgRwKRdFcC1-rdl9wTfYiwzeL0lrEp3yDV0G6TpYi2hgRfQL98cd9_b0NDGPU8WzQuGFTxsDymsEFAPu1Xswt4dRzXzOL0w-KOyUHBc_c9mnCkymPi0_SnIcbvCYUqZqKftZLucd5hW2Ek2lL3N3AiRe7k6WYc-FaCZx-abUR-PgP0TMhgZADOXw">
+</div>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<div class="p-container-padding flex-1">
+<!-- Page Header -->
+<div class="mb-10 flex justify-between items-end">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-2">Customer Management</h2>
+<p class="font-body-lg text-on-surface-variant max-w-2xl opacity-70">Oversee your elite customer base, track lifetime value, and manage exclusive luxe tiers.</p>
+</div>
+<div class="flex gap-4">
+
+
+</div>
+</div>
+<!-- Dashboard Stats Bar -->
+<div class="grid grid-cols-4 gap-6 mb-10">
+<div class="bento-card p-6 rounded-xl flex items-center justify-between">
+<div>
+<p class="text-[11px] uppercase tracking-widest text-on-surface-variant mb-1">Total Customers</p>
+<h3 class="font-headline-lg text-headline-lg">12,840</h3>
+</div>
+<div class="p-3 bg-primary/5 rounded-full">
+<span class="material-symbols-outlined text-primary">groups</span>
+</div>
+</div>
+<div class="bento-card p-6 rounded-xl flex items-center justify-between">
+<div>
+<p class="text-[11px] uppercase tracking-widest text-on-surface-variant mb-1">Average LTV</p>
+<h3 class="font-headline-lg text-headline-lg">₹4,250</h3>
+</div>
+<div class="p-3 bg-secondary/5 rounded-full">
+<span class="material-symbols-outlined text-secondary">payments</span>
+</div>
+</div>
+
+
+</div>
+<!-- Detailed Table Container -->
+<div class="bento-card rounded-2xl overflow-hidden mb-section-gap">
+<!-- Filters & Search Toolbar -->
+<div class="p-6 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-lowest">
+<div class="flex items-center gap-4">
+<div class="flex bg-surface-container-low p-1 rounded-lg">
+
+
+
+</div>
+<div class="h-6 w-[1px] bg-outline-variant/50"></div>
+<button class="flex items-center gap-2 px-3 py-1.5 font-label-md text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+                            More Filters
+                        </button>
+</div>
+<div class="text-on-surface-variant font-label-md">
+                        Showing 1-15 of 12,840 results
+                    </div>
+</div>
+<!-- Table Content -->
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead><tr class="bg-surface-container-low/50"><th class="px-6 py-4 font-label-md text-on-surface-variant border-b border-outline-variant/20"><div class="flex items-center gap-2">Customer <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span></div></th><th class="px-6 py-4 font-label-md text-on-surface-variant border-b border-outline-variant/20">Phone Number</th><th class="px-6 py-4 font-label-md text-on-surface-variant border-b border-outline-variant/20">Join Date</th><th class="px-6 py-4 font-label-md text-on-surface-variant border-b border-outline-variant/20">Orders</th><th class="px-6 py-4 font-label-md text-on-surface-variant border-b border-outline-variant/20 text-right">Actions</th></tr></thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-variant/30 transition-colors cursor-pointer group bg-primary/5"><td class="px-6 py-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC11aKUo2hVOMBq1U3n3MluU1uw9WyKh3IejLn5ciRzvQve8r14fSyXvYPiLPdHrJYMyq1Xxn9WO9q6VRQXMuQk53AVpByFGSXv01Gf4jDfTTqUyZzyanX5_VTwmAis8jaqYPL708Cf6aRqybiaPc9ZJ6jTzTTt_EEcSeDGz4_yaBW8YYABnHxCHUPtkelltq5mUWXANRHSFnJZ6AI9oSnFW-9LnJCodHzVrjk2IWqC8-sGNyUyeBn2MbVEAyzvSywRhCWLLiAXEog"></div><div><p class="font-label-md text-on-surface">Ananya Sharma</p><p class="text-[12px] text-on-surface-variant">ananya.s@luxe.com</p></div></div></td><td class="px-6 py-5 text-on-surface-variant font-body-md">+91 98765 43210</td><td class="px-6 py-5 text-on-surface-variant font-body-md">Jan 12, 2024</td><td class="px-6 py-5 text-on-surface font-label-md">24</td><td class="px-6 py-5 text-right"><div class="flex justify-end gap-2"><button class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-error/10 text-error hover:bg-error/20 transition-colors">Block</button><button class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant hover:bg-surface-variant transition-colors">Unblock</button></div></td></tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-variant/30 transition-colors cursor-pointer group"><td class="px-6 py-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqZaYzRgFNwLqiadeYxlJZZs8IaAPJ9sDjSkbtdGhGrVP5JLcSNR5ndj1aoKoV2EdmTclPSiPHShUTtw6yyE9ESyjOahub9UOTUNfyrRrFAnVsCiMGobZLq_U5mEE1Hdk7bLJ3Vby5fitRYnp8fG4XwB8DBEOL326v4q5O8EADLSNJWeMGeTZtk4z-_kx1d9VTWQYcNWSCjHA6KjBznVrUCCOBEQgt6r0xmLuNcvSm2WJylqrPWy73abauZRT49laQaMyCIHoffNg"></div><div><p class="font-label-md text-on-surface">Rohan Mehta</p><p class="text-[12px] text-on-surface-variant">rohan.mehta@outlook.com</p></div></div></td><td class="px-6 py-5 text-on-surface-variant font-body-md">+91 98765 43211</td><td class="px-6 py-5 text-on-surface-variant font-body-md">Feb 03, 2024</td><td class="px-6 py-5 text-on-surface font-label-md">12</td><td class="px-6 py-5 text-right"><div class="flex justify-end gap-2"><button class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-error/10 text-error hover:bg-error/20 transition-colors">Block</button><button class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant hover:bg-surface-variant transition-colors">Unblock</button></div></td></tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-variant/30 transition-colors cursor-pointer group bg-primary/5"><td class="px-6 py-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFOVinFftx9f63kTy62vzlmFWarH12naAtS_6hTowfeFMFHhX8wj_EHNTuseiNj9RIdBDvqljnVKCowAuZNWiIqBDzYGLMaTWyvRUpQ7lbqaCqBrnrZq37hHkImWv12LzV4MK7eDXQzpbuHFaj6J0TuzmraUj4PLpy88T6l6Zvn3Tpotr20tumLQDJYljo9r6Jry8nKsSPVhkbQsL9KKQFeI5DqeTWa9RKRQjOr_LNK2KBA7R78OezwZkJ_nTFbr8BAXWkyCNHHg0"></div><div><p class="font-label-md text-on-surface">Vikram Singh</p><p class="text-[12px] text-on-surface-variant">v.singh@gmail.com</p></div></div></td><td class="px-6 py-5 text-on-surface-variant font-body-md">+91 98765 43212</td><td class="px-6 py-5 text-on-surface-variant font-body-md">Mar 15, 2024</td><td class="px-6 py-5 text-on-surface font-label-md">3</td><td class="px-6 py-5 text-right"><div class="flex justify-end gap-2"><button class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-error/10 text-error hover:bg-error/20 transition-colors">Block</button><button class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant hover:bg-surface-variant transition-colors">Unblock</button></div></td></tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-variant/30 transition-colors cursor-pointer group"><td class="px-6 py-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABYBKZbvrhMvRqu1QDagAkTH0OgKc9IpXHkniUjAiPeAwc21O9ziu2ToQEMObXET_8Nr4RqDCZEa0opUAZLq5ZcmoWreq_Ji3gr0OUc5tXXBspc_qLEOKODznSmex4RBNAEzh7JqRS4xepKnJ5u1SA3bj4DedXG7XrB1IpguSbSsRGWWJYiDGa4vxHIPOj8ztkyDsxologqbjCypEHvmJrDpAtcUGUOIivkCvJYVentUt4COsFuwUwLrIj1JP6CK2vQOacP94S5Ug"></div><div><p class="font-label-md text-on-surface">Priya Kapur</p><p class="text-[12px] text-on-surface-variant">priya.k@wellness.co</p></div></div></td><td class="px-6 py-5 text-on-surface-variant font-body-md">+91 98765 43213</td><td class="px-6 py-5 text-on-surface-variant font-body-md">Dec 18, 2023</td><td class="px-6 py-5 text-on-surface font-label-md">31</td><td class="px-6 py-5 text-right"><div class="flex justify-end gap-2"><button class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-error/10 text-error hover:bg-error/20 transition-colors">Block</button><button class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant hover:bg-surface-variant transition-colors">Unblock</button></div></td></tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-variant/30 transition-colors cursor-pointer group"><td class="px-6 py-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4Gbb_F0N7htehfaQUHChw2j-pF75Fh-3k9M77mauPGbKW7LWkmWV5a5olLZFOK13RBowSGytVaoh7gwlC59D8NzOFjYNzXKEMUCIDcrJbpVzs-owUfDKQ9AuB8ZHrjLAtSvzsxMWYS-3V-X7oFPwG_qWUv7RfoG921jumtPKxysYqGiczee4u9od-1ftDWkqkZgA1G9duVc7tTP1tNG3M3x3a7pklU0OzD76GT22_sD2Kzjw31c0cYfoHlazlGLcLhdloD1sVLZg"></div><div><p class="font-label-md text-on-surface">Arjun Reddy</p><p class="text-[12px] text-on-surface-variant">arjun.r@techluxe.in</p></div></div></td><td class="px-6 py-5 text-on-surface-variant font-body-md">+91 98765 43214</td><td class="px-6 py-5 text-on-surface-variant font-body-md">Jan 30, 2024</td><td class="px-6 py-5 text-on-surface font-label-md">9</td><td class="px-6 py-5 text-right"><div class="flex justify-end gap-2"><button class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-error/10 text-error hover:bg-error/20 transition-colors">Block</button><button class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant hover:bg-surface-variant transition-colors">Unblock</button></div></td></tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-6 flex items-center justify-between bg-surface-container-low/30 border-t border-outline-variant/20">
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white transition-colors font-label-md">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white transition-colors font-label-md">3</button>
+<span class="px-1 text-on-surface-variant">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white transition-colors font-label-md">856</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-on-surface-variant font-label-md">Go to page:</span>
+<input class="w-12 h-8 rounded-lg border border-outline-variant/30 bg-white text-center font-label-md focus:ring-1 focus:ring-primary/20 outline-none" type="text" value="1">
+</div>
+</div>
+</div>
+<!-- Contextual Insights Section (Bento Style) -->
+<div class="grid grid-cols-12 gap-6 mb-section-gap">
+
+
+</div>
+</div>
+<!-- Footer Shell -->
+<footer class="mt-auto py-8 px-container-padding bg-surface border-t border-outline-variant/10 text-center">
+
+</footer>
+</main>
+<!-- Interactions Script -->
+<script>
+        // Simple row selection toggle
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', () => {
+                // Visual feedback only for demo
+                row.classList.toggle('bg-primary/5');
+            });
+        });
+
+        // Search highlight interaction
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-[1.01]');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-[1.01]');
+        });
+    </script>
+
+
+
+
+</body></html>

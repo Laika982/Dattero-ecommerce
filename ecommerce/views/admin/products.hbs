@@ -118,75 +118,9 @@
 </head>
 <body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
 <!-- SideNavBar -->
-<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col h-screen py-container-padding px-stack-md z-50">
-<div class="mb-10 px-2">
-<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface dark:text-on-primary-fixed">Nutri Luxe</h1>
-<p class="font-label-md text-label-md text-on-surface-variant/70">Luxury Wellness Admin</p>
-</div>
-<nav class="flex-1 space-y-1"><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span><span class="font-label-md text-label-md">Dashboard</span></a>
-<!-- Active Tab: Products -->
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary dark:text-primary-fixed font-bold border-r-2 border-primary dark:border-primary-fixed bg-surface-variant transition-colors group" href="#">
-<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
-<span class="font-label-md text-label-md">Products</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
-<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
-<span class="font-label-md text-label-md">Orders</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
-<span class="material-symbols-outlined" data-icon="category">category</span>
-<span class="font-label-md text-label-md">Categories</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
-<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
-<span class="font-label-md text-label-md">Coupons</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
-<span class="material-symbols-outlined" data-icon="branding_watermark">branding_watermark</span>
-<span class="font-label-md text-label-md">Banners</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
-<span class="material-symbols-outlined" data-icon="local_offer">local_offer</span>
-<span class="font-label-md text-label-md">Offers</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
-<span class="material-symbols-outlined" data-icon="group">group</span>
-<span class="font-label-md text-label-md">Customers</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span><span class="font-label-md text-label-md">Sales Report</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span><span class="font-label-md text-label-md">Logout</span></a></nav>
-<div class="mt-auto border-t border-outline-variant/30 pt-6 px-2">
-<button class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-primary text-on-primary font-label-md transition-all active:scale-95 hover:bg-opacity-90">
-<span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
-                View Store
-            </button>
-</div>
-</aside>
+{{> admin/header}}
 <!-- TopNavBar -->
-<header class="fixed top-0 right-0 left-0 ml-64 h-16 bg-surface/80 glass-effect border-b border-outline-variant/30 flex justify-between items-center px-container-padding z-40">
-<div class="flex items-center bg-surface-container-low rounded-full px-4 py-1.5 w-96 border border-outline-variant/20">
-<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-body-md w-full placeholder:text-outline/60 ml-2" placeholder="Search products..." type="text">
-</div>
-<div class="flex items-center gap-6">
-<div class="flex items-center gap-4 text-on-surface-variant">
-<button class="hover:text-primary transition-colors relative">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
-</button>
-<button class="hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-</button>
-</div>
-<div class="h-8 w-[1px] bg-outline-variant/30"></div>
-<div class="flex items-center gap-3">
-<div class="text-right hidden sm:block">
-<p class="font-label-md text-label-md leading-none">Admin User</p>
-<p class="text-[12px] text-on-surface-variant/70">Administrator</p>
-</div>
-<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/30" data-alt="A clean, professional close-up headshot of a luxury brand administrator in a minimalist studio setting. The lighting is high-key and soft, creating a modern, Apple-inspired look. The person has a serene and authoritative expression, dressed in a sophisticated dark grey blazer. The background is a soft, out-of-focus neutral grey, echoing the Nutri Luxe brand aesthetic of calm, precision, and high-end wellness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjwz2wm4M4x39tLdhsUeqniHXMWAi1kTU2Tvwo5CzwrXvto04sZyeWbFbu3pKR_WqHArnG8zFM2gTMosxBwP3tmktPOKB-uUd46O_zsJK68-K-2E02Jdl6-n8pALqvcTrgN680DUZZpoyD-6bM2pGDO2hocG8nAkRu7Wf0ybTXixp2Yfw6k3D_4jAGIqvBPXuoD8mvq_QX6IoqCCak6q0uywk1LKIDBetI0UbALU8X342iPRpS-yq31uPCoazkMyHkrk9PeCr6r8c">
-</div>
-</div>
-</header>
+{{> admin/header}}
 <!-- Main Content -->
 <main class="ml-64 pt-16 min-h-screen">
 <div class="max-w-[1280px] mx-auto p-container-padding">

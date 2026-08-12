@@ -15,6 +15,13 @@ const isAuthenticated = (req, res, next) => {
             process.env.JWT_SECRET
         );
 
+         // Check blocked status
+        if (user.isBlocked) {
+            res.clearCookie("token");
+
+            return res.redirect("/login?blocked=true");
+        }
+
         req.user = decoded;
 
         next();

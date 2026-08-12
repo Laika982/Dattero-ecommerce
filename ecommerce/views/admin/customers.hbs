@@ -1,0 +1,398 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Nutri Luxe Admin - Customers</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e3e2e2",
+                    "surface": "#fbf9f9",
+                    "outline": "#747878",
+                    "background": "#fbf9f9",
+                    "on-primary-fixed-variant": "#464747",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#c7c6c6",
+                    "inverse-primary": "#c7c6c6",
+                    "surface-container-highest": "#e3e2e2",
+                    "on-secondary-container": "#646464",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#747474",
+                    "surface-bright": "#fbf9f9",
+                    "secondary": "#5e5e5e",
+                    "secondary-container": "#e3e2e2",
+                    "on-primary-container": "#fefcfc",
+                    "on-surface-variant": "#444748",
+                    "outline-variant": "#c4c7c7",
+                    "surface-tint": "#5e5e5e",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-primary": "#ffffff",
+                    "primary": "#5c5c5c",
+                    "on-primary-fixed": "#1b1c1c",
+                    "inverse-on-surface": "#f2f0f0",
+                    "secondary-fixed": "#e3e2e2",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "surface-dim": "#dbdad9",
+                    "primary-fixed": "#e3e2e2",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "inverse-surface": "#303031",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#efeded",
+                    "surface-container-high": "#e9e8e7",
+                    "tertiary": "#5c5c5c",
+                    "surface-container-low": "#f5f3f3",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#1b1c1c",
+                    "primary-container": "#747474",
+                    "on-tertiary-container": "#fcfcfc",
+                    "on-secondary-fixed-variant": "#464747",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "grid-gutter": "24px",
+                    "container-padding": "32px",
+                    "stack-sm": "8px",
+                    "max-width": "1280px",
+                    "section-gap-mobile": "64px",
+                    "stack-md": "16px",
+                    "section-gap": "120px"
+            },
+            "fontFamily": {
+                    "body-xl": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fbf9f9;
+            color: #1b1c1c;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            background-color: rgba(251, 249, 249, 0.8);
+        }
+        .bento-card {
+            background: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .bento-card:hover {
+            box-shadow: 0 40px 40px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+        }
+        /* Custom scrollbar for minimalist look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e3e2e2; border-radius: 10px; }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar Shell -->
+ {{> admin/aside}}
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- TopNavBar -->
+{{> admin/header}}
+<!-- Canvas -->
+<div class="p-container-padding flex-1">
+<!-- Page Header -->
+<div class="mb-10 flex justify-between items-end">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-2">Customer Management</h2>
+<p class="font-body-lg text-on-surface-variant max-w-2xl opacity-70">Oversee your elite customer base, track lifetime value, and manage exclusive luxe tiers.</p>
+</div>
+<div class="flex gap-4">
+
+
+</div>
+</div>
+<!-- Dashboard Stats Bar -->
+<div class="grid grid-cols-4 gap-6 mb-10">
+<div class="bento-card p-6 rounded-xl flex items-center justify-between">
+<div>
+<p class="text-[11px] uppercase tracking-widest text-on-surface-variant mb-1">Total Customers</p>
+<h3 class="font-headline-lg text-headline-lg">{{this.count}}</h3>
+</div>
+<div class="p-3 bg-primary/5 rounded-full">
+<span class="material-symbols-outlined text-primary">groups</span>
+</div>
+</div>
+<div class="bento-card p-6 rounded-xl flex items-center justify-between">
+<div>
+<p class="text-[11px] uppercase tracking-widest text-on-surface-variant mb-1">Average LTV</p>
+<h3 class="font-headline-lg text-headline-lg">₹4,250</h3>
+</div>
+<div class="p-3 bg-secondary/5 rounded-full">
+<span class="material-symbols-outlined text-secondary">payments</span>
+</div>
+</div>
+
+
+</div>
+<!-- Detailed Table Container -->
+<div class="bento-card rounded-2xl overflow-hidden mb-section-gap">
+<!-- Filters & Search Toolbar -->
+<div class="p-6 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-lowest">
+<div class="flex items-center gap-4">
+<div class="flex bg-surface-container-low p-1 rounded-lg">
+
+
+
+</div>
+<div class="h-6 w-[1px] bg-outline-variant/50"></div>
+<button class="flex items-center gap-2 px-3 py-1.5 font-label-md text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+                            More Filters
+                        </button>
+</div>
+<div class="text-on-surface-variant font-label-md">
+                        Showing {{this.page}}-{{this.totalPages}} of {{this.count}}results
+                    </div>
+</div>
+<!-- Table Content -->
+<div class="overflow-x-auto">
+    <table class="w-full table-fixed text-left">
+
+        <!-- Column widths -->
+        <colgroup>
+            <col class="w-[32%]">
+            <col class="w-[18%]">
+            <col class="w-[18%]">
+            <col class="w-[15%]">
+            <col class="w-[17%]">
+        </colgroup>
+
+        <thead>
+            <tr class="bg-surface-container-low/50">
+
+                <!-- Customer -->
+                <th class="px-6 py-4 text-left font-label-md text-on-surface-variant border-b border-outline-variant/20">
+                    <div class="flex items-center gap-2">
+                        Customer
+                        <span class="material-symbols-outlined text-[16px]">
+                            arrow_drop_down
+                        </span>
+                    </div>
+                </th>
+
+                <!-- Phone -->
+                <th class="px-6 py-4 text-left font-label-md text-on-surface-variant border-b border-outline-variant/20">
+                    Phone Number
+                </th>
+
+                <!-- Join Date -->
+                <th class="px-6 py-4 text-left font-label-md text-on-surface-variant border-b border-outline-variant/20">
+                    Join Date
+                </th>
+
+                <!-- Status -->
+                <th class="px-6 py-4 text-left font-label-md text-on-surface-variant border-b border-outline-variant/20">
+                    Status
+                </th>
+
+                <!-- Actions -->
+                <th class="px-6 py-4 text-right font-label-md text-on-surface-variant border-b border-outline-variant/20">
+                    Actions
+                </th>
+
+            </tr>
+        </thead>
+
+
+        <tbody class="divide-y divide-outline-variant/10">
+
+            {{#each data}}
+
+            <tr class="hover:bg-surface-variant/30 transition-colors cursor-pointer group bg-primary/5">
+
+                <!-- Customer -->
+                <td class="px-6 py-5 align-middle">
+
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-10 h-10 flex-shrink-0 rounded-full bg-surface-container-high overflow-hidden">
+                            <img
+                                class="w-full h-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC11aKUo2hVOMBq1U3n3MluU1uw9WyKh3IejLn5ciRzvQve8r14fSyXvYPiLPdHrJYMyq1Xxn9WO9q6VRQXMuQk53AVpByFGSXv01Gf4jDfTTqUyZzyanX5_VTwmAis8jaqYPL708Cf6aRqybiaPc9ZJ6jTzTTt_EEcSeDGz4_yaBW8YYABnHxCHUPtkelltq5mUWXANRHSFnJZ6AI9oSnFW-9LnJCodHzVrjk2IWqC8-sGNyUyeBn2MbVEAyzvSywRhCWLLiAXEog"
+                                alt="Customer"
+                            >
+                        </div>
+
+                        <div class="min-w-0">
+                            <p class="font-label-md text-on-surface truncate">
+                                {{this.name}}
+                            </p>
+
+                            <p class="text-[12px] text-on-surface-variant truncate">
+                                {{this.email}}
+                            </p>
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+                <!-- Phone -->
+                <td class="px-6 py-5 align-middle text-left text-on-surface-variant font-body-md">
+                    {{this.phone}}
+                </td>
+
+
+                <!-- Created Date -->
+                <td class="px-6 py-5 align-middle text-left text-on-surface-variant font-body-md">
+                    {{this.createdAt}}
+                </td>
+
+
+                <!-- Status -->
+                <td class="px-6 py-5 align-middle text-left">
+
+                    {{#if this.isBlocked}}
+
+                        <span class="inline-flex px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-error/10 text-error">
+                            Blocked
+                        </span>
+
+                    {{else}}
+
+                        <span class="inline-flex px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant">
+                            Active
+                        </span>
+
+                    {{/if}}
+
+                </td>
+
+
+                <!-- Actions -->
+                <td class="px-6 py-5 align-middle text-right">
+
+                    {{#if this.isBlocked}}
+
+                        <a
+                            href="/admin/unblockCustomer?id={{this._id}}"
+                            class="inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition-colors shadow-sm"
+                        >
+                            Unblock
+                        </a>
+
+                    {{else}}
+
+                        <a
+                            href="/admin/blockCustomer?id={{this._id}}"
+                            class="inline-flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-medium px-4 py-2 rounded-lg transition-colors shadow-sm"
+                        >
+                            Block
+                        </a>
+
+                    {{/if}}
+
+                </td>
+
+            </tr>
+
+            {{/each}}
+
+        </tbody>
+
+    </table>
+</div>
+<!-- Pagination -->
+<div class="p-6 flex items-center justify-between bg-surface-container-low/30 border-t border-outline-variant/20">
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white transition-colors font-label-md">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white transition-colors font-label-md">3</button>
+<span class="px-1 text-on-surface-variant">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white transition-colors font-label-md">856</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-on-surface-variant font-label-md">Go to page:</span>
+<input class="w-12 h-8 rounded-lg border border-outline-variant/30 bg-white text-center font-label-md focus:ring-1 focus:ring-primary/20 outline-none" type="text" value="1">
+</div>
+</div>
+</div>
+<!-- Contextual Insights Section (Bento Style) -->
+<div class="grid grid-cols-12 gap-6 mb-section-gap">
+
+
+</div>
+</div>
+<!-- Footer Shell -->
+<footer class="mt-auto py-8 px-container-padding bg-surface border-t border-outline-variant/10 text-center">
+
+</footer>
+</main>
+<!-- Interactions Script -->
+<script>
+        // Simple row selection toggle
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', () => {
+                // Visual feedback only for demo
+                row.classList.toggle('bg-primary/5');
+            });
+        });
+
+        // Search highlight interaction
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-[1.01]');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-[1.01]');
+        });
+    </script>
+
+
+
+
+</body></html>

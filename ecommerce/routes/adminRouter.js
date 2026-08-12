@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const adminController = require("../controllers/admin/adminController");
+const customerController = require("../controllers/admin/coustomerController")
+const categoryController = require("../controllers/admin/categoryController")
+
 const {
 isAdminAuthenticated,
 isAdminLoggedIn
@@ -16,6 +19,13 @@ router.get("/", isAdminAuthenticated, adminController.loadAdminDashboard);
 
 //logout
 router.get("/logout", adminController.logout);
+
+// //customers
+router.get("/customers", customerController.customerInfo);
+// router.get("/user", customerController.customerInfo);
+router.get("/blockCustomer", customerController.customerBlocked);
+router.get("/unblockCustomer", customerController.customerUnBlocked);
+
 
 
 module.exports = router;

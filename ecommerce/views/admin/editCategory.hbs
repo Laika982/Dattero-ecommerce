@@ -1,0 +1,846 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Nutri Luxe Admin - Category Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .input-focus-ring:focus {
+            outline: none;
+            border-color: #5c5c5c;
+            box-shadow: 0 0 0 2px rgba(92, 92, 92, 0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e3e2e2",
+                        "surface": "#fbf9f9",
+                        "outline": "#747878",
+                        "background": "#fbf9f9",
+                        "on-primary-fixed-variant": "#464747",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#c7c6c6",
+                        "inverse-primary": "#c7c6c6",
+                        "surface-container-highest": "#e3e2e2",
+                        "on-secondary-container": "#646464",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#747474",
+                        "surface-bright": "#fbf9f9",
+                        "secondary": "#5e5e5e",
+                        "secondary-container": "#e3e2e2",
+                        "on-primary-container": "#fefcfc",
+                        "on-surface-variant": "#444748",
+                        "outline-variant": "#c4c7c7",
+                        "surface-tint": "#5e5e5e",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-primary": "#ffffff",
+                        "primary": "#5c5c5c",
+                        "on-primary-fixed": "#1b1c1c",
+                        "inverse-on-surface": "#f2f0f0",
+                        "secondary-fixed": "#e3e2e2",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "surface-dim": "#dbdad9",
+                        "primary-fixed": "#e3e2e2",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "inverse-surface": "#303031",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#efeded",
+                        "surface-container-high": "#e9e8e7",
+                        "tertiary": "#5c5c5c",
+                        "surface-container-low": "#f5f3f3",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "on-surface": "#1b1c1c",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#1b1c1c",
+                        "primary-container": "#747474",
+                        "on-tertiary-container": "#fcfcfc",
+                        "on-secondary-fixed-variant": "#464747",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "24px",
+                        "grid-gutter": "24px",
+                        "container-padding": "32px",
+                        "stack-sm": "8px",
+                        "max-width": "1280px",
+                        "section-gap-mobile": "64px",
+                        "stack-md": "16px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "body-xl": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased">
+<!-- SideNavBar Anchor -->
+{{> admin/aside}}
+<!-- Main Content Shell -->
+<main class="ml-64 min-h-screen">
+<!-- TopNavBar Anchor -->
+{{> admin/header}}
+<!-- Page Canvas -->
+<div class="p-container-padding max-w-[900px] mx-auto">
+<!-- Breadcrumbs / Header -->
+<div class="mb-12">
+<nav class="flex items-center text-on-surface-variant text-sm mb-4">
+<a class="hover:text-primary" href="#">Inventory</a>
+<span class="mx-2 opacity-30">/</span>
+<a class="hover:text-primary" href="#">Categories</a>
+<span class="mx-2 opacity-30">/</span>
+<span class="text-on-surface font-semibold">Edit Category</span>
+</nav>
+<h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">
+    Edit Category
+</h2>
+
+<p class="text-on-surface-variant font-body-lg mt-2 opacity-80">
+    Update the details of your category.
+</p>
+</div>
+<!-- Form Bento Layout -->
+<form
+    action="/admin/editCategory/{{category._id}}"
+    method="POST"
+    enctype="multipart/form-data"
+    class="space-y-grid-gutter"
+>
+<!-- Section 1: General Info -->
+<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20 shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter">
+<div class="md:col-span-1">
+<h3 class="font-label-md text-on-surface uppercase tracking-wider">General Information</h3>
+<p class="text-sm text-on-surface-variant mt-1">Provide the core identity for this category.</p>
+</div>
+<div class="md:col-span-3 space-y-6">
+<div class="group">
+<label class="block font-label-md text-on-surface mb-2">Category Name</label>
+<input
+    class="w-full bg-surface rounded-lg border border-outline-variant/30 py-3 px-4 text-body-md focus:border-primary focus:ring-1 focus:ring-primary/10 transition-all"
+    placeholder="e.g. Traditional Burfis"
+    type="text"
+    name="category_name"
+    value="{{category.category_name}}"
+></div>
+<div>
+<label class="block font-label-md text-on-surface mb-2">Description</label>
+<textarea
+    name="description"
+    maxlength="500"
+    class="w-full bg-surface rounded-lg border border-outline-variant/30 py-3 px-4 text-body-md focus:border-primary focus:ring-1 focus:ring-primary/10 transition-all"
+    placeholder="Describe the essence of this category..."
+    rows="4"
+>{{category.description}}</textarea><p class="text-xs text-on-surface-variant mt-2 text-right">0/500 characters</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Banner Image -->
+{{!-- <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20 shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter">
+<div class="md:col-span-1">
+<h3 class="font-label-md text-on-surface uppercase tracking-wider">Visual Identity</h3>
+<p class="text-sm text-on-surface-variant mt-1">Upload an optional high-resolution banner for this category.</p>
+</div>
+<div class="md:col-span-3">
+<div class="relative group cursor-pointer">
+<div class="w-full aspect-[21/9] rounded-xl bg-surface border-2 border-dashed border-outline-variant/50 flex flex-col items-center justify-center transition-all group-hover:border-primary/50 group-hover:bg-surface-variant/20">
+<div class="text-center p-6">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 opacity-40 group-hover:opacity-100 group-hover:text-primary" data-icon="cloud_upload">cloud_upload</span>
+<p class="font-label-md text-on-surface">Click to upload banner</p>
+<p class="text-xs text-on-surface-variant mt-1">Recommended: 1600 x 680px (PNG or JPG)</p>
+</div>
+</div>
+<input class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" type="file" name="image">
+</div>
+<!-- Banner Preview Placeholder (Hidden by default) -->
+<div class="mt-4 flex items-center gap-4 p-3 bg-surface rounded-lg border border-outline-variant/30 hidden">
+<div class="w-16 h-10 bg-surface-container-high rounded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-resolution, professionally photographed close-up of premium 'Nutri Burfi' wellness snacks arranged artistically on a minimalist slate platter. The lighting is cinematic, casting soft shadows, with a focus on rich textures and organic ingredients. The aesthetic is ultra-modern, luxury health, using a palette of muted grays and deep natural tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAS08xbLda8A3BRWeR4XNWbxgy9DK1Xj79hSQdO_zrYX58B7JvFLrIck8Kihym61lp95J-Q_D0JCpQ5MQ1hEjRsvf3xeM5PlveS-nVI36UPiaGN2498Ueehxe4O9zAb2tHFBczZvAoGL5xWPEKIHZhjeHBS0iBKP3IWGS7h1F6OhZmeZ_Z9IPzCBQ5pshA1N-zgY3YzadcUpiPbW-omhO281-fKuL08xWYQudCnyWqPKY2qigTABwUX0-p5vC3u2b-0b4LGdrlRR1g">
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold truncate">category-banner-wellness.jpg</p>
+<p class="text-[10px] text-on-surface-variant uppercase">1.2 MB</p>
+</div>
+<button class="text-error hover:bg-error-container/20 p-2 rounded-full transition-colors" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div> --}}
+
+
+
+{{!-- new one  --}}
+
+
+<!-- Section 2: Category Image -->
+<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20 shadow-sm">
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter">
+
+        <div class="md:col-span-1">
+            <h3 class="font-label-md text-on-surface uppercase tracking-wider">
+                Visual Identity
+            </h3>
+
+            <p class="text-sm text-on-surface-variant mt-1">
+                Upload an optional high-resolution banner for this category.
+            </p>
+        </div>
+
+
+        <div class="md:col-span-3">
+
+            <!-- Upload Area -->
+            <div
+                id="dropZoneContainer"
+                class="relative group cursor-pointer"
+            >
+
+                <div
+                    id="uploadContainer"
+                    class="w-full aspect-[21/9] rounded-xl bg-surface border-2 border-dashed border-outline-variant/50 overflow-hidden flex items-center justify-center transition-all group-hover:border-primary/50 group-hover:bg-surface-variant/20"
+                >
+
+                    {{#if category.image.url}}
+
+                        <!-- Existing Database Image -->
+                        <img
+                            id="imagePreview"
+                            src="{{category.image.url}}"
+                            alt="{{category.category_name}}"
+                            class="absolute inset-0 w-full h-full object-cover rounded-xl"
+                        >
+
+                        <!-- Existing Image Overlay -->
+                        <div
+                            id="imageOverlay"
+                            class="absolute inset-0 bg-black/40 rounded-xl hidden items-center justify-center"
+                        >
+                            <div class="text-center text-white">
+
+                                <span class="material-symbols-outlined text-3xl">
+                                    cloud_upload
+                                </span>
+
+                                <p class="text-sm font-semibold mt-2">
+                                    Click to change image
+                                </p>
+
+                            </div>
+                        </div>
+
+                    {{else}}
+
+                        <!-- Upload Placeholder -->
+                        <div
+                            id="uploadContent"
+                            class="text-center p-6"
+                        >
+                            <span
+                                class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 opacity-40 group-hover:opacity-100 group-hover:text-primary"
+                            >
+                                cloud_upload
+                            </span>
+
+                            <p class="font-label-md text-on-surface">
+                                Click to upload banner
+                            </p>
+
+                            <p class="text-xs text-on-surface-variant mt-1">
+                                Recommended: 1600 x 680px (PNG or JPG)
+                            </p>
+                        </div>
+
+                        <img
+                            id="imagePreview"
+                            class="hidden absolute inset-0 w-full h-full object-cover rounded-xl"
+                            alt="Category banner preview"
+                        >
+
+                        <div
+                            id="imageOverlay"
+                            class="absolute inset-0 bg-black/40 rounded-xl hidden items-center justify-center"
+                        >
+                            <div class="text-center text-white">
+
+                                <span class="material-symbols-outlined text-3xl">
+                                    cloud_upload
+                                </span>
+
+                                <p class="text-sm font-semibold mt-2">
+                                    Click to change image
+                                </p>
+
+                            </div>
+                        </div>
+
+                    {{/if}}
+
+                </div>
+
+
+                <!-- File Input -->
+                <input
+                    id="imageInput"
+                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    type="file"
+                    name="image"
+                    accept="image/jpeg,image/png,image/webp"
+                >
+
+            </div>
+
+
+            <!-- Selected File Information -->
+            <div
+                id="filePreview"
+                class="mt-4 hidden items-center gap-4 p-3 bg-surface rounded-lg border border-outline-variant/30"
+            >
+
+                <div class="w-16 h-10 bg-surface-container-high rounded overflow-hidden">
+                    <img
+                        id="smallPreview"
+                        class="w-full h-full object-cover"
+                        alt="Selected image"
+                    >
+                </div>
+
+
+                <div class="flex-1 min-w-0">
+
+                    <p
+                        id="fileName"
+                        class="text-xs font-bold truncate"
+                    ></p>
+
+                    <p
+                        id="fileSize"
+                        class="text-[10px] text-on-surface-variant uppercase"
+                    ></p>
+
+                </div>
+
+
+                <!-- Delete Selected Image -->
+                <button
+                    id="removeImage"
+                    class="text-error hover:bg-error-container/20 p-2 rounded-full transition-colors"
+                    type="button"
+                >
+                    <span class="material-symbols-outlined text-sm">
+                        delete
+                    </span>
+                </button>
+
+            </div>
+
+
+            <!-- Delete Existing Image -->
+            {{#if category.image.url}}
+
+            <div
+                id="existingImageActions"
+                class="mt-3 flex justify-end"
+            >
+                <button
+                    id="deleteExistingImage"
+                    type="button"
+                    class="text-error hover:bg-error-container/20 px-3 py-2 rounded-lg text-sm flex items-center gap-2 transition-colors"
+                >
+                    <span class="material-symbols-outlined text-[18px]">
+                        delete
+                    </span>
+
+                    Remove current image
+                </button>
+            </div>
+
+            {{/if}}
+
+            <!-- Hidden field -->
+            <input
+                type="hidden"
+                name="removeImage"
+                id="removeImageInput"
+                value="false"
+            >
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+{{!-- // is listed  --}}
+<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20 shadow-sm">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter">
+
+        <div class="md:col-span-1">
+            <h3 class="font-label-md text-on-surface uppercase tracking-wider">
+                Category Visibility
+            </h3>
+
+            <p class="text-sm text-on-surface-variant mt-1">
+                Control how this category appears on your storefront.
+            </p>
+        </div>
+
+        <div class="md:col-span-3 flex items-center justify-between">
+
+            <div>
+                <label class="block font-label-md text-on-surface">
+                    Enable Category
+                </label>
+
+                <p class="text-xs text-on-surface-variant mt-1">
+                    When enabled, this category and its products will be visible to customers.
+                </p>
+            </div>
+
+            <label class="relative inline-flex items-center cursor-pointer">
+
+                <!-- Checkbox -->
+                <input
+                    type="checkbox"
+                    id="isListed"
+                    class="sr-only peer"
+                    {{#if category.isListed}}checked{{/if}}
+                >
+
+                <!-- Value sent to backend -->
+                <input
+                    type="hidden"
+                    name="isListed"
+                    id="isListedValue"
+                    value="{{#if category.isListed}}true{{else}}false{{/if}}"
+                >
+
+                <!-- Your original design -->
+                <div class="w-11 h-6 bg-surface-container-high rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                </div>
+
+            </label>
+
+        </div>
+    </div>
+</div>
+<!-- Section 3: Advanced Settings -->
+
+<!-- Form Actions -->
+<div class="flex items-center justify-end gap-4 pt-6 pb-20 border-t border-outline-variant/30">
+<button class="px-8 py-3 rounded-lg text-on-surface-variant font-label-md hover:bg-surface-variant transition-colors" type="button">Discard</button>
+<button class="px-10 py-3 rounded-lg bg-primary text-on-primary font-label-md shadow-lg shadow-primary/10 hover:bg-on-primary-fixed-variant transition-all active:scale-95" type="submit">Update Category</button>
+</div>
+</form>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for input hover effects
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('scale-[1.01]');
+                input.parentElement.classList.add('transition-transform');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+    </script>
+
+    <script>
+    const isListed = document.getElementById("isListed");
+    const isListedValue = document.getElementById("isListedValue");
+
+    isListed.addEventListener("change", function () {
+        isListedValue.value = this.checked ? "true" : "false";
+    });
+</script>
+
+<script>
+
+const dropZoneContainer =
+    document.getElementById("dropZoneContainer");
+
+const imageInput =
+    document.getElementById("imageInput");
+
+const uploadContent =
+    document.getElementById("uploadContent");
+
+const imagePreview =
+    document.getElementById("imagePreview");
+
+const imageOverlay =
+    document.getElementById("imageOverlay");
+
+const filePreview =
+    document.getElementById("filePreview");
+
+const smallPreview =
+    document.getElementById("smallPreview");
+
+const fileName =
+    document.getElementById("fileName");
+
+const fileSize =
+    document.getElementById("fileSize");
+
+const removeImage =
+    document.getElementById("removeImage");
+
+const deleteExistingImage =
+    document.getElementById("deleteExistingImage");
+
+const removeImageInput =
+    document.getElementById("removeImageInput");
+
+
+/*
+|--------------------------------------------------------------------------
+| Existing image URL
+|--------------------------------------------------------------------------
+*/
+
+const existingImageUrl =
+    "{{category.image.url}}";
+
+
+/*
+|--------------------------------------------------------------------------
+| Open file selector
+|--------------------------------------------------------------------------
+*/
+
+dropZoneContainer.addEventListener("click", function (event) {
+
+    // Don't trigger twice when clicking input
+    if (event.target === imageInput) {
+        return;
+    }
+
+    imageInput.click();
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Select new image
+|--------------------------------------------------------------------------
+*/
+
+imageInput.addEventListener("change", function (event) {
+
+    const file = event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+
+    // Validate image
+    if (!file.type.startsWith("image/")) {
+
+        alert("Please select a valid image.");
+
+        imageInput.value = "";
+
+        return;
+    }
+
+
+    // Create temporary preview URL
+    const imageUrl =
+        URL.createObjectURL(file);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Large preview
+    |--------------------------------------------------------------------------
+    */
+
+    imagePreview.src = imageUrl;
+
+    imagePreview.classList.remove("hidden");
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hide upload text
+    |--------------------------------------------------------------------------
+    */
+
+    if (uploadContent) {
+        uploadContent.classList.add("hidden");
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Show overlay
+    |--------------------------------------------------------------------------
+    */
+
+    imageOverlay.classList.remove("hidden");
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Small preview
+    |--------------------------------------------------------------------------
+    */
+
+    smallPreview.src = imageUrl;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | File name
+    |--------------------------------------------------------------------------
+    */
+
+    fileName.textContent =
+        file.name;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | File size
+    |--------------------------------------------------------------------------
+    */
+
+    const sizeInMB =
+        (file.size / (1024 * 1024)).toFixed(2);
+
+    fileSize.textContent =
+        sizeInMB + " MB";
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Show selected file information
+    |--------------------------------------------------------------------------
+    */
+
+    filePreview.classList.remove("hidden");
+
+    filePreview.classList.add("flex");
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | If new image selected, don't remove old image
+    |--------------------------------------------------------------------------
+    */
+
+    removeImageInput.value = "false";
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Delete newly selected image
+|--------------------------------------------------------------------------
+*/
+
+removeImage.addEventListener("click", function (event) {
+
+    event.stopPropagation();
+
+
+    // Clear file input
+    imageInput.value = "";
+
+
+    // Clear previews
+    smallPreview.src = "";
+
+
+    fileName.textContent = "";
+
+    fileSize.textContent = "";
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Restore existing database image
+    |--------------------------------------------------------------------------
+    */
+
+    if (existingImageUrl) {
+
+        imagePreview.src =
+            existingImageUrl;
+
+        imagePreview.classList.remove("hidden");
+
+        removeImageInput.value = "false";
+
+    } else {
+
+        // No existing image
+        imagePreview.src = "";
+
+        imagePreview.classList.add("hidden");
+
+        if (uploadContent) {
+            uploadContent.classList.remove("hidden");
+        }
+
+    }
+
+
+    // Hide selected file information
+    filePreview.classList.add("hidden");
+
+    filePreview.classList.remove("flex");
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Delete existing database image
+|--------------------------------------------------------------------------
+*/
+
+if (deleteExistingImage) {
+
+    deleteExistingImage.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Mark existing image for deletion
+        |--------------------------------------------------------------------------
+        */
+
+        removeImageInput.value = "true";
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Remove image preview
+        |--------------------------------------------------------------------------
+        */
+
+        imagePreview.src = "";
+
+        imagePreview.classList.add("hidden");
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Show upload placeholder
+        |--------------------------------------------------------------------------
+        */
+
+        if (uploadContent) {
+
+            uploadContent.classList.remove("hidden");
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Hide delete current image button
+        |--------------------------------------------------------------------------
+        */
+
+        deleteExistingImage.parentElement.classList.add("hidden");
+
+    });
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Hover overlay
+|--------------------------------------------------------------------------
+*/
+
+dropZoneContainer.addEventListener("mouseenter", function () {
+
+    if (!imagePreview.classList.contains("hidden")) {
+
+        imageOverlay.classList.remove("hidden");
+
+        imageOverlay.classList.add("flex");
+
+    }
+
+});
+
+
+dropZoneContainer.addEventListener("mouseleave", function () {
+
+    imageOverlay.classList.remove("flex");
+
+    imageOverlay.classList.add("hidden");
+
+});
+
+</script>
+
+
+
+
+
+
+</body></html>

@@ -1,0 +1,813 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Nutri Luxe Admin - Product Categories</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e3e2e2",
+                    "surface": "#fbf9f9",
+                    "outline": "#747878",
+                    "background": "#fbf9f9",
+                    "on-primary-fixed-variant": "#464747",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#c7c6c6",
+                    "inverse-primary": "#c7c6c6",
+                    "surface-container-highest": "#e3e2e2",
+                    "on-secondary-container": "#646464",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#747474",
+                    "surface-bright": "#fbf9f9",
+                    "secondary": "#5e5e5e",
+                    "secondary-container": "#e3e2e2",
+                    "on-primary-container": "#fefcfc",
+                    "on-surface-variant": "#444748",
+                    "outline-variant": "#c4c7c7",
+                    "surface-tint": "#5e5e5e",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-primary": "#ffffff",
+                    "primary": "#5c5c5c",
+                    "on-primary-fixed": "#1b1c1c",
+                    "inverse-on-surface": "#f2f0f0",
+                    "secondary-fixed": "#e3e2e2",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "surface-dim": "#dbdad9",
+                    "primary-fixed": "#e3e2e2",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "inverse-surface": "#303031",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#efeded",
+                    "surface-container-high": "#e9e8e7",
+                    "tertiary": "#5c5c5c",
+                    "surface-container-low": "#f5f3f3",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#1b1c1c",
+                    "primary-container": "#747474",
+                    "on-tertiary-container": "#fcfcfc",
+                    "on-secondary-fixed-variant": "#464747",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "grid-gutter": "24px",
+                    "container-padding": "32px",
+                    "stack-sm": "8px",
+                    "max-width": "1280px",
+                    "section-gap-mobile": "64px",
+                    "stack-md": "16px",
+                    "section-gap": "120px"
+            },
+            "fontFamily": {
+                    "body-xl": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fbf9f9;
+            color: #1b1c1c;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 40px 40px -40px rgba(0, 0, 0, 0.04);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c4c7c7;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased overflow-x-hidden">
+<!-- SideNavBar (Authority: JSON) -->
+ {{> admin/aside}}
+<!-- TopNavBar (Authority: JSON) -->
+<header class="sticky top-0 ml-64 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 h-16 flex justify-between items-center px-container-padding">
+<div class="flex items-center flex-1">
+<div class="relative w-full max-w-md">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="search">search</span>
+<form action="/admin/categories" method="GET" class="relative">
+
+    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">
+        search
+    </span>
+
+    <input
+        class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-20 py-2 text-body-md focus:ring-1 focus:ring-primary transition-all"
+        placeholder="Search categories..."
+        type="text"
+        name="search"
+        value="{{search}}"
+    >
+
+    <button
+        type="submit"
+        class="absolute right-1 top-1/2 -translate-y-1/2 px-4 py-1.5 rounded-full bg-primary text-on-primary text-sm font-semibold hover:opacity-90 transition"
+    >
+        Search
+    </button>
+
+</form>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
+<div class="flex items-center gap-3 group cursor-pointer">
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface leading-tight">Admin User</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Administrator</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="A professional high-resolution headshot of a luxury brand administrator in a minimalist studio. The lighting is soft and high-key, reflecting a clean Apple-inspired aesthetic. The background is a solid neutral light gray, emphasizing professional authority and modern wellness leadership. The overall mood is sophisticated, composed, and elegantly minimalist." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG2H6OxJDxkDRbWHB7c0TjPXwJE6vDGtDYs6YJJKKL-kPT9Yn9E0iJCLAKDf_smzXtkbvjHQVqwplNMUOsiyH7hvwIJ_R_9CRebFbHt7-GBEMSWdF8QHgX2nISrgYWEGUKKhTzAIqaW2JzFU7mQ5OnmK984UiEwoozAVXWvp0_yad9zCE2kjHCkH5SvoTdSxDMTnAGYLCWcabvZZ55b1XJxX-q4ca0Y8_hEaZRkpWa132cqMvZfNckVy82px84ol7RS2OrKxz0UbU">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-container-padding min-h-screen">
+<!-- Dashboard Header -->
+<div class="max-w-max-width mx-auto mb-section-gap-mobile flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-2">
+<nav class="flex items-center gap-2 text-on-surface-variant opacity-60 text-[12px] font-label-md uppercase tracking-widest">
+<span class="">Admin</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<span class="">Catalog</span>
+</nav>
+<h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Product Categories</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">Curate the hierarchy of luxury wellness. Organize your products into premium collections and oversee inventory flow across the store.</p>
+</div>
+<a
+    href="/admin/addCategory"
+    class="bg-primary text-on-primary px-8 py-4 rounded-xl font-label-md text-label-md flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-all shadow-sm active:scale-95"
+>
+    <span class="material-symbols-outlined">
+        add_circle
+    </span>
+
+    Add Category
+</a>
+</div>
+<!-- Categories Content -->
+<div class="max-w-max-width mx-auto space-y-grid-gutter">
+<!-- Category Grid / Asymmetric Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-grid-gutter">
+<!-- Category Card 1 (Large) -->
+<div class="md:col-span-8 group cursor-pointer"><div class="space-y-grid-gutter h-full">
+  <!-- Quick Stats Card -->
+  <div class="glass-card rounded-2xl p-6 bg-white h-full flex flex-col justify-between"><div class="flex flex-col h-full gap-6"><div class="space-y-4"><div class="flex justify-between items-center"><h3 class="font-headline-lg text-[20px] text-on-surface">Active Category</h3><span class="material-symbols-outlined text-primary" data-icon="category">category</span></div><div class="flex items-end gap-2"><span class="text-headline-xl font-bold text-primary">{{this.totalListedCategories}}</span><span class="text-on-surface-variant font-label-md mb-1">Primary Collections</span></div><div class="flex flex-wrap gap-2"></div></div><div class="h-[1px] bg-outline-variant/20 w-full"></div><div class="space-y-4"><div class="flex justify-between items-center"><h3 class="font-headline-lg text-[20px] text-on-surface">Top Selling Category</h3></div><div class="flex items-center gap-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/10"><div class="w-12 h-12 rounded-lg bg-surface-container-highest overflow-hidden"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCR13OW37HavDCFgQerkLOj_Wj8h8sLI3MeHJZl_hqXQHT0_aua74zRxMy1hLcAaxgTWC_kY_xwU7rPF1lRR-K6Sz7QycufGXZuJYqXd-mRl-8Rx5yV7eWEPqRhN6NsCYNUFqGBrUsDMhndgkSqhzwCww1juIY19PLb6cCgJvFAe0XfnkDR1qpAOO2psm9I1G9oJbzrrJ2VsrOeQBHFgxW4QtxeRAGlALPVB9J0E9OWwGVgt60AiinsmGdiEqZlXFCsTiTP6Lmv-pA" alt="Festive Gift Boxes"></div><div class="flex-1"><p class="font-bold text-on-surface">Festive Gift Boxes</p></div></div></div></div></div>
+</div></div>
+<!-- Category Card 2 (Small) -->
+<div class="md:col-span-4 group cursor-pointer">
+<div class="glass-card rounded-2xl overflow-hidden flex flex-col h-full transition-transform duration-500 hover:-translate-y-2">
+<div class="relative h-48 w-full overflow-hidden">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A top-down minimalist arrangement of raw wellness ingredients like nuts, honey, and dry fruits in glass bowls on a matte gray surface. Clean lighting and sharp focus highlights the high-quality textures. The aesthetic is modern, disciplined, and boutique-like, utilizing a monochromatic gray scale with warm organic tones of the ingredients." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAeulvc_ra3wz6hsgGgY017RvVqh6je9kH2r6miXpx_BvcQ3rhxXOLErSIYmkhQYLSuJDdW9IVh-oM4tzIGz6h_u9aLle2YDDHnJ3w6YT3Rsts18jHFxQ-R7TLbUprxOKpSVTtjwgJFBbw3rmB9MhI__Wm0_oOAJ8_7_edHISwoSCznExYniPxfFsZM0R69yP1k_NMbwaNS9IHBv24hOvzdrdxNdqv988bvaW29JoTlitBohFp7PE1Q_VY6MyG5jq-wI_MRSwGN2is&quot;);"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+<div class="absolute bottom-4 left-4 text-white">
+<h3 class="font-headline-lg text-headline-lg text-[24px]">Total Categories</h3>
+</div>
+</div>
+<div class="p-6 flex flex-col justify-between flex-1 bg-white"><div class="space-y-1"><p class="text-on-surface-variant font-label-md text-label-md">Total Collections</p><p class="font-headline-lg text-headline-lg text-primary">{{this.totalCount}}</p></div></div>
+</div>
+</div>
+<!-- Category Table (Full Width) -->
+<div class="md:col-span-12 mt-stack-lg">
+<div class="glass-card rounded-2xl overflow-hidden bg-white">
+<div class="px-8 py-6 border-b border-outline-variant/30 flex justify-between items-center"><h3 class="font-headline-lg text-[20px] text-on-surface">Category Directory</h3><div class="flex items-center gap-4">
+    <button type="button" id="filterButton" class="flex items-center gap-2 px-6 py-2.5 rounded-full bg-surface-container-highest text-primary font-label-md hover:bg-primary hover:text-on-primary transition-all active:scale-95 shadow-sm border border-outline-variant/30"><span class="material-symbols-outlined text-[20px]">filter_list</span>Filter</button></div></div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-[12px] uppercase tracking-[0.1em]">
+<th class="px-8 py-4 font-semibold">Category Name</th>
+<th class="px-8 py-4 font-semibold">Description</th>
+<th class="px-8 py-4 font-semibold">Status</th>
+<th class="px-8 py-4 font-semibold">Added Date</th>
+<th class="px-8 py-4 font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+
+    {{#each categoryData}}
+
+    <tr class="hover:bg-surface transition-colors cursor-pointer group">
+
+        <!-- Category + Image -->
+        <td class="px-8 py-6">
+            <div class="flex items-center gap-4">
+
+                <div class="w-12 h-12 rounded-lg bg-surface-container-highest overflow-hidden">
+
+                    {{#if this.image.url}}
+
+                        <img
+                            class="w-full h-full object-cover"
+                            src="{{this.image.url}}"
+                            alt="{{this.category_name}}"
+                        >
+
+                    {{else}}
+
+                        <div class="w-full h-full flex items-center justify-center">
+                            <span class="material-symbols-outlined text-on-surface-variant">
+                                image
+                            </span>
+                        </div>
+
+                    {{/if}}
+
+                </div>
+
+                <span
+                    class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors"
+                >
+                    {{this.category_name}}
+                </span>
+
+            </div>
+        </td>
+
+
+        <!-- Description -->
+        <td class="px-8 py-6 text-on-surface-variant font-body-md text-body-md">
+            {{this.description}}
+        </td>
+
+
+        <!-- Product Count -->
+        <td class="px-8 py-6 font-label-md text-label-md">
+
+    {{#if this.isListed}}
+
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+            Active
+        </span>
+
+    {{else}}
+
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+            Inactive
+        </span>
+
+    {{/if}}
+
+</td>
+
+
+        <!-- Created Date -->
+        <td class="px-8 py-6 font-body-md text-body-md text-on-surface-variant">
+            {{this.formattedDate}}
+        </td>
+
+
+        <!-- Actions -->
+        <td class="px-8 py-6 text-right">
+
+            <div class="flex justify-end gap-3">
+
+                <!-- Edit -->
+                <a
+    href="/admin/editCategory/{{this._id}}"
+    class="text-on-surface-variant hover:text-primary transition-colors"
+>
+    <span class="material-symbols-outlined text-[20px]">
+        edit
+    </span>
+</a>
+
+               <form
+    action="/admin/deleteCategory/{{this._id}}"
+    method="POST"
+    class="delete-category-form"
+>
+    <button
+        type="button"
+        class="delete-btn text-on-surface-variant hover:text-error transition-colors"
+    >
+        <span class="material-symbols-outlined text-[20px]">
+            delete
+        </span>
+    </button>
+</form>
+
+            </div>
+
+        </td>
+
+    </tr>
+
+
+    {{else}}
+
+    <!-- No categories found -->
+    <tr>
+        <td
+            colspan="5"
+            class="px-8 py-12 text-center text-on-surface-variant"
+        >
+            No categories found.
+        </td>
+    </tr>
+
+    {{/each}}
+
+</tbody>
+</table>
+</div>
+<div class="px-8 py-6 bg-surface-container-low flex justify-between items-center text-on-surface-variant font-label-md text-label-md">
+<span class="">Showing 3 of 12 Categories</span>
+<div class="flex items-center gap-2">
+  <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant opacity-30 cursor-not-allowed transition-all">
+    <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+  </button>
+  <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md text-[12px] transition-all">
+    1
+  </button>
+  <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant font-label-md text-[12px] hover:bg-surface-variant transition-all">
+    2
+  </button>
+  <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant font-label-md text-[12px] hover:bg-surface-variant transition-all">
+    3
+  </button>
+  <span class="px-1 text-on-surface-variant opacity-60">...</span>
+  <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-surface-variant transition-all">
+    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+  </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Delete Confirmation Modal -->
+<div
+    id="deleteModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm"
+>
+    <div
+        class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6"
+    >
+
+        <!-- Icon -->
+        <div class="flex justify-center mb-4">
+            <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center">
+                <span class="material-symbols-outlined text-red-500 text-3xl">
+                    delete
+                </span>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h2 class="text-xl font-bold text-gray-800 text-center">
+            Delete Category?
+        </h2>
+
+        <!-- Message -->
+        <p class="text-sm text-gray-500 text-center mt-2">
+            Are you sure you want to delete this category?
+            This action cannot be undone.
+        </p>
+
+        <!-- Buttons -->
+        <div class="flex justify-center gap-3 mt-6">
+
+            <button
+                type="button"
+                id="cancelDelete"
+                class="px-5 py-2.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                id="confirmDelete"
+                class="px-5 py-2.5 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
+            >
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Filter Modal -->
+<div
+    id="filterModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/30 backdrop-blur-sm px-4"
+>
+    <div
+        class="w-full max-w-md bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/20 overflow-hidden"
+    >
+
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-5 border-b border-outline-variant/20">
+
+            <div>
+                <h2 class="text-lg font-bold text-on-surface">
+                    Filter Categories
+                </h2>
+
+                <p class="text-sm text-on-surface-variant mt-1">
+                    Choose category visibility
+                </p>
+            </div>
+
+            <button
+                type="button"
+                id="closeFilter"
+                class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition"
+            >
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+            </button>
+
+        </div>
+
+
+        <!-- Filter Options -->
+        <div class="p-6 space-y-3">
+
+            <!-- All -->
+            <label
+                class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition"
+            >
+                <div class="flex items-center gap-3">
+
+                    <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary">
+                            category
+                        </span>
+                    </div>
+
+                    <div>
+                        <p class="font-semibold text-on-surface">
+                            All Categories
+                        </p>
+
+                        <p class="text-xs text-on-surface-variant">
+                            Show all categories
+                        </p>
+                    </div>
+
+                </div>
+
+                <input
+    type="radio"
+    name="categoryFilter"
+    value=""
+    class="w-4 h-4 accent-primary"
+    checked
+>
+
+            </label>
+
+
+            <!-- Active -->
+            <label
+                class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-green-50 cursor-pointer transition"
+            >
+                <div class="flex items-center gap-3">
+
+                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-green-600">
+                            check_circle
+                        </span>
+                    </div>
+
+                    <div>
+                        <p class="font-semibold text-on-surface">
+                            Active Categories
+                        </p>
+
+                        <p class="text-xs text-on-surface-variant">
+                            Show only active categories
+                        </p>
+                    </div>
+
+                </div>
+
+                <input
+    type="radio"
+    name="categoryFilter"
+    value="true"
+    class="w-4 h-4 accent-primary"
+>
+
+            </label>
+
+
+            <!-- Inactive -->
+            <label
+                class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-red-50 cursor-pointer transition"
+            >
+                <div class="flex items-center gap-3">
+
+                    <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-red-500">
+                            block
+                        </span>
+                    </div>
+
+                    <div>
+                        <p class="font-semibold text-on-surface">
+                            Inactive Categories
+                        </p>
+
+                        <p class="text-xs text-on-surface-variant">
+                            Show only inactive categories
+                        </p>
+                    </div>
+
+                </div>
+
+                <input
+    type="radio"
+    name="categoryFilter"
+    value="false"
+    class="w-4 h-4 accent-primary"
+>
+
+            </label>
+
+        </div>
+
+
+        <!-- Footer -->
+        <div class="flex justify-end gap-3 px-6 py-4 bg-surface-container-low border-t border-outline-variant/20">
+
+            <button
+                type="button"
+                id="cancelFilter"
+                class="px-5 py-2.5 rounded-lg text-sm font-semibold text-on-surface-variant hover:bg-surface-container-high transition"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                id="applyFilter"
+                class="px-5 py-2.5 rounded-lg bg-primary text-on-primary text-sm font-semibold hover:opacity-90 transition"
+            >
+                Apply Filter
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+
+</main>
+<!-- Micro-interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Placeholder for interactivity like active tab switching or button ripples
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('mousedown', () => {
+                    btn.classList.add('scale-95');
+                });
+                btn.addEventListener('mouseup', () => {
+                    btn.classList.remove('scale-95');
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.classList.remove('scale-95');
+                });
+            });
+        });
+    </script>
+
+
+<script>
+    const filterButton = document.getElementById("filterButton");
+    const filterModal = document.getElementById("filterModal");
+
+    const closeFilter = document.getElementById("closeFilter");
+    const cancelFilter = document.getElementById("cancelFilter");
+    const applyFilter = document.getElementById("applyFilter");
+
+
+    // =========================
+    // OPEN FILTER POPUP
+    // =========================
+
+    filterButton.addEventListener("click", () => {
+
+        filterModal.classList.remove("hidden");
+        filterModal.classList.add("flex");
+
+    });
+
+
+    // =========================
+    // CLOSE FILTER POPUP
+    // =========================
+
+    closeFilter.addEventListener("click", () => {
+
+        filterModal.classList.add("hidden");
+        filterModal.classList.remove("flex");
+
+    });
+
+
+    // Cancel button
+    cancelFilter.addEventListener("click", () => {
+
+        filterModal.classList.add("hidden");
+        filterModal.classList.remove("flex");
+
+    });
+
+
+    // =========================
+    // APPLY FILTER
+    // =========================
+
+    applyFilter.addEventListener("click", () => {
+
+        const selectedFilter =
+            document.querySelector(
+                'input[name="categoryFilter"]:checked'
+            ).value;
+
+
+        const url = new URL(window.location.href);
+
+
+        // Remove old filter
+        url.searchParams.delete("isListed");
+
+
+        // Add selected filter
+        if (selectedFilter !== "") {
+
+            url.searchParams.set(
+                "isListed",
+                selectedFilter
+            );
+
+        }
+
+
+        // Reset pagination
+        url.searchParams.delete("page");
+
+
+        // Send request to backend
+        window.location.href = url.toString();
+
+    });
+
+
+    // =========================
+    // CLOSE WHEN CLICKING OUTSIDE
+    // =========================
+
+    filterModal.addEventListener("click", (event) => {
+
+        if (event.target === filterModal) {
+
+            filterModal.classList.add("hidden");
+            filterModal.classList.remove("flex");
+
+        }
+
+    });
+
+</script>
+
+
+
+<script>
+
+    const deleteModal = document.getElementById("deleteModal");
+    const cancelDelete = document.getElementById("cancelDelete");
+    const confirmDelete = document.getElementById("confirmDelete");
+
+    let selectedDeleteForm = null;
+
+
+    // Open modal
+    document.querySelectorAll(".delete-btn").forEach(button => {
+
+        button.addEventListener("click", function () {
+
+            selectedDeleteForm = this.closest(".delete-category-form");
+
+            deleteModal.classList.remove("hidden");
+            deleteModal.classList.add("flex");
+
+        });
+
+    });
+
+
+    // Cancel
+    cancelDelete.addEventListener("click", function () {
+
+        deleteModal.classList.add("hidden");
+        deleteModal.classList.remove("flex");
+
+        selectedDeleteForm = null;
+
+    });
+
+
+    // Confirm delete
+    confirmDelete.addEventListener("click", function () {
+
+        if (selectedDeleteForm) {
+
+            selectedDeleteForm.submit();
+
+        }
+
+    });
+
+
+    // Close when clicking outside modal
+    deleteModal.addEventListener("click", function (event) {
+
+        if (event.target === deleteModal) {
+
+            deleteModal.classList.add("hidden");
+            deleteModal.classList.remove("flex");
+
+            selectedDeleteForm = null;
+
+        }
+
+    });
+
+</script>
+
+
+
+
+
+
+</body></html>

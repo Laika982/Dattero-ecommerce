@@ -22,10 +22,16 @@ const categorySchema = new mongoose.Schema(
       type: Boolean,
       required: true
     },
-    image: {
-      type: String,
-      required: false
+image: {
+    url: {
+        type: String,
+        required: false
+    },
+    public_id: {
+        type: String,
+        required: false
     }
+}
   },
   { timestamps: true }
 );

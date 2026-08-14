@@ -31,7 +31,7 @@ const customerInfo = async (req, res) => {
       .skip((page - 1) * limit)
       .sort({ createdAt: -1 });
 
-    const count = await User.countDocuments({ isAdmin: false });
+    const count = await User.countDocuments({isAdmin:false});
 
     const totalPages = Math.ceil(count / limit);
 

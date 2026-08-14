@@ -573,7 +573,6 @@ function genarateOtp() {
 
 async function sendVerificationEmail(email, otp) {
   try {
-    console.log("inside sendverificationemail", email);
 
     const transporter = nodemailer.createTransport({
       service: "gmail",

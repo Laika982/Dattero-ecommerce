@@ -308,29 +308,40 @@
 
 
                 <!-- Actions -->
-                <td class="px-6 py-5 align-middle text-right">
+<td class="px-6 py-5 align-middle text-right">
+{{#if this.isBlocked}}
 
-                    {{#if this.isBlocked}}
+    <form
+        action="/admin/unblockCustomer?id={{this._id}}"
+        method="POST"
+        class="unblock-customer-form inline"
+    >
+        <button
+            type="button"
+            class="unblock-customer-btn inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition-colors shadow-sm"
+        >
+            Unblock
+        </button>
+    </form>
 
-                        <a
-                            href="/admin/unblockCustomer?id={{this._id}}"
-                            class="inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg transition-colors shadow-sm"
-                        >
-                            Unblock
-                        </a>
+{{else}}
 
-                    {{else}}
+    <form
+        action="/admin/blockCustomer?id={{this._id}}"
+        method="POST"
+        class="block-customer-form inline"
+    >
+        <button
+            type="button"
+            class="block-customer-btn inline-flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-medium px-4 py-2 rounded-lg transition-colors shadow-sm"
+        >
+            Block
+        </button>
+    </form>
 
-                        <a
-                            href="/admin/blockCustomer?id={{this._id}}"
-                            class="inline-flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-medium px-4 py-2 rounded-lg transition-colors shadow-sm"
-                        >
-                            Block
-                        </a>
+{{/if}}
 
-                    {{/if}}
-
-                </td>
+</td>
 
             </tr>
 
@@ -371,6 +382,125 @@
 <footer class="mt-auto py-8 px-container-padding bg-surface border-t border-outline-variant/10 text-center">
 
 </footer>
+
+<!-- Block Customer Confirmation Modal -->
+
+<div
+    id="blockModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm"
+>
+    <div
+        class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6"
+    >
+
+        <!-- Icon -->
+        <div class="flex justify-center mb-4">
+            <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center">
+
+                <span class="material-symbols-outlined text-red-500 text-3xl">
+                    block
+                </span>
+
+            </div>
+        </div>
+
+
+        <!-- Title -->
+        <h2 class="text-xl font-bold text-gray-800 text-center">
+            Block Customer?
+        </h2>
+
+
+        <!-- Message -->
+        <p class="text-sm text-gray-500 text-center mt-2">
+            Are you sure you want to block this customer?
+            They will not be able to access their account.
+        </p>
+
+
+        <!-- Buttons -->
+        <div class="flex justify-center gap-3 mt-6">
+
+            <button
+                type="button"
+                id="cancelBlock"
+                class="px-5 py-2.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                id="confirmBlock"
+                class="px-5 py-2.5 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
+            >
+                Block
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Unblock Customer Confirmation Modal -->
+
+<div
+    id="unblockModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm"
+>
+    <div
+        class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6"
+    >
+
+        <!-- Icon -->
+        <div class="flex justify-center mb-4">
+            <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
+
+                <span class="material-symbols-outlined text-green-500 text-3xl">
+                    check_circle
+                </span>
+
+            </div>
+        </div>
+
+
+        <!-- Title -->
+        <h2 class="text-xl font-bold text-gray-800 text-center">
+            Unblock Customer?
+        </h2>
+
+
+        <!-- Message -->
+        <p class="text-sm text-gray-500 text-center mt-2">
+            Are you sure you want to unblock this customer?
+            They will be able to access their account again.
+        </p>
+
+
+        <!-- Buttons -->
+        <div class="flex justify-center gap-3 mt-6">
+
+            <button
+                type="button"
+                id="cancelUnblock"
+                class="px-5 py-2.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                id="confirmUnblock"
+                class="px-5 py-2.5 rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
+            >
+                Unblock
+            </button>
+
+        </div>
+
+    </div>
+</div>
 </main>
 <!-- Interactions Script -->
 <script>
@@ -391,6 +521,135 @@
             searchInput.parentElement.classList.remove('scale-[1.01]');
         });
     </script>
+
+<script>
+
+    // =========================
+    // BLOCK
+    // =========================
+
+    const blockModal = document.getElementById("blockModal");
+    const cancelBlock = document.getElementById("cancelBlock");
+    const confirmBlock = document.getElementById("confirmBlock");
+
+    let selectedBlockForm = null;
+
+    document.querySelectorAll(".block-customer-btn").forEach(button => {
+
+        button.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+            selectedBlockForm =
+                this.closest(".block-customer-form");
+
+            blockModal.classList.remove("hidden");
+            blockModal.classList.add("flex");
+
+        });
+
+    });
+
+    cancelBlock.addEventListener("click", function () {
+
+        blockModal.classList.add("hidden");
+        blockModal.classList.remove("flex");
+
+        selectedBlockForm = null;
+
+    });
+
+    confirmBlock.addEventListener("click", function () {
+
+        if (selectedBlockForm) {
+            selectedBlockForm.submit();
+        }
+
+    });
+
+
+    // =========================
+    // UNBLOCK
+    // =========================
+
+    const unblockModal = document.getElementById("unblockModal");
+    const cancelUnblock = document.getElementById("cancelUnblock");
+    const confirmUnblock = document.getElementById("confirmUnblock");
+
+    let selectedUnblockForm = null;
+
+    document.querySelectorAll(".unblock-customer-btn").forEach(button => {
+
+        button.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+            selectedUnblockForm =
+                this.closest(".unblock-customer-form");
+
+            unblockModal.classList.remove("hidden");
+            unblockModal.classList.add("flex");
+
+        });
+
+    });
+
+    cancelUnblock.addEventListener("click", function () {
+
+        unblockModal.classList.add("hidden");
+        unblockModal.classList.remove("flex");
+
+        selectedUnblockForm = null;
+
+    });
+
+    confirmUnblock.addEventListener("click", function () {
+
+        if (selectedUnblockForm) {
+            selectedUnblockForm.submit();
+        }
+
+    });
+
+
+    // =========================
+    // CLICK OUTSIDE
+    // =========================
+
+    if (blockModal) {
+
+        blockModal.addEventListener("click", function (event) {
+
+            if (event.target === blockModal) {
+
+                blockModal.classList.add("hidden");
+                blockModal.classList.remove("flex");
+
+                selectedBlockForm = null;
+            }
+
+        });
+
+    }
+
+
+    if (unblockModal) {
+
+        unblockModal.addEventListener("click", function (event) {
+
+            if (event.target === unblockModal) {
+
+                unblockModal.classList.add("hidden");
+                unblockModal.classList.remove("flex");
+
+                selectedUnblockForm = null;
+            }
+
+        });
+
+    }
+
+</script>
 
 
 

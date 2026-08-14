@@ -1,409 +1,288 @@
-<link rel="stylesheet" href="/css/admin/category.css">
-<%- include('../../views/partials/admin/header.ejs') %>
+<!DOCTYPE html><html class="light" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e3e2e2",
+                        "surface": "#fbf9f9",
+                        "outline": "#747878",
+                        "background": "#fbf9f9",
+                        "on-primary-fixed-variant": "#464747",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#c7c6c6",
+                        "inverse-primary": "#c7c6c6",
+                        "surface-container-highest": "#e3e2e2",
+                        "on-secondary-container": "#646464",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#747474",
+                        "surface-bright": "#fbf9f9",
+                        "secondary": "#5e5e5e",
+                        "secondary-container": "#e3e2e2",
+                        "on-primary-container": "#fefcfc",
+                        "on-surface-variant": "#444748",
+                        "outline-variant": "#c4c7c7",
+                        "surface-tint": "#5e5e5e",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-primary": "#ffffff",
+                        "primary": "#5c5c5c",
+                        "on-primary-fixed": "#1b1c1c",
+                        "inverse-on-surface": "#f2f0f0",
+                        "secondary-fixed": "#e3e2e2",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "surface-dim": "#dbdad9",
+                        "primary-fixed": "#e3e2e2",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "inverse-surface": "#303031",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#efeded",
+                        "surface-container-high": "#e9e8e7",
+                        "tertiary": "#5c5c5c",
+                        "surface-container-low": "#f5f3f3",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "on-surface": "#1b1c1c",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#1b1c1c",
+                        "primary-container": "#747474",
+                        "on-tertiary-container": "#fcfcfc",
+                        "on-secondary-fixed-variant": "#464747",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "24px",
+                        "grid-gutter": "24px",
+                        "container-padding": "32px",
+                        "stack-sm": "8px",
+                        "max-width": "1280px",
+                        "section-gap-mobile": "64px",
+                        "stack-md": "16px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "body-xl": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    }catch(_e){}</script></head><body class="bg-surface font-body-md text-on-surface antialiased">
 
-<!-- PAGE CONTENT -->
-<main class="page-content">
-
-  
-  <div class="category-page-wrapper py-1 px-1">
-
-   
-    <div class="d-flex justify-content-between align-items-start mb-3">
-      <div>
-        <h4 class="fw-semibold mb-1">Categories</h4>
-        <p class="text-muted mb-0" style="font-size: 1.2rem;">
-          Manage product categories
-        </p>
-      </div>
-</div>
-    <form method="GET" action="/admin/categories" class="flex-grow-1">
-      <div class="bg-white p-3 rounded-3 shadow-sm mb-3 d-flex flex-wrap align-items-center gap-3">
-
-  <!-- Search bar -->
-  <div class="flex-grow-1">
-    <input 
-      type="text" 
-      id="categorySearch" 
-       name="search"
-    class="form-control rounded-pill category-search-input"
-    placeholder="Search categories..."
-    value="<%= search || '' %>"
-    >
-  </div></form>
-
-  <!-- Add Category Button -->
-  <button type="button"
-    class="btn d-inline-flex align-items-center btn-add-category"
-    style="background-color:#b8c9ae; border:none;"
-    data-bs-toggle="modal"
-    data-bs-target="#addCategoryModal">
-      <span class="me-2 fw-bold">+</span>
-      <span>Add Category</span>
-  </button>
-
-</div>
-    
-
-        <!-- Add New Category Modal -->
-<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content" style="border-radius:14px; overflow:hidden;">
-
-
-      <div class="modal-header border-0 px-4 pt-4 pb-2">
-        <h5 class="modal-title fw-semibold">Add New Category</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-   
-      <form action="/admin/categories/add" method="POST" enctype="multipart/form-data" onsubmit="return handleFormSubmit(event)">
-        <div class="modal-body px-4">
-
-          <!-- Category Name -->
-          <div class="mb-3">
-            <label class="form-label mb-1">Category Name <span class="text-danger">*</span></label>
-            <input type="text"
-                   name="name"
-                   class="form-control"
-                   id ="name"
-                   >
-            <div id="nameError" class="text-danger small mt-1"></div>
-          </div>
-
-          <!-- Description -->
-          <div class="mb-3">
-            <label class="form-label mb-1">Description</label>
-            <textarea name="description"
-                      class="form-control"
-                      rows="3"
-                      id="description"
-                      placeholder="Brief description of this category"></textarea>
-            <div id="descriptionError" class="text-danger small mt-1"></div>
-          </div>
-
-          <!-- Category Image -->
-          <div class="mb-3">
-            <label class="form-label mb-1">Category Image</label>
-            <input type="file"
-                   name="image"
-                   class="form-control"
-                   accept="image/*">
-            <small class="text-muted">Recommended: square image, good resolution (e.g., 800×800).</small>
-            <div id="imageError" class="text-danger small mt-1"></div>
-          </div>
-
-        </div>
-
-        <!-- Footer -->
-        <div class="modal-footer border-0 px-4 py-3" style="background:#f5eee4;">
-          <button type="button"
-                  class="btn btn-link text-muted"
-                  data-bs-dismiss="modal">
-            Cancel
-          </button>
-
-          <button type="submit"
-                  class="btn px-4"
-                  style="background:#b8c9ae; color:#fff; border-radius:999px;">
-            Save Category
-          </button>
-        </div>
-      </form>
-
+<!-- Sidebar: Standardized Admin Sidebar from SCREEN_40 -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col py-container-padding px-stack-md z-50">
+    <div class="mb-10 px-2">
+        <h1 class="font-headline-lg text-headline-lg font-bold text-on-surface">Nutri Luxe</h1>
+        <p class="font-label-md text-label-md text-on-surface-variant/70">Luxury Wellness Admin</p>
     </div>
-  </div>
-</div>
+    <nav class="flex-1 space-y-1">
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+            <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+            <span class="font-label-md text-label-md">Dashboard</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+            <span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+            <span class="font-label-md text-label-md">Products</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+            <span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+            <span class="font-label-md text-label-md">Orders</span>
+        </a>
+        <!-- Active Tab: Categories-->
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-2 border-primary bg-surface-variant transition-colors group" href="#">
+            <span class="material-symbols-outlined" data-icon="category">category</span>
+            <span class="font-label-md text-label-md">Categories</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+            <span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+            <span class="font-label-md text-label-md">Coupons</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+            <span class="material-symbols-outlined" data-icon="branding_watermark">branding_watermark</span>
+            <span class="font-label-md text-label-md">Banners</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+            <span class="material-symbols-outlined" data-icon="local_offer">local_offer</span>
+            <span class="font-label-md text-label-md">Offers</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+            <span class="material-symbols-outlined" data-icon="group">group</span>
+            <span class="font-label-md text-label-md">Customers</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+            <span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+            <span class="font-label-md text-label-md">Sales Report</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
+            <span class="material-symbols-outlined" data-icon="logout">logout</span>
+            <span class="font-label-md text-label-md">Logout</span>
+        </a>
+    </nav>
+    <div class="mt-auto border-t border-outline-variant/30 pt-6 px-2">
+        <button class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-primary text-on-primary font-label-md transition-all active:scale-95 hover:bg-opacity-90">
+            <span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
+            View Store
+        </button>
+    </div>
+</aside>
 
-    <!-- White card with table -->
-    <div class="card border-0 shadow-sm category-card">
-      <div class="table-responsive">
-        <table class="table mb-0 align-middle">
-            <thead class="category-thead ">
-            <tr >
-                
-                <th class="py-3 ps-4 fw-bold text-muted" >Name</th>
-                <th class="py-3 fw-bold text-muted">Description</th>
-                <th class="py-3 fw-bold text-muted">Status</th>
-                <th class="py-3 fw-bold text-muted">Offer</th>
-                <th class="py-3 pe-4 fw-bold text-muted text-end">Actions</th>
-            </tr>
-            </thead>
-            <tbody style="font-size:20px;">
-
-            <% if (!cat || cat.length === 0) { %>
-            <tr >
-            <td colspan="5" class="text-center text-muted py-4">
-                 No categories found
-            </td>
-            </tr>
-            <% } else { %>
-                <% for(let i=0 ; i< cat.length; i++){ %>
-        <tr id="category-row-<%= cat[i]._id %>">
-            <td class="d-flex align-items-center gap-3">
-          <img src="<%= cat[i].image %>" class="rounded" width="45">
-          <%= cat[i].name %>
-        </td>
-            
-            <td><%= cat[i].description || '-' %></td>  
-            
-   <!-- Category Status -->
-<td>
-  <% if (cat[i].is_active) { %>
-    <button type="button"
-            class="status-pill status-active toggle-status"
-            data-id="<%= cat[i]._id %>"
-            data-action="inactivate"
-            data-name="<%= cat[i].name %>">
-      Active
-    </button>
-  <% } else { %>
-    <button type="button"
-            class="status-pill status-blocked toggle-status"
-            data-id="<%= cat[i]._id %>"
-            data-action="activate"
-            data-name="<%= cat[i].name %>">
-      Inactive
-    </button>
-  <% } %>
-</td>
-
-         <!-- Category Offer -->
-
-    <td>
-      <label class="offer-toggle" 
-       data-id="<%= cat[i]._id %>" 
-       data-offer="<%= cat[i].offerPercent %>"
-       data-name="<%= cat[i].name %>">
-
-        <input type="checkbox" <%= cat[i].hasOffer ? "checked" : "" %>>
-        <span class="offer-slider"></span>
-        <span class="offer-label">
-        <%= cat[i].hasOffer ? cat[i].offerPercent + "% off" : "" %>
-        </span>
-        </label>
-        </td>
-
-        
-           
-<!-- Edit Category  -->
-<td class="text-end pe-2">
-  <button class="btn btn-link p-0 me-2 text-secondary btn-edit-category"
-          data-id="<%= cat[i]._id %>"
-          data-name="<%= cat[i].name %>"
-          data-description="<%= cat[i].description || '' %>"
-          data-image="<%= cat[i].image || '' %>">
-    <i class="bi bi-pencil-square fs-4"></i>
-  </button>
-
-
-
-<button class="btn btn-link p-0 me-2 text-danger btn-delete-category"
-        data-id="<%= cat[i]._id %>"
-        data-name="<%= cat[i].name %>">
-  <i class="bi bi-trash fs-4"></i>
-</button>
-</td>
-
-
-    <% } %>
-
-  <% } %>
-  
-  <!-- Edit Category Modal -->
-<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content" style="border-radius:14px; overflow:hidden;">
-
-      <div class="modal-header border-0 px-4 pt-4 pb-2">
-        <h5 class="modal-title fw-semibold">Edit Category</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <form id="editCategoryForm" enctype="multipart/form-data" onsubmit="return handleEditFormSubmit(event)">
-        <input type="hidden" id="editCategoryId" name="id">
-        
-        <div class="modal-body px-4">
-
-          <!-- Category Name -->
-          <div class="mb-3">
-            <label class="form-label mb-1">Category Name <span class="text-danger">*</span></label>
-            <input type="text"
-                   name="name"
-                   class="form-control"
-                   id="editName">
-            <div id="editNameError" class="text-danger small mt-1"></div>
-          </div>
-
-          <!-- Description -->
-          <div class="mb-3">
-            <label class="form-label mb-1">Description</label>
-            <textarea name="description"
-                      class="form-control"
-                      rows="3"
-                      id="editDescription"
-                      placeholder="Brief description of this category"></textarea>
-            <div id="editDescriptionError" class="text-danger small mt-1"></div>
-          </div>
-
-          <!-- Current Image Preview -->
-          <div class="mb-3" id="currentImagePreview" style="display:none;">
-            <label class="form-label mb-1">Current Image</label>
-            <div>
-              <img id="editCurrentImage" src="" alt="Current category image" style="max-width: 150px; max-height: 150px; border-radius: 8px;">
+<!-- Main Content Shell -->
+<main class="ml-64 min-h-screen">
+    <!-- Top Bar: From SCREEN_40 -->
+    <header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center h-16 px-container-padding">
+        <div class="flex items-center gap-4 flex-1 max-w-xl">
+            <div class="relative w-full">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+                <input class="w-full bg-surface-container border-none rounded-full pl-10 pr-4 py-2 text-body-md focus:ring-1 focus:ring-primary" placeholder="Search orders, products, customers..." type="text">
             </div>
-          </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <button class="text-on-surface-variant hover:text-primary transition-transform active:scale-95">
+                <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+            </button>
+            <button class="text-on-surface-variant hover:text-primary transition-transform active:scale-95">
+                <span class="material-symbols-outlined" data-icon="settings">settings</span>
+            </button>
+            <div class="flex items-center gap-3 pl-4 border-l border-outline-variant/30">
+                <div class="text-right">
+                    <p class="font-label-md leading-none">Admin User</p>
+                    <p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Nutri Luxe Admin</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-outline-variant/20">
+                    <img class="w-full h-full object-cover" data-alt="Admin avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmPoCujwm57VU7f2xkud00F6cRIq-t8We3Y7PRCf2ISryAoBAuz9Xb31Ie1ZzBV4r7HKKD3xVu_3Zitkx27onbxVcj-GeVKa_sd0e1bdHiATrCmFhOpIVcGER9fqfCQA3olyYbZERJFhNTCKKJwTq186gYxn_FZFG-g3sa_ltrveprKwqi54A9NH24SINgU6ItcsS10dLhNmtB0OEoSHGnxdZ8yYZKZt6C4NXI8ZIzvU_9hYgMYj6goBbQYMovbACv3JzD5H8fP7A">
+                </div>
+            </div>
+        </div>
+    </header>
 
-          <!-- Category Image -->
-          <div class="mb-3">
-            <label class="form-label mb-1">Category Image (optional)</label>
-            <input type="file"
-                   name="image"
-                   class="form-control"
-                   id="editImage"
-                   accept="image/*">
-            <small class="text-muted">Leave empty to keep current image. Recommended: square image, good resolution (e.g., 800×800).</small>
-            <div id="editImageError" class="text-danger small mt-1"></div>
-          </div>
-
+    <!-- Page Canvas -->
+    <div class="p-container-padding max-w-[900px] mx-auto">
+        <!-- Breadcrumbs & Header -->
+        <div class="mb-12">
+            <nav class="flex items-center text-on-surface-variant text-sm mb-4">
+                <a class="hover:text-primary transition-colors" href="#">Inventory</a>
+                <span class="mx-2 opacity-30">/</span>
+                <a class="hover:text-primary transition-colors" href="#">Categories</a>
+                <span class="mx-2 opacity-30">/</span>
+                <span class="text-on-surface font-semibold">Edit Category</span>
+            </nav>
+            <h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Edit Category</h2>
+            <p class="text-on-surface-variant font-body-lg mt-2 opacity-80">Modify the details and visual identity of your luxury wellness collection.</p>
         </div>
 
-        <!-- Footer -->
-        <div class="modal-footer border-0 px-4 py-3" style="background:#f5eee4;">
-          <button type="button"
-                  class="btn btn-link text-muted"
-                  data-bs-dismiss="modal">
-            Cancel
-          </button>
+        <!-- Form Bento Layout -->
+        <form class="space-y-grid-gutter">
+            <!-- Section 1: General Info -->
+            <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20 shadow-sm">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter">
+                    <div class="md:col-span-1">
+                        <h3 class="font-label-md text-on-surface uppercase tracking-wider">General Information</h3>
+                        <p class="text-sm text-on-surface-variant mt-1">Provide the core identity for this category.</p>
+                    </div>
+                    <div class="md:col-span-3 space-y-6">
+                        <div class="group">
+                            <label class="block font-label-md text-on-surface mb-2">Category Name</label>
+                            <input class="w-full bg-surface rounded-lg border-outline-variant/30 py-3 px-4 text-body-md focus:border-primary focus:ring-1 focus:ring-primary/10 transition-all outline-none" value="Nutri Burfi Premium" type="text">
+                        </div>
+                        <div>
+                            <label class="block font-label-md text-on-surface mb-2">Description</label>
+                            <textarea class="w-full bg-surface rounded-lg border-outline-variant/30 py-3 px-4 text-body-md focus:border-primary focus:ring-1 focus:ring-primary/10 transition-all outline-none resize-none" rows="6">Our Nutri Burfi Premium collection represents the pinnacle of handcrafted wellness. Each piece is meticulously formulated with high-potency protein isolates and ancient Ayurvedic botanicals, designed for the discerning individual who refuses to compromise between gourmet indulgence and peak nutritional performance. Finished with edible gold leaf and silver foil, these are not just snacks, but a lifestyle statement.</textarea>
+                            <p class="text-xs text-on-surface-variant mt-2 text-right">384/500 characters</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-          <button type="submit"
-                  class="btn px-4"
-                  style="background:#b8c9ae; color:#fff; border-radius:999px;">
-            Update Category
-          </button>
-        </div>
-      </form>
-
+            <!-- Section 2: Visual Identity -->
+            <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20 shadow-sm">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter">
+                    <div class="md:col-span-1">
+                        <h3 class="font-label-md text-on-surface uppercase tracking-wider">Visual Identity</h3>
+                        <p class="text-sm text-on-surface-variant mt-1">Upload an optional high-resolution banner for this category.</p>
+                    </div>
+                    <div class="md:col-span-3">
+                        <!-- Upload Style Placeholder from SCREEN_40 -->
+                        <div class="relative group cursor-pointer">
+                            <div class="w-full aspect-[21/9] rounded-xl bg-surface border-2 border-dashed border-outline-variant/50 flex flex-col items-center justify-center transition-all group-hover:border-primary/50 group-hover:bg-surface-variant/20">
+                                <div class="text-center p-6">
+                                    <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 opacity-40 group-hover:opacity-100 group-hover:text-primary" data-icon="cloud_upload">cloud_upload</span>
+                                    <p class="font-label-md text-on-surface">Click to upload banner</p>
+                                    <p class="text-xs text-on-surface-variant mt-1">Recommended: 1600 x 680px (PNG or JPG)</p>
+                                </div>
+                            </div>
+                            <input class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" type="file" style="color: transparent;">
+                        </div>
+                        
+                        <!-- Existing Banner Preview (Adapted from SCREEN_40's pattern) -->
+                        <div class="mt-4 flex items-center gap-4 p-4 bg-surface rounded-lg border border-outline-variant/30">
+                            <div class="w-24 h-14 bg-surface-container-high rounded overflow-hidden flex-shrink-0">
+                                <img class="w-full h-full object-cover" alt="Current banner" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_XhswK9_RdE15hUll5IqS5woXmHlntZEScaOFxP6A1T9x9fkuzcaiufy-uHduhaZWIbrNvvqyw0FUK4Is38B-ihwvQdhDctdiAS7QRq4Cz4mIf_V1jd8KP7uFp5Shs_zo4eme2B9fHmflW2_itp2ZR7bEVw9imWevQfBsAB9nxleibsAMLQaOZ9xqW1HWpAAmzDceU2xv-nacVFNRVJwXwL0gLyvgSDq3hXft43lmNpFZo_XckaPWNfl0sX3dp2maNIrqh8C1riI">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-semibold truncate text-on-surface">premium-burfi-banner.jpg</p>
+                                <p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Current Visual Asset • 2.4 MB</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="text-on-surface-variant hover:text-primary p-2 rounded-full transition-colors" type="button" title="Edit">
+                                    <span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+                                </button>
+                                <button class="text-error hover:bg-error-container/20 p-2 rounded-full transition-colors" type="button" title="Delete">
+                                    <span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-xs text-on-surface-variant/70 italic flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm" data-icon="info">info</span>
+                            This banner will appear at the top of the collection page.
+                        </p>
+                    </div>
+                </div>
+            </div>
+{{!-- <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20 shadow-sm">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter">
+    <div class="md:col-span-1">
+      <h3 class="font-label-md text-on-surface uppercase tracking-wider">Category Visibility</h3>
+      <p class="text-sm text-on-surface-variant mt-1">Control how this category appears on your storefront.</p>
+    </div>
+    <div class="md:col-span-3 flex items-center justify-between">
+      <div>
+        <label class="block font-label-md text-on-surface">Enable Category</label>
+        <p class="text-xs text-on-surface-variant mt-1">When enabled, this category and its products will be visible to customers.</p>
+      </div>
+      <label class="relative inline-flex items-center cursor-pointer">
+        <input type="checkbox" class="sr-only peer" checked="">
+        <div class="w-11 h-6 bg-surface-container-high rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+      </label>
     </div>
   </div>
-</div>
+</div> --}}
+            <!-- Form Actions: Bottom Right Style from SCREEN_40 -->
+            <div class="flex items-center justify-end gap-4 pt-6 pb-20 border-t border-outline-variant/30">
+                <button class="px-8 py-3 rounded-lg text-on-surface-variant font-label-md hover:bg-surface-variant transition-colors" type="button">Discard</button>
+                <button class="px-10 py-3 rounded-lg bg-primary text-on-primary font-label-md shadow-lg shadow-primary/10 hover:bg-on-primary-fixed-variant transition-all active:scale-95" type="submit">Save Category</button></div></form></div></main>
 
-
-<!-- Status Confirmation Modal -->
-<div class="modal fade" id="statusConfirmModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius:14px">
-
-      <div class="modal-header border-0">
-        <h5 class="modal-title fw-semibold">Confirm Action</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-
-      <div class="modal-body">
-        <p id="statusConfirmText" class="mb-0 text-muted"></p>
-      </div>
-
-      <div class="modal-footer border-0">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-          Cancel
-        </button>
-
-        <form id="statusConfirmForm">
-          <button type="submit"
-                  class="btn"
-                  style="background:#e5c8b8; color:#2b2b2b;">
-            Yes, Confirm
-          </button>
-        </form>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-                <!-- Category offer modal -->
-<div class="modal fade" id="categoryOfferModal" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content" style="border-radius:14px;">
-
-      <div class="modal-header border-0 px-4 pt-4 pb-2">
-        <h5 class="modal-title fw-semibold">Add Category Offer</h5>
-        <button class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-
-      <div class="modal-body px-4">
-        <p id="offerCategoryTitle"></p>
-
-        <label class="form-label">Discount Percentage (%)</label>
-        <div class="input-group">
-          <input type="number" id="categoryOfferValue" class="form-control" min="0" max="90" value="0">
-          <span class="input-group-text">%</span>
-        </div>
-      </div>
-
-      <div class="modal-footer" style="background:#f5eee4;">
-        <button class="btn btn-link text-muted" data-bs-dismiss="modal">Cancel</button>
-        <button class="btn" id="saveCategoryOfferBtn" style="background:#b8c9ae;color:white;border-radius:25px;">
-          Save Offer
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteConfirmModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius:14px">
-
-      <div class="modal-header border-0">
-        <h5 class="modal-title fw-semibold text-danger">Delete Category</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-
-      <div class="modal-body">
-        <p id="deleteConfirmText" class="mb-0 text-muted"></p>
-      </div>
-
-      <div class="modal-footer border-0">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-          Cancel
-        </button>
-
-        <button type="button"
-                id="confirmDeleteBtn"
-                class="btn btn-danger">
-          Yes, Delete
-        </button>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-</tbody>
-
-        </table>
-        </div>
-    </div>
-</div>
-
-<%- include('../../views/partials/admin/footer.ejs') %>
-
-
-</main>        
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-  let selectedCategoryId = null;
-</script>
-
-<script src="/js/admin/category/add.category.js"></script>
-<script src="/js/admin/category/edit.category.js"></script>
-<script src="/js/admin/category/offer.category.js"></script>
-<script src="/js/admin/category/status.category.js"></script>
-<script src="/js/admin/category/delete.category.js"></script>
+</body></html>

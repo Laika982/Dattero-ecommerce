@@ -1,4 +1,41 @@
-<!DOCTYPE html><html class="light" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Nutri Luxe Admin - Add Product</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .input-focus-ring:focus {
+            outline: none;
+            border-color: #5c5c5c;
+            box-shadow: 0 0 0 2px rgba(92, 92, 92, 0.1);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #dbdad9;
+            border-radius: 10px;
+        }
+        .drag-area-active {
+            border-color: #5c5c5c;
+            background-color: #f5f3f3;
+        }
+    </style>
+<script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -79,210 +116,335 @@
                         "display-lg": ["Plus Jakarta Sans"]
                     },
                     "fontSize": {
-                        "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                        "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                        "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
-                        "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
-                        "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
-                        "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
-                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                        "body-xl": ["20px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["17px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-md": ["15px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-xl": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.25", "fontWeight": "600" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg": ["56px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
                     }
                 },
             },
         }
-    }catch(_e){}</script></head><body class="bg-surface font-body-md text-on-surface antialiased">
-
-<!-- Sidebar: Standardized Admin Sidebar from SCREEN_40 -->
-<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col py-container-padding px-stack-md z-50">
-    <div class="mb-10 px-2">
-        <h1 class="font-headline-lg text-headline-lg font-bold text-on-surface">Nutri Luxe</h1>
-        <p class="font-label-md text-label-md text-on-surface-variant/70">Luxury Wellness Admin</p>
-    </div>
-    <nav class="flex-1 space-y-1">
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
-            <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-            <span class="font-label-md text-label-md">Dashboard</span>
-        </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
-            <span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
-            <span class="font-label-md text-label-md">Products</span>
-        </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
-            <span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
-            <span class="font-label-md text-label-md">Orders</span>
-        </a>
-        <!-- Active Tab: Categories-->
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-2 border-primary bg-surface-variant transition-colors group" href="#">
-            <span class="material-symbols-outlined" data-icon="category">category</span>
-            <span class="font-label-md text-label-md">Categories</span>
-        </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
-            <span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
-            <span class="font-label-md text-label-md">Coupons</span>
-        </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
-            <span class="material-symbols-outlined" data-icon="branding_watermark">branding_watermark</span>
-            <span class="font-label-md text-label-md">Banners</span>
-        </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
-            <span class="material-symbols-outlined" data-icon="local_offer">local_offer</span>
-            <span class="font-label-md text-label-md">Offers</span>
-        </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
-            <span class="material-symbols-outlined" data-icon="group">group</span>
-            <span class="font-label-md text-label-md">Customers</span>
-        </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
-            <span class="material-symbols-outlined" data-icon="assessment">assessment</span>
-            <span class="font-label-md text-label-md">Sales Report</span>
-        </a>
-        <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors group" href="#">
-            <span class="material-symbols-outlined" data-icon="logout">logout</span>
-            <span class="font-label-md text-label-md">Logout</span>
-        </a>
-    </nav>
-    <div class="mt-auto border-t border-outline-variant/30 pt-6 px-2">
-        <button class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-primary text-on-primary font-label-md transition-all active:scale-95 hover:bg-opacity-90">
-            <span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
-            View Store
-        </button>
-    </div>
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col h-screen py-container-padding px-stack-md z-50">
+<div class="mb-10 px-2">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface dark:text-on-primary-fixed">Nutri Luxe</h1>
+<p class="font-label-md text-label-md text-on-surface-variant/70">Luxury Wellness Admin</p>
+</div>
+<nav class="flex-1 space-y-1"><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span><span class="font-label-md text-label-md">Dashboard</span></a>
+<!-- Active Tab: Products -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary dark:text-primary-fixed font-bold border-r-2 border-primary dark:border-primary-fixed bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-label-md text-label-md">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+<span class="font-label-md text-label-md">Coupons</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="branding_watermark">branding_watermark</span>
+<span class="font-label-md text-label-md">Banners</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="local_offer">local_offer</span>
+<span class="font-label-md text-label-md">Offers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span><span class="font-label-md text-label-md">Sales Report</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span><span class="font-label-md text-label-md">Logout</span></a></nav>
+<div class="mt-auto border-t border-outline-variant/30 pt-6 px-2">
+<button class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-primary text-on-primary font-label-md transition-all active:scale-95 hover:bg-opacity-90">
+<span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
+                View Store
+            </button>
+</div>
 </aside>
+<!-- Main Content Area -->
+<div class="ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full z-40 flex justify-between items-center h-16 px-container-padding bg-surface/80 backdrop-blur-md border-b border-outline-variant/30">
+<div class="flex items-center bg-surface-container rounded-full px-4 py-1.5 w-96 transition-all focus-within:ring-1 focus-within:ring-primary/20">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full placeholder:text-on-surface-variant/50" placeholder="Search resources..." type="text">
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-transform active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-transform active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right hidden sm:block">
+<p class="font-label-md text-on-surface">Administrator</p>
+<p class="text-[11px] text-on-surface-variant">Profile</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a luxury brand manager in a minimalist studio setting. The lighting is soft and high-key, emphasizing clean lines and a premium corporate aesthetic with soft gray tones and obsidian accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDfcEHMgqzPB6389_XrCXMBsVwcViuH-540UYqr3O-weEmyqE7wP3LTUr1BPY49kupMM6dWckF6x-izAGfTyQN2vhzRv3ac2jkafc-WOgsi_sC-RqfJblDfGE1VXAkyoGvVUpqSo-mKlHGXg6NShILdnihxVoLsR_n7dEIM-Ko0k2ic8rWvrVaMsRUj7ci157GcJB6r30AeRIyQzhUuMpECVtS8hk13pRVLbRZbaGEdfrLw386XXmLDyOXzwt7sOB4KxhJXlA-dXk">
+</div>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<main class="flex-1 p-container-padding max-w-[1200px] mx-auto w-full">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface">Add New Product</h2>
+<p class="font-body-md text-on-surface-variant mt-2">Curate a new entry for the Nutri Luxe premium collection.</p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-3 font-label-md border border-outline-variant text-on-surface hover:bg-surface-container transition-colors">Save as Draft</button>
+<button class="px-8 py-3 font-label-md bg-on-surface text-surface hover:opacity-90 transition-opacity active:scale-95">Publish Product</button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-grid-gutter">
+<!-- Left Column: Primary Info -->
+<div class="lg:col-span-2 space-y-grid-gutter">
+<!-- Basic Information Section -->
+<section class="glass-panel p-8 rounded-xl shadow-sm">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="info">info</span>
+<h3 class="font-headline-lg text-[20px] font-bold">Basic Information</h3>
+</div>
+<div class="space-y-6">
+<div>
+<label class="block font-label-md text-on-surface mb-2">Product Name</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-4 text-body-md input-focus-ring placeholder:text-on-surface-variant/40" placeholder="e.g., Artisan Nutri Burfi - Gold Edition" type="text">
+</div>
+<div>
+<label class="block font-label-md text-on-surface mb-2">Description</label>
+<textarea class="w-full bg-surface-container-low border-none rounded-lg p-4 text-body-md input-focus-ring placeholder:text-on-surface-variant/40" placeholder="Describe the luxury experience, nutritional value, and artisanal craftsmanship..." rows="6"></textarea>
+</div>
+</div>
+</section>
+<!-- Media Upload Section -->
+<section class="glass-panel p-8 rounded-xl shadow-sm">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="imagesmode">imagesmode</span>
+<h3 class="font-headline-lg text-[20px] font-bold">Media Upload</h3>
+</div>
+<div class="border-2 border-dashed border-outline-variant/50 rounded-xl p-12 text-center transition-all cursor-pointer group hover:border-primary" id="drop-zone">
+<input accept="image/*" class="hidden" id="file-input" multiple="" type="file">
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 bg-surface-container-high rounded-full flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[32px] group-hover:text-primary" data-icon="cloud_upload">cloud_upload</span>
+</div>
+<p class="font-label-md text-on-surface text-lg">Drag and drop images here</p>
+<p class="text-body-md text-on-surface-variant mt-2">or <span class="text-primary font-bold">browse files</span> from your computer</p>
+<p class="text-[12px] text-on-surface-variant/60 mt-4 uppercase tracking-widest">Supports JPEG, PNG, WEBP (Max 10MB)</p>
+</div>
+</div>
+<div class="mt-6 grid grid-cols-4 gap-4" id="preview-grid">
+<!-- Placeholder for uploaded previews -->
+<div class="aspect-square bg-surface-container-low rounded-lg border border-outline-variant/20 flex items-center justify-center border-dashed">
+<span class="material-symbols-outlined text-on-surface-variant/20 text-[24px]" data-icon="add">add</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Specifics -->
+<div class="space-y-grid-gutter">
+<!-- Pricing Section -->
+<section class="glass-panel p-8 rounded-xl shadow-sm">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="payments">payments</span>
+<h3 class="font-headline-lg text-[20px] font-bold">Pricing</h3>
+</div>
+<div class="space-y-6">
+<div>
+<label class="block font-label-md text-on-surface mb-2">Base Price</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-on-surface-variant">$</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-4 pl-10 text-body-md input-focus-ring" placeholder="0.00" type="number">
+</div>
+</div>
+<div>
+<label class="block font-label-md text-on-surface mb-2">Discount Price (Optional)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-on-surface-variant">$</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-4 pl-10 text-body-md input-focus-ring" placeholder="0.00" type="number">
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-md text-on-surface-variant">Taxable Product</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value="">
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-on-surface"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Inventory Section -->
+<section class="glass-panel p-8 rounded-xl shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="layers">layers</span>
+<h3 class="font-headline-lg text-[20px] font-bold">Product Variants</h3>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-md text-on-surface-variant">Enable Variants</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value="">
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-on-surface"></div>
+</label>
+</div>
+</div>
+<div class="space-y-4">
+<div class="overflow-hidden rounded-lg border border-outline-variant/20">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="p-3 font-label-md text-[12px] text-on-surface-variant uppercase tracking-wider">WEIGHT (KG)</th>
+<th class="p-3 font-label-md text-[12px] text-on-surface-variant uppercase tracking-wider">Price +/-</th>
+<th class="p-3 font-label-md text-[12px] text-on-surface-variant uppercase tracking-wider">SKU</th>
+<th class="p-3 font-label-md text-[12px] text-on-surface-variant uppercase tracking-wider">Stock</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10"><tr><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" type="text" value="0.5 KG"></td><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="0.00" type="text"></td><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="SKU" type="text"></td><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="0" type="number"></td></tr><tr><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" type="text" value="1.0 KG"></td><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="0.00" type="text"></td><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="SKU" type="text"></td><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="0" type="number"></td></tr><tr><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" type="text" value="2.0 KG"></td><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="0.00" type="text"></td><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="SKU" type="text"></td><td class="p-3"><input class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="0" type="number"></td></tr></tbody>
+</table>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-3 border border-dashed border-outline-variant/50 rounded-lg text-on-surface-variant hover:border-primary hover:text-primary transition-all group">
+<span class="material-symbols-outlined text-[20px]" data-icon="add_circle">add_circle</span>
+<span class="font-label-md">Add Variant</span>
+</button>
+</div>
+</section><section class="glass-panel p-8 rounded-xl shadow-sm">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="inventory">inventory</span>
+<h3 class="font-headline-lg text-[20px] font-bold">Inventory</h3>
+</div>
+<div class="space-y-6">
+<div>
+<label class="block font-label-md text-on-surface mb-2">SKU (Stock Keeping Unit)</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-4 text-body-md input-focus-ring" placeholder="NL-BURFI-001" type="text">
+</div>
+<div>
+<label class="block font-label-md text-on-surface mb-2">Stock Quantity</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-4 text-body-md input-focus-ring" placeholder="100" type="number">
+</div>
+</div>
+</section>
+<!-- Organization Section -->
+<section class="glass-panel p-8 rounded-xl shadow-sm">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="label">label</span>
+<h3 class="font-headline-lg text-[20px] font-bold">Organization</h3>
+</div>
+<div class="space-y-4">
+<div class="">
+<label class="block font-label-md text-on-surface mb-2">Category</label>
+<select class="w-full bg-surface-container-low border-none rounded-lg p-4 text-body-md input-focus-ring appearance-none">
+<option disabled="" selected="">Select Category</option>
+<option>Premium Snacks</option>
+<option>Artisanal</option>
+<option>Gluten Free</option>
+</select>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Footer Meta -->
+<div class="mt-section-gap py-8 border-t border-outline-variant/30 text-center">
+<p class="text-body-md text-on-surface-variant opacity-60">All changes are automatically saved to your drafts until published.</p>
+</div>
+</main>
+</div>
+<script>
+        // Micro-interactions for Drag & Drop
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
 
-<!-- Main Content Shell -->
-<main class="ml-64 min-h-screen">
-    <!-- Top Bar: From SCREEN_40 -->
-    <header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center h-16 px-container-padding">
-        <div class="flex items-center gap-4 flex-1 max-w-xl">
-            <div class="relative w-full">
-                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
-                <input class="w-full bg-surface-container border-none rounded-full pl-10 pr-4 py-2 text-body-md focus:ring-1 focus:ring-primary" placeholder="Search orders, products, customers..." type="text">
-            </div>
-        </div>
-        <div class="flex items-center gap-6">
-            <button class="text-on-surface-variant hover:text-primary transition-transform active:scale-95">
-                <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-            </button>
-            <button class="text-on-surface-variant hover:text-primary transition-transform active:scale-95">
-                <span class="material-symbols-outlined" data-icon="settings">settings</span>
-            </button>
-            <div class="flex items-center gap-3 pl-4 border-l border-outline-variant/30">
-                <div class="text-right">
-                    <p class="font-label-md leading-none">Admin User</p>
-                    <p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Nutri Luxe Admin</p>
-                </div>
-                <div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-outline-variant/20">
-                    <img class="w-full h-full object-cover" data-alt="Admin avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmPoCujwm57VU7f2xkud00F6cRIq-t8We3Y7PRCf2ISryAoBAuz9Xb31Ie1ZzBV4r7HKKD3xVu_3Zitkx27onbxVcj-GeVKa_sd0e1bdHiATrCmFhOpIVcGER9fqfCQA3olyYbZERJFhNTCKKJwTq186gYxn_FZFG-g3sa_ltrveprKwqi54A9NH24SINgU6ItcsS10dLhNmtB0OEoSHGnxdZ8yYZKZt6C4NXI8ZIzvU_9hYgMYj6goBbQYMovbACv3JzD5H8fP7A">
-                </div>
-            </div>
-        </div>
-    </header>
+        dropZone.addEventListener('click', () => fileInput.click());
 
-    <!-- Page Canvas -->
-    <div class="p-container-padding max-w-[900px] mx-auto">
-        <!-- Breadcrumbs & Header -->
-        <div class="mb-12">
-            <nav class="flex items-center text-on-surface-variant text-sm mb-4">
-                <a class="hover:text-primary transition-colors" href="#">Inventory</a>
-                <span class="mx-2 opacity-30">/</span>
-                <a class="hover:text-primary transition-colors" href="#">Categories</a>
-                <span class="mx-2 opacity-30">/</span>
-                <span class="text-on-surface font-semibold">Edit Category</span>
-            </nav>
-            <h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Edit Category</h2>
-            <p class="text-on-surface-variant font-body-lg mt-2 opacity-80">Modify the details and visual identity of your luxury wellness collection.</p>
-        </div>
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-area-active');
+            }, false);
+        });
 
-        <!-- Form Bento Layout -->
-        <form class="space-y-grid-gutter">
-            <!-- Section 1: General Info -->
-            <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20 shadow-sm">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter">
-                    <div class="md:col-span-1">
-                        <h3 class="font-label-md text-on-surface uppercase tracking-wider">General Information</h3>
-                        <p class="text-sm text-on-surface-variant mt-1">Provide the core identity for this category.</p>
-                    </div>
-                    <div class="md:col-span-3 space-y-6">
-                        <div class="group">
-                            <label class="block font-label-md text-on-surface mb-2">Category Name</label>
-                            <input class="w-full bg-surface rounded-lg border-outline-variant/30 py-3 px-4 text-body-md focus:border-primary focus:ring-1 focus:ring-primary/10 transition-all outline-none" value="Nutri Burfi Premium" type="text">
-                        </div>
-                        <div>
-                            <label class="block font-label-md text-on-surface mb-2">Description</label>
-                            <textarea class="w-full bg-surface rounded-lg border-outline-variant/30 py-3 px-4 text-body-md focus:border-primary focus:ring-1 focus:ring-primary/10 transition-all outline-none resize-none" rows="6">Our Nutri Burfi Premium collection represents the pinnacle of handcrafted wellness. Each piece is meticulously formulated with high-potency protein isolates and ancient Ayurvedic botanicals, designed for the discerning individual who refuses to compromise between gourmet indulgence and peak nutritional performance. Finished with edible gold leaf and silver foil, these are not just snacks, but a lifestyle statement.</textarea>
-                            <p class="text-xs text-on-surface-variant mt-2 text-right">384/500 characters</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-area-active');
+            }, false);
+        });
 
-            <!-- Section 2: Visual Identity -->
-            <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20 shadow-sm">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter">
-                    <div class="md:col-span-1">
-                        <h3 class="font-label-md text-on-surface uppercase tracking-wider">Visual Identity</h3>
-                        <p class="text-sm text-on-surface-variant mt-1">Upload an optional high-resolution banner for this category.</p>
-                    </div>
-                    <div class="md:col-span-3">
-                        <!-- Upload Style Placeholder from SCREEN_40 -->
-                        <div class="relative group cursor-pointer">
-                            <div class="w-full aspect-[21/9] rounded-xl bg-surface border-2 border-dashed border-outline-variant/50 flex flex-col items-center justify-center transition-all group-hover:border-primary/50 group-hover:bg-surface-variant/20">
-                                <div class="text-center p-6">
-                                    <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 opacity-40 group-hover:opacity-100 group-hover:text-primary" data-icon="cloud_upload">cloud_upload</span>
-                                    <p class="font-label-md text-on-surface">Click to upload banner</p>
-                                    <p class="text-xs text-on-surface-variant mt-1">Recommended: 1600 x 680px (PNG or JPG)</p>
-                                </div>
-                            </div>
-                            <input class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" type="file" style="color: transparent;">
-                        </div>
-                        
-                        <!-- Existing Banner Preview (Adapted from SCREEN_40's pattern) -->
-                        <div class="mt-4 flex items-center gap-4 p-4 bg-surface rounded-lg border border-outline-variant/30">
-                            <div class="w-24 h-14 bg-surface-container-high rounded overflow-hidden flex-shrink-0">
-                                <img class="w-full h-full object-cover" alt="Current banner" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_XhswK9_RdE15hUll5IqS5woXmHlntZEScaOFxP6A1T9x9fkuzcaiufy-uHduhaZWIbrNvvqyw0FUK4Is38B-ihwvQdhDctdiAS7QRq4Cz4mIf_V1jd8KP7uFp5Shs_zo4eme2B9fHmflW2_itp2ZR7bEVw9imWevQfBsAB9nxleibsAMLQaOZ9xqW1HWpAAmzDceU2xv-nacVFNRVJwXwL0gLyvgSDq3hXft43lmNpFZo_XckaPWNfl0sX3dp2maNIrqh8C1riI">
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm font-semibold truncate text-on-surface">premium-burfi-banner.jpg</p>
-                                <p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Current Visual Asset • 2.4 MB</p>
-                            </div>
-                            <div class="flex gap-2">
-                                <button class="text-on-surface-variant hover:text-primary p-2 rounded-full transition-colors" type="button" title="Edit">
-                                    <span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
-                                </button>
-                                <button class="text-error hover:bg-error-container/20 p-2 rounded-full transition-colors" type="button" title="Delete">
-                                    <span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
-                                </button>
-                            </div>
-                        </div>
-                        <p class="mt-4 text-xs text-on-surface-variant/70 italic flex items-center gap-1">
-                            <span class="material-symbols-outlined text-sm" data-icon="info">info</span>
-                            This banner will appear at the top of the collection page.
-                        </p>
-                    </div>
-                </div>
-            </div>
-{{!-- <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20 shadow-sm">
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter">
-    <div class="md:col-span-1">
-      <h3 class="font-label-md text-on-surface uppercase tracking-wider">Category Visibility</h3>
-      <p class="text-sm text-on-surface-variant mt-1">Control how this category appears on your storefront.</p>
-    </div>
-    <div class="md:col-span-3 flex items-center justify-between">
-      <div>
-        <label class="block font-label-md text-on-surface">Enable Category</label>
-        <p class="text-xs text-on-surface-variant mt-1">When enabled, this category and its products will be visible to customers.</p>
-      </div>
-      <label class="relative inline-flex items-center cursor-pointer">
-        <input type="checkbox" class="sr-only peer" checked="">
-        <div class="w-11 h-6 bg-surface-container-high rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-      </label>
-    </div>
-  </div>
-</div> --}}
-            <!-- Form Actions: Bottom Right Style from SCREEN_40 -->
-            <div class="flex items-center justify-end gap-4 pt-6 pb-20 border-t border-outline-variant/30">
-                <button class="px-8 py-3 rounded-lg text-on-surface-variant font-label-md hover:bg-surface-variant transition-colors" type="button">Discard</button>
-                <button class="px-10 py-3 rounded-lg bg-primary text-on-primary font-label-md shadow-lg shadow-primary/10 hover:bg-on-primary-fixed-variant transition-all active:scale-95" type="submit">Save Category</button></div></form></div></main>
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        });
 
-</body></html>
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            console.log('Processing files:', files);
+            // In a real app, this would upload and generate previews
+            alert(`${files.length} file(s) selected for upload.`);
+        }
+
+        // Tonal animation on scroll for the Top Bar
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-sm');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-background/40 backdrop-blur-sm" id="add-variant-modal">
+<div class="glass-panel w-full max-w-md rounded-xl shadow-sm p-8 space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-lg text-[20px] font-bold">Add New Variant</h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block font-label-md text-on-surface mb-2">Weight (KG)</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-4 text-body-md input-focus-ring placeholder:text-on-surface-variant/40" placeholder="e.g., 0.5 KG" type="text">
+</div>
+<div>
+<label class="block font-label-md text-on-surface mb-2">Price Adjustment (+/-)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-on-surface-variant">$</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-4 pl-10 text-body-md input-focus-ring" placeholder="0.00" type="number">
+</div>
+</div>
+<div>
+<label class="block font-label-md text-on-surface mb-2">SKU</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-4 text-body-md input-focus-ring" placeholder="NL-BURFI-001-V1" type="text">
+</div>
+<div>
+<label class="block font-label-md text-on-surface mb-2">Stock Quantity</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-4 text-body-md input-focus-ring" placeholder="0" type="number">
+</div>
+</div>
+<div class="flex gap-4 pt-4">
+<button class="flex-1 px-6 py-3 font-label-md border border-outline-variant text-on-surface hover:bg-surface-container transition-colors rounded-lg">Cancel</button>
+<button class="flex-1 px-6 py-3 font-label-md bg-on-surface text-surface hover:opacity-90 transition-opacity active:scale-95 rounded-lg">Add Variant</button>
+</div>
+</div>
+</div></body></html>

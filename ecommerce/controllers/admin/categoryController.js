@@ -28,7 +28,7 @@ const categoryInfo = async (req, res) => {
             ]
         };
 
-        // Add category status filter
+        // Category status filter
         if (isListed === "true") {
             query.isListed = true;
         }
@@ -37,6 +37,7 @@ const categoryInfo = async (req, res) => {
             query.isListed = false;
         }
 
+        // Get filtered categories
         const categoryData = await Category.find(query)
             .sort({ createdAt: -1 })
             .skip(skip)
@@ -56,17 +57,40 @@ const categoryInfo = async (req, res) => {
 
         });
 
+        // Count filtered categories
         const totalCategories = await Category.countDocuments(query);
 
+        // Count all categories
         const totalCount = await Category.countDocuments();
-        const totalListedCategories = await Category.countDocuments({isListed : true});
 
-        const totalPages = Math.ceil(totalCategories / limit);
+        // Count active categories
+        const totalListedCategories =
+            await Category.countDocuments({
+                isListed: true
+            });
+
+        // Calculate pages
+        const totalPages = Math.ceil(
+            totalCategories / limit
+        );
+
+        // Create page numbers
+        const pages = [];
+
+        for (let i = 1; i <= totalPages; i++) {
+
+            pages.push({
+                page: i,
+                active: i === page
+            });
+
+        }
 
         return res.render("admin/category", {
             categoryData,
             currentPage: page,
             totalPages,
+            pages,
             search,
             isListed,
             totalCount,
@@ -80,7 +104,6 @@ const categoryInfo = async (req, res) => {
         return res.status(500).send("Internal Server Error");
     }
 };
-
 const addCategoryInfo = async (req,res) => {
   try {
    

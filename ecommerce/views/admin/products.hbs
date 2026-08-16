@@ -118,36 +118,213 @@
 </head>
 <body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
 <!-- SideNavBar -->
-{{> admin/header}}
+{{> admin/aside}}
 <!-- TopNavBar -->
-{{> admin/header}}
+<header
+    class="sticky top-0 ml-64 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 h-16 flex justify-between items-center px-container-padding"
+>
+
+    <!-- Search -->
+    <div class="flex items-center flex-1">
+
+        <div class="relative w-full max-w-md">
+
+            <form
+                action="/admin/products"
+                method="GET"
+                class="relative"
+            >
+
+                <!-- Search Icon -->
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant"
+                >
+                    search
+                </span>
+
+                <!-- Search Input -->
+                <input
+                    class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-24 py-2 text-body-md focus:ring-1 focus:ring-primary transition-all"
+                    placeholder="Search customers..."
+                    type="text"
+                    name="search"
+                    value="{{search}}"
+                >
+
+                {{#if search}}
+
+                    <!-- X Clear Button -->
+                    <a
+                        href="/admin/products"
+                        class="absolute right-20 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-error transition-colors"
+                        title="Clear search"
+                    >
+                        <span class="material-symbols-outlined text-[18px]">
+                            close
+                        </span>
+                    </a>
+
+                {{/if}}
+
+                <!-- Search Button -->
+                <button
+                    type="submit"
+                    class="absolute right-1 top-1/2 -translate-y-1/2 px-4 py-1.5 rounded-full bg-primary text-on-primary text-sm font-semibold hover:opacity-90 transition"
+                >
+                    Search
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- Right Side -->
+    <div class="flex items-center gap-6">
+
+        <!-- Notifications -->
+        <button
+            class="text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90"
+        >
+            <span class="material-symbols-outlined">
+                notifications
+            </span>
+        </button>
+
+        <!-- Settings -->
+        <button
+            class="text-on-surface-variant hover:text-primary transition-colors scale-95 active:scale-90"
+        >
+            <span class="material-symbols-outlined">
+                settings
+            </span>
+        </button>
+
+        <div class="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
+
+        <!-- Admin -->
+        <div class="flex items-center gap-3 group cursor-pointer">
+
+            <div class="text-right">
+                <p class="font-label-md text-label-md text-on-surface leading-tight">
+                    Admin User
+                </p>
+
+                <p class="text-[10px] text-on-surface-variant uppercase tracking-widest">
+                    Administrator
+                </p>
+            </div>
+
+            <div
+                class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/20"
+            >
+                <img
+                    class="w-full h-full object-cover"
+                    alt="Admin User"
+                    src="YOUR_ADMIN_IMAGE"
+                >
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
 <!-- Main Content -->
 <main class="ml-64 pt-16 min-h-screen">
 <div class="max-w-[1280px] mx-auto p-container-padding">
 <!-- Page Header Actions -->
 <div class="flex justify-between items-end mb-10">
-<div>
-<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Products</h2>
-<p class="text-body-md text-on-surface-variant">Manage your premium Nutri Burfi collection and inventory status.</p>
-</div>
-<button class="bg-primary text-on-primary px-8 py-3 rounded-full flex items-center gap-2 transition-all hover:bg-on-surface active:scale-95 shadow-lg shadow-primary/10">
-<span class="material-symbols-outlined" data-icon="add">add</span>
-<span class="font-label-md">Add Product</span>
-</button>
+
+    <div>
+        <h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">
+            Products
+        </h2>
+
+        <p class="text-body-md text-on-surface-variant">
+            Manage your premium Nutri Burfi collection and inventory status.
+        </p>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-3">
+
+        <!-- Filter Button -->
+        <button
+            type="button"
+            id="openFilter"
+            class="px-6 py-3 rounded-full border border-outline-variant/40
+                   bg-surface-container-lowest
+                   text-on-surface
+                   flex items-center gap-2
+                   font-label-md
+                   hover:bg-surface-container-high
+                   transition-all
+                   active:scale-95"
+        >
+            <span class="material-symbols-outlined text-[20px]">
+                filter_list
+            </span>
+
+            <span>Filter</span>
+        </button>
+
+        <!-- Add Product -->
+        <a
+            href="/admin/addProduct"
+            class="bg-primary text-on-primary px-8 py-3 rounded-full
+                   flex items-center gap-2
+                   transition-all
+                   hover:bg-on-surface
+                   active:scale-95
+                   shadow-lg shadow-primary/10"
+        >
+            <span class="material-symbols-outlined">
+                add
+            </span>
+
+            <span class="font-label-md">
+                Add Product
+            </span>
+        </a>
+
+    </div>
+
 </div>
 <!-- Dashboard Stats Brief (Contextual) -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-grid-gutter mb-section-gap-mobile">
 <div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10">
-<p class="text-label-md text-outline mb-1">Total Products</p>
-<h3 class="text-headline-lg font-bold">124</h3>
+    <p class="text-label-md text-outline mb-1">
+        Total Products
+    </p>
+
+    <h3 class="text-headline-lg font-bold">
+        {{totalProducts}}
+    </h3>
 </div>
+
+
 <div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10">
-<p class="text-label-md text-outline mb-1">Out of Stock</p>
-<h3 class="text-headline-lg font-bold text-error">03</h3>
+    <p class="text-label-md text-outline mb-1">
+        Out of Stock
+    </p>
+
+    <h3 class="text-headline-lg font-bold text-error">
+        {{outOfStockProducts}}
+    </h3>
 </div>
+
+
 <div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10">
-<p class="text-label-md text-outline mb-1">Active Categories</p>
-<h3 class="text-headline-lg font-bold">08</h3>
+    <p class="text-label-md text-outline mb-1">
+        Active Categories
+    </p>
+
+    <h3 class="text-headline-lg font-bold">
+        {{activeCategories}}
+    </h3>
 </div>
 </div>
 <!-- Products Table Container -->
@@ -159,174 +336,717 @@
 <th class="px-6 py-4 font-label-md text-outline uppercase tracking-wider text-[11px]">Category</th>
 <th class="px-6 py-4 font-label-md text-outline uppercase tracking-wider text-[11px]">Price</th>
 <th class="px-6 py-4 font-label-md text-outline uppercase tracking-wider text-[11px]">Stock Status</th>
+<th class="px-6 py-4 font-label-md text-outline uppercase tracking-wider text-[11px]">
+    Product Status
+</th>
 <th class="px-6 py-4 font-label-md text-outline uppercase tracking-wider text-[11px] text-right">Actions</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-outline-variant/10">
 <!-- Product Row 1 -->
+{{#each products}}
+{{#each variants}}
 <tr class="group hover:bg-surface-container-low transition-colors">
 <td class="px-6 py-5">
 <div class="flex items-center gap-4">
 <div class="w-16 h-16 rounded-lg bg-surface-variant overflow-hidden border border-outline-variant/20 flex-shrink-0">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A high-resolution product shot of a premium Almond Nutri Burfi set on a minimalist ceramic plate. The lighting is crisp and dramatic with soft shadows, highlighting the artisanal texture of the wellness snack. The color palette is composed of warm nutty browns and creamy whites against a clean, technical grey background, embodying a luxurious and healthy lifestyle choice." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6y45XSjTUsowTjAUddIH-A4_o5j3D1ux9DwGmwyU77v60KIBpLHnyGgNdv4HBrQ7UPsZocLnMFD2VtQitytT5-nX2xnVmHKgDTMMBb2zqoDTjxlk2ODN6XT3dzmrP5CJAJJ3YYkoPLXK2aImtU-H2ymgnJDM9woWZm6OG7iQLb1c37tyL7_HmzK0yCUCvE7N45Xioj5kxa1wK8MPzAhBgoiStTcNbg_86aVg6ova_bCt0PCiHkFlVJ8Ksc-FnlhOd9hEs2WQGkAE">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A high-resolution product shot of a premium Almond Nutri Burfi set on a minimalist ceramic plate. The lighting is crisp and dramatic with soft shadows, highlighting the artisanal texture of the wellness snack. The color palette is composed of warm nutty browns and creamy whites against a clean, technical grey background, embodying a luxurious and healthy lifestyle choice." src="{{../images.[0].url}}"
+                        alt="{{../productName}}">
 </div>
 <div>
-<p class="font-label-md text-on-surface">Almond Delight Nutri Burfi</p>
-<p class="text-[12px] text-outline">ID: NB-00124</p>
+ <p class="font-label-md text-on-surface">
+                        {{../productName}}
+                    </p>
+<p class="text-[12px] text-outline">{{this.sku}}</p>
 </div>
 </div>
 </td>
+<!--category -->
 <td class="px-6 py-5">
-<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-[12px] font-label-md tracking-wider uppercase">Classic</span>
+    <span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-[12px] font-label-md tracking-wider uppercase">
+        {{../category_id.category_name}}
+    </span>
 </td>
+        <!-- Price -->
+        <td class="px-6 py-5">
+
+            <p class="font-label-md text-on-surface">
+                ₹{{this.regular_price}}
+            </p>
+
+        </td>
+          <!-- Stock -->
 <td class="px-6 py-5">
-<p class="font-label-md text-on-surface">$45.00</p>
+
+    {{#if (gt this.stock_quantity 10)}}
+
+        <!-- In Stock -->
+        <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+
+            <p class="text-body-md text-on-surface">
+                In Stock ({{this.stock_quantity}})
+            </p>
+        </div>
+
+    {{else if (gt this.stock_quantity 0)}}
+
+        <!-- Low Stock -->
+        <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+
+            <p class="text-body-md text-yellow-600">
+                Low Stock ({{this.stock_quantity}})
+            </p>
+        </div>
+
+    {{else}}
+
+        <!-- Out of Stock -->
+        <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+
+            <p class="text-body-md text-red-600">
+                Out of Stock ({{this.stock_quantity}})
+            </p>
+        </div>
+
+    {{/if}}
+
 </td>
+<!-- Product Status -->
 <td class="px-6 py-5">
-<div class="flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-green-500"></span>
-<p class="text-body-md text-on-surface">In Stock (84)</p>
-</div>
+
+    {{#if ../is_listed}}
+
+        <!-- Active -->
+        <div class="flex items-center gap-2">
+
+            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+
+            <p class="text-body-md text-green-600">
+                Active
+            </p>
+
+        </div>
+
+    {{else}}
+
+        <!-- Deleted / Unlisted -->
+        <div class="flex items-center gap-2">
+
+            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+
+            <p class="text-body-md text-red-600">
+                Deleted
+            </p>
+
+        </div>
+
+    {{/if}}
+
 </td>
 <td class="px-6 py-5 text-right">
-<div class="flex justify-end gap-2">
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="edit">edit</span>
-</button>
-<button class="p-2 text-on-surface-variant hover:text-error transition-colors">
-<span class="material-symbols-outlined" data-icon="delete">delete</span>
-</button>
-</div>
+    <div class="flex justify-end gap-2">
+
+        <!-- Edit -->
+        <a
+            href="/admin/editProduct/{{../_id}}"
+            class="p-2 text-on-surface-variant hover:text-primary transition-colors"
+        >
+            <span class="material-symbols-outlined">
+                edit
+            </span>
+        </a>
+
+        <!-- Delete -->
+        <button
+            type="button"
+            class="delete-btn p-2 text-on-surface-variant hover:text-error transition-colors"
+            data-id="{{../_id}}"
+        >
+            <span class="material-symbols-outlined">
+                delete
+            </span>
+        </button>
+
+    </div>
 </td>
 </tr>
-<!-- Product Row 2 -->
-<tr class="group hover:bg-surface-container-low transition-colors">
-<td class="px-6 py-5">
-<div class="flex items-center gap-4">
-<div class="w-16 h-16 rounded-lg bg-surface-variant overflow-hidden border border-outline-variant/20 flex-shrink-0">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Close-up of a Pistachio Saffron Nutri Burfi, exhibiting a vibrant green color and delicate saffron threads. The snack is photographed in a high-end boutique style with bright, airy lighting. The composition is clean and focused, emphasizing the organic quality and premium ingredients of the wellness product. Soft ambient shadows create a gentle depth on the minimalist background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuqWRI1ZTUIdyRW36qHwZ-YjBNfYnZqNrJEWPSeM4q9nkKR2rfvDXoDwgJbvBSXdKhPe1xAhGwzwnRQkRCGcTqe1um50O8SjwePKPJ2OQtEEtMmpLO_xtudTUakdYfgnzou3is-gxPFlGBZYp_0a3rBwPcIreZe6BSpZUtMtaYQrJn2VERsHIqovM-YUG5teyW5SykLeNLAUOPHb4LhFrtVTgDkia4xQo3TXHrr3yDmMuSWkp9yIgyqXjZFsrlG-5LWtC_5EDLj3Q">
-</div>
-<div>
-<p class="font-label-md text-on-surface">Pistachio Saffron Burfi</p>
-<p class="text-[12px] text-outline">ID: NB-00125</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-5">
-<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-[12px] font-label-md tracking-wider uppercase">Exotic</span>
-</td>
-<td class="px-6 py-5">
-<p class="font-label-md text-on-surface">$52.00</p>
-</td>
-<td class="px-6 py-5">
-<div class="flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-orange-400"></span>
-<p class="text-body-md text-on-surface">Low Stock (12)</p>
-</div>
-</td>
-<td class="px-6 py-5 text-right">
-<div class="flex justify-end gap-2">
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="edit">edit</span>
-</button>
-<button class="p-2 text-on-surface-variant hover:text-error transition-colors">
-<span class="material-symbols-outlined" data-icon="delete">delete</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Product Row 3 -->
-<tr class="group hover:bg-surface-container-low transition-colors">
-<td class="px-6 py-5">
-<div class="flex items-center gap-4">
-<div class="w-16 h-16 rounded-lg bg-surface-variant overflow-hidden border border-outline-variant/20 flex-shrink-0">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Artisanal Dark Chocolate and Sea Salt Nutri Burfi presented on a matte black slate. The texture of the dark chocolate is smooth and rich, with visible crystals of gourmet sea salt. The image uses low-key lighting to highlight the premium quality, creating a moody yet sophisticated aesthetic. The background is a textured grey concrete, reflecting a modern and disciplined design philosophy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClYH5qwEu4SA4Ws_uCPAy-x10SaFja5fglHQGSlODOBxpsF0oZek3p5xj-i6dmRq1b32AHprIGlatTLp4L1a5u6Yf3OYW8fckAidADuMSvIIfgFTjx_9g_w2YdHUdoLzlRMEeR1BU-q4XdXQ3AcT5ZkgB4Da2oODQWd2lln91LnWukE8rN8_b3tnMw-87shXcWIjU6YimLaSbA2uRQGBR-5oNeHhP-EOLwClRa31wYxUqExS6t-YtAqjiHDZQ2Z43UdQZy93PPtS8">
-</div>
-<div>
-<p class="font-label-md text-on-surface">Dark Chocolate Sea Salt</p>
-<p class="text-[12px] text-outline">ID: NB-00128</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-5">
-<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-[12px] font-label-md tracking-wider uppercase">Indulgence</span>
-</td>
-<td class="px-6 py-5">
-<p class="font-label-md text-on-surface">$48.00</p>
-</td>
-<td class="px-6 py-5">
-<div class="flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-error"></span>
-<p class="text-body-md text-on-surface">Out of Stock</p>
-</div>
-</td>
-<td class="px-6 py-5 text-right">
-<div class="flex justify-end gap-2">
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="edit">edit</span>
-</button>
-<button class="p-2 text-on-surface-variant hover:text-error transition-colors">
-<span class="material-symbols-outlined" data-icon="delete">delete</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Product Row 4 -->
-<tr class="group hover:bg-surface-container-low transition-colors">
-<td class="px-6 py-5">
-<div class="flex items-center gap-4">
-<div class="w-16 h-16 rounded-lg bg-surface-variant overflow-hidden border border-outline-variant/20 flex-shrink-0">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A minimalist presentation of Rose Petal and Honey Nutri Burfi. The soft pink hues of the organic rose petals are captured in brilliant detail, set against a pristine white marble background. The lighting is warm and inviting, suggesting a morning luxury experience. The product feels light, curated, and highly intentional, aimed at discerning health-conscious consumers." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsbbGZPWxFkV-DbHnoe-6NJILIAM2E3RxM8izsp1GvNaDUGwxYJOeWKG-Q-JvarvOACqAPq37w6A8GySAlGwU9SD2R0ZVmjXPvLZ_egu3HPjg1FenlwRgG5f3P8gBaJgjxWlTH7sLntAIZptbQEv7vELAIWNlT2s95fefPzR1sKm30IDzw1K_2bWSSoDQhn_NBhP0G0C92JdfI3SNuqdXyGlO1dQKmV1i6HtAEwWOOXzpJdTvkRPUYIvQjqQcUtkGXsN5iJ-r0l5E">
-</div>
-<div>
-<p class="font-label-md text-on-surface">Rose Petal Honey Bliss</p>
-<p class="text-[12px] text-outline">ID: NB-00132</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-5">
-<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-[12px] font-label-md tracking-wider uppercase">Seasonal</span>
-</td>
-<td class="px-6 py-5">
-<p class="font-label-md text-on-surface">$58.00</p>
-</td>
-<td class="px-6 py-5">
-<div class="flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-green-500"></span>
-<p class="text-body-md text-on-surface">In Stock (215)</p>
-</div>
-</td>
-<td class="px-6 py-5 text-right">
-<div class="flex justify-end gap-2">
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="edit">edit</span>
-</button>
-<button class="p-2 text-on-surface-variant hover:text-error transition-colors">
-<span class="material-symbols-outlined" data-icon="delete">delete</span>
-</button>
-</div>
-</td>
-</tr>
+{{/each}}
+{{/each}}
 </tbody>
 </table>
 <!-- Pagination -->
-<div class="px-6 py-4 flex items-center justify-between bg-surface-container-low/30 border-t border-outline-variant/10">
-<p class="text-[13px] text-outline">Showing 1 to 4 of 124 results</p>
-<div class="flex gap-2">
-<button class="px-3 py-1 rounded border border-outline-variant/30 text-label-md hover:bg-surface-variant transition-colors disabled:opacity-50" disabled="">
-<span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span>
-</button>
-<button class="px-3 py-1 rounded bg-primary text-on-primary text-label-md">1</button>
-<button class="px-3 py-1 rounded border border-outline-variant/30 text-label-md hover:bg-surface-variant transition-colors">2</button>
-<button class="px-3 py-1 rounded border border-outline-variant/30 text-label-md hover:bg-surface-variant transition-colors">3</button>
-<button class="px-3 py-1 rounded border border-outline-variant/30 text-label-md hover:bg-surface-variant transition-colors">
-<span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
-</button>
-</div>
+<div
+    class="px-6 py-4 flex items-center justify-between
+           bg-surface-container-low/30
+           border-t border-outline-variant/10"
+>
+
+    <!-- RESULTS COUNT -->
+
+    <p class="text-[13px] text-outline">
+
+        {{#if totalProducts}}
+
+            Showing
+
+            {{add (multiply (subtract currentPage 1) 10) 1}}
+
+            to
+
+            {{#if (lt (multiply currentPage 10) totalProducts)}}
+
+                {{multiply currentPage 10}}
+
+            {{else}}
+
+                {{totalProducts}}
+
+            {{/if}}
+
+            of {{totalProducts}} results
+
+        {{else}}
+
+            Showing 0 to 0 of 0 results
+
+        {{/if}}
+
+    </p>
+
+
+    <!-- PAGINATION -->
+
+    <div class="flex gap-2">
+
+
+        <!-- PREVIOUS BUTTON -->
+
+        {{#if (gt currentPage 1)}}
+
+            <a
+                href="/admin/products?page={{subtract currentPage 1}}{{#if search}}&search={{search}}{{/if}}{{#if filter}}&filter={{filter}}{{/if}}"
+                class="px-3 py-1 rounded
+                       border border-outline-variant/30
+                       text-label-md
+                       hover:bg-surface-variant
+                       transition-colors"
+            >
+
+                <span class="material-symbols-outlined text-[18px]">
+                    chevron_left
+                </span>
+
+            </a>
+
+        {{else}}
+
+            <button
+                disabled
+                class="px-3 py-1 rounded
+                       border border-outline-variant/30
+                       text-label-md
+                       opacity-50"
+            >
+
+                <span class="material-symbols-outlined text-[18px]">
+                    chevron_left
+                </span>
+
+            </button>
+
+        {{/if}}
+
+
+        <!-- PAGE NUMBERS -->
+
+        {{#each pages}}
+
+            {{#if (eq this ../currentPage)}}
+
+                <!-- CURRENT PAGE -->
+
+                <a
+                    href="#"
+                    class="px-3 py-1 rounded
+                           bg-primary
+                           text-on-primary
+                           text-label-md"
+                >
+                    {{this}}
+                </a>
+
+            {{else}}
+
+                <!-- OTHER PAGE -->
+
+                <a
+                    href="/admin/products?page={{this}}{{#if ../search}}&search={{../search}}{{/if}}{{#if ../filter}}&filter={{../filter}}{{/if}}"
+                    class="px-3 py-1 rounded
+                           border border-outline-variant/30
+                           text-label-md
+                           hover:bg-surface-variant
+                           transition-colors"
+                >
+                    {{this}}
+                </a>
+
+            {{/if}}
+
+        {{/each}}
+
+
+        <!-- NEXT BUTTON -->
+
+        {{#if (lt currentPage totalPages)}}
+
+            <a
+                href="/admin/products?page={{add currentPage 1}}{{#if search}}&search={{search}}{{/if}}{{#if filter}}&filter={{filter}}{{/if}}"
+                class="px-3 py-1 rounded
+                       border border-outline-variant/30
+                       text-label-md
+                       hover:bg-surface-variant
+                       transition-colors"
+            >
+
+                <span class="material-symbols-outlined text-[18px]">
+                    chevron_right
+                </span>
+
+            </a>
+
+        {{else}}
+
+            <button
+                disabled
+                class="px-3 py-1 rounded
+                       border border-outline-variant/30
+                       text-label-md
+                       opacity-50"
+            >
+
+                <span class="material-symbols-outlined text-[18px]">
+                    chevron_right
+                </span>
+
+            </button>
+
+        {{/if}}
+
+    </div>
+
 </div>
 </div>
 </div>
 </main>
+
+<!-- Filter Modal -->
+<div
+    id="filterModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center
+           bg-black/30 backdrop-blur-sm px-4"
+>
+
+    <div
+        class="w-full max-w-md
+               bg-surface-container-lowest
+               rounded-2xl
+               shadow-xl
+               border border-outline-variant/20
+               overflow-hidden"
+    >
+
+        <!-- Header -->
+        <div
+            class="flex items-center justify-between
+                   px-6 py-5
+                   border-b border-outline-variant/20"
+        >
+
+            <div>
+                <h2 class="text-lg font-bold text-on-surface">
+                    Filter Products
+                </h2>
+
+                <p class="text-sm text-on-surface-variant mt-1">
+                    Choose product visibility
+                </p>
+            </div>
+
+            <button
+                type="button"
+                id="closeFilter"
+                class="w-9 h-9 rounded-full
+                       flex items-center justify-center
+                       text-on-surface-variant
+                       hover:bg-surface-container-high
+                       hover:text-on-surface
+                       transition"
+            >
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+            </button>
+
+        </div>
+
+
+        <!-- Filter Options -->
+        <div class="p-6 space-y-3">
+
+            <!-- All -->
+            <label
+                class="flex items-center justify-between
+                       p-4 rounded-xl
+                       border border-outline-variant/30
+                       hover:bg-surface-container-low
+                       cursor-pointer transition"
+            >
+
+                <div class="flex items-center gap-3">
+
+                    <div
+                        class="w-10 h-10 rounded-full
+                               bg-surface-container-high
+                               flex items-center justify-center"
+                    >
+                        <span class="material-symbols-outlined text-primary">
+                            inventory_2
+                        </span>
+                    </div>
+
+                    <div>
+                        <p class="font-semibold text-on-surface">
+                            All Products
+                        </p>
+
+                        <p class="text-xs text-on-surface-variant">
+                            Show all products
+                        </p>
+                    </div>
+
+                </div>
+
+                <input
+                    type="radio"
+                    name="productFilter"
+                    value=""
+                    class="w-4 h-4 accent-primary"
+                    checked
+                >
+
+            </label>
+
+
+            <!-- In Stock -->
+            <label
+                class="flex items-center justify-between
+                       p-4 rounded-xl
+                       border border-outline-variant/30
+                       hover:bg-green-50
+                       cursor-pointer transition"
+            >
+
+                <div class="flex items-center gap-3">
+
+                    <div
+                        class="w-10 h-10 rounded-full
+                               bg-green-100
+                               flex items-center justify-center"
+                    >
+                        <span class="material-symbols-outlined text-green-600">
+                            check_circle
+                        </span>
+                    </div>
+
+                    <div>
+                        <p class="font-semibold text-on-surface">
+                            In Stock
+                        </p>
+
+                        <p class="text-xs text-on-surface-variant">
+                            Show products currently in stock
+                        </p>
+                    </div>
+
+                </div>
+
+                <input
+                    type="radio"
+                    name="productFilter"
+                    value="in-stock"
+                    class="w-4 h-4 accent-primary"
+                >
+
+            </label>
+
+            <!-- Low Stock -->
+<label
+    class="flex items-center justify-between
+           p-4 rounded-xl
+           border border-outline-variant/30
+           hover:bg-orange-50
+           cursor-pointer transition"
+>
+
+    <div class="flex items-center gap-3">
+
+        <div
+            class="w-10 h-10 rounded-full
+                   bg-orange-100
+                   flex items-center justify-center"
+        >
+            <span class="material-symbols-outlined text-orange-500">
+                warning
+            </span>
+        </div>
+
+        <div>
+            <p class="font-semibold text-on-surface">
+                Low Stock
+            </p>
+
+            <p class="text-xs text-on-surface-variant">
+                Show products with low stock
+            </p>
+        </div>
+
+    </div>
+
+    <input
+        type="radio"
+        name="productFilter"
+        value="low-stock"
+        class="w-4 h-4 accent-primary"
+    >
+
+</label>
+
+
+            <!-- Out of Stock -->
+            <label
+                class="flex items-center justify-between
+                       p-4 rounded-xl
+                       border border-outline-variant/30
+                       hover:bg-red-50
+                       cursor-pointer transition"
+            >
+
+                <div class="flex items-center gap-3">
+
+                    <div
+                        class="w-10 h-10 rounded-full
+                               bg-red-100
+                               flex items-center justify-center"
+                    >
+                        <span class="material-symbols-outlined text-red-500">
+                            block
+                        </span>
+                    </div>
+
+                    <div>
+                        <p class="font-semibold text-on-surface">
+                            Out of Stock
+                        </p>
+
+                        <p class="text-xs text-on-surface-variant">
+                            Show unavailable products
+                        </p>
+                    </div>
+
+                </div>
+
+                <input
+                    type="radio"
+                    name="productFilter"
+                    value="out-of-stock"
+                    class="w-4 h-4 accent-primary"
+                >
+
+            </label>
+
+            <!-- Listed Products -->
+<label
+    class="flex items-center justify-between
+           p-4 rounded-xl
+           border border-outline-variant/30
+           hover:bg-green-50
+           cursor-pointer transition"
+>
+
+    <div class="flex items-center gap-3">
+
+        <div
+            class="w-10 h-10 rounded-full
+                   bg-green-100
+                   flex items-center justify-center"
+        >
+            <span class="material-symbols-outlined text-green-600">
+                visibility
+            </span>
+        </div>
+
+        <div>
+            <p class="font-semibold text-on-surface">
+                Listed Products
+            </p>
+
+            <p class="text-xs text-on-surface-variant">
+                Show products visible to customers
+            </p>
+        </div>
+
+    </div>
+
+    <input
+        type="radio"
+        name="productFilter"
+        value="listed"
+        class="w-4 h-4 accent-primary"
+    >
+
+</label>
+
+
+<!-- Unlisted Products -->
+<label
+    class="flex items-center justify-between
+           p-4 rounded-xl
+           border border-outline-variant/30
+           hover:bg-red-50
+           cursor-pointer transition"
+>
+
+    <div class="flex items-center gap-3">
+
+        <div
+            class="w-10 h-10 rounded-full
+                   bg-red-100
+                   flex items-center justify-center"
+        >
+            <span class="material-symbols-outlined text-red-500">
+                visibility_off
+            </span>
+        </div>
+
+        <div>
+            <p class="font-semibold text-on-surface">
+                Unlisted Products
+            </p>
+
+            <p class="text-xs text-on-surface-variant">
+                Show products hidden from customers
+            </p>
+        </div>
+
+    </div>
+
+    <input
+        type="radio"
+        name="productFilter"
+        value="unlisted"
+        class="w-4 h-4 accent-primary"
+    >
+
+</label>
+
+        </div>
+
+
+        <!-- Footer -->
+        <div
+            class="flex justify-end gap-3
+                   px-6 py-4
+                   bg-surface-container-low
+                   border-t border-outline-variant/20"
+        >
+
+            <button
+                type="button"
+                id="cancelFilter"
+                class="px-5 py-2.5 rounded-lg
+                       text-sm font-semibold
+                       text-on-surface-variant
+                       hover:bg-surface-container-high
+                       transition"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                id="applyFilter"
+                class="px-5 py-2.5 rounded-lg
+                       bg-primary
+                       text-on-primary
+                       text-sm font-semibold
+                       hover:opacity-90
+                       transition"
+            >
+                Apply Filter
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div
+    id="deleteModal"
+    class="hidden fixed inset-0 z-50 items-center justify-center bg-black/40 backdrop-blur-sm"
+>
+    <div
+        class="w-full max-w-md mx-4 bg-white rounded-2xl shadow-xl p-6"
+    >
+
+        <div class="flex items-center justify-between mb-4">
+
+            <h2 class="text-xl font-semibold text-gray-900">
+                Confirm Delete
+            </h2>
+
+            <button
+                type="button"
+                id="closeDeleteModal"
+                class="text-gray-400 hover:text-gray-700"
+            >
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+            </button>
+
+        </div>
+
+        <p class="text-gray-600 mb-6">
+            Are you sure you want to delete this product?
+            This action cannot be undone.
+        </p>
+
+        <div class="flex justify-end gap-3">
+
+            <button
+                type="button"
+                id="cancelDelete"
+                class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                id="confirmDelete"
+                class="px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700"
+            >
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+</div>
 <script>
         // Simple micro-interaction for active row highlight
         document.querySelectorAll('tbody tr').forEach(row => {
@@ -340,6 +1060,174 @@
         // Add subtle parallax/hover effect to the product images via script if needed
         // but the CSS transition handled it effectively for a clean UI.
     </script>
+<script>
+    const filterModal = document.getElementById("filterModal");
+
+    const openFilter = document.getElementById("openFilter");
+    const closeFilter = document.getElementById("closeFilter");
+    const cancelFilter = document.getElementById("cancelFilter");
+    const applyFilter = document.getElementById("applyFilter");
+
+    // Open modal
+    openFilter.addEventListener("click", function () {
+        filterModal.classList.remove("hidden");
+        filterModal.classList.add("flex");
+    });
+
+    // Close modal
+    closeFilter.addEventListener("click", function () {
+        filterModal.classList.add("hidden");
+        filterModal.classList.remove("flex");
+    });
+
+    // Cancel
+    cancelFilter.addEventListener("click", function () {
+        filterModal.classList.add("hidden");
+        filterModal.classList.remove("flex");
+    });
+
+    // Apply filter
+    applyFilter.addEventListener("click", function () {
+
+        const selectedFilter = document.querySelector(
+            'input[name="productFilter"]:checked'
+        );
+
+        if (!selectedFilter) {
+            alert("Please select a filter");
+            return;
+        }
+
+        const filter = selectedFilter.value;
+
+        console.log("SELECTED FILTER:", filter);
+
+        const currentUrl = new URL(window.location.href);
+
+        currentUrl.searchParams.delete("page");
+        currentUrl.searchParams.delete("filter");
+
+        if (filter !== "") {
+            currentUrl.searchParams.set("filter", filter);
+        }
+
+        console.log(
+            "REDIRECTING TO:",
+            currentUrl.toString()
+        );
+
+        window.location.href = currentUrl.toString();
+    });
+</script>
 
 
+
+<script>
+
+    const deleteModal = document.getElementById("deleteModal");
+    const cancelDelete = document.getElementById("cancelDelete");
+    const confirmDelete = document.getElementById("confirmDelete");
+    const closeDeleteModal = document.getElementById("closeDeleteModal");
+
+    let selectedProductId = null;
+
+
+    // ===============================
+    // OPEN DELETE MODAL
+    // ===============================
+
+    document.querySelectorAll(".delete-btn").forEach(button => {
+
+        button.addEventListener("click", function () {
+
+            // Get product ID
+            selectedProductId = this.dataset.id;
+
+            console.log("Selected Product ID:", selectedProductId);
+
+            // Show modal
+            deleteModal.classList.remove("hidden");
+            deleteModal.classList.add("flex");
+
+        });
+
+    });
+
+
+    // ===============================
+    // CLOSE MODAL
+    // ===============================
+
+    function closeDeleteModalFunction() {
+
+        deleteModal.classList.add("hidden");
+        deleteModal.classList.remove("flex");
+
+        selectedProductId = null;
+
+    }
+
+
+    // ===============================
+    // CANCEL
+    // ===============================
+
+    cancelDelete.addEventListener("click", function () {
+
+        closeDeleteModalFunction();
+
+    });
+
+
+    // ===============================
+    // CLOSE ICON
+    // ===============================
+
+    closeDeleteModal.addEventListener("click", function () {
+
+        closeDeleteModalFunction();
+
+    });
+
+
+    // ===============================
+    // CONFIRM DELETE
+    // ===============================
+
+    confirmDelete.addEventListener("click", function () {
+
+        if (!selectedProductId) {
+            return;
+        }
+
+        // Create form dynamically
+        const form = document.createElement("form");
+
+        form.method = "POST";
+
+        form.action =
+            `/admin/deleteProduct/${selectedProductId}`;
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+    });
+
+
+    // ===============================
+    // CLICK OUTSIDE MODAL
+    // ===============================
+
+    deleteModal.addEventListener("click", function (event) {
+
+        if (event.target === deleteModal) {
+
+            closeDeleteModalFunction();
+
+        }
+
+    });
+
+</script>
 </body></html>

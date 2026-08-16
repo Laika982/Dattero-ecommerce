@@ -1,0 +1,1108 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Edit Product | Nutri Luxe Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e3e2e2",
+                    "surface": "#fbf9f9",
+                    "outline": "#747878",
+                    "background": "#fbf9f9",
+                    "on-primary-fixed-variant": "#464747",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#c7c6c6",
+                    "inverse-primary": "#c7c6c6",
+                    "surface-container-highest": "#e3e2e2",
+                    "on-secondary-container": "#646464",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#747474",
+                    "surface-bright": "#fbf9f9",
+                    "secondary": "#5e5e5e",
+                    "secondary-container": "#e3e2e2",
+                    "on-primary-container": "#fefcfc",
+                    "on-surface-variant": "#444748",
+                    "outline-variant": "#c4c7c7",
+                    "surface-tint": "#5e5e5e",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-primary": "#ffffff",
+                    "primary": "#5c5c5c",
+                    "on-primary-fixed": "#1b1c1c",
+                    "inverse-on-surface": "#f2f0f0",
+                    "secondary-fixed": "#e3e2e2",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "surface-dim": "#dbdad9",
+                    "primary-fixed": "#e3e2e2",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "inverse-surface": "#303031",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#efeded",
+                    "surface-container-high": "#e9e8e7",
+                    "tertiary": "#5c5c5c",
+                    "surface-container-low": "#f5f3f3",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#1b1c1c",
+                    "primary-container": "#747474",
+                    "on-tertiary-container": "#fcfcfc",
+                    "on-secondary-fixed-variant": "#464747",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "grid-gutter": "24px",
+                    "container-padding": "32px",
+                    "stack-sm": "8px",
+                    "max-width": "1280px",
+                    "section-gap-mobile": "64px",
+                    "stack-md": "16px",
+                    "section-gap": "120px"
+            },
+            "fontFamily": {
+                    "body-xl": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .form-input-focus:focus {
+            outline: none;
+            border-color: #5c5c5c;
+            background-color: #ffffff;
+        }
+
+        .premium-shadow {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col h-screen py-container-padding px-stack-md z-50">
+<div class="mb-10 px-2">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface dark:text-on-primary-fixed">Nutri Luxe</h1>
+<p class="font-label-md text-label-md text-on-surface-variant/70">Luxury Wellness Admin</p>
+</div>
+<nav class="flex-1 space-y-1"><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span><span class="font-label-md text-label-md">Dashboard</span></a>
+<!-- Active Tab: Products -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary dark:text-primary-fixed font-bold border-r-2 border-primary dark:border-primary-fixed bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-label-md text-label-md">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+<span class="font-label-md text-label-md">Coupons</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="branding_watermark">branding_watermark</span>
+<span class="font-label-md text-label-md">Banners</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="local_offer">local_offer</span>
+<span class="font-label-md text-label-md">Offers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span><span class="font-label-md text-label-md">Sales Report</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span><span class="font-label-md text-label-md">Logout</span></a></nav>
+<div class="mt-auto border-t border-outline-variant/30 pt-6 px-2">
+<button class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-primary text-on-primary font-label-md transition-all active:scale-95 hover:bg-opacity-90">
+<span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
+                View Store
+            </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- TopNavBar Shell -->
+<header class="sticky top-0 w-full z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md flex justify-between items-center h-16 px-container-padding border-b border-outline-variant/30">
+<div class="flex items-center gap-6 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-1 focus:ring-primary font-body-md text-body-md" placeholder="Search inventory..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
+<button class="flex items-center gap-2 group">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a high-end wellness administrator with a friendly and composed expression. The lighting is soft and flattering, reminiscent of a luxury lifestyle magazine profile. The background is a clean, minimalist off-white aesthetic consistent with a premium brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgQSH6IKUpenA4XtRvw9YfoxgqQEXc4ZeQKz8WaBrvNR9to1pCmg7xDAyLO4no_P5o3UMVxdUp8Mx5FemBvVKZ-8qo66cMIV-bO8J210NHaVzE6_O-xBI4K67ex4YQ9l46w2jZ7NrPKm8DCBQrTNOHfUIE8_F6WFcoNQcUFs512b2y4F2J4Ma1izPZJJgNbPxKLC0WbOnH8aist6pBBSP73OIVtNeShQMOn1VhU5rBvvuBLb3_5P1thyo9l3nkoV6s-G4mXr2Ddz8">
+</div>
+<span class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">Profile</span>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="max-w-max-width mx-auto px-container-padding py-stack-lg">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 text-on-surface-variant font-label-md mb-8">
+<a class="hover:text-primary transition-colors" href="#">Inventory</a>
+<span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">Edit Product</span>
+</nav>
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-2">Edit Product</h2>
+<p class="text-on-surface-variant max-w-2xl font-body-lg text-body-lg">Update the details, pricing, and visual assets for the Signature Dates Burfi. Changes will reflect across the boutique storefront immediately upon saving.</p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-3 border border-outline-variant rounded-lg font-label-md hover:bg-surface-container transition-colors">Discard</button>
+<button
+    type="submit"
+    form="productForm"
+    class="px-8 py-3 bg-[#000000] text-[#ffffff] rounded-lg font-label-md"
+>
+    <span class="material-symbols-outlined">
+        save
+    </span>
+    Save Changes
+</button>
+</div>
+</div>
+<!-- Bento Layout Form -->
+<form
+    id="productForm"
+    action="/admin/editProduct/{{product._id}}"
+    method="POST"
+    enctype="multipart/form-data"
+    class="grid grid-cols-12 gap-grid-gutter"
+>
+<!-- Primary Information Column (8 cols) -->
+<div class="col-span-8 space-y-grid-gutter">
+<!-- Basic Details Card -->
+<section class="bg-surface-container-lowest p-8 rounded-xl premium-shadow border border-black/[0.04]">
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-6">Product Details</h3>
+<div class="space-y-6">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Product Name</label>
+<input
+    class="w-full bg-surface-container-low border-none rounded-lg p-4 font-body-md text-body-md form-input-focus transition-all"
+    placeholder="e.g., Artisan Nutri Burfi - Gold Edition"
+    type="text"
+    name="product_name"
+    value="{{product.productName}}"
+    required
+></div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Description</label>
+<textarea
+    class="w-full bg-surface-container-low border-none rounded-lg p-4 font-body-md text-body-md form-input-focus transition-all leading-relaxed"
+    placeholder="Describe the luxury experience, nutritional value, and artisanal craftsmanship..."
+    rows="8"
+    name="description"
+    required
+>{{product.productDescription}}</textarea></div>
+</div>
+</section>
+<!-- Pricing & Inventory Card -->
+<section class="bg-surface-container-lowest p-8 rounded-xl premium-shadow border border-black/[0.04]">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="layers">layers</span>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Product Variants</h3>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-md text-on-surface-variant">Enable Variants</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value="">
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-on-surface"></div>
+</label>
+</div>
+</div>
+<div class="space-y-4">
+<div class="overflow-hidden rounded-lg border border-outline-variant/20">
+<table class="w-full text-left border-collapse">
+
+    <thead class="bg-surface-container-low">
+        <tr>
+            <th class="p-3 font-label-md text-[12px] text-on-surface-variant uppercase tracking-wider">
+                WEIGHT (KG)
+            </th>
+
+            <th class="p-3 font-label-md text-[12px] text-on-surface-variant uppercase tracking-wider">
+                PRICE +/-
+            </th>
+
+            <th class="p-3 font-label-md text-[12px] text-on-surface-variant uppercase tracking-wider">
+                SKU
+            </th>
+
+            <th class="p-3 font-label-md text-[12px] text-on-surface-variant uppercase tracking-wider">
+                STOCK
+            </th>
+        </tr>
+    </thead>
+
+    <tbody class="divide-y divide-outline-variant/10">
+
+        {{#each product.variants}}
+
+        <tr>
+
+            <!-- Weight -->
+            <td class="p-3">
+                <input
+                    class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30"
+                    type="text"
+                    name="variants[{{@index}}][weight]"
+                    value="{{this.weight}}"
+                    required
+                >
+
+                <!-- Existing Variant ID -->
+                <input
+                    type="hidden"
+                    name="variants[{{@index}}][_id]"
+                    value="{{this._id}}"
+                >
+            </td>
+
+            <!-- Price -->
+            <td class="p-3">
+                <input
+                    class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30"
+                    type="number"
+                    name="variants[{{@index}}][price]"
+                    value="{{this.regular_price}}"
+                    min="0"
+                    step="0.01"
+                    required
+                >
+            </td>
+
+            <!-- SKU -->
+            <td class="p-3">
+                <input
+                    class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30"
+                    type="text"
+                    name="variants[{{@index}}][sku]"
+                    value="{{this.sku}}"
+                    required
+                >
+            </td>
+
+            <!-- Stock -->
+            <td class="p-3">
+                <input
+                    class="w-full bg-transparent border-none p-0 text-body-md focus:ring-0 placeholder:text-on-surface-variant/30"
+                    type="number"
+                    name="variants[{{@index}}][stock_quantity]"
+                    value="{{this.stock_quantity}}"
+                    min="0"
+                    required
+                >
+            </td>
+
+        </tr>
+
+        {{else}}
+
+        <tr>
+            <td
+                colspan="4"
+                class="p-6 text-center text-on-surface-variant"
+            >
+                No variants found for this product.
+            </td>
+        </tr>
+
+        {{/each}}
+
+    </tbody>
+
+</table>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-3 border border-dashed border-outline-variant rounded-lg text-on-surface-variant hover:border-primary hover:text-primary transition-all group" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="add_circle">add_circle</span>
+<span class="font-label-md">Add Variant</span>
+</button>
+</div>
+</section>
+</div>
+<!-- Secondary Info & Media (4 cols) -->
+<div class="col-span-4 space-y-grid-gutter">
+<!-- Media Gallery Card -->
+<section class="bg-surface-container-lowest p-8 rounded-xl premium-shadow border border-black/[0.04]">
+
+    <h3 class="font-headline-lg text-[24px] text-on-surface mb-8">
+        Product Media
+    </h3>
+
+    <div class="space-y-4">
+
+        <!-- Hidden file input -->
+        <input
+            type="file"
+            id="productImages"
+            name="images"
+            accept="image/*"
+            multiple
+            class="hidden"
+        >
+
+        <!-- ============================= -->
+        <!-- MAIN IMAGE -->
+        <!-- ============================= -->
+
+        <div
+            id="uploadArea"
+            class="relative border-2 border-dashed border-outline-variant rounded-xl aspect-square overflow-hidden flex flex-col items-center justify-center text-center p-6 bg-surface-container-low group cursor-pointer hover:bg-surface-container transition-colors"
+        >
+
+            {{#if product.images.length}}
+
+                <!-- First image from database -->
+                <img
+                    id="mainImage"
+                    src="{{product.images.[0].url}}"
+                    alt="{{product.productName}}"
+                    data-public-id="{{product.images.[0].public_id}}"
+                    class="absolute inset-0 w-full h-full object-cover"
+                >
+
+                <!-- Remove button -->
+                <button
+                    id="removeMainImage"
+                    type="button"
+                    class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-black transition z-10"
+                >
+                    ×
+                </button>
+
+            {{else}}
+
+                <!-- Upload content -->
+                <div id="uploadContent">
+
+                    <span class="material-symbols-outlined text-on-surface-variant text-[48px] mb-4 group-hover:scale-110 transition-transform">
+                        cloud_upload
+                    </span>
+
+                    <p class="font-label-md text-on-surface">
+                        Drag and drop images
+                    </p>
+
+                    <p class="text-[11px] text-on-surface-variant mt-1">
+                        or click to browse
+                    </p>
+
+                </div>
+
+                <img
+                    id="mainImage"
+                    class="hidden absolute inset-0 w-full h-full object-cover"
+                    alt="Main product image"
+                >
+
+                <button
+                    id="removeMainImage"
+                    type="button"
+                    class="hidden absolute top-3 right-3 w-8 h-8 rounded-full bg-black/70 text-white items-center justify-center hover:bg-black transition z-10"
+                >
+                    ×
+                </button>
+
+            {{/if}}
+
+        </div>
+
+
+        <!-- ============================= -->
+        <!-- OTHER DATABASE IMAGES -->
+        <!-- ============================= -->
+
+        <div
+            id="imagePreview"
+            class="grid grid-cols-3 gap-3"
+        >
+
+            {{#each product.images}}
+
+                {{#unless @first}}
+
+                    <div
+                        class="existing-image aspect-square rounded-lg overflow-hidden relative group bg-surface-container"
+                        data-public-id="{{this.public_id}}"
+                        data-image-url="{{this.url}}"
+                    >
+
+                        <!-- Database image -->
+                        <img
+                            src="{{this.url}}"
+                            alt="{{../product.productName}}"
+                            class="w-full h-full object-cover"
+                        >
+
+                        <!-- Hover overlay -->
+                        <div
+                            class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center"
+                        >
+
+                            <button
+                                type="button"
+                                class="remove-existing-image w-8 h-8 bg-white rounded-full text-error flex items-center justify-center hover:scale-110 transition"
+                            >
+                                ×
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                {{/unless}}
+
+            {{/each}}
+
+
+            <!-- ============================= -->
+            <!-- ADD IMAGE -->
+            <!-- ============================= -->
+
+            <button
+                id="addImageBtn"
+                type="button"
+                class="aspect-square rounded-lg border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-1 hover:bg-surface-container-low transition-colors group"
+            >
+
+                <span class="material-symbols-outlined text-on-surface-variant text-[20px]">
+                    add_a_photo
+                </span>
+
+                <span class="text-[10px] font-label-md text-on-surface-variant">
+                    Add
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- Status & Categorization -->
+<section class="bg-surface-container-lowest p-8 rounded-xl premium-shadow border border-black/[0.04]">
+
+    <h3 class="font-headline-lg text-headline-lg text-on-surface mb-6">
+        Organization
+    </h3>
+
+    <div class="space-y-6">
+
+        <!-- Product Status -->
+        <div>
+            <label class="block font-label-md text-label-md text-on-surface-variant mb-2">
+                Product Status
+            </label>
+
+ <select
+    name="status"
+    class="w-full bg-surface-container-low border-none rounded-lg p-4 font-body-md text-body-md form-input-focus transition-all"
+>
+    <option
+        value="Active"
+        {{#if product.is_listed}}selected{{/if}}
+    >
+        Active
+    </option>
+
+    <option
+        value="Delete"
+        {{#unless product.is_listed}}selected{{/unless}}
+    >
+        Delete
+    </option>
+</select>
+        </div>
+
+        <!-- Category -->
+        <div>
+            <label class="block font-label-md text-label-md text-on-surface-variant mb-2">
+                Category
+            </label>
+
+            <select
+                name="category_id"
+                class="w-full appearance-none bg-surface-container-low border-none rounded-lg p-4 font-body-md text-body-md focus:ring-1 focus:ring-primary/20"
+                required
+            >
+
+                <option value="" disabled>
+                    Select Category
+                </option>
+
+                {{#each categories}}
+
+                    <option
+                        value="{{this._id}}"
+                        {{#if (eq this._id ../product.category_id._id)}}selected{{/if}}
+                    >
+                        {{this.category_name}}
+                    </option>
+
+                {{/each}}
+
+            </select>
+        </div>
+
+    </div>
+
+</section>
+</div>
+</form>
+</div>
+</main>
+<!-- Success Toast (Hidden by default, triggered by JS) -->
+{{!-- <div class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-on-surface text-surface px-8 py-4 rounded-xl font-label-md shadow-2xl flex items-center gap-3 translate-y-32 transition-all duration-500 z-[100] opacity-0" id="save-toast">
+<span class="material-symbols-outlined text-surface" data-icon="check_circle">check_circle</span>
+        Changes saved successfully for 'Signature Dates Burfi'
+    </div> --}}
+<script>
+        // Highlight input on interaction
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                if (input.parentElement) {
+                    input.parentElement.classList.add('scale-[1.01]');
+                    input.parentElement.classList.add('transition-transform');
+                }
+            });
+            input.addEventListener('blur', () => {
+                if (input.parentElement) {
+                    input.parentElement.classList.remove('scale-[1.01]');
+                }
+            });
+        });
+    </script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const uploadArea = document.getElementById("uploadArea");
+    const uploadContent = document.getElementById("uploadContent");
+    const productImages = document.getElementById("productImages");
+
+    const mainImage = document.getElementById("mainImage");
+    const removeMainImage = document.getElementById("removeMainImage");
+
+    const addImageBtn = document.getElementById("addImageBtn");
+    const imagePreview = document.getElementById("imagePreview");
+
+    const productForm = document.getElementById("productForm");
+
+
+    // ==========================================
+    // NEWLY SELECTED FILES
+    // ==========================================
+
+    let selectedFiles = [];
+
+
+    // ==========================================
+    // EXISTING DATABASE IMAGES TO DELETE
+    // ==========================================
+
+    let deletedImages = [];
+
+
+    // ==========================================
+    // OPEN FILE PICKER
+    // ==========================================
+
+    uploadArea.addEventListener("click", function (event) {
+
+        // Don't open picker when clicking remove
+        if (event.target.closest("#removeMainImage")) {
+            return;
+        }
+
+        productImages.click();
+
+    });
+
+
+    // ==========================================
+    // ADD IMAGE BUTTON
+    // ==========================================
+
+    addImageBtn.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        productImages.click();
+
+    });
+
+
+    // ==========================================
+    // FILE SELECTED
+    // ==========================================
+
+    productImages.addEventListener("change", function (event) {
+
+        const files = Array.from(event.target.files);
+
+        if (files.length === 0) {
+            return;
+        }
+
+
+        // ======================================
+        // MAXIMUM 5 NEW IMAGES
+        // ======================================
+
+        if (selectedFiles.length + files.length > 5) {
+
+            alert("Maximum 5 images are allowed.");
+
+            return;
+        }
+
+
+        selectedFiles = [
+            ...selectedFiles,
+            ...files
+        ];
+
+
+        updateFileInput();
+
+        displayNewImages();
+
+    });
+
+
+    // ==========================================
+    // UPDATE FILE INPUT
+    // ==========================================
+
+    function updateFileInput() {
+
+        const dataTransfer = new DataTransfer();
+
+
+        selectedFiles.forEach(function (file) {
+
+            dataTransfer.items.add(file);
+
+        });
+
+
+        productImages.files = dataTransfer.files;
+
+
+        console.log(
+            "Files in input:",
+            productImages.files.length
+        );
+
+    }
+
+
+    // ==========================================
+    // DISPLAY NEW IMAGES
+    // ==========================================
+
+    function displayNewImages() {
+
+
+        // Remove previously generated previews
+
+        imagePreview
+            .querySelectorAll(".new-image")
+            .forEach(function (element) {
+
+                element.remove();
+
+            });
+
+
+        // ======================================
+        // NO NEW FILES
+        // ======================================
+
+        if (selectedFiles.length === 0) {
+
+            /*
+             * If there are no newly selected files,
+             * don't destroy the existing database image.
+             */
+
+            return;
+
+        }
+
+
+        // ======================================
+        // MAIN NEW IMAGE
+        // ======================================
+
+        const reader = new FileReader();
+
+
+        reader.onload = function (event) {
+
+            mainImage.src = event.target.result;
+
+            mainImage.classList.remove("hidden");
+
+
+            if (uploadContent) {
+
+                uploadContent.classList.add("hidden");
+
+            }
+
+
+            removeMainImage.classList.remove("hidden");
+
+        };
+
+
+        reader.readAsDataURL(selectedFiles[0]);
+
+
+        // ======================================
+        // OTHER NEW IMAGES
+        // ======================================
+
+        selectedFiles
+            .slice(1)
+            .forEach(function (file, index) {
+
+                const actualIndex = index + 1;
+
+                const reader = new FileReader();
+
+
+                reader.onload = function (event) {
+
+                    const container =
+                        document.createElement("div");
+
+
+                    container.className =
+                        "new-image aspect-square rounded-lg overflow-hidden relative group bg-surface-container";
+
+
+                    container.innerHTML = `
+
+                        <img
+                            src="${event.target.result}"
+                            class="w-full h-full object-cover"
+                            alt="New product image"
+                        >
+
+                        <button
+                            type="button"
+                            class="remove-new-image absolute top-2 right-2 w-7 h-7 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-black"
+                            data-index="${actualIndex}"
+                        >
+                            ×
+                        </button>
+
+                    `;
+
+
+                    imagePreview.insertBefore(
+                        container,
+                        addImageBtn
+                    );
+
+                };
+
+
+                reader.readAsDataURL(file);
+
+            });
+
+    }
+
+
+    // ==========================================
+    // DELETE NEW IMAGE
+    // ==========================================
+
+    imagePreview.addEventListener("click", function (event) {
+
+        const button =
+            event.target.closest(".remove-new-image");
+
+
+        if (!button) {
+            return;
+        }
+
+
+        const index =
+            Number(button.dataset.index);
+
+
+        selectedFiles.splice(index, 1);
+
+
+        updateFileInput();
+
+        displayNewImages();
+
+    });
+
+
+    // ==========================================
+    // DELETE EXISTING DATABASE IMAGE
+    // ==========================================
+
+    imagePreview.addEventListener("click", function (event) {
+
+        const button =
+            event.target.closest(".remove-existing-image");
+
+
+        if (!button) {
+            return;
+        }
+
+
+        const container =
+            button.closest(".existing-image");
+
+
+        if (!container) {
+            return;
+        }
+
+
+        const publicId =
+            container.dataset.publicId;
+
+
+        if (!publicId) {
+            return;
+        }
+
+
+        // Add Cloudinary public_id
+
+        deletedImages.push(publicId);
+
+
+        console.log(
+            "Deleted images:",
+            deletedImages
+        );
+
+
+        // Remove from screen
+
+        container.remove();
+
+    });
+
+
+    // ==========================================
+    // REMOVE MAIN IMAGE
+    // ==========================================
+
+    removeMainImage.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+
+            // ==================================
+            // CASE 1:
+            // MAIN IMAGE IS A NEW FILE
+            // ==================================
+
+            if (selectedFiles.length > 0) {
+
+                selectedFiles.shift();
+
+                updateFileInput();
+
+                displayNewImages();
+
+                return;
+
+            }
+
+
+            // ==================================
+            // CASE 2:
+            // MAIN IMAGE IS FROM DATABASE
+            // ==================================
+
+            const publicId =
+                mainImage.dataset.publicId;
+
+
+            if (publicId) {
+
+                deletedImages.push(publicId);
+
+            }
+
+
+            // Hide image
+
+            mainImage.src = "";
+
+            mainImage.classList.add("hidden");
+
+
+            // Hide remove button
+
+            removeMainImage.classList.add("hidden");
+
+
+            // Show upload content
+
+            if (uploadContent) {
+
+                uploadContent.classList.remove("hidden");
+
+            }
+
+
+            console.log(
+                "Deleted database images:",
+                deletedImages
+            );
+
+        }
+    );
+
+
+    // ==========================================
+    // FORM SUBMIT
+    // ==========================================
+
+    if (productForm) {
+
+        productForm.addEventListener(
+            "submit",
+            function () {
+
+
+                // ==================================
+                // DELETED IMAGES
+                // ==================================
+
+                const deletedInput =
+                    document.createElement("input");
+
+
+                deletedInput.type = "hidden";
+
+                deletedInput.name = "deletedImages";
+
+                deletedInput.value =
+                    JSON.stringify(deletedImages);
+
+
+                productForm.appendChild(
+                    deletedInput
+                );
+
+
+                // ==================================
+                // DEBUG
+                // ==================================
+
+                console.log(
+                    "FILES BEFORE SUBMIT:",
+                    productImages.files
+                );
+
+
+                console.log(
+                    "FILE COUNT:",
+                    productImages.files.length
+                );
+
+
+                console.log(
+                    "DELETED IMAGES:",
+                    deletedImages
+                );
+
+            }
+        );
+
+    }
+
+});
+
+</script>
+
+
+
+
+
+
+
+
+
+</body></html>

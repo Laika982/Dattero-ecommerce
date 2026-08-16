@@ -37,6 +37,39 @@ hbs.registerPartials(path.join(__dirname, "views", "partials"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 
+hbs.registerHelper("gt", function (a, b) {
+    return a > b;
+});
+
+hbs.registerHelper("lt", function (a, b) {
+    return a < b;
+});
+
+hbs.registerHelper("add", function (a, b) {
+    return a + b;
+});
+
+hbs.registerHelper("subtract", function (a, b) {
+    return a - b;
+});
+hbs.registerHelper("eq", function (a, b) {
+    return String(a) === String(b);
+});
+
+hbs.registerHelper("multiply", function (a, b) {
+    return Number(a) * Number(b);
+});
+
+hbs.registerHelper("range", function (start, end) {
+    const result = [];
+
+    for (let i = start; i <= end; i++) {
+        result.push(i);
+    }
+
+    return result;
+});
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

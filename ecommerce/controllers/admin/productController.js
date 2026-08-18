@@ -199,13 +199,32 @@ const loadAddProduct = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    const { product_name, description, category_id, variants } = req.body;
+    let { product_name, description, category_id, variants } = req.body;
+
+    console.log("=== ADD PRODUCT REQUEST ===");
+    console.log("Body:", req.body);
+    console.log("Files Count:", req.files?.length || 0);
+    console.log("Files:", req.files);
+    console.log("Variants (before conversion):", variants);
+
+    // ====================================================
+    // CONVERT VARIANTS OBJECT TO ARRAY
+    // ====================================================
+
+    if (variants && typeof variants === "object" && !Array.isArray(variants)) {
+      variants = Object.values(variants);
+    }
+
+    console.log("Variants (after conversion):", variants);
+    console.log("Is variants array?", Array.isArray(variants));
+    console.log("Variants length:", variants?.length);
 
     // ====================================================
     // PRODUCT VALIDATION
     // ====================================================
 
     if (!product_name || !description || !category_id) {
+      console.log("VALIDATION ERROR: Missing required fields");
       const categories = await Category.find({
         isListed: true,
       }).lean();
@@ -216,11 +235,14 @@ const addProduct = async (req, res) => {
       });
     }
 
+    console.log("✓ Product fields validation passed");
+
     // ====================================================
     // IMAGE VALIDATION
     // ====================================================
 
     if (!req.files || req.files.length < 3) {
+      console.log("VALIDATION ERROR: Not enough images");
       const categories = await Category.find({
         isListed: true,
       }).lean();
@@ -232,6 +254,7 @@ const addProduct = async (req, res) => {
     }
 
     if (req.files.length > 5) {
+      console.log("VALIDATION ERROR: Too many images");
       const categories = await Category.find({
         isListed: true,
       }).lean();
@@ -242,6 +265,8 @@ const addProduct = async (req, res) => {
       });
     }
 
+    console.log("✓ Image validation passed");
+
     // ====================================================
     // CHECK CATEGORY
     // ====================================================
@@ -249,6 +274,7 @@ const addProduct = async (req, res) => {
     const category = await Category.findById(category_id);
 
     if (!category) {
+      console.log("VALIDATION ERROR: Category not found");
       const categories = await Category.find({
         isListed: true,
       }).lean();
@@ -259,11 +285,14 @@ const addProduct = async (req, res) => {
       });
     }
 
+    console.log("✓ Category validation passed");
+
     // ====================================================
     // CHECK VARIANTS
     // ====================================================
 
     if (!variants || !Array.isArray(variants) || variants.length === 0) {
+      console.log("VALIDATION ERROR: No variants");
       const categories = await Category.find({
         isListed: true,
       }).lean();
@@ -274,11 +303,20 @@ const addProduct = async (req, res) => {
       });
     }
 
+    console.log("✓ Variants validation passed");
+
     // ====================================================
     // VALIDATE VARIANTS
     // ====================================================
 
-    for (const variant of variants) {
+    for (let i = 0; i < variants.length; i++) {
+      const variant = variants[i];
+      console.log(`\nValidating variant ${i}:`, variant);
+      console.log(`  weight: "${variant.weight}" (type: ${typeof variant.weight})`);
+      console.log(`  price: "${variant.price}" (type: ${typeof variant.price})`);
+      console.log(`  sku: "${variant.sku}" (type: ${typeof variant.sku})`);
+      console.log(`  stock_quantity: "${variant.stock_quantity}" (type: ${typeof variant.stock_quantity})`);
+
       // ----------------------------------------------
       // REQUIRED FIELDS
       // ----------------------------------------------
@@ -289,6 +327,7 @@ const addProduct = async (req, res) => {
         variant.price === undefined ||
         variant.stock_quantity === undefined
       ) {
+        console.log(`VALIDATION ERROR: Missing fields in variant ${i}`);
         const categories = await Category.find({
           isListed: true,
         }).lean();
@@ -304,6 +343,7 @@ const addProduct = async (req, res) => {
       // ----------------------------------------------
 
       if (Number.isNaN(Number(variant.price)) || Number(variant.price) < 0) {
+        console.log(`VALIDATION ERROR: Invalid price in variant ${i}`);
         const categories = await Category.find({
           isListed: true,
         }).lean();
@@ -322,6 +362,7 @@ const addProduct = async (req, res) => {
         Number.isNaN(Number(variant.stock_quantity)) ||
         Number(variant.stock_quantity) < 0
       ) {
+        console.log(`VALIDATION ERROR: Invalid stock in variant ${i}`);
         const categories = await Category.find({
           isListed: true,
         }).lean();
@@ -333,17 +374,21 @@ const addProduct = async (req, res) => {
       }
     }
 
+    console.log("✓ All variant fields validation passed");
+
     // ====================================================
     // SKU LIST
     // ====================================================
 
     const skuList = variants.map((variant) => variant.sku.trim().toUpperCase());
+    console.log("SKU List:", skuList);
 
     // ====================================================
     // DUPLICATE SKU INSIDE FORM
     // ====================================================
 
     if (new Set(skuList).size !== skuList.length) {
+      console.log("VALIDATION ERROR: Duplicate SKU in form");
       const categories = await Category.find({
         isListed: true,
       }).lean();
@@ -354,10 +399,13 @@ const addProduct = async (req, res) => {
       });
     }
 
+    console.log("✓ No duplicate SKUs in form");
+
     // ====================================================
     // CHECK SKU IN DATABASE
     // ====================================================
 
+    console.log("Checking for existing SKU in database...");
     const existingSku = await Variant.findOne({
       sku: {
         $in: skuList,
@@ -365,6 +413,7 @@ const addProduct = async (req, res) => {
     });
 
     if (existingSku) {
+      console.log("VALIDATION ERROR: SKU already exists in DB:", existingSku.sku);
       const categories = await Category.find({
         isListed: true,
       }).lean();
@@ -375,18 +424,29 @@ const addProduct = async (req, res) => {
       });
     }
 
+    console.log("✓ SKU is unique in database");
+
     // ====================================================
     // PRODUCT IMAGES
     // ====================================================
 
+    console.log("Processing images...");
     const images = req.files.map((file) => ({
       url: file.path,
       public_id: file.filename,
     }));
+    console.log("Images processed:", images.length);
 
     // ====================================================
     // CREATE PRODUCT
     // ====================================================
+
+    console.log("Creating product with data:", {
+      productName: product_name.trim(),
+      productDescription: description.trim(),
+      category_id,
+      images_count: images.length
+    });
 
     const product = await Product.create({
       category_id,
@@ -398,10 +458,13 @@ const addProduct = async (req, res) => {
       images: images,
     });
 
+    console.log("✓ Product created:", product._id);
+
     // ====================================================
     // CREATE VARIANTS
     // ====================================================
 
+    console.log("Creating variants...");
     const variantData = variants.map((variant) => ({
       product_id: product._id,
 
@@ -414,15 +477,22 @@ const addProduct = async (req, res) => {
       stock_quantity: Number(variant.stock_quantity),
     }));
 
+    console.log("Variant data prepared:", variantData);
+
     await Variant.insertMany(variantData);
+
+    console.log("✓ Variants created successfully");
 
     // ====================================================
     // REDIRECT
     // ====================================================
 
-    return res.redirect("/admin/products");
+    console.log("✓ Product added successfully! Redirecting...");
+    return res.redirect("/admin/product/products");
   } catch (error) {
-    console.error("ADD PRODUCT ERROR:", error);
+    console.error("❌ ADD PRODUCT ERROR:", error.message);
+    console.error("Error Stack:", error.stack);
+    console.error("Full Error:", error);
 
     const categories = await Category.find({
       isListed: true,
@@ -430,7 +500,7 @@ const addProduct = async (req, res) => {
 
     return res.status(500).render("admin/addProduct", {
       categories,
-      error: "Something went wrong while adding the product.",
+      error: `Something went wrong while adding the product. Error: ${error.message}`,
     });
   }
 };
@@ -766,7 +836,7 @@ const editProduct = async (req, res) => {
     // SUCCESS
     // ====================================================
 
-    return res.redirect("/admin/products");
+    return res.redirect("/admin/product/products");
   } catch (error) {
     console.error("EDIT PRODUCT ERROR:", error);
 
@@ -791,7 +861,7 @@ const deleteProduct = async (req, res) => {
 
         await Product.findByIdAndDelete(id);
 
-        return res.redirect("/admin/products");
+        return res.redirect("/admin/product/products");
 
     } catch (error) {
         console.error("Error deleting category:", error);

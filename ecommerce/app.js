@@ -4,10 +4,16 @@ require("dotenv").config();
 
 const connectDB = require("./config/db");
 const passport = require("./config/passport");
-const userRouter = require("./routes/userRouter");
-const adminRouter = require("./routes/adminRouter");
+const userRouter = require("./routes/user/authRouter");
+const userProfileRouter = require("./routes/user/profileRouter");
+const addressRouter = require("./routes/user/addressRouter");
+const adminRouter = require("./routes/admin/authRouter");
+const categoryRouter = require("./routes/admin/categoryRouter")
+const productRouter = require("./routes/admin/productRouter")
+const customerRouter = require("./routes/admin/customerRouter")
 
 const session = require("express-session");
+const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const hbs = require("hbs");
 
@@ -30,6 +36,26 @@ app.use(
 // Passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Global User Locals Middleware
+app.use(async (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+    if (token) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const User = require("./models/userSchema");
+      const user = await User.findById(decoded.userId);
+      if (user && !user.isBlocked) {
+        res.locals.user = user;
+      } else {
+        res.clearCookie("token");
+      }
+    }
+  } catch (error) {
+    res.clearCookie("token");
+  }
+  next();
+});
 
 // View engine
 hbs.registerPartials(path.join(__dirname, "views", "partials"));
@@ -78,9 +104,15 @@ app.use(express.static(path.join(__dirname, "public")));
 // Uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+
 // Routes
 app.use("/", userRouter);
+app.use("/profile",userProfileRouter);
+app.use("/profile/address", addressRouter);
 app.use("/admin", adminRouter);
+app.use("/admin/category", categoryRouter);
+app.use("/admin/customer", customerRouter);
+app.use("/admin/product", productRouter);
 
 // Start server
 app.listen(PORT, () => {

@@ -171,7 +171,7 @@
 </button>
 </div>
 </div>
-<form id="productForm" action="/admin/addProduct" method="POST" enctype="multipart/form-data" class="grid grid-cols-12 gap-grid-gutter">
+<form id="productForm" action="/admin/product/addProduct" method="POST" enctype="multipart/form-data" class="grid grid-cols-12 gap-grid-gutter">
 <div class="col-span-8 space-y-grid-gutter">
 <!-- Product Details -->
 <section class="bg-surface-container-lowest p-8 rounded-xl premium-shadow border border-black/[0.04]">
@@ -787,12 +787,12 @@ removeMainImage.addEventListener(
 
 
     // ==============================
-    // DEBUG BEFORE FORM SUBMIT
+    // FORM SUBMISSION VALIDATION
     // ==============================
 
     document
         .getElementById("productForm")
-        .addEventListener("submit", () => {
+        .addEventListener("submit", (event) => {
 
             console.log(
                 "FILES BEFORE SUBMIT:",
@@ -803,6 +803,21 @@ removeMainImage.addEventListener(
                 "FILE COUNT:",
                 productImages.files.length
             );
+
+            // Validate images
+            if (!productImages.files || productImages.files.length < 3) {
+                event.preventDefault();
+                alert("Please upload at least 3 product images.");
+                return;
+            }
+
+            // Validate variants
+            const variantRows = document.querySelectorAll("#variantTableBody tr");
+            if (variantRows.length === 0) {
+                event.preventDefault();
+                alert("Please add at least one variant.");
+                return;
+            }
 
         });
 

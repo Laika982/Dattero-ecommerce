@@ -273,7 +273,7 @@
 
         <!-- Add Product -->
         <a
-            href="/admin/addProduct"
+            href="/admin/product/addProduct"
             class="bg-primary text-on-primary px-8 py-3 rounded-full
                    flex items-center gap-2
                    transition-all
@@ -451,7 +451,7 @@
 
         <!-- Edit -->
         <a
-            href="/admin/editProduct/{{../_id}}"
+            href="/admin/product/editProduct/{{../_id}}"
             class="p-2 text-on-surface-variant hover:text-primary transition-colors"
         >
             <span class="material-symbols-outlined">
@@ -1206,7 +1206,7 @@
         form.method = "POST";
 
         form.action =
-            `/admin/deleteProduct/${selectedProductId}`;
+            `/admin/product/deleteProduct/${selectedProductId}`;
 
         document.body.appendChild(form);
 

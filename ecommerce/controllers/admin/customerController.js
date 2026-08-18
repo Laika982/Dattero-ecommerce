@@ -1,5 +1,7 @@
 const User = require("../../models/userSchema");
-const { options } = require("../../routes/adminRouter");
+// const { options } = require("../../routes/adminRouter");
+
+
 const customerInfo = async (req, res) => {
     try {
 
@@ -87,16 +89,16 @@ const customerBlocked = async (req, res) => {
     const user = await User.findByIdAndUpdate(id, { isBlocked: true });
 
     if (!user) {
-      return res.status(404).render("admin/customers", {
+      return res.status(404).render("admin/customer/customers", {
         error: "User not found",
       });
     }
 
-    return res.redirect("/admin/customers");
+    return res.redirect("/admin/customer/customers");
   } catch (error) {
     console.error("Error blocking customer:", error);
 
-    return res.status(500).render("admin/customers", {
+    return res.status(500).render("admin/customer/customers", {
       error: "Internal Server Error",
     });
   }
@@ -113,16 +115,16 @@ const customerUnBlocked = async (req, res) => {
     );
 
     if (!user) {
-      return res.status(404).render("admin/customers", {
+      return res.status(404).render("admin/customer/customers", {
         error: "User not found",
       });
     }
 
-    return res.redirect("/admin/customers");
+    return res.redirect("/admin/customer/customers");
   } catch (error) {
     console.error("Error unblocking customer:", error);
 
-    return res.status(500).render("admin/customers", {
+    return res.status(500).render("admin/customer/customers", {
       error: "Internal Server Error",
     });
   }

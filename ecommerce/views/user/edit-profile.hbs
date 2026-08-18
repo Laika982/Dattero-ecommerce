@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Edit Profile | Nutri Luxe</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
+    rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">try {
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "on-tertiary-container": "#fcfcfc",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed-variant": "#474747",
+              "surface": "#fbf9f9",
+              "on-primary-container": "#fefcfc",
+              "surface-bright": "#fbf9f9",
+              "on-error-container": "#93000a",
+              "secondary-fixed": "#e3e2e2",
+              "on-tertiary-fixed": "#1b1b1b",
+              "on-surface": "#1b1c1c",
+              "primary-fixed": "#e3e2e2",
+              "inverse-surface": "#303031",
+              "tertiary-container": "#747474",
+              "surface-container-high": "#e9e8e7",
+              "on-primary": "#ffffff",
+              "on-secondary-container": "#646464",
+              "surface-variant": "#e3e2e2",
+              "surface-container-highest": "#e3e2e2",
+              "secondary-container": "#e3e2e2",
+              "on-primary-fixed-variant": "#464747",
+              "surface-tint": "#5e5e5e",
+              "outline-variant": "#c4c7c7",
+              "on-background": "#1b1c1c",
+              "on-secondary-fixed": "#1b1c1c",
+              "on-primary-fixed": "#1b1c1c",
+              "on-secondary-fixed-variant": "#464747",
+              "secondary": "#5e5e5e",
+              "inverse-primary": "#c7c6c6",
+              "on-surface-variant": "#444748",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed-dim": "#c6c6c6",
+              "primary": "#5c5c5c",
+              "surface-dim": "#dbdad9",
+              "surface-container-low": "#f5f3f3",
+              "secondary-fixed-dim": "#c7c6c6",
+              "outline": "#747878",
+              "inverse-on-surface": "#f2f0f0",
+              "error": "#ba1a1a",
+              "primary-fixed-dim": "#c7c6c6",
+              "on-secondary": "#ffffff",
+              "primary-container": "#747474",
+              "tertiary": "#5c5c5c",
+              "background": "#fbf9f4",
+              "surface-container": "#efeded",
+              "tertiary-fixed": "#e2e2e2",
+              "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+            "spacing": {
+              "container-padding": "32px",
+              "stack-md": "16px",
+              "grid-gutter": "24px",
+              "section-gap-mobile": "64px",
+              "max-width": "1280px",
+              "stack-lg": "24px",
+              "section-gap": "120px",
+              "stack-sm": "8px"
+            },
+            "fontFamily": {
+              "label-md": ["Inter"],
+              "body-md": ["Inter"],
+              "body-xl": ["Inter"],
+              "body-lg": ["Inter"],
+              "display-lg-mobile": ["Plus Jakarta Sans"],
+              "display-lg": ["Plus Jakarta Sans"],
+              "headline-xl": ["Plus Jakarta Sans"],
+              "headline-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+              "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
+              "body-md": ["15px", { "lineHeight": "1.5", "fontWeight": "400" }],
+              "body-xl": ["20px", { "lineHeight": "1.5", "fontWeight": "400" }],
+              "body-lg": ["17px", { "lineHeight": "1.5", "fontWeight": "400" }],
+              "display-lg-mobile": ["40px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+              "display-lg": ["56px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+              "headline-xl": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+              "headline-lg": ["32px", { "lineHeight": "1.25", "fontWeight": "600" }]
+            }
+          },
+        },
+      }
+    } catch (_e) { }</script>
+</head>
+
+<body class="bg-background text-on-surface font-body-md custom-scrollbar">
+  <div class="flex min-h-screen">
+    <!-- SideNavBar Shell -->
+    <nav
+      class="fixed top-0 w-full z-50 bg-surface/95 dark:bg-surface/90 backdrop-blur-md border-b border-secondary/10 dark:border-secondary-fixed-dim/10 shadow-sm transition-all duration-300 shadow-md"
+      id="main-nav">
+      <div class="flex justify-between items-center w-full px-container-padding max-w-max-width mx-auto h-20"><a
+          class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0"
+          href="#">Nutri Burfi</a>
+        <div class="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2"><a
+            class="text-on-surface font-label-md text-label-md border-b-2 border-on-surface pb-1" href="/">Home</a><a
+            class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
+            href="#">Products</a><a
+            class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
+            href="#">About Us</a><a
+            class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
+            href="#">Contact</a></div>
+        <div class="flex items-center gap-4 text-on-surface z-10 flex-shrink-0"><button
+            class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50"><span
+            class="material-symbols-outlined">search</span></button><button
+            class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50"><span
+            class="material-symbols-outlined">favorite</span></button><button
+            class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 relative"><span
+            class="material-symbols-outlined">shopping_cart</span><span
+            class="absolute top-1 right-1 w-2 h-2 bg-accent-blue rounded-full"></span></button><button
+            class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 hidden md:block"><span
+            class="material-symbols-outlined">person</span></button><button
+            class="md:hidden hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 ml-2"
+            id="mobile-menu-btn"><span class="material-symbols-outlined">menu</span></button></div>
+      </div>
+    </nav>
+    <!-- Main Canvas Area -->
+    <main class="flex-1 p-container-padding pt-24">
+      <!-- Top Bar Branding -->
+      <header class="flex items-center mb-16">
+        <div class="space-y-1">
+          <h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Edit Profile</h2>
+          <p class="text-on-surface-variant font-body-md">Modify your account details below.</p>
+        </div>
+      </header>
+      <div class="max-w-4xl space-y-12 mx-auto">
+        <form action="/profile/edit" method="POST" class="space-y-12">
+          {{#if error}}
+          <div class="p-4 bg-error-container text-on-error-container rounded-xl text-sm border border-error/10">
+            {{error}}
+          </div>
+          {{/if}}
+
+          <section class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            <div class="md:col-span-1">
+              <h3 class="font-label-md text-label-md text-on-surface mb-2 uppercase tracking-widest">General Info</h3>
+              <p class="text-sm text-on-surface-variant">Update your name and phone number.</p>
+            </div>
+            <div class="md:col-span-2 space-y-8">
+              <!-- Full Name -->
+              <div class="space-y-2 group">
+                <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1"
+                  for="name">Full Name</label>
+                <div class="relative">
+                  <input
+                    class="w-full bg-surface-container-low border-transparent focus:border-primary/30 py-4 px-5 rounded-xl text-on-surface font-body-md transition-all duration-200"
+                    id="name" name="name" type="text" value="{{userData.name}}" required>
+                </div>
+              </div>
+              <!-- Email Address -->
+              <div class="space-y-2 group">
+                <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1"
+                  for="email">Email Address</label>
+                <div class="relative">
+                  <input
+                    class="w-full bg-surface-container-low border-transparent focus:border-primary/30 py-4 px-5 rounded-xl text-on-surface font-body-md transition-all duration-200"
+                    id="email" name="email" type="email" value="{{userData.email}}" required>
+                </div>
+              </div>
+              <!-- Phone Number -->
+              <div class="space-y-2 group">
+                <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1"
+                  for="phone">Phone Number</label>
+                <div class="relative">
+                  <input
+                    class="w-full bg-surface-container-low border-transparent focus:border-primary/30 py-4 px-5 rounded-xl text-on-surface font-body-md transition-all duration-200"
+                    id="phone" name="phone" type="tel" value="{{userData.phone}}">
+                </div>
+              </div>
+              <!-- Form Actions -->
+              <div class="pt-4 flex gap-4">
+                <button type="submit"
+                  class="px-8 py-2.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md hover:opacity-90 transition-opacity active:scale-95 shadow-sm">
+                  Save Changes
+                </button>
+                <a href="/profile"
+                  class="px-8 py-2.5 rounded-full border border-outline/20 text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors inline-block text-center">
+                  Cancel
+                </a>
+              </div>
+            </div>
+          </section>
+        </form>
+      </div>
+
+      <footer class="bg-surface-container-high w-full pt-section-gap pb-stack-lg border-t border-secondary/10 mt-24">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter px-container-padding max-w-max-width mx-auto">
+          <div class="flex flex-col gap-6 col-span-1 md:col-span-1"><span
+              class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Nutri Burfi</span>
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-xs">Elevating functional nutrition through
+              the art of traditional craftsmanship. Premium protein sweets for the modern lifestyle.</p>
+            <div class="flex gap-4 mt-2"><a class="text-on-surface-variant hover:text-accent-blue transition-colors"
+                href="#"><span class="material-symbols-outlined">share</span></a></div>
+          </div>
+          <div class="flex flex-col gap-4">
+            <h4 class="font-label-md text-label-md text-on-surface mb-2">Shop</h4><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">Shop All</a><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">Protein Burfi</a><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">Performance Bars</a><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">Wholesale</a>
+          </div>
+          <div class="flex flex-col gap-4">
+            <h4 class="font-label-md text-label-md text-on-surface mb-2">About</h4><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">Our Story</a><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">Ingredients</a><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">Nutritional Science</a><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">Contact Us</a>
+          </div>
+          <div class="flex flex-col gap-4">
+            <h4 class="font-label-md text-label-md text-on-surface mb-2">Support</h4><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">FAQ</a><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">Shipping Info</a><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">Returns</a><a
+              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
+              href="#">Privacy Policy</a>
+          </div>
+          <div
+            class="col-span-1 md:col-span-4 mt-12 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="font-label-md text-[10px] text-on-surface-variant font-normal">© 2024 Nutri Burfi. Handcrafted
+              Protein Excellence.</p>
+            <div class="flex gap-4 p-8 min-h-[300px]"><span
+                class="font-label-md text-[10px] text-on-surface-variant font-normal">Secure Checkout</span></div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+
+</html>

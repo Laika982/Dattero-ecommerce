@@ -219,22 +219,38 @@
 <span class="absolute top-1 right-1 w-2 h-2 bg-accent-blue rounded-full"></span>
 </button>
 <div class="relative hidden md:block">
-<button id="user-menu-btn" class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
-<span class="material-symbols-outlined" data-icon="person">person</span>
-</button>
-<div id="user-dropdown" class="absolute right-0 mt-3 w-48 rounded-2xl bg-white border border-secondary/15 shadow-xl py-2 hidden z-50">
-{{#if user}}
-<a href="/logout" class="flex items-center gap-3 px-4 py-3 text-label-md text-error hover:bg-error-container/20 transition-colors">
-<span class="material-symbols-outlined text-[20px]" data-icon="logout">logout</span>
-Logout
-</a>
-{{else}}
-<a href="/login" class="flex items-center gap-3 px-4 py-3 text-label-md text-on-surface hover:bg-surface-container-low transition-colors">
-<span class="material-symbols-outlined text-[20px]" data-icon="login">login</span>
-Login
-</a>
-{{/if}}
-</div>
+
+  {{#if user}}
+
+    <!-- USER HAS TOKEN -->
+
+    <a
+      href="/profile"
+      class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
+
+      <span class="material-symbols-outlined">
+        person
+      </span>
+
+    </a>
+
+  {{else}}
+
+    <!-- USER DOES NOT HAVE TOKEN -->
+
+    <button
+      type="button"
+      id="login-popup-btn"
+      class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
+
+      <span class="material-symbols-outlined">
+        person
+      </span>
+
+    </button>
+
+  {{/if}}
+
 </div>
 <!-- Mobile Menu Toggle -->
 <button class="md:hidden hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 ml-2" id="mobile-menu-btn">
@@ -249,5 +265,166 @@ Login
 <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Products</a>
 <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">About Us</a>
 <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Contact</a>
-<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between" href="#">Account <span class="material-symbols-outlined">person</span></a>
+
+{{#if user}}
+
+  <a
+    class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between"
+    href="/profile">
+
+    Account
+
+    <span class="material-symbols-outlined">
+      person
+    </span>
+
+  </a>
+
+{{else}}
+
+  <button
+    class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between w-full text-left"
+    id="mobile-login-popup-btn">
+
+    Account
+
+    <span class="material-symbols-outlined">
+      person
+    </span>
+
+  </button>
+
+{{/if}}
 </div>
+
+<div
+  id="login-popup"
+  class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/40 backdrop-blur-sm">
+
+  <div
+    class="w-[90%] max-w-md rounded-2xl bg-white p-8 shadow-2xl">
+
+    <div class="text-center">
+
+      <span class="material-symbols-outlined text-5xl text-primary">
+        person
+      </span>
+
+      <h2 class="mt-4 text-2xl font-semibold">
+        Login Required
+      </h2>
+
+      <p class="mt-2 text-on-surface-variant">
+        Please login to access your profile.
+      </p>
+
+      <div class="mt-6 flex gap-3">
+
+        <button
+          id="close-login-popup"
+          type="button"
+          class="flex-1 rounded-xl border border-outline-variant px-4 py-3">
+
+          Cancel
+
+        </button>
+
+        <a
+          href="/login"
+          class="flex-1 rounded-xl bg-primary px-4 py-3 text-center text-white">
+
+          Login
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  const loginPopupBtn =
+    document.getElementById("login-popup-btn");
+
+  const mobileLoginPopupBtn =
+    document.getElementById("mobile-login-popup-btn");
+
+  const loginPopup =
+    document.getElementById("login-popup");
+
+  const closeLoginPopup =
+    document.getElementById("close-login-popup");
+
+
+  // Desktop login popup
+  if (loginPopupBtn) {
+
+    loginPopupBtn.addEventListener("click", () => {
+
+      loginPopup.classList.remove("hidden");
+
+      loginPopup.classList.add("flex");
+
+    });
+
+  }
+
+
+  // Mobile login popup
+  if (mobileLoginPopupBtn) {
+
+    mobileLoginPopupBtn.addEventListener("click", () => {
+
+      loginPopup.classList.remove("hidden");
+
+      loginPopup.classList.add("flex");
+
+      const mobileMenu =
+        document.getElementById("mobile-menu");
+
+      if (mobileMenu) {
+        mobileMenu.classList.add("hidden");
+      }
+
+    });
+
+  }
+
+
+  // Close button
+  if (closeLoginPopup) {
+
+    closeLoginPopup.addEventListener("click", () => {
+
+      loginPopup.classList.add("hidden");
+
+      loginPopup.classList.remove("flex");
+
+    });
+
+  }
+
+
+  // Click outside popup
+  if (loginPopup) {
+
+    loginPopup.addEventListener("click", (event) => {
+
+      if (event.target === loginPopup) {
+
+        loginPopup.classList.add("hidden");
+
+        loginPopup.classList.remove("flex");
+
+      }
+
+    });
+
+  }
+
+</script>

@@ -5,9 +5,9 @@ const router = express.Router();
 const {
     isAuthenticated,
     isGuest
-} = require("../middleware/authMidilware");
+} = require("../../middleware/authMidilware");
 
-const userController = require("../controllers/user/userContoller");
+const userController = require("../../controllers/user/authContoller");
 const passport = require("passport");
 
 
@@ -144,6 +144,18 @@ router.get(
         return res.redirect("/");
     }
 );
+
+
+// Logout
+router.get(
+    "/logout",
+    userController.logoutUser
+);
+
+
+//products
+
+router.get("/products",)
 
 
 module.exports = router;

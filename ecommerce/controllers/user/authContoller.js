@@ -402,7 +402,7 @@ const forgotPasswordVerifyOtp = async (req, res) => {
     });
 
     // Go to reset password page
-    return res.redirect("/reset-password");
+    return res.redirect("/resetPassword");
   } catch (error) {
     console.error(error);
 
@@ -540,8 +540,7 @@ const resendSignupOtp = async (req, res) => {
             maxAge: 5 * 60 * 1000
         });
 
-        return res.redirect("/verify-otp");
-
+        return res.status(200).json({ message: "OTP resent successfully" });
     } catch (error) {
         console.error(error);
 
@@ -600,6 +599,29 @@ async function sendVerificationEmail(email, otp) {
   }
 }
 
+const loadVerifyOtp = async (req, res) => {
+  try {
+    const otpToken = req.cookies.otpToken;
+    if (!otpToken) {
+      return res.redirect("/signup");
+    }
+    return res.render("user/verify-otp");
+  } catch (error) {
+    console.error(error);
+    return res.redirect("/signup");
+  }
+};
+
+const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("token");
+    return res.redirect("/");
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.redirect("/");
+  }
+};
+
 console.log(genarateOtp());
 module.exports = {
   loadHomepage,
@@ -614,5 +636,7 @@ module.exports = {
   forgotPassword,
   forgotPasswordVerifyOtp,
   resetPassword,
-  resendSignupOtp
+  resendSignupOtp,
+  logoutUser,
+  loadVerifyOtp
 };

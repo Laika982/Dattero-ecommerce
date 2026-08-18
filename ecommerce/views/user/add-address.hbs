@@ -1,0 +1,242 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth" style=""><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Add New Address | Nutri Luxe</title><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#464747",
+                        "tertiary": "#5c5c5c",
+                        "on-surface": "#1b1c1c",
+                        "surface-container-low": "#f5f3f3",
+                        "secondary-container": "#e3e2e2",
+                        "primary-fixed-dim": "#c7c6c6",
+                        "inverse-on-surface": "#f2f0f0",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#646464",
+                        "on-primary-container": "#fefcfc",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#e2e2e2",
+                        "outline": "#747878",
+                        "surface-container-highest": "#e3e2e2",
+                        "surface-container": "#efeded",
+                        "surface-tint": "#5e5e5e",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#fcfcfc",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "surface": "#fbf9f9",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-surface-variant": "#444748",
+                        "surface-bright": "#fbf9f9",
+                        "on-primary-fixed": "#1b1c1c",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e3e2e2",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#e9e8e7",
+                        "outline-variant": "#c4c7c7",
+                        "primary": "#5c5c5c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "24px",
+                        "section-gap-mobile": "64px",
+                        "stack-md": "16px",
+                        "section-gap": "120px",
+                        "container-padding": "32px",
+                        "max-width": "1280px",
+                        "grid-gutter": "24px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-xl": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                        "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed antialiased">
+<!---->
+<header class="fixed top-0 w-full bg-surface/80 dark:bg-surface/80 backdrop-blur-md z-50 border-b border-black/5 dark:border-white/5">
+<div class="flex justify-between items-center px-container-padding h-20 w-full max-w-max-width mx-auto">
+<a href="/" class="font-headline-lg text-headline-lg font-bold tracking-tight text-on-surface dark:text-on-surface">Nutri Luxe</a>
+<nav class="hidden md:flex items-center space-x-8">
+<a href="#" class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md">Shop All</a>
+<a href="#" class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md">Nutri Burfi</a>
+<a href="#" class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md">Wellness</a>
+<a href="#" class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md">About</a>
+</nav>
+<div class="flex items-center space-x-6">
+<button class="material-symbols-outlined text-primary scale-95 active:opacity-80 transition-all" data-icon="search">search</button>
+<button class="material-symbols-outlined text-primary scale-95 active:opacity-80 transition-all" data-icon="favorite">favorite</button>
+<a href="/profile" class="material-symbols-outlined text-primary scale-95 active:opacity-80 transition-all" data-icon="person">person</a>
+<button class="material-symbols-outlined text-primary scale-95 active:opacity-80 transition-all" data-icon="shopping_bag">shopping_bag</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area with Dashboard Sidebar -->
+<main class="pt-24 min-h-screen max-w-max-width mx-auto px-container-padding pb-section-gap flex flex-col md:flex-row gap-grid-gutter">
+<!-- Sidebar Navigation -->
+
+<!-- Form Content -->
+<section class="flex-grow w-full">
+<div class="mb-stack-lg">
+<nav class="flex items-center space-x-2 text-on-surface-variant mb-4">
+<a href="/profile/address" class="text-label-md font-label-md hover:text-on-surface transition-colors">Address Book</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-label-md font-label-md text-on-surface">Add New Address</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Add New Address</h1>
+<p class="text-on-surface-variant mt-2 font-body-md text-body-md">Create a new delivery destination for your Nutri Luxe shipments.</p>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-8 border border-black/5 shadow-sm">
+<form id="addressForm" action="/profile/address/add" method="POST" class="space-y-6">
+<input type="hidden" name="isDefault" id="isDefault" value="false">
+<!-- Name & Phone -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-grid-gutter">
+<div class="space-y-2">
+<label for="fullName" class="block font-label-md text-label-md text-on-surface-variant">Full Name</label>
+<input type="text" id="fullName" name="fullName" placeholder="John Doe" class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+</div>
+<div class="space-y-2">
+<label for="phone" class="block font-label-md text-label-md text-on-surface-variant">Phone Number</label>
+<input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+</div>
+</div>
+<!-- Street Address -->
+<div class="space-y-2">
+<label for="street" class="block font-label-md text-label-md text-on-surface-variant">Street Address</label>
+<input type="text" id="street" name="street" placeholder="123 Wellness Way" class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+</div>
+<!-- Suite / Apartment -->
+<div class="space-y-2">
+<label for="suite" class="block font-label-md text-label-md text-on-surface-variant">Apartment, suite, etc. (optional)</label>
+<input type="text" id="suite" name="suite" placeholder="Penthouse A" class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+</div>
+<!-- City, State, Zip -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-grid-gutter">
+<div class="space-y-2">
+<label for="city" class="block font-label-md text-label-md text-on-surface-variant">City</label>
+<input type="text" id="city" name="city" placeholder="New York" class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+</div>
+<div class="space-y-2">
+<label for="state" class="block font-label-md text-label-md text-on-surface-variant">State / Province</label>
+<input type="text" id="state" name="state" placeholder="NY" class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+</div>
+<div class="space-y-2">
+<label for="zip" class="block font-label-md text-label-md text-on-surface-variant">ZIP / Postal Code</label>
+<input type="text" id="zip" name="zip" placeholder="10001" class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+</div>
+</div>
+<!-- Country -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-2">
+<label for="country" class="block font-label-md text-label-md text-on-surface-variant">Country</label>
+<input type="text" id="country" name="country" placeholder="United States" class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+</div>
+<div class="space-y-2">
+<label for="addressLabel" class="block font-label-md text-label-md text-on-surface-variant">Address Label</label>
+<input type="text" id="addressLabel" name="addressLabel" placeholder="e.g., Home, Work" class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+</div>
+</div>
+<!-- Default Toggle -->
+<div class="flex items-center space-x-3 py-2">
+<div class="relative inline-flex h-6 w-11 items-center cursor-pointer group" onclick="toggleSwitch(this)">
+<div id="switch-bg" class="h-6 w-11 rounded-full bg-surface-container-highest transition-colors duration-200"></div>
+<div id="switch-dot" class="absolute left-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform duration-200 transform translate-x-0"></div>
+</div>
+<label class="text-body-md font-body-md text-on-surface cursor-pointer" onclick="toggleSwitch(this.previousElementSibling)">Set as Default Shipping Address</label>
+</div>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row gap-4 pt-4">
+<button type="submit" class="flex-1 bg-on-surface text-surface py-4 px-8 rounded-lg font-label-md text-label-md hover:opacity-90 active:scale-[0.98] transition-all">
+                            Save Address
+                        </button>
+<a href="/profile/address" class="px-8 py-4 rounded-lg font-label-md text-label-md border border-outline/20 hover:bg-surface-container transition-colors text-on-surface inline-block text-center flex items-center justify-center">
+                            Cancel
+                        </a>
+</div>
+</form>
+</div>
+<!-- Image/Mood Content -->
+<div class="mt-section-gap grid grid-cols-1 md:grid-cols-2 gap-grid-gutter">
+<div class="h-64 rounded-xl overflow-hidden relative group">
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors z-10"></div>
+<img class="w-full h-full object-cover" data-alt="A serene, minimalist interior of a high-end luxury lifestyle boutique with soft neutral tones. Large windows allow soft morning light to flood the space, highlighting organic textures and clean architectural lines. The atmosphere is quiet, premium, and calm, reflecting the Nutri Luxe brand aesthetic of refined wellness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC21l7HEyAk5zC6Wf-XgOUtcb3CKArUK5Y2DDRB1wWqMfBJ7QtysVETSqnSSovjE7BBQGuSDFyVljeKf50fzy2UXgnL1tmfySGScwTjso3Gh3mRNXSuWHp6QPaCT_5RHzHOGQObZVcCeRMR39-zVEogoruich311-VZJYO0P-0r068MX3xwD-xM2cmMkZFr_Mycde4PCSiSTcQRK6lWucM0BwgfVTOISW5fYWJ7_4RBS7i-dTRYyOek4-0-jWj-ok34K8Mw4gDmV0">
+</div>
+<div class="flex flex-col justify-center p-8 bg-surface-container rounded-xl">
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-2">Delivery Precision</h3>
+<p class="text-body-md text-on-surface-variant">We ensure your artisanal wellness burfis reach you in pristine condition. Your precise address details help us maintain our commitment to seamless luxury logistics.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-surface-container-low dark:bg-surface-container-lowest border-t border-black/5">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter px-container-padding max-w-max-width mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="font-headline-xl text-headline-xl text-on-surface dark:text-on-surface mb-4">Nutri Luxe</div>
+<p class="text-on-surface-variant font-body-md text-body-md mb-8">© 2024 Nutri Luxe. Elevated Wellness for the Modern Connoisseur.</p>
+</div>
+<div class="flex flex-col space-y-4">
+<h4 class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Shop</h4>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Shop All</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Nutri Burfi</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Wellness Collections</a>
+</div>
+<div class="flex flex-col space-y-4">
+<h4 class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Company</h4>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Our Mission</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Sustainability</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Privacy Policy</a>
+</div>
+<div class="flex flex-col space-y-4">
+<h4 class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Customer Care</h4>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Orders</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Shipping &amp; Returns</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Contact Us</a>
+</div>
+</div>
+</footer>
+<script>
+        function toggleSwitch(container) {
+            const dot = container.querySelector('#switch-dot') || container.nextElementSibling.querySelector('#switch-dot');
+            const bg = container.querySelector('#switch-bg') || container.nextElementSibling.querySelector('#switch-bg');
+            const hiddenInput = document.getElementById('isDefault');
+            
+            const isChecked = dot.classList.contains('translate-x-5');
+            
+            if (isChecked) {
+                dot.classList.remove('translate-x-5');
+                dot.classList.add('translate-x-0');
+                bg.classList.remove('bg-on-surface');
+                bg.classList.add('bg-surface-container-highest');
+                hiddenInput.value = "false";
+            } else {
+                dot.classList.remove('translate-x-0');
+                dot.classList.add('translate-x-5');
+                bg.classList.remove('bg-surface-container-highest');
+                bg.classList.add('bg-on-surface');
+                hiddenInput.value = "true";
+            }
+        }
+    </script>
+</body></html>

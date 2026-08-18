@@ -423,7 +423,7 @@
 {{#if this.isBlocked}}
 
     <form
-        action="/admin/unblockCustomer?id={{this._id}}"
+        action="/admin/customer/unblockCustomer?id={{this._id}}"
         method="POST"
         class="unblock-customer-form inline"
     >
@@ -438,7 +438,7 @@
 {{else}}
 
     <form
-        action="/admin/blockCustomer?id={{this._id}}"
+        action="/admin/customer/blockCustomer?id={{this._id}}"
         method="POST"
         class="block-customer-form inline"
     >

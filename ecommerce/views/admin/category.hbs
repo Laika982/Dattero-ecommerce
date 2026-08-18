@@ -262,7 +262,7 @@
 <p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">Curate the hierarchy of luxury wellness. Organize your products into premium collections and oversee inventory flow across the store.</p>
 </div>
 <a
-    href="/admin/addCategory"
+    href="/admin/category/addCategory"
     class="bg-primary text-on-primary px-8 py-4 rounded-xl font-label-md text-label-md flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-all shadow-sm active:scale-95"
 >
     <span class="material-symbols-outlined">
@@ -391,7 +391,7 @@
 
                 <!-- Edit -->
                 <a
-    href="/admin/editCategory/{{this._id}}"
+    href="/admin/category/editCategory/{{this._id}}"
     class="text-on-surface-variant hover:text-primary transition-colors"
 >
     <span class="material-symbols-outlined text-[20px]">
@@ -400,7 +400,7 @@
 </a>
 
                <form
-    action="/admin/deleteCategory/{{this._id}}"
+    action="/admin/category/deleteCategory/{{this._id}}"
     method="POST"
     class="delete-category-form"
 >

@@ -1,0 +1,208 @@
+{{>user/header}}
+<!-- Main Content -->
+<main class="flex-grow pt-section-gap pb-section-gap px-container-padding max-w-max-width mx-auto w-full">
+<!-- Header & Controls -->
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-surface-variant pb-stack-lg">
+<div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-ink-black mb-stack-sm tracking-tight">Shop All</h1>
+<p class="font-body-xl text-body-xl text-on-surface-variant max-w-2xl">Handcrafted protein excellence for your daily performance.</p>
+</div>
+<div class="mt-stack-lg md:mt-0 flex items-center gap-stack-sm bg-surface-gray px-4 py-2 rounded-full">
+<label class="font-body-md text-body-md text-on-surface-variant" for="sort">Sort By:</label>
+<select class="bg-transparent border-none text-ink-black font-body-md font-medium text-body-md focus:ring-0 py-0 pl-2 pr-8 cursor-pointer" id="sort">
+<option>Featured</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+<option>Highest Rated</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col md:flex-row gap-12">
+<!-- Sidebar Filters -->
+<aside class="w-full md:w-64 shrink-0 flex flex-col gap-8 hidden md:flex">
+<!-- Category Filter -->
+<div>
+<h3 class="font-label-md text-label-md text-ink-black mb-stack-md uppercase tracking-wider">Category</h3>
+<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
+<span class="group-hover:text-ink-black transition-colors">Burfi</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
+<span class="group-hover:text-ink-black transition-colors">Bars</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
+<span class="group-hover:text-ink-black transition-colors">Samplers</span>
+</label>
+</li>
+</ul>
+</div>
+<!-- Price Filter -->
+<div>
+<h3 class="font-label-md text-label-md text-ink-black mb-stack-md uppercase tracking-wider pt-8 border-t border-surface-variant">Price Range</h3>
+<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" name="price" type="radio">
+<span class="group-hover:text-ink-black transition-colors">Under $20</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" name="price" type="radio">
+<span class="group-hover:text-ink-black transition-colors">$20 - $40</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" name="price" type="radio">
+<span class="group-hover:text-ink-black transition-colors">Over $40</span>
+</label>
+</li>
+</ul>
+</div>
+<!-- Protein Content Filter -->
+<div>
+<h3 class="font-label-md text-label-md text-ink-black mb-stack-md uppercase tracking-wider pt-8 border-t border-surface-variant">Protein Content</h3>
+<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
+<span class="group-hover:text-ink-black transition-colors">10g - 15g</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
+<span class="group-hover:text-ink-black transition-colors">16g - 20g</span>
+</label>
+</li>
+<li>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
+<span class="group-hover:text-ink-black transition-colors">20g+</span>
+</label>
+</li>
+</ul>
+</div>
+</aside>
+<!-- Product Grid -->
+<div class="flex-grow grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Product Card 1: Dates Burfi -->
+<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden apple-shadow relative transition-transform duration-300 hover:-translate-y-1 p-4 border border-surface-variant/30">
+<!-- Badges & Wishlist -->
+<div class="absolute top-6 left-6 right-6 flex justify-between items-start z-10">
+<span class="bg-surface-container-lowest/90 backdrop-blur-md border border-surface-variant/50 text-ink-black font-label-md text-xs px-3 py-1.5 rounded-full shadow-sm">Best Seller</span>
+<button aria-label="Add to wishlist" class="w-8 h-8 flex items-center justify-center bg-surface-container-lowest/90 backdrop-blur-md rounded-full text-ink-black hover:bg-surface-gray transition-colors border border-surface-variant/50">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+</div>
+<!-- Image -->
+<div class="h-64 overflow-hidden rounded-xl bg-surface-gray mb-4">
+<img alt="Dates Burfi" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A close-up, high-end editorial shot of artisanal Dates Burfi resting on a smooth cream marble surface. The lighting is soft and natural, creating a gentle golden glow that highlights the rich, dark texture of the dates and embedded premium nuts. Minimalist white background with subtle depth. The aesthetic is clean, luxurious, and appetizing, emphasizing culinary craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9bsfGRhb3GIRilsd8H0yYP7jtkuatScH_lhLc4TkjT3vIdr1D5uxfUVLjp3hXzCt3KYG0E-es5brFAI9I2ILaIPpKxoQH_BZEV4tMqSiYCx-WYjDWZ5LWl72olV3ayXFr01b0l-lom-7VjHr5RVHDZ5QuuCJ-AO7KkG9tJdmFo0ad2jWzYozSQaPodxo6HTAfzdYvbRzaxSK9RZl6aG8pozrZ7JQXzC8MyIiSwBVEsfR5suq-J54zcXed7O2h6qRvks8Qp78mYzs">
+</div>
+<!-- Content -->
+<div class="flex flex-col flex-grow px-2 pb-2">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-lg text-xl text-ink-black tracking-tight">Dates Burfi</h3>
+<span class="font-body-md text-sm text-on-surface-variant bg-surface-gray py-1 px-3 rounded-full">15g Protein</span>
+</div>
+<div class="flex items-center mb-4 text-ink-black">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star_half</span>
+<span class="ml-2 font-body-md text-sm text-on-surface-variant">(128)</span>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-variant/50 flex items-center justify-between">
+<p class="font-headline-lg text-xl text-ink-black">$24.00</p>
+<button class="bg-ink-black text-white font-body-md font-medium text-sm py-2 px-4 rounded-full hover:bg-ink-black/90 transition-colors flex items-center gap-2">
+                            Add
+                            <span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2: Peanut Burfi -->
+<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden apple-shadow relative transition-transform duration-300 hover:-translate-y-1 p-4 border border-surface-variant/30">
+<!-- Badges & Wishlist -->
+<div class="absolute top-6 left-6 right-6 flex justify-between items-start z-10">
+<span class="bg-surface-container-lowest/90 backdrop-blur-md border border-surface-variant/50 text-ink-black font-label-md text-xs px-3 py-1.5 rounded-full shadow-sm">New</span>
+<button aria-label="Add to wishlist" class="w-8 h-8 flex items-center justify-center bg-surface-container-lowest/90 backdrop-blur-md rounded-full text-ink-black hover:bg-surface-gray transition-colors border border-surface-variant/50">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+</div>
+<!-- Image -->
+<div class="h-64 overflow-hidden rounded-xl bg-surface-gray mb-4">
+<img alt="Peanut Burfi" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="An elegant product photograph of square-cut Peanut Burfi pieces stacked beautifully on a minimalist beige ceramic plate. A soft ray of sunlight casts a gentle, warm light across the textured surface of the sweets, revealing crushed roasted peanuts. The background is a clean, out-of-focus soft white space. The overall tone is sophisticated, organic, and highly appetizing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClcNweRlZHt2Y38g1YlawGZ2Ziu7ScQSxlnRFZwE0K65CNBUcB1EQXm8FSNK0essqy512vjQk6LQL5rkxfakOGrjt2UP9zoA4oK8P8mg9qYI6mj6djN2pO1UbU4GCO3fJ487nlWnbeXFKbelKE3ZdIXx5NXBlAzu5Abm1KztXTk5-KfzyNt3wwtvyGiWCYsOi7EEYmURfd3nM_IbAlRrTu6LtPD-HJXbb1VGMjQwfkLWG6mrkfEmly25u7u9hEcL_ZPZBlCKmVBqg">
+</div>
+<!-- Content -->
+<div class="flex flex-col flex-grow px-2 pb-2">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-lg text-xl text-ink-black tracking-tight">Peanut Burfi</h3>
+<span class="font-body-md text-sm text-on-surface-variant bg-surface-gray py-1 px-3 rounded-full">18g Protein</span>
+</div>
+<div class="flex items-center mb-4 text-ink-black">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]">star</span>
+<span class="ml-2 font-body-md text-sm text-on-surface-variant">(84)</span>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-variant/50 flex items-center justify-between">
+<p class="font-headline-lg text-xl text-ink-black">$22.00</p>
+<button class="bg-surface-gray text-ink-black font-body-md font-medium text-sm py-2 px-4 rounded-full hover:bg-surface-variant transition-colors flex items-center gap-2">
+                            Add
+                            <span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3: Protein Bar -->
+<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden apple-shadow relative transition-transform duration-300 hover:-translate-y-1 p-4 border border-surface-variant/30">
+<!-- Badges & Wishlist -->
+<div class="absolute top-6 right-6 flex justify-end items-start z-10 w-full px-6">
+<button aria-label="Add to wishlist" class="w-8 h-8 flex items-center justify-center bg-surface-container-lowest/90 backdrop-blur-md rounded-full text-ink-black hover:bg-surface-gray transition-colors border border-surface-variant/50">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+</div>
+<!-- Image -->
+<div class="h-64 overflow-hidden rounded-xl bg-surface-gray mb-4">
+<img alt="Protein Bar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A striking, modern visual of a premium nutritional Protein Bar partially unwrapped from sleek matte packaging. The bar rests on a smooth, dark brown slate surface with minimalist styling. Lighting is dramatic yet clean, highlighting the dense, nougat-like texture and a subtle chocolate drizzle. The composition embodies high-performance nutrition with a luxurious, culinary edge." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvQHfmqjyWswHFg0RfP-zPjkAhAbrPV45-kFdUgeht0dWfuDRAaDtNkpz2-Kr6xn-KglO5EQnBDLJVPUD5MwBvrnZOmJPkUZa3gMhS7P1UJi59a9MLAV7neiaY-KUzely_F8gQmMrFnGdqZWfzcLMJxmEifmWZ0dcni_62OrzfgckYvSI5J7tHI11ftSeUulM5rFhLER2EzPLFObo5bJLshXjUAXPv2zBeMOGK3WYqqyySL2KpYtQppyqobvx7g4Z3FCVhBwNQj6M">
+</div>
+<!-- Content -->
+<div class="flex flex-col flex-grow px-2 pb-2">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-lg text-xl text-ink-black tracking-tight">Signature Protein Bar</h3>
+<span class="font-body-md text-sm text-on-surface-variant bg-surface-gray py-1 px-3 rounded-full">22g Protein</span>
+</div>
+<div class="flex items-center mb-4 text-ink-black">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="ml-2 font-body-md text-sm text-on-surface-variant">(342)</span>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-variant/50 flex items-center justify-between">
+<p class="font-headline-lg text-xl text-ink-black">$3.50 <span class="text-sm font-normal text-on-surface-variant">/ each</span></p>
+<button class="bg-surface-gray text-ink-black font-body-md font-medium text-sm py-2 px-4 rounded-full hover:bg-surface-variant transition-colors flex items-center gap-2">
+                            Add
+                            <span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+{{>user/footer}}

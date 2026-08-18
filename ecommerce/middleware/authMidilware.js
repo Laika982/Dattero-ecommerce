@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/userSchema");
 
-const isAuthenticated = (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
     try {
         res.set("Cache-Control", "no-store");
 
@@ -15,18 +16,21 @@ const isAuthenticated = (req, res, next) => {
             process.env.JWT_SECRET
         );
 
+        const user = await User.findById(decoded.userId);
+
          // Check blocked status
-        if (user.isBlocked) {
+        if (!user || user.isBlocked) {
             res.clearCookie("token");
 
             return res.redirect("/login?blocked=true");
         }
 
-        req.user = decoded;
+        req.user = user;
 
         next();
 
     } catch (error) {
+        console.error("isAuthenticated middleware error:", error);
         res.clearCookie("token");
 
         return res.redirect("/login");
@@ -51,7 +55,7 @@ const isGuest = (req, res, next) => {
         );
 
         // User is already logged in
-        return res.redirect("/home");
+        return res.redirect("/");
 
     } catch (error) {
         // Token is invalid or expired

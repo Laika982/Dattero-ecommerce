@@ -145,7 +145,7 @@ const addCategory = async (req, res) => {
 
         await newCategory.save();
 
-        return res.redirect("/admin/categories");
+        return res.redirect("/admin/category/categories");
 
     } catch (error) {
         console.error("Error adding category:", error);
@@ -234,7 +234,7 @@ const editCategory = async (req, res) => {
         );
 
 
-        return res.redirect("/admin/categories");
+        return res.redirect("/admin/category/categories");
 
     } catch (error) {
 
@@ -258,7 +258,7 @@ const deleteCategory = async (req, res) => {
 
         await Category.findByIdAndDelete(id);
 
-        return res.redirect("/admin/categories");
+        return res.redirect("/admin/category/categories");
 
     } catch (error) {
         console.error("Error deleting category:", error);

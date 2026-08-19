@@ -1,14 +1,12 @@
-const express = require("express");
-const jwt = require("jsonwebtoken");
+import express from "express";
+import jwt from "jsonwebtoken";
 const router = express.Router();
 
-const {
-    isAuthenticated,
-    isGuest
-} = require("../../middleware/authMidilware");
+import { isAuthenticated,
+    isGuest } from "../../middleware/authMidilware.js";
 
-const userController = require("../../controllers/user/authContoller");
-const passport = require("passport");
+import userController from "../../controllers/user/authContoller.js";
+import passport from "passport";
 
 
 // ==================== PUBLIC ====================
@@ -155,7 +153,6 @@ router.get(
 
 //products
 
-router.get("/products",)
+router.get("/products", userController.loadProducts);
 
-
-module.exports = router;
+export default router;

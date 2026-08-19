@@ -1,21 +1,31 @@
-const express = require("express");
-const path = require("path");
-require("dotenv").config();
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import dotenv from "dotenv";
+import morgan from "morgan";
+import logger from "./utils/logger.js";
 
-const connectDB = require("./config/db");
-const passport = require("./config/passport");
-const userRouter = require("./routes/user/authRouter");
-const userProfileRouter = require("./routes/user/profileRouter");
-const addressRouter = require("./routes/user/addressRouter");
-const adminRouter = require("./routes/admin/authRouter");
-const categoryRouter = require("./routes/admin/categoryRouter")
-const productRouter = require("./routes/admin/productRouter")
-const customerRouter = require("./routes/admin/customerRouter")
+import connectDB from "./config/db.js";
+import passport from "./config/passport.js";
+import userRouter from "./routes/user/authRouter.js";
+import userProfileRouter from "./routes/user/profileRouter.js";
+import addressRouter from "./routes/user/addressRouter.js";
+import adminRouter from "./routes/admin/authRouter.js";
+import categoryRouter from "./routes/admin/categoryRouter.js";
+import productRouter from "./routes/admin/productRouter.js";
+import customerRouter from "./routes/admin/customerRouter.js";
 
-const session = require("express-session");
-const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
-const hbs = require("hbs");
+import session from "express-session";
+import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
+import hbs from "hbs";
+import User from "./models/userSchema.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +34,13 @@ const PORT = process.env.PORT || 3000;
 connectDB();
 
 app.use(cookieParser());
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms", {
+    stream: {
+      write: (message) => logger.info(message.trim()),
+    },
+  })
+);
 // Session
 app.use(
   session({
@@ -43,7 +60,6 @@ app.use(async (req, res, next) => {
     const token = req.cookies.token;
     if (token) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const User = require("./models/userSchema");
       const user = await User.findById(decoded.userId);
       if (user && !user.isBlocked) {
         res.locals.user = user;
@@ -116,7 +132,7 @@ app.use("/admin/product", productRouter);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(
+  logger.info(
     `Server is running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`
   );
 });

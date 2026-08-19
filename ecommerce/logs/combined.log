@@ -1,0 +1,65 @@
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 13:32:00"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 13:33:13"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 13:40:26"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 13:44:51"}
+{"level":"info","message":"GET /profile 200 24613 - 41.779 ms","timestamp":"2026-08-19 13:45:25"}
+{"level":"info","message":"GET /profile 200 24613 - 16.884 ms","timestamp":"2026-08-19 13:45:26"}
+{"level":"info","message":"GET /profile 200 24613 - 15.140 ms","timestamp":"2026-08-19 13:45:27"}
+{"level":"info","message":"GET /profile/edit 200 21343 - 16.402 ms","timestamp":"2026-08-19 13:47:59"}
+{"level":"info","message":"GET /profile 200 24613 - 16.387 ms","timestamp":"2026-08-19 13:48:01"}
+{"level":"info","message":"GET /profile/edit 200 21343 - 19.351 ms","timestamp":"2026-08-19 13:48:01"}
+{"level":"info","message":"GET /profile 200 24613 - 14.004 ms","timestamp":"2026-08-19 13:48:01"}
+{"level":"info","message":"GET /profile/edit 200 21343 - 11.149 ms","timestamp":"2026-08-19 13:48:02"}
+{"level":"info","message":"GET /profile 200 24613 - 12.527 ms","timestamp":"2026-08-19 13:48:02"}
+{"level":"info","message":"GET / 304 - - 8.556 ms","timestamp":"2026-08-19 13:48:06"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 13:49:53"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 13:50:57"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 13:51:22"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 13:51:42"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 13:51:47"}
+{"level":"info","message":"GET / 304 - - 32.977 ms","timestamp":"2026-08-19 13:55:23"}
+{"level":"info","message":"GET /profile 200 27640 - 20.713 ms","timestamp":"2026-08-19 13:55:25"}
+{"level":"info","message":"GET /profile 200 31342 - 16.654 ms","timestamp":"2026-08-19 14:03:29"}
+{"level":"info","message":"GET /profile/address 200 22258 - 18.791 ms","timestamp":"2026-08-19 14:03:40"}
+{"level":"info","message":"GET /profile 200 31342 - 16.139 ms","timestamp":"2026-08-19 14:05:53"}
+{"level":"info","message":"GET /profile/address 200 22258 - 16.502 ms","timestamp":"2026-08-19 14:05:56"}
+{"level":"info","message":"GET /profile/address 200 22258 - 13.309 ms","timestamp":"2026-08-19 14:08:09"}
+{"level":"info","message":"GET /profile/address 200 22258 - 15.505 ms","timestamp":"2026-08-19 14:08:10"}
+{"level":"info","message":"GET /profile/address 200 22258 - 13.392 ms","timestamp":"2026-08-19 14:08:11"}
+{"level":"info","message":"GET / 304 - - 4.926 ms","timestamp":"2026-08-19 14:08:14"}
+{"level":"info","message":"GET / 304 - - 5.810 ms","timestamp":"2026-08-19 14:08:35"}
+{"level":"info","message":"GET / 304 - - 5.420 ms","timestamp":"2026-08-19 14:08:36"}
+{"level":"info","message":"GET / 304 - - 6.877 ms","timestamp":"2026-08-19 14:08:36"}
+{"level":"info","message":"GET / 304 - - 5.618 ms","timestamp":"2026-08-19 14:12:49"}
+{"level":"info","message":"GET / 304 - - 4.872 ms","timestamp":"2026-08-19 14:12:50"}
+{"level":"info","message":"GET / 304 - - 4.317 ms","timestamp":"2026-08-19 14:12:50"}
+{"level":"info","message":"GET / 304 - - 4.975 ms","timestamp":"2026-08-19 14:12:51"}
+{"level":"info","message":"GET /profile 200 34531 - 12.990 ms","timestamp":"2026-08-19 14:12:54"}
+{"level":"info","message":"GET /profile/address 200 25716 - 11.223 ms","timestamp":"2026-08-19 14:12:56"}
+{"level":"info","message":"GET /profile/address 200 25716 - 12.633 ms","timestamp":"2026-08-19 14:13:45"}
+{"level":"info","message":"GET /profile/address 200 25716 - 11.011 ms","timestamp":"2026-08-19 14:13:46"}
+{"level":"info","message":"GET /profile/address 200 25716 - 15.465 ms","timestamp":"2026-08-19 14:13:46"}
+{"level":"info","message":"GET /profile/address 200 25716 - 14.476 ms","timestamp":"2026-08-19 14:13:47"}
+{"level":"info","message":"GET /profile/address 200 25716 - 10.269 ms","timestamp":"2026-08-19 14:13:47"}
+{"level":"info","message":"GET /profile/address 200 25716 - 13.156 ms","timestamp":"2026-08-19 14:13:47"}
+{"level":"info","message":"GET /profile/address 200 25716 - 11.440 ms","timestamp":"2026-08-19 14:13:48"}
+{"level":"info","message":"GET /profile/address 200 25716 - 11.442 ms","timestamp":"2026-08-19 14:13:48"}
+{"level":"info","message":"GET /profile/address 200 25716 - 10.354 ms","timestamp":"2026-08-19 14:13:48"}
+{"level":"info","message":"GET /profile/address 200 25716 - 9.872 ms","timestamp":"2026-08-19 14:13:48"}
+{"level":"info","message":"GET / 304 - - 6.128 ms","timestamp":"2026-08-19 14:14:00"}
+{"level":"info","message":"GET / 304 - - 4.356 ms","timestamp":"2026-08-19 14:14:02"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 14:18:12"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 14:20:01"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 14:20:09"}
+{"level":"info","message":"GET / 200 38494 - 27.464 ms","timestamp":"2026-08-19 14:20:41"}
+{"level":"info","message":"GET /favicon.ico 404 150 - 2.781 ms","timestamp":"2026-08-19 14:20:42"}
+{"level":"info","message":"GET /products 200 34115 - 11.657 ms","timestamp":"2026-08-19 14:20:55"}
+{"level":"info","message":"GET /login 200 24985 - 8.913 ms","timestamp":"2026-08-19 14:21:33"}
+{"level":"info","message":"GET /signup 200 24393 - 15.019 ms","timestamp":"2026-08-19 14:22:16"}
+{"level":"info","message":898578,"timestamp":"2026-08-19 14:25:25"}
+{"level":"info","message":"POST /signup 200 27973 - 26072.173 ms","timestamp":"2026-08-19 14:25:51"}
+{"level":"info","message":"POST /verify-otp 400 27973 - 15.956 ms","timestamp":"2026-08-19 14:27:01"}
+{"level":"info","message":"GET /login 200 24985 - 6.682 ms","timestamp":"2026-08-19 14:27:29"}
+{"level":"info","message":"POST /login 401 24985 - 19.154 ms","timestamp":"2026-08-19 14:28:19"}
+{"level":"info","message":"GET /signup 200 24393 - 8.596 ms","timestamp":"2026-08-19 14:29:03"}
+{"level":"info","message":"GET / 304 - - 2.763 ms","timestamp":"2026-08-19 14:30:05"}

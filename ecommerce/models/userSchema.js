@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
     {
@@ -26,6 +26,12 @@ const userSchema = new mongoose.Schema(
         },
 
         referalCode: {
+            type: String,
+            required: false,
+            default: null
+        },
+
+        profileImage: {
             type: String,
             required: false,
             default: null
@@ -67,4 +73,4 @@ const userSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema);

@@ -1,7 +1,8 @@
-const Product = require("../../models/productSchema");
-const Variant = require("../../models/variantSchema");
-const Category = require("../../models/categorySchema");
-const cloudinary = require("../../config/cloudinary");
+import Product from "../../models/productSchema.js";
+import Variant from "../../models/variantSchema.js";
+import Category from "../../models/categorySchema.js";
+import cloudinary from "../../config/cloudinary.js";
+import { generatePageArray } from "../../utils/pagination.js";
 
 // ============================================================
 // GET ALL PRODUCTS
@@ -137,11 +138,7 @@ const activeCategories = await Product.countDocuments({
     // ====================================================
 
     const totalPages = Math.ceil(totalProducts / limit);
-    const pages = [];
-
-for (let i = 1; i <= totalPages; i++) {
-  pages.push(i);
-}
+    const pages = generatePageArray(totalPages);
 
     // ====================================================
     // RENDER
@@ -869,7 +866,16 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-module.exports = {
+export {
+  productInfo,
+  loadAddProduct,
+  addProduct,
+  loadEditProduct,
+  editProduct,
+  deleteProduct,
+};
+
+export default {
   productInfo,
   loadAddProduct,
   addProduct,

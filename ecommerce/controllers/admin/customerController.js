@@ -1,5 +1,6 @@
-const User = require("../../models/userSchema");
-// const { options } = require("../../routes/adminRouter");
+import User from "../../models/userSchema.js";
+import { generateActivePageArray } from "../../utils/pagination.js";
+// import { options } from "../../routes/adminRouter.js";
 
 
 const customerInfo = async (req, res) => {
@@ -57,14 +58,7 @@ const customerInfo = async (req, res) => {
         const totalPages = Math.ceil(count / limit);
 
         // Create page numbers
-        const pages = [];
-
-        for (let i = 1; i <= totalPages; i++) {
-            pages.push({
-                page: i,
-                active: i === page
-            });
-        }
+        const pages = generateActivePageArray(totalPages, page);
 
         return res.render("admin/customers", {
             data: userData,
@@ -130,7 +124,13 @@ const customerUnBlocked = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
+  customerInfo,
+  customerBlocked,
+  customerUnBlocked,
+};
+
+export default {
   customerInfo,
   customerBlocked,
   customerUnBlocked,

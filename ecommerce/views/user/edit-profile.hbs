@@ -1,266 +1,287 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html lang="en" style="">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Edit Profile | Nutri Luxe</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
-    rel="stylesheet">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
-    rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script id="tailwind-config">try {
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-              "on-tertiary-container": "#fcfcfc",
-              "on-error": "#ffffff",
-              "on-tertiary-fixed-variant": "#474747",
-              "surface": "#fbf9f9",
-              "on-primary-container": "#fefcfc",
-              "surface-bright": "#fbf9f9",
-              "on-error-container": "#93000a",
-              "secondary-fixed": "#e3e2e2",
-              "on-tertiary-fixed": "#1b1b1b",
-              "on-surface": "#1b1c1c",
-              "primary-fixed": "#e3e2e2",
-              "inverse-surface": "#303031",
-              "tertiary-container": "#747474",
-              "surface-container-high": "#e9e8e7",
-              "on-primary": "#ffffff",
-              "on-secondary-container": "#646464",
-              "surface-variant": "#e3e2e2",
-              "surface-container-highest": "#e3e2e2",
-              "secondary-container": "#e3e2e2",
-              "on-primary-fixed-variant": "#464747",
-              "surface-tint": "#5e5e5e",
-              "outline-variant": "#c4c7c7",
-              "on-background": "#1b1c1c",
-              "on-secondary-fixed": "#1b1c1c",
-              "on-primary-fixed": "#1b1c1c",
-              "on-secondary-fixed-variant": "#464747",
-              "secondary": "#5e5e5e",
-              "inverse-primary": "#c7c6c6",
-              "on-surface-variant": "#444748",
-              "surface-container-lowest": "#ffffff",
-              "on-tertiary": "#ffffff",
-              "tertiary-fixed-dim": "#c6c6c6",
-              "primary": "#5c5c5c",
-              "surface-dim": "#dbdad9",
-              "surface-container-low": "#f5f3f3",
-              "secondary-fixed-dim": "#c7c6c6",
-              "outline": "#747878",
-              "inverse-on-surface": "#f2f0f0",
-              "error": "#ba1a1a",
-              "primary-fixed-dim": "#c7c6c6",
-              "on-secondary": "#ffffff",
-              "primary-container": "#747474",
-              "tertiary": "#5c5c5c",
-              "background": "#fbf9f4",
-              "surface-container": "#efeded",
-              "tertiary-fixed": "#e2e2e2",
-              "error-container": "#ffdad6"
-            },
-            "borderRadius": {
-              "DEFAULT": "0.25rem",
-              "lg": "0.5rem",
-              "xl": "0.75rem",
-              "full": "9999px"
-            },
-            "spacing": {
-              "container-padding": "32px",
-              "stack-md": "16px",
-              "grid-gutter": "24px",
-              "section-gap-mobile": "64px",
-              "max-width": "1280px",
-              "stack-lg": "24px",
-              "section-gap": "120px",
-              "stack-sm": "8px"
-            },
-            "fontFamily": {
-              "label-md": ["Inter"],
-              "body-md": ["Inter"],
-              "body-xl": ["Inter"],
-              "body-lg": ["Inter"],
-              "display-lg-mobile": ["Plus Jakarta Sans"],
-              "display-lg": ["Plus Jakarta Sans"],
-              "headline-xl": ["Plus Jakarta Sans"],
-              "headline-lg": ["Plus Jakarta Sans"]
-            },
-            "fontSize": {
-              "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600" }],
-              "body-md": ["15px", { "lineHeight": "1.5", "fontWeight": "400" }],
-              "body-xl": ["20px", { "lineHeight": "1.5", "fontWeight": "400" }],
-              "body-lg": ["17px", { "lineHeight": "1.5", "fontWeight": "400" }],
-              "display-lg-mobile": ["40px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
-              "display-lg": ["56px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-              "headline-xl": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
-              "headline-lg": ["32px", { "lineHeight": "1.25", "fontWeight": "600" }]
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Edit Profile | Nutri Luxe</title>
+    <style>
+        @layer base {
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
             }
-          },
-        },
-      }
-    } catch (_e) { }</script>
+
+            body {
+                overscroll-behavior: none;
+            }
+
+            main>:first-child {
+                margin-top: 0 !important;
+            }
+
+            main>:last-child {
+                margin-bottom: 0 !important;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+        id="tailwind-config">tailwind.config = { theme: { extend: { "colors": { "primary-fixed": "#e5e2e1", "tertiary-fixed-dim": "#f0bf5c", "on-error-container": "#93000a", "on-tertiary-fixed-variant": "#5d4200", "tertiary-fixed": "#ffdea4", "on-primary-fixed-variant": "#474746", "on-primary": "#ffffff", "secondary-container": "#e1dfdf", "on-secondary-fixed-variant": "#464747", "error": "#ba1a1a", "primary-fixed-dim": "#c8c6c5", "on-primary-fixed": "#1c1b1b", "error-container": "#ffdad6", "outline-variant": "#c4c7c7", "on-tertiary-fixed": "#261900", "on-tertiary": "#ffffff", "secondary": "#5e5e5e", "on-secondary": "#ffffff", "brand-gold": "#c89b3c", "on-surface": "#111827", "on-error": "#ffffff", "on-tertiary-container": "#a77d1f", "background": "#f3f4f6", "surface-container": "#ebeeee", "tertiary-container": "#261900", "primary-container": "#1c1b1b", "tertiary": "#000000", "primary": "#000000", "on-primary-container": "#858383", "on-background": "#181c1d", "on-surface-variant": "#444748", "inverse-primary": "#c8c6c5", "surface-dim": "#d7dbda", "surface-container-low": "#f1f4f4", "inverse-surface": "#2d3131", "on-secondary-fixed": "#1b1c1c", "surface-tint": "#5f5e5e", "outline": "#747878", "surface-variant": "#e0e3e3", "secondary-fixed": "#e4e2e2", "on-secondary-container": "#636262", "surface-bright": "#f7fafa", "secondary-fixed-dim": "#c7c6c6", "surface-container-high": "#e5e9e8", "surface": "#ffffff", "surface-container-highest": "#e0e3e3", "surface-container-lowest": "#ffffff", "inverse-on-surface": "#eef1f1" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "grid-gutter": "24px", "stack-sm": "8px", "section-gap": "48px", "container-padding": "32px", "stack-lg": "24px", "stack-md": "16px", "max-width": "1280px" }, "fontFamily": { "label-md": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"], "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "label-sm": ["Inter"] }, "fontSize": { "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "display-lg": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-lg": ["20px", { "lineHeight": "28px", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.1em", "fontWeight": "700" }] } } } }</script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap"
+        rel="stylesheet">
 </head>
 
-<body class="bg-background text-on-surface font-body-md custom-scrollbar">
-  <div class="flex min-h-screen">
-    <!-- SideNavBar Shell -->
-    <nav
-      class="fixed top-0 w-full z-50 bg-surface/95 dark:bg-surface/90 backdrop-blur-md border-b border-secondary/10 dark:border-secondary-fixed-dim/10 shadow-sm transition-all duration-300 shadow-md"
-      id="main-nav">
-      <div class="flex justify-between items-center w-full px-container-padding max-w-max-width mx-auto h-20"><a
-          class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0"
-          href="#">Nutri Burfi</a>
-        <div class="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2"><a
-            class="text-on-surface font-label-md text-label-md border-b-2 border-on-surface pb-1" href="/">Home</a><a
-            class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
-            href="#">Products</a><a
-            class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
-            href="#">About Us</a><a
-            class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
-            href="#">Contact</a></div>
-        <div class="flex items-center gap-4 text-on-surface z-10 flex-shrink-0"><button
-            class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50"><span
-            class="material-symbols-outlined">search</span></button><button
-            class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50"><span
-            class="material-symbols-outlined">favorite</span></button><button
-            class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 relative"><span
-            class="material-symbols-outlined">shopping_cart</span><span
-            class="absolute top-1 right-1 w-2 h-2 bg-accent-blue rounded-full"></span></button><button
-            class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 hidden md:block"><span
-            class="material-symbols-outlined">person</span></button><button
-            class="md:hidden hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 ml-2"
-            id="mobile-menu-btn"><span class="material-symbols-outlined">menu</span></button></div>
-      </div>
-    </nav>
-    <!-- Main Canvas Area -->
-    <main class="flex-1 p-container-padding pt-24">
-      <!-- Top Bar Branding -->
-      <header class="flex items-center mb-16">
-        <div class="space-y-1">
-          <h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Edit Profile</h2>
-          <p class="text-on-surface-variant font-body-md">Modify your account details below.</p>
-        </div>
-      </header>
-      <div class="max-w-4xl space-y-12 mx-auto">
-        <form action="/profile/edit" method="POST" class="space-y-12">
-          {{#if error}}
-          <div class="p-4 bg-error-container text-on-error-container rounded-xl text-sm border border-error/10">
-            {{error}}
-          </div>
-          {{/if}}
-
-          <section class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-            <div class="md:col-span-1">
-              <h3 class="font-label-md text-label-md text-on-surface mb-2 uppercase tracking-widest">General Info</h3>
-              <p class="text-sm text-on-surface-variant">Update your name and phone number.</p>
+<body class="bg-background font-body-md text-on-surface antialiased">
+    <div class="flex flex-col min-h-screen">
+        <nav class="fixed top-0 w-full z-50 bg-surface/95 backdrop-blur-md border-b border-secondary/10 shadow-sm transition-all duration-300"
+            id="main-nav">
+            <div class="flex justify-between items-center w-full px-container-padding max-w-max-width mx-auto h-20"><a
+                    class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0"
+                    href="#">Nutri Burfi</a>
+                <div class="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2"><a
+                        class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
+                        href="/">Home</a><a
+                        class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
+                        href="#">Products</a><a
+                        class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
+                        href="#">About Us</a><a
+                        class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
+                        href="#">Contact</a></div>
+                <div class="flex items-center gap-4 text-on-surface z-10 flex-shrink-0"><button
+                        class="hover:bg-surface-container p-2 rounded-full transition-colors"><span
+                            class="material-symbols-outlined">search</span></button><button
+                        class="hover:bg-surface-container p-2 rounded-full transition-colors"><span
+                            class="material-symbols-outlined">favorite</span></button><button
+                        class="hover:bg-surface-container p-2 rounded-full transition-colors relative"><span
+                            class="material-symbols-outlined">shopping_cart</span></button><button
+                        class="hover:bg-surface-container p-2 rounded-full transition-colors hidden md:block"><span
+                            class="material-symbols-outlined">person</span></button></div>
             </div>
-            <div class="md:col-span-2 space-y-8">
-              <!-- Full Name -->
-              <div class="space-y-2 group">
-                <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1"
-                  for="name">Full Name</label>
-                <div class="relative">
-                  <input
-                    class="w-full bg-surface-container-low border-transparent focus:border-primary/30 py-4 px-5 rounded-xl text-on-surface font-body-md transition-all duration-200"
-                    id="name" name="name" type="text" value="{{userData.name}}" required>
+        </nav>
+        <main class="flex-1 pt-20 p-container-padding max-w-max-width mx-auto w-full">
+            <div class="flex flex-col w-full max-w-max-width mx-auto">
+                <!-- Header Area -->
+                <div class="flex items-center justify-between mb-section-gap pt-6">
+                    <div class="flex items-center gap-stack-md">
+                        <a class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors shadow-sm"
+                            href="/profile">
+                            <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                        </a>
+                        <div>
+                            <h1 class="font-display-lg text-display-lg text-on-surface">Edit Personal Information</h1>
+                            <p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage your account details and contact preferences.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-stack-sm hidden md:flex">
+                        <a href="/profile"
+                            class="px-6 py-2.5 rounded-full font-label-md text-label-md text-on-surface bg-surface hover:bg-surface-container-low transition-colors shadow-sm inline-block text-center">
+                            Discard Changes
+                        </a>
+                        <button
+                            class="px-6 py-2.5 rounded-full font-label-md text-label-md text-on-primary bg-primary hover:bg-on-surface transition-colors shadow-md"
+                            form="personal-info-form" type="submit">
+                            Save Changes
+                        </button>
+                    </div>
                 </div>
-              </div>
-              <!-- Email Address -->
-              <div class="space-y-2 group">
-                <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1"
-                  for="email">Email Address</label>
-                <div class="relative">
-                  <input
-                    class="w-full bg-surface-container-low border-transparent focus:border-primary/30 py-4 px-5 rounded-xl text-on-surface font-body-md transition-all duration-200"
-                    id="email" name="email" type="email" value="{{userData.email}}" required>
-                </div>
-              </div>
-              <!-- Phone Number -->
-              <div class="space-y-2 group">
-                <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1"
-                  for="phone">Phone Number</label>
-                <div class="relative">
-                  <input
-                    class="w-full bg-surface-container-low border-transparent focus:border-primary/30 py-4 px-5 rounded-xl text-on-surface font-body-md transition-all duration-200"
-                    id="phone" name="phone" type="tel" value="{{userData.phone}}">
-                </div>
-              </div>
-              <!-- Form Actions -->
-              <div class="pt-4 flex gap-4">
-                <button type="submit"
-                  class="px-8 py-2.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md hover:opacity-90 transition-opacity active:scale-95 shadow-sm">
-                  Save Changes
-                </button>
-                <a href="/profile"
-                  class="px-8 py-2.5 rounded-full border border-outline/20 text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors inline-block text-center">
-                  Cancel
-                </a>
-              </div>
-            </div>
-          </section>
-        </form>
-      </div>
+                <!-- Main Content Area: Split Layout -->
+                <div class="flex flex-col lg:flex-row gap-grid-gutter w-full">
+                    <!-- Left Column: Avatar & Quick Actions (1/3 width) -->
+                    <div class="w-full lg:w-1/3 flex flex-col gap-stack-lg">
+                        <div
+                            class="bg-surface rounded-xl p-container-padding shadow-sm flex flex-col items-center text-center relative overflow-hidden group">
+                            <!-- Decorative background blur -->
+                            <div
+                                class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-brand-gold/10 blur-2xl rounded-full -z-10 pointer-events-none">
+                            </div>
+                            <div class="relative mb-stack-lg">
+                                <div class="w-32 h-32 rounded-full overflow-hidden shadow-md ring-4 ring-surface bg-surface-container-low">
+                                    <img alt="Profile Avatar" class="w-full h-full object-cover" id="avatar-preview"
+                                        src="{{#if userData.profileImage}}{{userData.profileImage}}{{else}}https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E{{/if}}">
+                                </div>
+                                <button type="button" id="trigger-upload"
+                                    class="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg hover:bg-on-surface transition-transform hover:scale-105 active:scale-95 group-hover:-translate-y-1">
+                                    <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                                </button>
+                            </div>
+                            <h3 class="font-headline-lg text-headline-lg text-on-surface mb-1">{{userData.name}}</h3>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-lg">Customer</p>
+                            <div class="flex flex-col gap-stack-sm w-full">
+                                <button type="button" id="change-photo-btn"
+                                    class="w-full py-2.5 rounded-lg font-label-md text-label-md text-on-primary bg-primary hover:bg-on-surface transition-colors shadow-sm">
+                                    Change Photo
+                                </button>
+                                <button type="button" id="remove-photo-btn"
+                                    class="w-full py-2.5 rounded-lg font-label-md text-label-md text-error bg-error-container hover:bg-error/20 transition-colors shadow-sm">
+                                    Remove Photo
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Security Reminder Card -->
+                        <div
+                            class="bg-surface-container-low rounded-xl p-stack-lg shadow-sm flex items-start gap-stack-md">
+                            <div
+                                class="w-8 h-8 rounded-full bg-brand-gold/20 flex items-center justify-center shrink-0 mt-1">
+                                <span class="material-symbols-outlined text-brand-gold text-[16px]">security</span>
+                            </div>
+                            <div>
+                                <h4 class="font-label-md text-label-md text-on-surface mb-1">Data Security</h4>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                                    Your personal information is encrypted and securely stored. We never share your
+                                    contact details without explicit consent.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Column: Form Fields (2/3 width) -->
+                    <div class="w-full lg:w-2/3">
+                        <div class="bg-surface rounded-xl p-container-padding shadow-sm relative overflow-hidden">
+                            <form action="/profile/edit" method="POST" enctype="multipart/form-data" class="flex flex-col gap-stack-lg relative z-10" id="personal-info-form">
+                                {{#if error}}
+                                <div class="p-4 bg-error-container text-on-error-container rounded-xl text-sm border border-error/10">
+                                    {{error}}
+                                </div>
+                                {{/if}}
 
-      <footer class="bg-surface-container-high w-full pt-section-gap pb-stack-lg border-t border-secondary/10 mt-24">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter px-container-padding max-w-max-width mx-auto">
-          <div class="flex flex-col gap-6 col-span-1 md:col-span-1"><span
-              class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Nutri Burfi</span>
-            <p class="font-body-md text-body-md text-on-surface-variant max-w-xs">Elevating functional nutrition through
-              the art of traditional craftsmanship. Premium protein sweets for the modern lifestyle.</p>
-            <div class="flex gap-4 mt-2"><a class="text-on-surface-variant hover:text-accent-blue transition-colors"
-                href="#"><span class="material-symbols-outlined">share</span></a></div>
-          </div>
-          <div class="flex flex-col gap-4">
-            <h4 class="font-label-md text-label-md text-on-surface mb-2">Shop</h4><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Shop All</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Protein Burfi</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Performance Bars</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Wholesale</a>
-          </div>
-          <div class="flex flex-col gap-4">
-            <h4 class="font-label-md text-label-md text-on-surface mb-2">About</h4><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Our Story</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Ingredients</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Nutritional Science</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Contact Us</a>
-          </div>
-          <div class="flex flex-col gap-4">
-            <h4 class="font-label-md text-label-md text-on-surface mb-2">Support</h4><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">FAQ</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Shipping Info</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Returns</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Privacy Policy</a>
-          </div>
-          <div
-            class="col-span-1 md:col-span-4 mt-12 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="font-label-md text-[10px] text-on-surface-variant font-normal">© 2024 Nutri Burfi. Handcrafted
-              Protein Excellence.</p>
-            <div class="flex gap-4 p-8 min-h-[300px]"><span
-                class="font-label-md text-[10px] text-on-surface-variant font-normal">Secure Checkout</span></div>
-          </div>
-        </div>
-      </footer>
-    </main>
-  </div>
+                                <!-- Hidden inputs for profile image upload and removal -->
+                                <input accept="image/*" class="hidden" id="avatar-upload" name="profileImage" type="file">
+                                <input type="hidden" name="removeProfileImage" id="removeProfileImage" value="false">
+
+                                <div class="flex items-center gap-2 mb-2 pb-4 border-b border-surface-variant/50">
+                                    <span class="material-symbols-outlined text-on-surface-variant">badge</span>
+                                    <h2 class="font-headline-lg text-headline-lg text-on-surface">General Details</h2>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-grid-gutter"><!-- Full Name -->
+                                    <div class="flex flex-col gap-1.5 md:col-span-2">
+                                        <label class="font-label-md text-label-md text-on-surface" for="name">Full Name</label>
+                                        <div class="relative">
+                                            <input
+                                                class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 px-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
+                                                id="name" name="name" placeholder="Full Name" type="text"
+                                                value="{{userData.name}}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex items-center gap-2 mt-stack-md mb-2 pb-4 border-b border-surface-variant/50">
+                                    <span class="material-symbols-outlined text-on-surface-variant">contact_mail</span>
+                                    <h2 class="font-headline-lg text-headline-lg text-on-surface">Contact Information</h2>
+                                </div>
+                                <div class="grid grid-cols-1 gap-grid-gutter">
+                                    <!-- Email Address -->
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="font-label-md text-label-md text-on-surface" for="email">Email Address</label>
+                                        <div class="relative group">
+                                            <span
+                                                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-brand-gold transition-colors">mail</span>
+                                            <input
+                                                class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
+                                                id="email" name="email" type="email" value="{{userData.email}}" required>
+                                        </div>
+                                        <p class="font-label-sm text-label-sm text-on-surface-variant mt-1">This email is used for account recovery and notifications.</p>
+                                    </div>
+                                    <!-- Phone Number -->
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="font-label-md text-label-md text-on-surface" for="phone">Phone Number</label>
+                                        <div class="relative group">
+                                            <span
+                                                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-brand-gold transition-colors">call</span>
+                                            <input
+                                                class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
+                                                id="phone" name="phone" type="tel" value="{{userData.phone}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Mobile-only Actions -->
+                                <div class="flex flex-col gap-stack-sm mt-stack-lg md:hidden">
+                                    <button
+                                        class="w-full py-3 rounded-full font-label-md text-label-md text-on-primary bg-primary shadow-md"
+                                        form="personal-info-form" type="submit">
+                                        Save Changes
+                                    </button>
+                                    <a href="/profile"
+                                        class="w-full py-3 rounded-full font-label-md text-label-md text-on-surface bg-surface-container-low shadow-sm inline-block text-center">
+                                        Discard
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const form = document.getElementById('personal-info-form');
+                    const saveBtn = document.querySelector('button[type="submit"]');
+
+                    // Avatar interactive elements
+                    const avatarUpload = document.getElementById('avatar-upload');
+                    const avatarPreview = document.getElementById('avatar-preview');
+                    const triggerUpload = document.getElementById('trigger-upload');
+                    const changePhotoBtn = document.getElementById('change-photo-btn');
+                    const removePhotoBtn = document.getElementById('remove-photo-btn');
+                    const removeProfileImageInput = document.getElementById('removeProfileImage');
+
+                    const fallbackAvatarUrl = 'https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E';
+
+                    // Function to trigger upload dialog
+                    const openUploadDialog = () => {
+                        avatarUpload.click();
+                    };
+
+                    if (triggerUpload) triggerUpload.addEventListener('click', openUploadDialog);
+                    if (changePhotoBtn) changePhotoBtn.addEventListener('click', openUploadDialog);
+
+                    // File upload change listener
+                    if (avatarUpload) {
+                        avatarUpload.addEventListener('change', function (e) {
+                            if (this.files && this.files[0]) {
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                    avatarPreview.src = e.target.result;
+                                }
+                                reader.readAsDataURL(this.files[0]);
+                                removeProfileImageInput.value = 'false';
+                            }
+                        });
+                    }
+
+                    // Remove photo listener
+                    if (removePhotoBtn) {
+                        removePhotoBtn.addEventListener('click', () => {
+                            avatarPreview.src = fallbackAvatarUrl;
+                            avatarUpload.value = ''; // Clear selected file
+                            removeProfileImageInput.value = 'true';
+                        });
+                    }
+
+                    // Handle form submission visuals
+                    form.addEventListener('submit', (e) => {
+                        // Simple visual feedback for saving state
+                        const originalText = saveBtn.innerText;
+                        saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">sync</span> Saving...';
+                        saveBtn.classList.add('opacity-80', 'cursor-wait');
+                    });
+                });
+            </script>
+        </main>
+    </div>
+
 </body>
 
 </html>

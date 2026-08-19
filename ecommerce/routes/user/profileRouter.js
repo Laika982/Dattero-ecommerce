@@ -1,21 +1,21 @@
-const express = require("express");
+import express from "express";
 const router = express.Router()
 
-const {
-    isAuthenticated,
-    isGuest
-} = require("../../middleware/authMidilware");
+import { isAuthenticated,
+    isGuest } from "../../middleware/authMidilware.js";
 
-const profileController = require("../../controllers/user/profileController");
+import profileController from "../../controllers/user/profileController.js";
+import upload from "../../middleware/upload.js";
 
 router.get("/", isAuthenticated, profileController.getProfile);
 router.get("/edit", isAuthenticated, profileController.getEditProfile);
-router.post("/edit", isAuthenticated, profileController.updateProfile);
+router.post("/edit", isAuthenticated, upload.single("profileImage"), profileController.updateProfile);
 
 router.get("/verify-email-otp", isAuthenticated, profileController.loadVerifyEmailOtp);
 router.post("/verify-email-otp", isAuthenticated, profileController.verifyEmailOtp);
 router.post("/resend-email-otp", isAuthenticated, profileController.resendEmailOtp);
 router.get("/address", isAuthenticated, profileController.getAllAddresses);
 router.get("/address/add", isAuthenticated, profileController.getAddAddress);
+router.post("/delete-account", isAuthenticated, profileController.deleteAccount);
 
-module.exports = router;
+export default router;

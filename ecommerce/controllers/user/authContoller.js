@@ -1,14 +1,18 @@
-const User = require("../../models/userSchema");
-const bcrypt = require("bcrypt");
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
+import User from "../../models/userSchema.js";
+import logger from "../../utils/logger.js";
+import dotenv from "dotenv";
+dotenv.config();
+import jwt from "jsonwebtoken";
+import { sendVerificationEmail } from "../../services/emailService.js";
+import { generateOtp } from "../../utils/otp.js";
+import { generateToken } from "../../utils/token.js";
+import { hashPassword, verifyPassword } from "../../utils/password.js";
 
 const loadHomepage = async (req, res) => {
   try {
     res.render("user/home");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     res.status(500).json({
       message: "Internal Server Error",
@@ -21,7 +25,7 @@ const loadLogin = async (req, res) => {
     res.set("Cache-Control", "no-store");
     res.render("user/login");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     res.status(500).json({
       message: "Internal Server Error",
@@ -34,7 +38,7 @@ const loadSignUp = async (req, res) => {
     res.set("Cache-Control", "no-store");
     res.render("user/signup");
   } catch (error) {
-    console.log(error);
+    logger.info(error);
 
     res.status(500).json({
       message: "Internal Server Error",
@@ -46,7 +50,7 @@ const loadForgotPassword = async (req, res) => {
   try {
     return res.render("user/forgotPassword");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return res.status(500).render("user/forgotPassword", {
       error: "Internal Server Error",
@@ -58,7 +62,7 @@ const loadForgotPasswordVarifyOtp = async (req, res) => {
   try {
     return res.render("user/verify-reset-otp");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return res.status(500).render("user/forgotPassword", {
       error: "Internal Server Error",
@@ -70,7 +74,7 @@ const loadResetPassword = async (req, res) => {
   try {
     return res.render("user/reset-password");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return res.status(500).render("user/verify-otp", {
       error: "Internal Server Error",
@@ -117,8 +121,8 @@ const registerUser = async (req, res) => {
     }
 
     // Generate OTP
-    const otp = genarateOtp();
-    console.log(otp);
+    const otp = generateOtp();
+    logger.info(otp);
 
     // Send OTP email
     const emailSent = await sendVerificationEmail(email, otp);
@@ -130,9 +134,9 @@ const registerUser = async (req, res) => {
     }
 
     // Create OTP JWT
-    const hashedPassword = await passwordHash(password);
+    const hashedPassword = await hashPassword(password);
 
-    const otpToken = jwt.sign(
+    const otpToken = generateToken(
       {
         otp,
         name,
@@ -140,10 +144,7 @@ const registerUser = async (req, res) => {
         password: hashedPassword,
         referralCode,
       },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "5m",
-      },
+      "5m"
     );
 
     // Store OTP token in cookie
@@ -156,7 +157,7 @@ const registerUser = async (req, res) => {
     // Show OTP page
     return res.render("user/verify-otp");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return res.status(500).render("user/signup", {
       error: "Internal Server Error",
@@ -199,15 +200,9 @@ const verifyOtp = async (req, res) => {
     res.clearCookie("otpToken");
 
     // Generate login JWT
-    const token = jwt.sign(
-      {
-        userId: saveUser._id,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1d",
-      },
-    );
+    const token = generateToken({
+      userId: saveUser._id,
+    });
 
     // Store authentication JWT
     res.cookie("token", token, {
@@ -218,7 +213,7 @@ const verifyOtp = async (req, res) => {
 
     return res.redirect("/");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     if (error.name === "TokenExpiredError") {
       return res.status(400).render("user/verify-otp", {
@@ -260,7 +255,7 @@ const loginUser = async (req, res) => {
     }
 
     // Compare password
-    const matchPassword = await bcrypt.compare(password, user.password);
+    const matchPassword = await verifyPassword(password, user.password);
 
     if (!matchPassword) {
       return res.status(401).render("user/login", {
@@ -269,15 +264,9 @@ const loginUser = async (req, res) => {
     }
 
     // Generate JWT
-    const token = jwt.sign(
-      {
-        userId: user._id,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1d",
-      },
-    );
+    const token = generateToken({
+      userId: user._id,
+    });
 
     // Store JWT in cookie
     res.cookie("token", token, {
@@ -289,7 +278,7 @@ const loginUser = async (req, res) => {
     // Go to home
     return res.redirect("/");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return res.status(500).render("user/login", {
       error: "Internal Server Error",
@@ -317,7 +306,7 @@ const forgotPassword = async (req, res) => {
       });
     }
 
-    const otp = genarateOtp();
+    const otp = generateOtp();
 
     const emailSent = await sendVerificationEmail(email, otp);
 
@@ -327,17 +316,14 @@ const forgotPassword = async (req, res) => {
       });
     }
 
-    console.log(`resent otp ${otp}`);
+    logger.info(`resent otp ${otp}`);
 
-    const otpToken = jwt.sign(
+    const otpToken = generateToken(
       {
         otp,
         email,
       },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "5m",
-      },
+      "5m"
     );
 
     res.cookie("forgotOtpToken", otpToken, {
@@ -348,7 +334,7 @@ const forgotPassword = async (req, res) => {
 
     return res.redirect("/forgotPassword/verifyOtp");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     return res.status(500).render("user/forgotPassword", {
       error: "Internal Server Error",
@@ -381,15 +367,12 @@ const forgotPasswordVerifyOtp = async (req, res) => {
     }
 
     // OTP verified
-    console.log("Forgot password OTP verified");
-    const resetToken = jwt.sign(
+    logger.info("Forgot password OTP verified");
+    const resetToken = generateToken(
       {
         email: decoded.email,
       },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "10m",
-      },
+      "10m"
     );
     // Remove OTP cookie
     res.clearCookie("forgotOtpToken");
@@ -404,7 +387,7 @@ const forgotPasswordVerifyOtp = async (req, res) => {
     // Go to reset password page
     return res.redirect("/resetPassword");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     if (error.name === "TokenExpiredError") {
       return res.status(400).render("user/verify-otp", {
@@ -449,7 +432,7 @@ const resetPassword = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Hash password
-    const hashedPassword = await passwordHash(newPassword);
+    const hashedPassword = await hashPassword(newPassword);
 
     // Update password
     const user = await User.findOneAndUpdate(
@@ -467,7 +450,7 @@ const resetPassword = async (req, res) => {
     res.clearCookie("resetEmail");
     return res.redirect("/login");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
 
     if (error.name === "TokenExpiredError") {
       return res.status(400).render("user/reset-password", {
@@ -483,121 +466,74 @@ const resetPassword = async (req, res) => {
 
 //AI
 const resendSignupOtp = async (req, res) => {
-    try {
-        const otpToken = req.cookies.otpToken;
+  try {
+    const otpToken = req.cookies.otpToken;
 
-        if (!otpToken) {
-            return res.status(400).render("user/signup", {
-                error: "Signup session expired. Please signup again."
-            });
-        }
-
-        // Read signup details from existing token
-        const decoded = jwt.decode(otpToken);
-
-        if (!decoded || !decoded.email) {
-            return res.status(400).render("user/signup", {
-                error: "Invalid signup session. Please signup again."
-            });
-        }
-
-        const otp = genarateOtp();
-
-        console.log("resend otp"+otp)
-
-        const emailSent = await sendVerificationEmail(
-            decoded.email,
-            otp
-        );
-
-        if (!emailSent) {
-            return res.status(500).render("user/verify-otp", {
-                error: "Unable to send OTP. Please try again."
-            });
-        }
-
-        console.log(`Resent signup OTP: ${otp}`);
-
-        // Create new OTP token
-        const newOtpToken = jwt.sign(
-            {
-                otp,
-                name: decoded.name,
-                email: decoded.email,
-                password: decoded.password,
-                referralCode: decoded.referralCode
-            },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: "5m"
-            }
-        );
-
-        // Replace old OTP token
-        res.cookie("otpToken", newOtpToken, {
-            httpOnly: true,
-            secure: false,
-            maxAge: 5 * 60 * 1000
-        });
-
-        return res.status(200).json({ message: "OTP resent successfully" });
-    } catch (error) {
-        console.error(error);
-
-        return res.status(500).render("user/verify-otp", {
-            error: "Internal Server Error"
-        });
+    if (!otpToken) {
+      return res.status(400).render("user/signup", {
+        error: "Signup session expired. Please signup again."
+      });
     }
+
+    // Read signup details from existing token
+    const decoded = jwt.decode(otpToken);
+
+    if (!decoded || !decoded.email) {
+      return res.status(400).render("user/signup", {
+        error: "Invalid signup session. Please signup again."
+      });
+    }
+
+    const otp = generateOtp();
+
+    logger.info("resend otp" + otp)
+
+    const emailSent = await sendVerificationEmail(
+      decoded.email,
+      otp
+    );
+
+    if (!emailSent) {
+      return res.status(500).render("user/verify-otp", {
+        error: "Unable to send OTP. Please try again."
+      });
+    }
+
+    logger.info(`Resent signup OTP: ${otp}`);
+
+    // Create new OTP token
+    const newOtpToken = generateToken(
+      {
+        otp,
+        name: decoded.name,
+        email: decoded.email,
+        password: decoded.password,
+        referralCode: decoded.referralCode
+      },
+      "5m"
+    );
+
+    // Replace old OTP token
+    res.cookie("otpToken", newOtpToken, {
+      httpOnly: true,
+      secure: false,
+      maxAge: 5 * 60 * 1000
+    });
+
+    return res.status(200).json({ message: "OTP resent successfully" });
+  } catch (error) {
+    logger.error(error);
+
+    return res.status(500).render("user/verify-otp", {
+      error: "Internal Server Error"
+    });
+  }
 };
 //functions
 
-async function passwordHash(password) {
-  try {
-    const hashedPassword = await bcrypt.hash(
-      password,
-      Number(process.env.SALT_ROUNDS),
-    );
 
-    return hashedPassword;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
 
-function genarateOtp() {
-  const otp = Math.floor(100000 + Math.random() * 900000);
-  return otp;
-}
 
-async function sendVerificationEmail(email, otp) {
-  try {
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      port: 587,
-      secure: false,
-      requireTLS: true,
-      auth: {
-        user: process.env.NODEMAILER_EMAIL,
-        pass: process.env.NODEMAILER_PASSWORD,
-      },
-    });
-
-    const info = await transporter.sendMail({
-      from: process.env.NODEMAILER_EMAIL,
-      to: email,
-      subject: "Verify your email account",
-      text: `your OTP:${otp}`,
-      html: `<b>your OTP:${otp}<b>`,
-    });
-
-    return info.accepted.length > 0;
-  } catch (error) {
-    console.error("error sending email", error);
-    return false;
-  }
-}
 
 const loadVerifyOtp = async (req, res) => {
   try {
@@ -607,7 +543,7 @@ const loadVerifyOtp = async (req, res) => {
     }
     return res.render("user/verify-otp");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return res.redirect("/signup");
   }
 };
@@ -617,13 +553,22 @@ const logoutUser = async (req, res) => {
     res.clearCookie("token");
     return res.redirect("/");
   } catch (error) {
-    console.error("Logout error:", error);
+    logger.error("Logout error:", error);
     return res.redirect("/");
   }
 };
 
-console.log(genarateOtp());
-module.exports = {
+
+const loadProducts = async (req, res) => {
+  try {
+    return res.render("user/products");
+  } catch (error) {
+    logger.error("Load products page error:", error);
+    return res.status(500).render("user/server-error");
+  }
+};
+
+export {
   loadHomepage,
   loadLogin,
   loadSignUp,
@@ -638,5 +583,25 @@ module.exports = {
   resetPassword,
   resendSignupOtp,
   logoutUser,
-  loadVerifyOtp
+  loadVerifyOtp,
+  loadProducts
+};
+
+export default {
+  loadHomepage,
+  loadLogin,
+  loadSignUp,
+  loadForgotPassword,
+  loadForgotPasswordVarifyOtp,
+  loadResetPassword,
+  registerUser,
+  verifyOtp,
+  loginUser,
+  forgotPassword,
+  forgotPasswordVerifyOtp,
+  resetPassword,
+  resendSignupOtp,
+  logoutUser,
+  loadVerifyOtp,
+  loadProducts
 };

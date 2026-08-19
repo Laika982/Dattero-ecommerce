@@ -1,11 +1,9 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const {
-    isAuthenticated
-} = require("../../middleware/authMidilware");
+import { isAuthenticated } from "../../middleware/authMidilware.js";
 
-const addressController = require("../../controllers/user/addressController");
+import addressController from "../../controllers/user/addressController.js";
 
 router.get("/", isAuthenticated, addressController.loadAddress);
 router.get("/add", isAuthenticated, addressController.addAddress);
@@ -15,4 +13,4 @@ router.post("/delete/:addressId", isAuthenticated, addressController.deleteAddre
 router.get("/edit/:addressId", isAuthenticated, addressController.editAddress);
 router.post("/edit/:addressId", isAuthenticated, addressController.editAddressPost);
 
-module.exports = router;
+export default router;

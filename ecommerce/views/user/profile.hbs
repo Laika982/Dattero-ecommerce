@@ -159,19 +159,16 @@
             <div class="relative group">
               <div
                 class="w-32 h-32 rounded-full overflow-hidden border-2 border-surface-container-highest shadow-xl bg-surface-container-low transition-transform group-hover:scale-[1.02] duration-300">
-                <img class="w-full h-full object-cover" alt="Profile Avatar"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E">
+                <img class="w-full h-full object-cover" alt="Profile Avatar" id="avatar-preview"
+                  src="{{#if userData.profileImage}}{{userData.profileImage}}{{else}}https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E{{/if}}">
               </div>
-              <label
-                class="absolute bottom-0 right-0 p-2 bg-on-surface text-surface-container-lowest rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform"
-                for="avatar-upload">
+              <a href="/profile/edit"
+                class="absolute bottom-0 right-0 p-2 bg-on-surface text-surface-container-lowest rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform">
                 <span class="material-symbols-outlined text-sm">photo_camera</span>
-                <input accept="image/*" class="hidden" id="avatar-upload" type="file">
-              </label>
+              </a>
             </div>
             <div class="space-y-3">
-
-              <p class="text-xs text-on-surface-variant">SVG, PNG, JPG or GIF (max. 800x800px)</p>
+              <p class="text-xs text-on-surface-variant">PNG, JPG, JPEG or WEBP (max. 800x800px)</p>
             </div>
           </div>
         </section>
@@ -318,9 +315,9 @@
               </h3>
               <p class="text-sm text-on-surface-variant">Sign out of your account on this device.</p>
             </div>
-            <div class="md:col-span-2 flex items-center"><a href="/logout"
-                class="px-8 py-2.5 rounded-full border border-outline/20 text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors flex items-center gap-2"><span
-                  class="material-symbols-outlined text-sm">logout</span>Logout</a></div>
+            <div class="md:col-span-2 flex items-center"><a href="/logout" id="logout-btn"
+                 class="px-8 py-2.5 rounded-full border border-outline/20 text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors flex items-center gap-2"><span
+                   class="material-symbols-outlined text-sm">logout</span>Logout</a></div>
           </div>
         </section>
         <section class="pt-12 border-t border-error/10">
@@ -331,7 +328,7 @@
                 action cannot be undone.</p>
             </div>
             <div class="md:col-span-2 flex items-center">
-              <button
+              <button id="delete-account-btn"
                 class="px-6 py-2.5 rounded-full border border-error/20 text-error font-label-md text-label-md hover:bg-error/5 transition-colors">
                 Delete Account
               </button>
@@ -342,60 +339,172 @@
       <!-- Quick Actions FAB (Mobile Context only, usually suppressed for details as per rules but provided here for complete UI kit perspective) -->
       <!-- <button class="fixed bottom-8 right-8 w-14 h-14 bg-on-surface text-surface rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all md:hidden">
         <span class="material-->
-      <footer class="bg-surface-container-high w-full pt-section-gap pb-stack-lg border-t border-secondary/10 mt-24">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter px-container-padding max-w-max-width mx-auto">
-          <div class="flex flex-col gap-6 col-span-1 md:col-span-1"><span
-              class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Nutri Burfi</span>
-            <p class="font-body-md text-body-md text-on-surface-variant max-w-xs">Elevating functional nutrition through
-              the art of traditional craftsmanship. Premium protein sweets for the modern lifestyle.</p>
-            <div class="flex gap-4 mt-2"><a class="text-on-surface-variant hover:text-accent-blue transition-colors"
-                href="#"><span class="material-symbols-outlined">share</span></a></div>
-          </div>
-          <div class="flex flex-col gap-4">
-            <h4 class="font-label-md text-label-md text-on-surface mb-2">Shop</h4><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Shop All</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Protein Burfi</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Performance Bars</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Wholesale</a>
-          </div>
-          <div class="flex flex-col gap-4">
-            <h4 class="font-label-md text-label-md text-on-surface mb-2">About</h4><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Our Story</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Ingredients</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Nutritional Science</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Contact Us</a>
-          </div>
-          <div class="flex flex-col gap-4">
-            <h4 class="font-label-md text-label-md text-on-surface mb-2">Support</h4><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">FAQ</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Shipping Info</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Returns</a><a
-              class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200"
-              href="#">Privacy Policy</a>
-          </div>
-          <div
-            class="col-span-1 md:col-span-4 mt-12 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="font-label-md text-[10px] text-on-surface-variant font-normal">© 2024 Nutri Burfi. Handcrafted
-              Protein Excellence.</p>
-            <div class="flex gap-4 p-8 min-h-[300px]"><span
-                class="font-label-md text-[10px] text-on-surface-variant font-normal">Secure Checkout</span></div>
-          </div>
-        </div>
-      </footer>
+      {{> user/footer}}
     </main>
   </div>
   <script>
+    function showConfirmModal({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', icon = 'logout', confirmColorClass = 'bg-primary text-on-primary', iconContainerColor = 'bg-error-container/30', iconColor = 'text-error' }) {
+      return new Promise((resolve) => {
+        const container = document.createElement('div');
+        container.className = 'fixed inset-0 z-50 flex items-center justify-center bg-on-surface/40 backdrop-blur-md opacity-0 animate-[fadeIn_0.3s_ease-out_forwards]';
+        
+        if (!document.getElementById('modal-animation-style')) {
+          const style = document.createElement('style');
+          style.id = 'modal-animation-style';
+          style.innerHTML = `
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes modalSlideUp {
+              from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+              }
+              to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+              }
+            }
+          `;
+          document.head.appendChild(style);
+        }
+
+        container.innerHTML = `
+          <div class="relative w-full max-w-md mx-auto p-8 bg-surface-container-lowest rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] transform scale-95 opacity-0 animate-[modalSlideUp_0.4s_ease-out_0.1s_forwards] border border-outline-variant/10">
+            <div class="flex flex-col items-center text-center">
+              <div class="w-16 h-16 ${iconContainerColor} rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined ${iconColor} text-[32px] font-light">${icon}</span>
+              </div>
+              <h2 class="font-headline-xl text-headline-xl text-on-surface mb-4 tracking-tight">${title}</h2>
+              <p class="font-body-xl text-body-xl text-on-surface-variant mb-10 max-w-[280px]">
+                ${message}
+              </p>
+              <div class="flex flex-col w-full gap-3">
+                <button class="w-full py-4 ${confirmColorClass} rounded-full font-label-md text-label-md hover:-translate-y-[1px] hover:shadow-lg transition-all duration-200 flex items-center justify-center" id="modal-confirm-btn">
+                  ${confirmText}
+                </button>
+                <button class="w-full py-4 text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors duration-200" id="modal-cancel-btn">
+                  ${cancelText}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(container);
+
+        const closeModal = (result) => {
+          container.style.opacity = '0';
+          container.style.transition = 'opacity 0.2s ease-out';
+          setTimeout(() => {
+            container.remove();
+            resolve(result);
+          }, 200);
+        };
+
+        container.querySelector('#modal-cancel-btn').addEventListener('click', () => closeModal(false));
+        
+        container.addEventListener('click', (e) => {
+          if (e.target === container) {
+            closeModal(false);
+          }
+        });
+
+        const confirmBtn = container.querySelector('#modal-confirm-btn');
+        confirmBtn.addEventListener('click', () => {
+          confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>';
+          confirmBtn.classList.add('opacity-80', 'cursor-not-allowed');
+          setTimeout(() => {
+            closeModal(true);
+          }, 800);
+        });
+      });
+    }
+
+    // Logout confirmation prompt
+    document.getElementById('logout-btn')?.addEventListener('click', function(e) {
+      e.preventDefault();
+      const url = this.getAttribute('href');
+      showConfirmModal({
+        title: 'Sign Out',
+        message: 'Are you sure you want to sign out of your account?',
+        confirmText: 'Sign Out',
+        cancelText: 'Cancel',
+        icon: 'logout'
+      }).then((confirmed) => {
+        if (confirmed) {
+          window.location.href = url;
+        }
+      });
+    });
+
+    // Delete Account confirmation prompt
+    document.getElementById('delete-account-btn')?.addEventListener('click', function(e) {
+      e.preventDefault();
+      showConfirmModal({
+        title: 'Delete Account',
+        message: 'This will permanently delete your account and all associated data. This action cannot be undone!',
+        confirmText: 'Delete Account',
+        cancelText: 'Cancel',
+        icon: 'delete_forever',
+        iconContainerColor: 'bg-error-container/30',
+        iconColor: 'text-error'
+      }).then((confirmed) => {
+        if (confirmed) {
+          showConfirmModal({
+            title: 'Final Confirmation',
+            message: 'Are you absolutely sure you want to permanently delete your account?',
+            confirmText: 'Permanently Delete',
+            cancelText: 'Cancel',
+            icon: 'warning',
+            iconContainerColor: 'bg-error-container/30',
+            iconColor: 'text-error'
+          }).then((secondConfirmed) => {
+            if (secondConfirmed) {
+              fetch('/profile/delete-account', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              })
+              .then(response => {
+                if (response.ok) {
+                  showConfirmModal({
+                    title: 'Deleted!',
+                    message: 'Your account has been successfully deleted.',
+                    confirmText: 'Close',
+                    icon: 'check_circle',
+                    iconContainerColor: 'bg-emerald-100 dark:bg-emerald-900/30',
+                    iconColor: 'text-emerald-600',
+                    confirmColorClass: 'bg-emerald-600 text-white'
+                  }).then(() => {
+                    window.location.href = '/';
+                  });
+                } else {
+                  showConfirmModal({
+                    title: 'Error!',
+                    message: 'Failed to delete account. Please try again later.',
+                    confirmText: 'OK',
+                    icon: 'error'
+                  });
+                }
+              })
+              .catch(err => {
+                console.error(err);
+                showConfirmModal({
+                  title: 'Error!',
+                  message: 'An unexpected error occurred.',
+                  confirmText: 'OK',
+                  icon: 'error'
+                });
+              });
+            }
+          });
+        }
+      });
+    });
+
     // Micro-interactions for form feedback
     document.querySelectorAll('input, select').forEach(input => {
       input.addEventListener('focus', () => {
@@ -406,19 +515,7 @@
       });
     });
 
-    // Avatar preview logic (Mock)
-    const avatarUpload = document.getElementById('avatar-upload');
-    const avatarPreview = document.getElementById('avatar-preview');
-
-    avatarUpload.addEventListener('change', function (e) {
-      if (this.files && this.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          avatarPreview.src = e.target.result;
-        }
-        reader.readAsDataURL(this.files[0]);
-      }
-    });
+    // Profile Page Interactions
 
     // Save button click effect
     /*

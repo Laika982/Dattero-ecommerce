@@ -1,14 +1,12 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const upload = require("../../middleware/upload");
-const {
-  isAdminAuthenticated,
-  isAdminLoggedIn,
-} = require("../../middleware/authMidilware");
+import upload from "../../middleware/upload.js";
+import { isAdminAuthenticated,
+  isAdminLoggedIn, } from "../../middleware/authMidilware.js";
 
 
-const productController = require("../../controllers/admin/productController")
+import productController from "../../controllers/admin/productController.js";
 
 
 
@@ -39,4 +37,4 @@ router.post("/deleteProduct/:id", isAdminAuthenticated, productController.delete
 
 
 
-module.exports = router;
+export default router;

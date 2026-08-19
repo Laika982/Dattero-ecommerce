@@ -1,5 +1,5 @@
-const User = require("../../models/userSchema");
-const jwt = require("jsonwebtoken");
+import User from "../../models/userSchema.js";
+import jwt from "jsonwebtoken";
 
 const loadAddress = async (req, res) => {
   try {
@@ -256,7 +256,17 @@ const editAddressPost = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
+  loadAddress,
+  addAddress,
+  addAddressPost,
+  makePrimary,
+  deleteAddress,
+  editAddress,
+  editAddressPost
+};
+
+export default {
   loadAddress,
   addAddress,
   addAddressPost,

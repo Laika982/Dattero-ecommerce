@@ -1,14 +1,12 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const upload = require("../../middleware/upload");
-const {
-  isAdminAuthenticated,
-  isAdminLoggedIn,
-} = require("../../middleware/authMidilware");
+import upload from "../../middleware/upload.js";
+import { isAdminAuthenticated,
+  isAdminLoggedIn, } from "../../middleware/authMidilware.js";
 
 
-const categoryController = require("../../controllers/admin/categoryController");
+import categoryController from "../../controllers/admin/categoryController.js";
 
 //category
 router.get("/categories", categoryController.categoryInfo);
@@ -20,4 +18,4 @@ router.post("/deleteCategory/:id", categoryController.deleteCategory);
 
 
 
-module.exports = router;
+export default router;

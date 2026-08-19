@@ -1,39 +1,9 @@
-const User = require("../../models/userSchema");
-const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
-
-function generateOtp() {
-  const otp = Math.floor(100000 + Math.random() * 900000);
-  return otp;
-}
-
-async function sendVerificationEmail(email, otp) {
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      port: 587,
-      secure: false,
-      requireTLS: true,
-      auth: {
-        user: process.env.NODEMAILER_EMAIL,
-        pass: process.env.NODEMAILER_PASSWORD,
-      },
-    });
-
-    const info = await transporter.sendMail({
-      from: process.env.NODEMAILER_EMAIL,
-      to: email,
-      subject: "Verify your email update",
-      text: `Your OTP to update your email is: ${otp}`,
-      html: `<b>Your OTP to update your email is: ${otp}</b>`,
-    });
-
-    return info.accepted.length > 0;
-  } catch (error) {
-    console.error("Error sending profile email update OTP:", error);
-    return false;
-  }
-}
+import User from "../../models/userSchema.js";
+import logger from "../../utils/logger.js";
+import jwt from "jsonwebtoken";
+import { sendVerificationEmail } from "../../services/emailService.js";
+import { generateOtp } from "../../utils/otp.js";
+import { generateToken } from "../../utils/token.js";
 
 const getProfile = async (req, res) => {
   try {
@@ -58,7 +28,7 @@ const getProfile = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Profile error:", error);
+    logger.error("Profile error:", error);
 
     res.clearCookie("token");
 
@@ -80,7 +50,7 @@ const getEditProfile = async (req, res) => {
       userData
     });
   } catch (error) {
-    console.error("Get edit profile page error:", error);
+    logger.error("Get edit profile page error:", error);
     res.clearCookie("token");
     return res.redirect("/login");
   }
@@ -92,10 +62,11 @@ const updateProfile = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.userId;
 
-    let { name, email, phone } = req.body;
+    let { name, email, phone, removeProfileImage } = req.body;
     name = name?.trim();
     email = email?.toLowerCase().trim();
     phone = phone?.trim();
+    const shouldRemovePhoto = removeProfileImage === "true";
 
     if (!name || !email) {
       const userData = await User.findById(userId).lean();
@@ -132,19 +103,19 @@ const updateProfile = async (req, res) => {
         });
       }
 
-      console.log(`Email update OTP sent to ${email}: ${otp}`);
+      logger.info(`Email update OTP sent to ${email}: ${otp}`);
 
       // Create a pending token cookie
-      const pendingEmailToken = jwt.sign(
+      const pendingEmailToken = generateToken(
         {
           userId,
           newEmail: email,
           name,
           phone,
+          profileImage: shouldRemovePhoto ? null : (req.file ? req.file.path : currentUser.profileImage),
           otp
         },
-        process.env.JWT_SECRET,
-        { expiresIn: "10m" }
+        "10m"
       );
 
       res.cookie("pendingEmailToken", pendingEmailToken, {
@@ -156,15 +127,22 @@ const updateProfile = async (req, res) => {
       return res.redirect("/profile/verify-email-otp");
     }
 
-    // Email is the same, just update name and phone directly
-    await User.findByIdAndUpdate(userId, {
+    // Email is the same, just update name, phone, and profileImage directly
+    const updateData = {
       name,
       phone: phone || null
-    });
+    };
+    if (shouldRemovePhoto) {
+      updateData.profileImage = null;
+    } else if (req.file) {
+      updateData.profileImage = req.file.path;
+    }
+
+    await User.findByIdAndUpdate(userId, updateData);
 
     return res.redirect("/profile");
   } catch (error) {
-    console.error("Profile update error:", error);
+    logger.error("Profile update error:", error);
     res.clearCookie("token");
     return res.redirect("/login");
   }
@@ -182,7 +160,7 @@ const loadVerifyEmailOtp = async (req, res) => {
 
     return res.render("user/verify-profile-email-otp");
   } catch (error) {
-    console.error("Load verify email OTP page error:", error);
+    logger.error("Load verify email OTP page error:", error);
     res.clearCookie("pendingEmailToken");
     return res.redirect("/profile/edit");
   }
@@ -211,7 +189,8 @@ const verifyEmailOtp = async (req, res) => {
     await User.findByIdAndUpdate(decoded.userId, {
       email: decoded.newEmail,
       name: decoded.name,
-      phone: decoded.phone || null
+      phone: decoded.phone || null,
+      profileImage: decoded.profileImage || null
     });
 
     // Clear session cookies
@@ -219,7 +198,7 @@ const verifyEmailOtp = async (req, res) => {
 
     return res.redirect("/profile");
   } catch (error) {
-    console.error("Verify email OTP error:", error);
+    logger.error("Verify email OTP error:", error);
     if (error.name === "TokenExpiredError") {
       return res.status(400).render("user/verify-profile-email-otp", {
         error: "OTP expired. Please try again."
@@ -246,18 +225,18 @@ const resendEmailOtp = async (req, res) => {
       return res.status(500).json({ error: "Failed to send email" });
     }
 
-    console.log(`Resent email update OTP to ${decoded.newEmail}: ${otp}`);
+    logger.info(`Resent email update OTP to ${decoded.newEmail}: ${otp}`);
 
-    const newPendingToken = jwt.sign(
+    const newPendingToken = generateToken(
       {
         userId: decoded.userId,
         newEmail: decoded.newEmail,
         name: decoded.name,
         phone: decoded.phone,
+        profileImage: decoded.profileImage || null,
         otp
       },
-      process.env.JWT_SECRET,
-      { expiresIn: "10m" }
+      "10m"
     );
 
     res.cookie("pendingEmailToken", newPendingToken, {
@@ -268,7 +247,7 @@ const resendEmailOtp = async (req, res) => {
 
     return res.status(200).json({ message: "OTP resent successfully" });
   } catch (error) {
-    console.error("Resend email OTP error:", error);
+    logger.error("Resend email OTP error:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -287,7 +266,7 @@ const getAllAddresses = async (req, res) => {
       userData
     });
   } catch (error) {
-    console.error("Get all addresses error:", error);
+    logger.error("Get all addresses error:", error);
     res.clearCookie("token");
     return res.redirect("/login");
   }
@@ -307,13 +286,38 @@ const getAddAddress = async (req, res) => {
       userData
     });
   } catch (error) {
-    console.error("Get add address page error:", error);
+    logger.error("Get add address page error:", error);
     res.clearCookie("token");
     return res.redirect("/login");
   }
 };
 
-module.exports = {
+const deleteAccount = async (req, res) => {
+  try {
+    let userId = req.user ? req.user._id : null;
+    if (!userId) {
+      const token = req.cookies.token;
+      if (token) {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        userId = decoded.userId;
+      }
+    }
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    await User.findByIdAndDelete(userId);
+    res.clearCookie("token");
+
+    return res.status(200).json({ message: "Account deleted successfully" });
+  } catch (error) {
+    logger.error("Delete account error:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export {
   getProfile,
   getEditProfile,
   updateProfile,
@@ -321,5 +325,18 @@ module.exports = {
   verifyEmailOtp,
   resendEmailOtp,
   getAllAddresses,
-  getAddAddress
+  getAddAddress,
+  deleteAccount
+};
+
+export default {
+  getProfile,
+  getEditProfile,
+  updateProfile,
+  loadVerifyEmailOtp,
+  verifyEmailOtp,
+  resendEmailOtp,
+  getAllAddresses,
+  getAddAddress,
+  deleteAccount
 };

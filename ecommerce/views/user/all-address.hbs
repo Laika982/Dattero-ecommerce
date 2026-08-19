@@ -178,7 +178,7 @@
   Edit
 </a>
 
-<form action="/profile/address/delete/{{this._id}}" method="POST" class="inline">
+<form action="/profile/address/delete/{{this._id}}" method="POST" class="inline delete-address-form">
   <button type="submit" class="text-label-md font-medium text-error/80 hover:text-error transition-colors flex items-center gap-1 group/btn">
     <span class="material-symbols-outlined text-sm group-hover/btn:rotate-12 transition-transform">delete</span>
     Remove
@@ -240,56 +240,107 @@
 </a>
 </div>
 <!-- Footer -->
-<footer class="bg-surface py-20 border-t border-on-surface/5 mt-auto">
-<div class="max-w-max-width mx-auto px-container-padding">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-<div class="col-span-1 md:col-span-1">
-<div class="font-headline-lg text-headline-lg tracking-tighter text-on-surface mb-6">Nutri Luxe</div>
-<p class="text-on-surface-variant leading-relaxed mb-6">Elevating wellness through the art of fine nutrition. Pure ingredients, sophisticated taste.</p>
-<div class="flex gap-4">
-<span class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center material-symbols-outlined text-sm cursor-pointer hover:bg-on-surface hover:text-white transition-all">share</span>
-<span class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center material-symbols-outlined text-sm cursor-pointer hover:bg-on-surface hover:text-white transition-all">public</span>
-<span class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center material-symbols-outlined text-sm cursor-pointer hover:bg-on-surface hover:text-white transition-all">mail</span>
-</div>
-</div>
-<div class="">
-<h5 class="font-bold text-on-surface mb-6">Product</h5>
-<ul class="space-y-4 text-on-surface-variant text-sm">
-<li class=""><a class="hover:text-on-surface transition-colors" href="#">Nutri Burfi Collections</a></li>
-<li class=""><a class="hover:text-on-surface transition-colors" href="#">The Signature Box</a></li>
-<li class=""><a class="hover:text-on-surface transition-colors" href="#">Seasonal Editions</a></li>
-<li class=""><a class="hover:text-on-surface transition-colors" href="#">Nutritional Philosophy</a></li>
-</ul>
-</div>
-<div class="">
-<h5 class="font-bold text-on-surface mb-6">Company</h5>
-<ul class="space-y-4 text-on-surface-variant text-sm">
-<li class=""><a class="hover:text-on-surface transition-colors" href="#">Our Story</a></li>
-<li class=""><a class="hover:text-on-surface transition-colors" href="#">Journal</a></li>
-<li class=""><a class="hover:text-on-surface transition-colors" href="#">Sustainability</a></li>
-<li class=""><a class="hover:text-on-surface transition-colors" href="#">Contact</a></li>
-</ul>
-</div>
-<div>
-<h5 class="font-bold text-on-surface mb-6">Newsletter</h5>
-<p class="text-sm text-on-surface-variant mb-4">Join our inner circle for exclusive previews and wellness insights.</p>
-<div class="flex border-b border-on-surface/20 pb-2">
-<input class="bg-transparent border-none focus:ring-0 text-sm w-full p-0" placeholder="Email Address" type="email">
-<button class="material-symbols-outlined text-on-surface">arrow_forward</button>
-</div>
-</div>
-</div>
-<div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-on-surface/5 text-[12px] text-on-surface-variant gap-4">
-<p class="">© 2024 Nutri Luxe. All Rights Reserved.</p>
-<div class="flex gap-8">
-<a class="hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
-<a class="hover:text-on-surface transition-colors" href="#">Terms of Service</a>
-<a class="hover:text-on-surface transition-colors" href="#">Shipping Info</a>
-</div>
-</div>
-</div>
-</footer>
+{{> user/footer}}
 <script>
+        function showConfirmModal({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', icon = 'logout', confirmColorClass = 'bg-primary text-on-primary', iconContainerColor = 'bg-error-container/30', iconColor = 'text-error' }) {
+            return new Promise((resolve) => {
+                const container = document.createElement('div');
+                container.className = 'fixed inset-0 z-50 flex items-center justify-center bg-on-surface/40 backdrop-blur-md opacity-0 animate-[fadeIn_0.3s_ease-out_forwards]';
+                
+                if (!document.getElementById('modal-animation-style')) {
+                    const style = document.createElement('style');
+                    style.id = 'modal-animation-style';
+                    style.innerHTML = `
+                        @keyframes fadeIn {
+                            from { opacity: 0; }
+                            to { opacity: 1; }
+                        }
+                        @keyframes modalSlideUp {
+                            from {
+                                opacity: 0;
+                                transform: scale(0.95) translateY(20px);
+                            }
+                            to {
+                                opacity: 1;
+                                transform: scale(1) translateY(0);
+                            }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+
+                container.innerHTML = `
+                    <div class="relative w-full max-w-md mx-auto p-8 bg-surface-container-lowest rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] transform scale-95 opacity-0 animate-[modalSlideUp_0.4s_ease-out_0.1s_forwards] border border-outline-variant/10">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="w-16 h-16 ${iconContainerColor} rounded-full flex items-center justify-center mb-6">
+                                <span class="material-symbols-outlined ${iconColor} text-[32px] font-light">${icon}</span>
+                            </div>
+                            <h2 class="font-headline-xl text-headline-xl text-on-surface mb-4 tracking-tight">${title}</h2>
+                            <p class="font-body-xl text-body-xl text-on-surface-variant mb-10 max-w-[280px]">
+                                ${message}
+                            </p>
+                            <div class="flex flex-col w-full gap-3">
+                                <button class="w-full py-4 ${confirmColorClass} rounded-full font-label-md text-label-md hover:-translate-y-[1px] hover:shadow-lg transition-all duration-200 flex items-center justify-center" id="modal-confirm-btn">
+                                    ${confirmText}
+                                </button>
+                                <button class="w-full py-4 text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors duration-200" id="modal-cancel-btn">
+                                    ${cancelText}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(container);
+
+                const closeModal = (result) => {
+                    container.style.opacity = '0';
+                    container.style.transition = 'opacity 0.2s ease-out';
+                    setTimeout(() => {
+                        container.remove();
+                        resolve(result);
+                    }, 200);
+                };
+
+                container.querySelector('#modal-cancel-btn').addEventListener('click', () => closeModal(false));
+                
+                container.addEventListener('click', (e) => {
+                    if (e.target === container) {
+                        closeModal(false);
+                    }
+                });
+
+                const confirmBtn = container.querySelector('#modal-confirm-btn');
+                confirmBtn.addEventListener('click', () => {
+                    confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>';
+                    confirmBtn.classList.add('opacity-80', 'cursor-not-allowed');
+                    setTimeout(() => {
+                        closeModal(true);
+                    }, 800);
+                });
+            });
+        }
+
+        // Address deletion confirmation
+        document.querySelectorAll('.delete-address-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                showConfirmModal({
+                    title: 'Delete Address',
+                    message: 'Are you sure you want to delete this address?',
+                    confirmText: 'Delete',
+                    cancelText: 'Cancel',
+                    icon: 'delete',
+                    iconContainerColor: 'bg-error-container/30',
+                    iconColor: 'text-error'
+                }).then((confirmed) => {
+                    if (confirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
         // Simple micro-interactions
         document.querySelectorAll('.address-card-hover').forEach(card => {
             card.addEventListener('mouseenter', () => {

@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/userSchema");
+import jwt from "jsonwebtoken";
+import User from "../models/userSchema.js";
 
 const isAuthenticated = async (req, res, next) => {
     try {
@@ -37,8 +37,6 @@ const isAuthenticated = async (req, res, next) => {
     }
 };
 
-
-
 const isGuest = (req, res, next) => {
     try {
         const token = req.cookies.token;
@@ -64,8 +62,6 @@ const isGuest = (req, res, next) => {
         return next();
     }
 };
-
-
 
 // Protect admin pages
 const isAdminAuthenticated = (req, res, next) => {
@@ -93,7 +89,6 @@ const isAdminAuthenticated = (req, res, next) => {
         return res.redirect("/admin/login");
     }
 };
-
 
 // Prevent logged-in admin from accessing login page
 const isAdminLoggedIn = (req, res, next) => {
@@ -124,12 +119,16 @@ const isAdminLoggedIn = (req, res, next) => {
     }
 };
 
-
-
-
-module.exports = {
+export {
 isAuthenticated,
 isGuest,
 isAdminAuthenticated,
 isAdminLoggedIn
-}
+};
+
+export default {
+isAuthenticated,
+isGuest,
+isAdminAuthenticated,
+isAdminLoggedIn
+};

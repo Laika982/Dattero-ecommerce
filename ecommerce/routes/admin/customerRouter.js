@@ -1,12 +1,10 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const {
-  isAdminAuthenticated,
-  isAdminLoggedIn,
-} = require("../../middleware/authMidilware");
+import { isAdminAuthenticated,
+  isAdminLoggedIn, } from "../../middleware/authMidilware.js";
 
-const customerController = require("../../controllers/admin/customerController");
+import customerController from "../../controllers/admin/customerController.js";
 
 
 
@@ -16,4 +14,4 @@ router.post("/blockCustomer", customerController.customerBlocked);
 router.post("/unblockCustomer", customerController.customerUnBlocked);
 
 
-module.exports = router;
+export default router;

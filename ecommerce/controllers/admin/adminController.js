@@ -1,6 +1,6 @@
-const User = require("../../models/userSchema");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import User from "../../models/userSchema.js";
+import { verifyPassword } from "../../utils/password.js";
+import { generateToken } from "../../utils/token.js";
 
 const loadLogin = async (req, res) => {
   try {
@@ -33,7 +33,7 @@ const adminLogin = async (req, res) => {
     }
 
     // Check password
-    const matchPassword = await bcrypt.compare(password, admin.password);
+    const matchPassword = await verifyPassword(password, admin.password);
 
     if (!matchPassword) {
       return res.status(400).render("admin/login", {
@@ -42,16 +42,10 @@ const adminLogin = async (req, res) => {
     }
 
     // Create JWT
-    const token = jwt.sign(
-      {
-        adminId: admin._id,
-        isAdmin: true,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1d",
-      },
-    );
+    const token = generateToken({
+      adminId: admin._id,
+      isAdmin: true,
+    });
 
     // Store JWT in cookie
     res.cookie("adminToken", token, {
@@ -94,7 +88,14 @@ const logout = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
+  loadLogin,
+  adminLogin,
+  loadAdminDashboard,
+  logout,
+};
+
+export default {
   loadLogin,
   adminLogin,
   loadAdminDashboard,

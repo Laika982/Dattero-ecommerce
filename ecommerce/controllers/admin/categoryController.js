@@ -1,4 +1,5 @@
-const Category = require("../../models/categorySchema");
+import Category from "../../models/categorySchema.js";
+import { generateActivePageArray } from "../../utils/pagination.js";
 
 const categoryInfo = async (req, res) => {
     try {
@@ -75,16 +76,7 @@ const categoryInfo = async (req, res) => {
         );
 
         // Create page numbers
-        const pages = [];
-
-        for (let i = 1; i <= totalPages; i++) {
-
-            pages.push({
-                page: i,
-                active: i === page
-            });
-
-        }
+        const pages = generateActivePageArray(totalPages, page);
 
         return res.render("admin/category", {
             categoryData,
@@ -266,7 +258,16 @@ const deleteCategory = async (req, res) => {
     }
 };
 
-module.exports = {
+export {
+  categoryInfo,
+  addCategoryInfo,
+  addCategory,
+  editCategoryInfo,
+  editCategory,
+  deleteCategory,
+};
+
+export default {
   categoryInfo,
   addCategoryInfo,
   addCategory,

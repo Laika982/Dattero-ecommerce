@@ -9,10 +9,7 @@ const getProfile = async (req, res) => {
   try {
     const token = req.cookies.token;
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    );
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const userData = await User.findById(decoded.userId).lean();
 
@@ -20,13 +17,15 @@ const getProfile = async (req, res) => {
       return res.redirect("/login");
     }
 
-    const defaultAddress = userData.addresses?.find(addr => addr.isDefault) || userData.addresses?.[0] || null;
+    const defaultAddress =
+      userData.addresses?.find((addr) => addr.isDefault) ||
+      userData.addresses?.[0] ||
+      null;
 
     return res.render("user/profile", {
       userData,
-      defaultAddress
+      defaultAddress,
     });
-
   } catch (error) {
     logger.error("Profile error:", error);
 
@@ -47,7 +46,7 @@ const getEditProfile = async (req, res) => {
     }
 
     return res.render("user/edit-profile", {
-      userData
+      userData,
     });
   } catch (error) {
     logger.error("Get edit profile page error:", error);
@@ -72,7 +71,7 @@ const updateProfile = async (req, res) => {
       const userData = await User.findById(userId).lean();
       return res.status(400).render("user/edit-profile", {
         userData,
-        error: "Name and Email are required"
+        error: "Name and Email are required",
       });
     }
 
@@ -88,7 +87,7 @@ const updateProfile = async (req, res) => {
         const userData = await User.findById(userId).lean();
         return res.status(400).render("user/edit-profile", {
           userData,
-          error: "Email is already in use by another account"
+          error: "Email is already in use by another account",
         });
       }
 
@@ -99,7 +98,7 @@ const updateProfile = async (req, res) => {
         const userData = await User.findById(userId).lean();
         return res.status(500).render("user/edit-profile", {
           userData,
-          error: "Failed to send verification email. Please try again."
+          error: "Failed to send verification email. Please try again.",
         });
       }
 
@@ -112,16 +111,20 @@ const updateProfile = async (req, res) => {
           newEmail: email,
           name,
           phone,
-          profileImage: shouldRemovePhoto ? null : (req.file ? req.file.path : currentUser.profileImage),
-          otp
+          profileImage: shouldRemovePhoto
+            ? null
+            : req.file
+              ? req.file.path
+              : currentUser.profileImage,
+          otp,
         },
-        "10m"
+        "10m",
       );
 
       res.cookie("pendingEmailToken", pendingEmailToken, {
         httpOnly: true,
         secure: false,
-        maxAge: 10 * 60 * 1000
+        maxAge: 10 * 60 * 1000,
       });
 
       return res.redirect("/profile/verify-email-otp");
@@ -130,7 +133,7 @@ const updateProfile = async (req, res) => {
     // Email is the same, just update name, phone, and profileImage directly
     const updateData = {
       name,
-      phone: phone || null
+      phone: phone || null,
     };
     if (shouldRemovePhoto) {
       updateData.profileImage = null;
@@ -174,14 +177,14 @@ const verifyEmailOtp = async (req, res) => {
     const token = req.cookies.pendingEmailToken;
     if (!token) {
       return res.status(400).render("user/verify-profile-email-otp", {
-        error: "OTP session expired. Please update profile again."
+        error: "OTP session expired. Please update profile again.",
       });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (String(otp) !== String(decoded.otp)) {
       return res.status(400).render("user/verify-profile-email-otp", {
-        error: "Invalid OTP code"
+        error: "Invalid OTP code",
       });
     }
 
@@ -190,7 +193,7 @@ const verifyEmailOtp = async (req, res) => {
       email: decoded.newEmail,
       name: decoded.name,
       phone: decoded.phone || null,
-      profileImage: decoded.profileImage || null
+      profileImage: decoded.profileImage || null,
     });
 
     // Clear session cookies
@@ -201,11 +204,11 @@ const verifyEmailOtp = async (req, res) => {
     logger.error("Verify email OTP error:", error);
     if (error.name === "TokenExpiredError") {
       return res.status(400).render("user/verify-profile-email-otp", {
-        error: "OTP expired. Please try again."
+        error: "OTP expired. Please try again.",
       });
     }
     return res.status(500).render("user/verify-profile-email-otp", {
-      error: "Internal Server Error"
+      error: "Internal Server Error",
     });
   }
 };
@@ -234,15 +237,15 @@ const resendEmailOtp = async (req, res) => {
         name: decoded.name,
         phone: decoded.phone,
         profileImage: decoded.profileImage || null,
-        otp
+        otp,
       },
-      "10m"
+      "10m",
     );
 
     res.cookie("pendingEmailToken", newPendingToken, {
       httpOnly: true,
       secure: false,
-      maxAge: 10 * 60 * 1000
+      maxAge: 10 * 60 * 1000,
     });
 
     return res.status(200).json({ message: "OTP resent successfully" });
@@ -252,81 +255,28 @@ const resendEmailOtp = async (req, res) => {
   }
 };
 
-const getAllAddresses = async (req, res) => {
-  try {
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userData = await User.findById(decoded.userId).lean();
-
-    if (!userData) {
-      return res.redirect("/login");
-    }
-
-    return res.render("user/all-address", {
-      userData
-    });
-  } catch (error) {
-    logger.error("Get all addresses error:", error);
-    res.clearCookie("token");
-    return res.redirect("/login");
-  }
-};
-
-const getAddAddress = async (req, res) => {
-  try {
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userData = await User.findById(decoded.userId).lean();
-
-    if (!userData) {
-      return res.redirect("/login");
-    }
-
-    return res.render("user/add-address", {
-      userData
-    });
-  } catch (error) {
-    logger.error("Get add address page error:", error);
-    res.clearCookie("token");
-    return res.redirect("/login");
-  }
-};
-
 const deleteAccount = async (req, res) => {
   try {
-    let userId = req.user ? req.user._id : null;
-    if (!userId) {
-      const token = req.cookies.token;
-      if (token) {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        userId = decoded.userId;
-      }
-    }
+    const token = req.cookies.token;
 
-    if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const userId = decoded.userId;
 
     await User.findByIdAndDelete(userId);
+
     res.clearCookie("token");
 
-    return res.status(200).json({ message: "Account deleted successfully" });
+    return res.status(200).json({
+      message: "Account deleted successfully",
+    });
   } catch (error) {
     logger.error("Delete account error:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-};
 
-export {
-  getProfile,
-  getEditProfile,
-  updateProfile,
-  loadVerifyEmailOtp,
-  verifyEmailOtp,
-  resendEmailOtp,
-  getAllAddresses,
-  getAddAddress,
-  deleteAccount
+    return res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
 };
 
 export default {
@@ -336,7 +286,5 @@ export default {
   loadVerifyEmailOtp,
   verifyEmailOtp,
   resendEmailOtp,
-  getAllAddresses,
-  getAddAddress,
-  deleteAccount
+  deleteAccount,
 };

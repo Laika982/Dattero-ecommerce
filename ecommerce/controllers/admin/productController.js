@@ -511,7 +511,7 @@ const loadEditProduct = async (req, res) => {
     const { id } = req.params;
 
     if (!id) {
-      return res.redirect("/admin/products");
+      return res.redirect("/admin/product/products");
     }
 
     const product = await Product.findById(id).populate("category_id").lean();

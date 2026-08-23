@@ -1,78 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" style="">
-
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Edit Profile | Nutri Luxe</title>
-    <style>
-        @layer base {
-
-            html,
-            body {
-                margin: 0;
-                padding: 0;
-            }
-
-            body {
-                overscroll-behavior: none;
-            }
-
-            main>:first-child {
-                margin-top: 0 !important;
-            }
-
-            main>:last-child {
-                margin-bottom: 0 !important;
-            }
-        }
-
-        ::-webkit-scrollbar {
-            display: none;
-        }
-    </style>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script
-        id="tailwind-config">tailwind.config = { theme: { extend: { "colors": { "primary-fixed": "#e5e2e1", "tertiary-fixed-dim": "#f0bf5c", "on-error-container": "#93000a", "on-tertiary-fixed-variant": "#5d4200", "tertiary-fixed": "#ffdea4", "on-primary-fixed-variant": "#474746", "on-primary": "#ffffff", "secondary-container": "#e1dfdf", "on-secondary-fixed-variant": "#464747", "error": "#ba1a1a", "primary-fixed-dim": "#c8c6c5", "on-primary-fixed": "#1c1b1b", "error-container": "#ffdad6", "outline-variant": "#c4c7c7", "on-tertiary-fixed": "#261900", "on-tertiary": "#ffffff", "secondary": "#5e5e5e", "on-secondary": "#ffffff", "brand-gold": "#c89b3c", "on-surface": "#111827", "on-error": "#ffffff", "on-tertiary-container": "#a77d1f", "background": "#f3f4f6", "surface-container": "#ebeeee", "tertiary-container": "#261900", "primary-container": "#1c1b1b", "tertiary": "#000000", "primary": "#000000", "on-primary-container": "#858383", "on-background": "#181c1d", "on-surface-variant": "#444748", "inverse-primary": "#c8c6c5", "surface-dim": "#d7dbda", "surface-container-low": "#f1f4f4", "inverse-surface": "#2d3131", "on-secondary-fixed": "#1b1c1c", "surface-tint": "#5f5e5e", "outline": "#747878", "surface-variant": "#e0e3e3", "secondary-fixed": "#e4e2e2", "on-secondary-container": "#636262", "surface-bright": "#f7fafa", "secondary-fixed-dim": "#c7c6c6", "surface-container-high": "#e5e9e8", "surface": "#ffffff", "surface-container-highest": "#e0e3e3", "surface-container-lowest": "#ffffff", "inverse-on-surface": "#eef1f1" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "grid-gutter": "24px", "stack-sm": "8px", "section-gap": "48px", "container-padding": "32px", "stack-lg": "24px", "stack-md": "16px", "max-width": "1280px" }, "fontFamily": { "label-md": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"], "display-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "label-sm": ["Inter"] }, "fontSize": { "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "display-lg": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-lg": ["20px", { "lineHeight": "28px", "fontWeight": "700" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.1em", "fontWeight": "700" }] } } } }</script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap"
-        rel="stylesheet">
-</head>
-
-<body class="bg-background font-body-md text-on-surface antialiased">
-    <div class="flex flex-col min-h-screen">
-        <nav class="fixed top-0 w-full z-50 bg-surface/95 backdrop-blur-md border-b border-secondary/10 shadow-sm transition-all duration-300"
-            id="main-nav">
-            <div class="flex justify-between items-center w-full px-container-padding max-w-max-width mx-auto h-20"><a
-                    class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0"
-                    href="#">Nutri Burfi</a>
-                <div class="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2"><a
-                        class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
-                        href="/">Home</a><a
-                        class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
-                        href="#">Products</a><a
-                        class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
-                        href="#">About Us</a><a
-                        class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors"
-                        href="#">Contact</a></div>
-                <div class="flex items-center gap-4 text-on-surface z-10 flex-shrink-0"><button
-                        class="hover:bg-surface-container p-2 rounded-full transition-colors"><span
-                            class="material-symbols-outlined">search</span></button><button
-                        class="hover:bg-surface-container p-2 rounded-full transition-colors"><span
-                            class="material-symbols-outlined">favorite</span></button><button
-                        class="hover:bg-surface-container p-2 rounded-full transition-colors relative"><span
-                            class="material-symbols-outlined">shopping_cart</span></button><button
-                        class="hover:bg-surface-container p-2 rounded-full transition-colors hidden md:block"><span
-                            class="material-symbols-outlined">person</span></button></div>
-            </div>
-        </nav>
-        <main class="flex-1 pt-20 p-container-padding max-w-max-width mx-auto w-full">
+{{>user/header}}
+<main class="flex-1 pt-20 p-container-padding max-w-max-width mx-auto w-full">
             <div class="flex flex-col w-full max-w-max-width mx-auto">
                 <!-- Header Area -->
                 <div class="flex items-center justify-between mb-section-gap pt-6">
@@ -152,10 +79,10 @@
                         <div class="bg-surface rounded-xl p-container-padding shadow-sm relative overflow-hidden">
                             <form action="/profile/edit" method="POST" enctype="multipart/form-data" class="flex flex-col gap-stack-lg relative z-10" id="personal-info-form">
                                 {{#if error}}
-                                <div class="p-4 bg-error-container text-on-error-container rounded-xl text-sm border border-error/10">
-                                    {{error}}
-                                </div>
-                                {{/if}}
+<div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
+    {{error}}
+</div>
+{{/if}}
 
                                 <!-- Hidden inputs for profile image upload and removal -->
                                 <input accept="image/*" class="hidden" id="avatar-upload" name="profileImage" type="file">
@@ -282,6 +209,4 @@
         </main>
     </div>
 
-</body>
-
-</html>
+{{>user/footer}}

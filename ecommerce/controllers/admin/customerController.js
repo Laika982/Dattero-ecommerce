@@ -124,11 +124,6 @@ const customerUnBlocked = async (req, res) => {
   }
 };
 
-export {
-  customerInfo,
-  customerBlocked,
-  customerUnBlocked,
-};
 
 export default {
   customerInfo,

@@ -1,6 +1,20 @@
 {{>user/header}}
 <!-- Main Content Canvas -->
 <main class="pt-16">
+<div class="max-w-max-width mx-auto px-container-padding mt-6">
+    {{#if error}}
+    <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
+        {{error}}
+    </div>
+    {{/if}}
+    
+    {{#if success}}
+    <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
+        {{success}}
+    </div>
+    {{/if}}
+</div>
+
 <!-- Hero: Cinematic Brand Story -->
 <section class="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden">
 <div class="absolute inset-0 z-0">

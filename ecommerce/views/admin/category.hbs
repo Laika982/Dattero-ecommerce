@@ -146,7 +146,7 @@
         <div class="relative w-full max-w-md">
 
             <form
-                action="/admin/categories"
+                action="/admin/category/categories"
                 method="GET"
                 class="relative"
             >
@@ -171,7 +171,7 @@
 
                     <!-- X Clear Button -->
                     <a
-                        href="/admin/categories"
+                        href="/admin/category/categories"
                         class="absolute right-20 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-error transition-colors"
                         title="Clear search"
                     >
@@ -453,7 +453,7 @@
         {{#if (gt currentPage 1)}}
 
             <a
-                href="/admin/categories?page={{subtract currentPage 1}}{{#if search}}&search={{search}}{{/if}}"
+                href="/admin/category/categories?page={{subtract currentPage 1}}{{#if search}}&search={{search}}{{/if}}"
                 class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-surface-variant transition-all"
             >
                 <span class="material-symbols-outlined text-[18px]">
@@ -481,7 +481,7 @@
             {{#if this.active}}
 
                 <a
-                    href="/admin/categories?page={{this.page}}{{#if ../search}}&search={{../search}}{{/if}}"
+                    href="/admin/category/categories?page={{this.page}}{{#if ../search}}&search={{../search}}{{/if}}"
                     class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md text-[12px] transition-all"
                 >
                     {{this.page}}
@@ -490,7 +490,7 @@
             {{else}}
 
                 <a
-                    href="/admin/categories?page={{this.page}}{{#if ../search}}&search={{../search}}{{/if}}"
+                    href="/admin/category/categories?page={{this.page}}{{#if ../search}}&search={{../search}}{{/if}}"
                     class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant font-label-md text-[12px] hover:bg-surface-variant transition-all"
                 >
                     {{this.page}}
@@ -505,7 +505,7 @@
         {{#if (lt currentPage totalPages)}}
 
             <a
-                href="/admin/categories?page={{add currentPage 1}}{{#if search}}&search={{search}}{{/if}}"
+                href="/admin/category/categories?page={{add currentPage 1}}{{#if search}}&search={{search}}{{/if}}"
                 class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-surface-variant transition-all"
             >
                 <span class="material-symbols-outlined text-[18px]">

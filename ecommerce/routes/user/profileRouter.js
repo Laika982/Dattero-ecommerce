@@ -14,8 +14,5 @@ router.post("/edit", isAuthenticated, upload.single("profileImage"), profileCont
 router.get("/verify-email-otp", isAuthenticated, profileController.loadVerifyEmailOtp);
 router.post("/verify-email-otp", isAuthenticated, profileController.verifyEmailOtp);
 router.post("/resend-email-otp", isAuthenticated, profileController.resendEmailOtp);
-router.get("/address", isAuthenticated, profileController.getAllAddresses);
-router.get("/address/add", isAuthenticated, profileController.getAddAddress);
-router.post("/delete-account", isAuthenticated, profileController.deleteAccount);
 
 export default router;

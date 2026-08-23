@@ -238,6 +238,18 @@
 <h2 class="font-display-lg-mobile md:font-headline-xl text-on-surface mb-4">Join the Inner Circle</h2>
 <p class="font-body-lg text-on-surface-variant mb-0">Subscribe for early access to new seasonal flavors, nutritional insights, and exclusive subscriber-only offers.</p>
 </div>
+{{#if error}}
+<div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
+    {{error}}
+</div>
+{{/if}}
+
+{{#if success}}
+<div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
+    {{success}}
+</div>
+{{/if}}
+
 <form class="w-full max-w-md flex flex-col gap-4">
 <div class="relative">
 <label class="sr-only" for="email">Email Address</label>

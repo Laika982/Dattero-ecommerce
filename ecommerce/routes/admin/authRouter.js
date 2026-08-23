@@ -19,7 +19,4 @@ router.get("/logout", adminController.logout);
 
 
 
-
-
-
 export default router;

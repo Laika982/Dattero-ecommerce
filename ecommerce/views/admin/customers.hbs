@@ -143,8 +143,20 @@
 
         <div class="relative w-full max-w-md">
 
-            <form
-                action="/admin/customers"
+                        {{#if error}}
+            <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
+                {{error}}
+            </div>
+            {{/if}}
+            
+            {{#if success}}
+            <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
+                {{success}}
+            </div>
+            {{/if}}
+
+<form
+                action="/admin/customer/customers"
                 method="GET"
                 class="relative"
             >
@@ -169,7 +181,7 @@
 
                     <!-- X Clear Button -->
                     <a
-                        href="/admin/customers"
+                        href="/admin/customer/customers"
                         class="absolute right-20 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-error transition-colors"
                         title="Clear search"
                     >
@@ -270,7 +282,7 @@
 <span class="material-symbols-outlined text-primary">groups</span>
 </div>
 </div>
-<div class="bento-card p-6 rounded-xl flex items-center justify-between">
+{{!-- <div class="bento-card p-6 rounded-xl flex items-center justify-between">
 <div>
 <p class="text-[11px] uppercase tracking-widest text-on-surface-variant mb-1">Average LTV</p>
 <h3 class="font-headline-lg text-headline-lg">₹4,250</h3>
@@ -278,7 +290,7 @@
 <div class="p-3 bg-secondary/5 rounded-full">
 <span class="material-symbols-outlined text-secondary">payments</span>
 </div>
-</div>
+</div> --}}
 
 
 </div>
@@ -293,10 +305,10 @@
 
 </div>
 <div class="h-6 w-[1px] bg-outline-variant/50"></div>
-<button class="flex items-center gap-2 px-3 py-1.5 font-label-md text-on-surface-variant hover:text-primary">
+{{!-- <button class="flex items-center gap-2 px-3 py-1.5 font-label-md text-on-surface-variant hover:text-primary">
 <span class="material-symbols-outlined text-[20px]">filter_list</span>
                             More Filters
-                        </button>
+                        </button> --}}
 </div>
 <div class="text-on-surface-variant font-label-md">
                         Showing {{this.page}}-{{this.totalPages}} of {{this.count}}results
@@ -366,7 +378,14 @@
                         <div class="w-10 h-10 flex-shrink-0 rounded-full bg-surface-container-high overflow-hidden">
                             <img
                                 class="w-full h-full object-cover"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC11aKUo2hVOMBq1U3n3MluU1uw9WyKh3IejLn5ciRzvQve8r14fSyXvYPiLPdHrJYMyq1Xxn9WO9q6VRQXMuQk53AVpByFGSXv01Gf4jDfTTqUyZzyanX5_VTwmAis8jaqYPL708Cf6aRqybiaPc9ZJ6jTzTTt_EEcSeDGz4_yaBW8YYABnHxCHUPtkelltq5mUWXANRHSFnJZ6AI9oSnFW-9LnJCodHzVrjk2IWqC8-sGNyUyeBn2MbVEAyzvSywRhCWLLiAXEog"
+                              <img
+  src="{{#if this.profileImage}}
+         {{this.profileImage}}
+       {{else}}
+         https://lh3.googleusercontent.com/aida-public/AB6AXuC11aKUo2hVOMBq1U3n3MluU1uw9WyKh3IejLn5ciRzvQve8r14fSyXvYPiLPdHrJYMyq1Xxn9WO9q6VRQXMuQk53AVpByFGSXv01Gf4jDfTTqUyZzyanX5_VTwmAis8jaqYPL708Cf6aRqybiaPc9ZJ6jTzTTt_EEcSeDGz4_yaBW8YYABnHxCHUPtkelltq5mUWXANRHSFnJZ6AI9oSnFW-9LnJCodHzVrjk2IWqC8-sGNyUyeBn2MbVEAyzvSywRhCWLLiAXEog
+       {{/if}}"
+  alt="Profile Image"
+>
                                 alt="Customer"
                             >
                         </div>
@@ -469,7 +488,7 @@
 
         {{#if (gt currentPage 1)}}
             <a
-                href="/admin/customers?page={{subtract currentPage 1}}{{#if search}}&search={{search}}{{/if}}"
+                href="/admin/customer/customers?page={{subtract currentPage 1}}{{#if search}}&search={{search}}{{/if}}"
                 class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-white transition-colors"
             >
                 <span class="material-symbols-outlined text-[18px]">
@@ -484,7 +503,7 @@
             {{#if this.active}}
 
                 <a
-                    href="/admin/customers?page={{this.page}}{{#if ../search}}&search={{../search}}{{/if}}"
+                    href="/admin/customer/customers?page={{this.page}}{{#if ../search}}&search={{../search}}{{/if}}"
                     class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md"
                 >
                     {{this.page}}
@@ -493,7 +512,7 @@
             {{else}}
 
                 <a
-                    href="/admin/customers?page={{this.page}}{{#if ../search}}&search={{../search}}{{/if}}"
+                    href="/admin/customer/customers?page={{this.page}}{{#if ../search}}&search={{../search}}{{/if}}"
                     class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white transition-colors font-label-md"
                 >
                     {{this.page}}
@@ -506,7 +525,7 @@
 
         {{#if (lt currentPage totalPages)}}
             <a
-                href="/admin/customers?page={{add currentPage 1}}{{#if search}}&search={{search}}{{/if}}"
+                href="/admin/customer/customers?page={{add currentPage 1}}{{#if search}}&search={{search}}{{/if}}"
                 class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-white transition-colors"
             >
                 <span class="material-symbols-outlined text-[18px]">
@@ -519,7 +538,7 @@
 
 
     <!-- Go to page -->
-    <form action="/admin/customers" method="GET" class="flex items-center gap-3">
+    <form action="/admin/customer/customers" method="GET" class="flex items-center gap-3">
 
         <span class="text-on-surface-variant font-label-md">
             Go to page:

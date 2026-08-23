@@ -11,6 +11,18 @@
 <!-- Contact Form (Left) -->
 <div class="bg-surface-container-lowest p-8 md:p-12 border border-outline-variant/30 rounded-[24px] shadow-sm flex flex-col justify-center">
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-stack-lg">Send a Message</h2>
+{{#if error}}
+<div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
+    {{error}}
+</div>
+{{/if}}
+
+{{#if success}}
+<div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
+    {{success}}
+</div>
+{{/if}}
+
 <form class="space-y-stack-lg">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
 <div class="input-wrapper relative">

@@ -146,7 +146,7 @@ const deleteAddress = async (req, res) => {
       const wasDefault = user.addresses[addressIndex].isDefault;
       user.addresses.splice(addressIndex, 1);
       
-      // If we deleted the default address, make the first remaining address default
+
       if (wasDefault && user.addresses.length > 0) {
         user.addresses[0].isDefault = true;
       }
@@ -256,15 +256,6 @@ const editAddressPost = async (req, res) => {
   }
 };
 
-export {
-  loadAddress,
-  addAddress,
-  addAddressPost,
-  makePrimary,
-  deleteAddress,
-  editAddress,
-  editAddressPost
-};
 
 export default {
   loadAddress,

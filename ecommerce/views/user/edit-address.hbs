@@ -1,96 +1,4 @@
-<!DOCTYPE html><html lang="en" class="scroll-smooth" style=""><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Edit Address | Nutri Luxe</title><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-secondary-fixed-variant": "#464747",
-                        "tertiary": "#5c5c5c",
-                        "on-surface": "#1b1c1c",
-                        "surface-container-low": "#f5f3f3",
-                        "secondary-container": "#e3e2e2",
-                        "primary-fixed-dim": "#c7c6c6",
-                        "inverse-on-surface": "#f2f0f0",
-                        "error-container": "#ffdad6",
-                        "on-secondary-container": "#646464",
-                        "on-primary-container": "#fefcfc",
-                        "on-secondary": "#ffffff",
-                        "tertiary-fixed": "#e2e2e2",
-                        "outline": "#747878",
-                        "surface-container-highest": "#e3e2e2",
-                        "surface-container": "#efeded",
-                        "surface-tint": "#5e5e5e",
-                        "on-tertiary-fixed": "#1b1b1b",
-                        "surface-container-lowest": "#ffffff",
-                        "on-tertiary-container": "#fcfcfc",
-                        "on-secondary-fixed": "#1b1c1c",
-                        "surface": "#fbf9f9",
-                        "tertiary-fixed-dim": "#c6c6c6",
-                        "on-surface-variant": "#444748",
-                        "surface-bright": "#fbf9f9",
-                        "on-primary-fixed": "#1b1c1c",
-                        "error": "#ba1a1a",
-                        "surface-variant": "#e3e2e2",
-                        "on-error-container": "#93000a",
-                        "surface-container-high": "#e9e8e7",
-                        "outline-variant": "#c4c7c7",
-                        "primary": "#5c5c5c"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "stack-lg": "24px",
-                        "section-gap-mobile": "64px",
-                        "stack-md": "16px",
-                        "section-gap": "120px",
-                        "container-padding": "32px",
-                        "max-width": "1280px",
-                        "grid-gutter": "24px",
-                        "stack-sm": "8px"
-                    },
-                    "fontFamily": {
-                        "body-md": ["Inter"],
-                        "headline-xl": ["Plus Jakarta Sans"],
-                        "label-md": ["Inter"],
-                        "display-lg": ["Plus Jakarta Sans"],
-                        "headline-lg": ["Plus Jakarta Sans"],
-                        "body-xl": ["Inter"],
-                        "body-lg": ["Inter"]
-                    },
-                    "fontSize": {
-                        "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                        "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
-                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
-                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
-                        "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                        "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}]
-                    }
-                }
-            }
-        }
-    }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed antialiased">
-<header class="fixed top-0 w-full bg-surface/80 dark:bg-surface/80 backdrop-blur-md z-50 border-b border-black/5 dark:border-white/5">
-<div class="flex justify-between items-center px-container-padding h-20 w-full max-w-max-width mx-auto">
-<a href="/" class="font-headline-lg text-headline-lg font-bold tracking-tight text-on-surface dark:text-on-surface">Nutri Luxe</a>
-<nav class="hidden md:flex items-center space-x-8">
-<a href="#" class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md">Shop All</a>
-<a href="#" class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md">Nutri Burfi</a>
-<a href="#" class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md">Wellness</a>
-<a href="#" class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md">About</a>
-</nav>
-<div class="flex items-center space-x-6">
-<button class="material-symbols-outlined text-primary scale-95 active:opacity-80 transition-all" data-icon="search">search</button>
-<button class="material-symbols-outlined text-primary scale-95 active:opacity-80 transition-all" data-icon="favorite">favorite</button>
-<a href="/profile" class="material-symbols-outlined text-primary scale-95 active:opacity-80 transition-all" data-icon="person">person</a>
-<button class="material-symbols-outlined text-primary scale-95 active:opacity-80 transition-all" data-icon="shopping_bag">shopping_bag</button>
-</div>
-</div>
-</header>
+{{>user/header}}
 <main class="pt-24 min-h-screen max-w-max-width mx-auto px-container-padding pb-section-gap flex flex-col md:flex-row gap-grid-gutter">
 <section class="flex-grow w-full">
 <div class="mb-stack-lg">
@@ -104,11 +12,11 @@
 </div>
 <div class="bg-surface-container-lowest rounded-xl p-8 border border-black/5 shadow-sm">
 {{#if error}}
-<div class="mb-6 p-4 bg-error-container text-on-error-container rounded-lg font-medium text-sm flex items-center gap-2">
-  <span class="material-symbols-outlined">error</span>
-  {{error}}
+<div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
+    {{error}}
 </div>
 {{/if}}
+
 <form id="addressForm" action="/profile/address/edit/{{address._id}}" method="POST" class="space-y-6">
 <input type="hidden" name="isDefault" id="isDefault" value="{{#if address.isDefault}}true{{else}}false{{/if}}">
 <!-- Name & Phone -->
@@ -189,7 +97,7 @@
 </div>
 </section>
 </main>
-{{> user/footer}}
+
 <script>
         function toggleSwitch(container) {
             const dot = container.querySelector('#switch-dot') || container.nextElementSibling.querySelector('#switch-dot');
@@ -213,4 +121,5 @@
             }
         }
     </script>
-</body></html>
+
+{{>user/footer}}

@@ -130,7 +130,7 @@
         <div class="relative w-full max-w-md">
 
             <form
-                action="/admin/products"
+                action="/admin/product/products"
                 method="GET"
                 class="relative"
             >
@@ -155,7 +155,7 @@
 
                     <!-- X Clear Button -->
                     <a
-                        href="/admin/products"
+                        href="/admin/product/products"
                         class="absolute right-20 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-error transition-colors"
                         title="Clear search"
                     >
@@ -527,7 +527,7 @@
         {{#if (gt currentPage 1)}}
 
             <a
-                href="/admin/products?page={{subtract currentPage 1}}{{#if search}}&search={{search}}{{/if}}{{#if filter}}&filter={{filter}}{{/if}}"
+                href="/admin/product/products?page={{subtract currentPage 1}}{{#if search}}&search={{search}}{{/if}}{{#if filter}}&filter={{filter}}{{/if}}"
                 class="px-3 py-1 rounded
                        border border-outline-variant/30
                        text-label-md
@@ -583,7 +583,7 @@
                 <!-- OTHER PAGE -->
 
                 <a
-                    href="/admin/products?page={{this}}{{#if ../search}}&search={{../search}}{{/if}}{{#if ../filter}}&filter={{../filter}}{{/if}}"
+                    href="/admin/product/products?page={{this}}{{#if ../search}}&search={{../search}}{{/if}}{{#if ../filter}}&filter={{../filter}}{{/if}}"
                     class="px-3 py-1 rounded
                            border border-outline-variant/30
                            text-label-md
@@ -603,7 +603,7 @@
         {{#if (lt currentPage totalPages)}}
 
             <a
-                href="/admin/products?page={{add currentPage 1}}{{#if search}}&search={{search}}{{/if}}{{#if filter}}&filter={{filter}}{{/if}}"
+                href="/admin/product/products?page={{add currentPage 1}}{{#if search}}&search={{search}}{{/if}}{{#if filter}}&filter={{filter}}{{/if}}"
                 class="px-3 py-1 rounded
                        border border-outline-variant/30
                        text-label-md

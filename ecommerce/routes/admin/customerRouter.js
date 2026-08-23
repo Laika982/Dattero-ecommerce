@@ -9,9 +9,9 @@ import customerController from "../../controllers/admin/customerController.js";
 
 
 // //customers
-router.get("/customers", customerController.customerInfo);
-router.post("/blockCustomer", customerController.customerBlocked);
-router.post("/unblockCustomer", customerController.customerUnBlocked);
+router.get("/customers", isAdminAuthenticated, customerController.customerInfo);
+router.post("/blockCustomer", isAdminAuthenticated, customerController.customerBlocked);
+router.post("/unblockCustomer", isAdminAuthenticated, customerController.customerUnBlocked);
 
 
 export default router;

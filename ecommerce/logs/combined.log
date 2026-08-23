@@ -63,3 +63,544 @@
 {"level":"info","message":"POST /login 401 24985 - 19.154 ms","timestamp":"2026-08-19 14:28:19"}
 {"level":"info","message":"GET /signup 200 24393 - 8.596 ms","timestamp":"2026-08-19 14:29:03"}
 {"level":"info","message":"GET / 304 - - 2.763 ms","timestamp":"2026-08-19 14:30:05"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 17:23:47"}
+{"level":"info","message":"GET / 200 38410 - 79.351 ms","timestamp":"2026-08-19 17:24:08"}
+{"level":"info","message":"GET /profile 200 34531 - 48.300 ms","timestamp":"2026-08-19 17:24:18"}
+{"level":"info","message":"GET /logout 302 30 - 16.175 ms","timestamp":"2026-08-19 17:24:23"}
+{"level":"info","message":"GET / 200 38494 - 10.308 ms","timestamp":"2026-08-19 17:24:23"}
+{"level":"info","message":"GET /login 200 24985 - 10.228 ms","timestamp":"2026-08-19 17:24:27"}
+{"level":"info","message":"GET /auth/google 302 0 - 2.500 ms","timestamp":"2026-08-19 17:24:32"}
+{"level":"info","message":"GET / 304 - - 10.608 ms","timestamp":"2026-08-19 17:24:41"}
+{"level":"info","message":"GET /admin/login 302 35 - 8.943 ms","timestamp":"2026-08-19 17:24:42"}
+{"level":"info","message":"GET /admin 200 28410 - 17.636 ms","timestamp":"2026-08-19 17:24:42"}
+{"level":"info","message":"GET /images/admin/default-avatar.jpg 404 170 - 3.458 ms","timestamp":"2026-08-19 17:24:42"}
+{"level":"info","message":"GET /auth/google/callback?iss=https%3A%2F%2Faccounts.google.com&code=4%2F0ATsMZqBDGEv_AHjXuqqrBwV3Ag3vtll4vxeosVzTKeHdr6FTTI6KXYOAxdlTZFL2K-tgXA&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none 302 30 - 1061.987 ms","timestamp":"2026-08-19 17:24:43"}
+{"level":"info","message":"GET / 200 38410 - 11.673 ms","timestamp":"2026-08-19 17:24:43"}
+{"level":"info","message":"GET /profile 200 33964 - 48.361 ms","timestamp":"2026-08-19 17:24:45"}
+{"level":"info","message":"GET /logout 302 30 - 8.281 ms","timestamp":"2026-08-19 17:24:53"}
+{"level":"info","message":"GET / 304 - - 7.895 ms","timestamp":"2026-08-19 17:24:53"}
+{"level":"info","message":"GET /login 200 24985 - 7.847 ms","timestamp":"2026-08-19 17:24:58"}
+{"level":"info","message":"GET /signup 200 24410 - 10.445 ms","timestamp":"2026-08-19 17:25:02"}
+{"level":"info","message":416026,"timestamp":"2026-08-19 17:25:29"}
+{"level":"info","message":"POST /signup 200 27973 - 3922.777 ms","timestamp":"2026-08-19 17:25:33"}
+{"level":"info","message":"GET /admin/customer/customers 200 39161 - 98.760 ms","timestamp":"2026-08-19 17:26:12"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 3.767 ms","timestamp":"2026-08-19 17:26:12"}
+{"level":"info","message":"resend otp803753","timestamp":"2026-08-19 17:27:25"}
+{"level":"info","message":"Resent signup OTP: 803753","timestamp":"2026-08-19 17:27:28"}
+{"level":"info","message":"POST /resend-signup-otp 200 37 - 3067.420 ms","timestamp":"2026-08-19 17:27:28"}
+{"level":"info","message":"POST /verify-otp 400 27973 - 23.624 ms","timestamp":"2026-08-19 17:27:43"}
+{"level":"info","message":"POST /verify-otp 302 30 - 24.348 ms","timestamp":"2026-08-19 17:27:57"}
+{"level":"info","message":"GET / 200 38410 - 14.157 ms","timestamp":"2026-08-19 17:27:57"}
+{"level":"info","message":"GET /profile 200 33943 - 40.866 ms","timestamp":"2026-08-19 17:28:00"}
+{"level":"info","message":"GET /logout 302 30 - 8.422 ms","timestamp":"2026-08-19 17:28:06"}
+{"level":"info","message":"GET / 200 38494 - 5.814 ms","timestamp":"2026-08-19 17:28:06"}
+{"level":"info","message":"GET /login 200 24985 - 5.480 ms","timestamp":"2026-08-19 17:28:09"}
+{"level":"info","message":"GET /forgotPassword 200 24658 - 6.975 ms","timestamp":"2026-08-19 17:28:10"}
+{"level":"info","message":"resent otp 449246","timestamp":"2026-08-19 17:28:46"}
+{"level":"info","message":"POST /forgotPassword 302 54 - 24382.378 ms","timestamp":"2026-08-19 17:28:46"}
+{"level":"info","message":"GET /forgotPassword/verifyOtp 200 23278 - 7.535 ms","timestamp":"2026-08-19 17:28:46"}
+{"level":"info","message":"GET /login 200 24985 - 9.658 ms","timestamp":"2026-08-19 17:32:03"}
+{"level":"info","message":"POST /login 302 30 - 75.493 ms","timestamp":"2026-08-19 17:32:26"}
+{"level":"info","message":"GET / 200 38410 - 10.040 ms","timestamp":"2026-08-19 17:32:26"}
+{"level":"info","message":"GET /profile 200 33943 - 20.871 ms","timestamp":"2026-08-19 17:32:29"}
+{"level":"info","message":"GET /profile/edit 200 21340 - 28.664 ms","timestamp":"2026-08-19 17:32:32"}
+{"level":"info","message":"Email update OTP sent to delete1@gmail.com: 105244","timestamp":"2026-08-19 17:33:49"}
+{"level":"info","message":"POST /profile/edit 302 54 - 27972.215 ms","timestamp":"2026-08-19 17:33:49"}
+{"level":"info","message":"GET /profile/verify-email-otp 200 21701 - 28.503 ms","timestamp":"2026-08-19 17:33:49"}
+{"level":"info","message":"GET /profile/edit 200 21340 - 40.032 ms","timestamp":"2026-08-19 17:34:01"}
+{"level":"info","message":"POST /profile/edit 302 37 - 3716.709 ms","timestamp":"2026-08-19 17:34:18"}
+{"level":"info","message":"GET /profile 200 33742 - 29.068 ms","timestamp":"2026-08-19 17:34:18"}
+{"level":"info","message":"GET /profile/address/add 200 21692 - 20.790 ms","timestamp":"2026-08-19 17:34:22"}
+{"level":"info","message":"POST /profile/delete-account 200 42 - 18.868 ms","timestamp":"2026-08-19 17:34:35"}
+{"level":"info","message":"GET / 200 38494 - 12.349 ms","timestamp":"2026-08-19 17:34:41"}
+{"level":"info","message":"GET /products 200 34115 - 16.195 ms","timestamp":"2026-08-19 17:34:58"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-19 17:41:21"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-20 15:55:57"}
+{"level":"info","message":"GET / 304 - - 18.644 ms","timestamp":"2026-08-20 15:55:57"}
+{"level":"info","message":"GET /favicon.ico 404 150 - 6.440 ms","timestamp":"2026-08-20 15:56:00"}
+{"level":"info","message":"GET / 304 - - 6.184 ms","timestamp":"2026-08-20 15:56:03"}
+{"level":"info","message":"GET /admin/login 200 12114 - 15.405 ms","timestamp":"2026-08-20 15:56:07"}
+{"level":"info","message":"POST /admin/login 302 35 - 297.140 ms","timestamp":"2026-08-20 15:56:25"}
+{"level":"info","message":"GET /admin 200 28410 - 10.572 ms","timestamp":"2026-08-20 15:56:25"}
+{"level":"info","message":"GET /images/admin/default-avatar.jpg 404 170 - 1.299 ms","timestamp":"2026-08-20 15:56:25"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 64.262 ms","timestamp":"2026-08-20 15:56:42"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 3.288 ms","timestamp":"2026-08-20 15:56:42"}
+{"level":"info","message":"GET /login 200 24985 - 4.937 ms","timestamp":"2026-08-20 15:56:53"}
+{"level":"info","message":"GET /signup 200 24410 - 3.787 ms","timestamp":"2026-08-20 15:56:57"}
+{"level":"info","message":"POST /signup 409 24530 - 11.453 ms","timestamp":"2026-08-20 15:57:32"}
+{"level":"info","message":734559,"timestamp":"2026-08-20 15:58:02"}
+{"level":"info","message":"POST /signup 200 27973 - 3179.002 ms","timestamp":"2026-08-20 15:58:05"}
+{"level":"info","message":"POST /verify-otp 302 30 - 16.076 ms","timestamp":"2026-08-20 15:58:22"}
+{"level":"info","message":"GET / 200 38410 - 7.486 ms","timestamp":"2026-08-20 15:58:22"}
+{"level":"info","message":"GET /profile 200 33937 - 18.883 ms","timestamp":"2026-08-20 15:58:25"}
+{"level":"info","message":"GET /profile/edit 200 21331 - 16.348 ms","timestamp":"2026-08-20 15:58:36"}
+{"level":"info","message":"POST /profile/edit 302 37 - 2864.689 ms","timestamp":"2026-08-20 15:59:04"}
+{"level":"info","message":"GET /profile 200 33730 - 16.000 ms","timestamp":"2026-08-20 15:59:04"}
+{"level":"info","message":"GET /admin/customer/customers 200 41897 - 18.803 ms","timestamp":"2026-08-20 15:59:12"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 7.330 ms","timestamp":"2026-08-20 15:59:12"}
+{"level":"info","message":"POST /admin/customer/blockCustomer?id=6a86d6c65e8e73013964e42c 302 54 - 6.072 ms","timestamp":"2026-08-20 15:59:22"}
+{"level":"info","message":"GET /admin/customer/customers 200 41888 - 21.579 ms","timestamp":"2026-08-20 15:59:22"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.460 ms","timestamp":"2026-08-20 15:59:22"}
+{"level":"info","message":"POST /admin/customer/unblockCustomer?id=6a86d6c65e8e73013964e42c 302 54 - 3.571 ms","timestamp":"2026-08-20 15:59:25"}
+{"level":"info","message":"GET /admin/customer/customers 200 41897 - 13.353 ms","timestamp":"2026-08-20 15:59:25"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.329 ms","timestamp":"2026-08-20 15:59:25"}
+{"level":"info","message":"GET /profile/edit 302 35 - 0.821 ms","timestamp":"2026-08-20 15:59:28"}
+{"level":"info","message":"GET /login 200 24985 - 3.916 ms","timestamp":"2026-08-20 15:59:28"}
+{"level":"info","message":"GET /profile 302 35 - 0.745 ms","timestamp":"2026-08-20 15:59:42"}
+{"level":"info","message":"GET /login 200 24985 - 2.795 ms","timestamp":"2026-08-20 15:59:42"}
+{"level":"info","message":"GET /login 200 24985 - 2.977 ms","timestamp":"2026-08-20 15:59:43"}
+{"level":"info","message":"POST /login 302 30 - 63.344 ms","timestamp":"2026-08-20 15:59:56"}
+{"level":"info","message":"GET / 304 - - 5.861 ms","timestamp":"2026-08-20 15:59:56"}
+{"level":"info","message":"GET /login 200 24987 - 9.180 ms","timestamp":"2026-08-20 16:04:56"}
+{"level":"info","message":"GET /favicon.ico 404 150 - 0.954 ms","timestamp":"2026-08-20 16:04:57"}
+{"level":"info","message":"POST /login 401 25104 - 17.684 ms","timestamp":"2026-08-20 16:05:18"}
+{"level":"info","message":"GET / 200 38412 - 6.467 ms","timestamp":"2026-08-20 16:10:52"}
+{"level":"info","message":"GET /profile 200 33807 - 15.278 ms","timestamp":"2026-08-20 16:10:54"}
+{"level":"info","message":"GET /profile/address/add 200 21694 - 13.174 ms","timestamp":"2026-08-20 16:11:01"}
+{"level":"info","message":"POST /profile/address/add 400 21830 - 11.651 ms","timestamp":"2026-08-20 16:11:04"}
+{"level":"info","message":"GET /profile/address/add 200 21694 - 10.038 ms","timestamp":"2026-08-20 16:11:11"}
+{"level":"info","message":"GET /logout 302 30 - 3.660 ms","timestamp":"2026-08-20 16:11:20"}
+{"level":"info","message":"GET / 200 38496 - 5.560 ms","timestamp":"2026-08-20 16:11:20"}
+{"level":"info","message":"GET /login 200 24987 - 3.451 ms","timestamp":"2026-08-20 16:11:22"}
+{"level":"info","message":"GET /forgotPassword 200 24660 - 3.694 ms","timestamp":"2026-08-20 16:11:25"}
+{"level":"info","message":"POST /forgotPassword 400 24825 - 5.040 ms","timestamp":"2026-08-20 16:11:37"}
+{"level":"info","message":"GET /login 200 24987 - 4.510 ms","timestamp":"2026-08-20 16:15:06"}
+{"level":"info","message":"GET /favicon.ico 404 150 - 2.831 ms","timestamp":"2026-08-20 16:15:06"}
+{"level":"info","message":"GET / 304 - - 9.359 ms","timestamp":"2026-08-20 16:15:08"}
+{"level":"info","message":"GET /admin/customer/customers 200 41899 - 44.450 ms","timestamp":"2026-08-20 16:15:10"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 3.275 ms","timestamp":"2026-08-20 16:15:10"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 41.499 ms","timestamp":"2026-08-20 16:15:12"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 2.214 ms","timestamp":"2026-08-20 16:15:12"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 14.056 ms","timestamp":"2026-08-20 16:16:38"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.115 ms","timestamp":"2026-08-20 16:16:38"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 13.093 ms","timestamp":"2026-08-20 16:16:39"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 0.962 ms","timestamp":"2026-08-20 16:16:39"}
+{"level":"info","message":"GET / 304 - - 3.216 ms","timestamp":"2026-08-20 16:16:41"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 14.407 ms","timestamp":"2026-08-20 16:16:43"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 0.769 ms","timestamp":"2026-08-20 16:16:43"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 14.849 ms","timestamp":"2026-08-20 16:17:31"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.943 ms","timestamp":"2026-08-20 16:17:31"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-20 16:17:37"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 63.124 ms","timestamp":"2026-08-20 16:17:40"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 3.774 ms","timestamp":"2026-08-20 16:17:40"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 19.453 ms","timestamp":"2026-08-20 16:17:41"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.532 ms","timestamp":"2026-08-20 16:17:41"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 15.714 ms","timestamp":"2026-08-20 16:17:41"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 0.966 ms","timestamp":"2026-08-20 16:17:41"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 13.908 ms","timestamp":"2026-08-20 16:17:41"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 0.825 ms","timestamp":"2026-08-20 16:17:41"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 14.481 ms","timestamp":"2026-08-20 16:17:41"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.080 ms","timestamp":"2026-08-20 16:17:41"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 11.310 ms","timestamp":"2026-08-20 16:17:42"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.519 ms","timestamp":"2026-08-20 16:17:42"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 10.650 ms","timestamp":"2026-08-20 16:17:42"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.135 ms","timestamp":"2026-08-20 16:17:42"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 14.107 ms","timestamp":"2026-08-20 16:17:42"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.090 ms","timestamp":"2026-08-20 16:17:42"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 13.266 ms","timestamp":"2026-08-20 16:17:42"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.480 ms","timestamp":"2026-08-20 16:17:42"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 13.195 ms","timestamp":"2026-08-20 16:17:43"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 0.997 ms","timestamp":"2026-08-20 16:17:43"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-20 16:18:46"}
+{"level":"info","message":"GET /admin/customer/customers 200 41520 - 68.109 ms","timestamp":"2026-08-20 16:19:41"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 4.702 ms","timestamp":"2026-08-20 16:19:41"}
+{"level":"info","message":"GET /admin/customer/customers 200 41189 - 18.431 ms","timestamp":"2026-08-20 16:20:45"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.334 ms","timestamp":"2026-08-20 16:20:45"}
+{"level":"info","message":"GET /admin/customer/customers 200 41260 - 18.069 ms","timestamp":"2026-08-20 16:21:03"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.209 ms","timestamp":"2026-08-20 16:21:03"}
+{"level":"info","message":"GET /admin/category/categories 200 37060 - 23.287 ms","timestamp":"2026-08-20 16:21:11"}
+{"level":"info","message":"GET /admin/category/YOUR_ADMIN_IMAGE 404 170 - 1.112 ms","timestamp":"2026-08-20 16:21:11"}
+{"level":"info","message":"GET /admin/category/categories?isListed=false 200 34652 - 25.135 ms","timestamp":"2026-08-20 16:21:16"}
+{"level":"info","message":"GET /admin/category/YOUR_ADMIN_IMAGE 404 170 - 2.518 ms","timestamp":"2026-08-20 16:21:16"}
+{"level":"info","message":"GET /login 200 24987 - 7.797 ms","timestamp":"2026-08-20 16:21:26"}
+{"level":"info","message":"GET /auth/google 302 0 - 1.644 ms","timestamp":"2026-08-20 16:21:29"}
+{"level":"info","message":"GET /auth/google/callback?iss=https%3A%2F%2Faccounts.google.com&code=4%2F0ATsMZqCHVuTbtQzZo7XLonMPbvSsW0Xfytx4H7P6cfib7ciQ0uPWWhNnCSV73GOUDKWwcA&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none 302 30 - 690.711 ms","timestamp":"2026-08-20 16:21:37"}
+{"level":"info","message":"GET / 200 38412 - 7.491 ms","timestamp":"2026-08-20 16:21:37"}
+{"level":"info","message":"GET /profile 200 46255 - 15.192 ms","timestamp":"2026-08-20 16:21:39"}
+{"level":"info","message":"GET /profile 200 38950 - 14.436 ms","timestamp":"2026-08-20 16:23:08"}
+{"level":"info","message":"GET /profile 200 38950 - 13.541 ms","timestamp":"2026-08-20 16:23:49"}
+{"level":"info","message":"GET /profile 200 38950 - 12.856 ms","timestamp":"2026-08-20 16:23:51"}
+{"level":"info","message":"GET /products 200 34108 - 6.892 ms","timestamp":"2026-08-20 16:24:27"}
+{"level":"info","message":"GET /about 404 144 - 3.190 ms","timestamp":"2026-08-20 16:24:29"}
+{"level":"info","message":"GET / 200 38412 - 7.305 ms","timestamp":"2026-08-20 16:24:33"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-20 16:25:08"}
+{"level":"info","message":"GET / 304 - - 38.654 ms","timestamp":"2026-08-20 16:25:20"}
+{"level":"info","message":"GET /profile 200 38950 - 26.188 ms","timestamp":"2026-08-20 16:25:22"}
+{"level":"info","message":"GET /.well-known/appspecific/com.chrome.devtools.json 404 187 - 8.433 ms","timestamp":"2026-08-20 16:26:11"}
+{"level":"info","message":"GET /profile 200 38950 - 19.764 ms","timestamp":"2026-08-20 16:28:01"}
+{"level":"info","message":"GET /.well-known/appspecific/com.chrome.devtools.json 404 187 - 7.886 ms","timestamp":"2026-08-20 16:28:01"}
+{"level":"info","message":"GET /profile/edit 200 34853 - 17.887 ms","timestamp":"2026-08-20 16:28:17"}
+{"level":"info","message":"GET /.well-known/appspecific/com.chrome.devtools.json 404 187 - 6.551 ms","timestamp":"2026-08-20 16:28:17"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-20 16:28:33"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-20 21:23:14"}
+{"level":"info","message":"GET / 304 - - 71.047 ms","timestamp":"2026-08-20 21:29:01"}
+{"level":"info","message":"GET /favicon.ico 404 150 - 9.263 ms","timestamp":"2026-08-20 21:29:03"}
+{"level":"info","message":"GET / 304 - - 15.118 ms","timestamp":"2026-08-20 21:29:06"}
+{"level":"info","message":"GET /admin/login 302 35 - 14.791 ms","timestamp":"2026-08-20 21:29:06"}
+{"level":"info","message":"GET /admin 200 28487 - 23.573 ms","timestamp":"2026-08-20 21:29:06"}
+{"level":"info","message":"GET /images/admin/default-avatar.jpg 404 170 - 4.973 ms","timestamp":"2026-08-20 21:29:06"}
+{"level":"info","message":"GET / 304 - - 12.139 ms","timestamp":"2026-08-20 21:29:07"}
+{"level":"info","message":"GET /admin 200 28487 - 16.324 ms","timestamp":"2026-08-20 21:29:09"}
+{"level":"info","message":"GET /images/admin/default-avatar.jpg 404 170 - 9.649 ms","timestamp":"2026-08-20 21:29:09"}
+{"level":"info","message":"GET / 200 38496 - 6.296 ms","timestamp":"2026-08-20 21:29:28"}
+{"level":"info","message":"GET /login 200 24987 - 8.045 ms","timestamp":"2026-08-20 21:29:33"}
+{"level":"info","message":"GET /login 200 24987 - 5.284 ms","timestamp":"2026-08-20 21:29:58"}
+{"level":"info","message":"GET /signup 200 24410 - 11.295 ms","timestamp":"2026-08-20 21:30:13"}
+{"level":"info","message":692596,"timestamp":"2026-08-20 21:31:37"}
+{"level":"info","message":"POST /signup 200 37522 - 5161.078 ms","timestamp":"2026-08-20 21:31:41"}
+{"level":"info","message":"resend otp610015","timestamp":"2026-08-20 21:34:07"}
+{"level":"info","message":"Resent signup OTP: 610015","timestamp":"2026-08-20 21:34:10"}
+{"level":"info","message":"POST /resend-signup-otp 200 37 - 3422.265 ms","timestamp":"2026-08-20 21:34:10"}
+{"level":"info","message":"POST /verify-otp 302 30 - 20.177 ms","timestamp":"2026-08-20 21:34:32"}
+{"level":"info","message":"GET / 200 38412 - 11.734 ms","timestamp":"2026-08-20 21:34:32"}
+{"level":"info","message":"GET /profile 200 38936 - 25.627 ms","timestamp":"2026-08-20 21:35:17"}
+{"level":"info","message":"GET /profile/edit 200 34826 - 18.632 ms","timestamp":"2026-08-20 21:35:45"}
+{"level":"info","message":"Email update OTP sent to mariyamshedha@gmail.com: 257421","timestamp":"2026-08-20 21:36:52"}
+{"level":"info","message":"POST /profile/edit 302 54 - 6277.698 ms","timestamp":"2026-08-20 21:36:52"}
+{"level":"info","message":"GET /profile/verify-email-otp 200 33201 - 13.744 ms","timestamp":"2026-08-20 21:36:52"}
+{"level":"info","message":"POST /profile/verify-email-otp 302 37 - 17.848 ms","timestamp":"2026-08-20 21:37:05"}
+{"level":"info","message":"GET /profile 200 38946 - 25.297 ms","timestamp":"2026-08-20 21:37:05"}
+{"level":"info","message":"GET /profile/edit 200 34836 - 15.571 ms","timestamp":"2026-08-20 21:37:16"}
+{"level":"info","message":"GET /profile 200 38946 - 16.331 ms","timestamp":"2026-08-20 21:37:17"}
+{"level":"info","message":"GET /profile/edit 200 34836 - 15.661 ms","timestamp":"2026-08-20 21:37:22"}
+{"level":"info","message":"POST /profile/edit 302 37 - 6743.567 ms","timestamp":"2026-08-20 21:37:43"}
+{"level":"info","message":"GET /profile 200 38729 - 17.933 ms","timestamp":"2026-08-20 21:37:43"}
+{"level":"info","message":"GET /profile/address 200 36132 - 21.700 ms","timestamp":"2026-08-20 21:37:51"}
+{"level":"info","message":"GET /profile/address/add 200 28237 - 16.261 ms","timestamp":"2026-08-20 21:38:03"}
+{"level":"info","message":"POST /profile/address/add 302 45 - 31.376 ms","timestamp":"2026-08-20 21:39:19"}
+{"level":"info","message":"GET /profile/address 200 38386 - 23.593 ms","timestamp":"2026-08-20 21:39:19"}
+{"level":"info","message":"GET /profile 200 39312 - 21.065 ms","timestamp":"2026-08-20 21:39:29"}
+{"level":"info","message":"GET /profile/address/add 200 28237 - 13.727 ms","timestamp":"2026-08-20 21:39:32"}
+{"level":"info","message":"POST /profile/address/add 302 45 - 21.545 ms","timestamp":"2026-08-20 21:40:20"}
+{"level":"info","message":"GET /profile/address 200 40500 - 21.959 ms","timestamp":"2026-08-20 21:40:20"}
+{"level":"info","message":"GET / 304 - - 14.750 ms","timestamp":"2026-08-20 21:40:25"}
+{"level":"info","message":"GET /profile 200 39311 - 14.444 ms","timestamp":"2026-08-20 21:40:26"}
+{"level":"info","message":"GET /profile/address 200 40500 - 16.440 ms","timestamp":"2026-08-20 21:40:30"}
+{"level":"info","message":"GET /profile/address/edit/6a8726aff8da861b6acdea70 200 27927 - 20.793 ms","timestamp":"2026-08-20 21:40:34"}
+{"level":"info","message":"POST /profile/address/edit/6a8726aff8da861b6acdea70 302 45 - 16.209 ms","timestamp":"2026-08-20 21:40:37"}
+{"level":"info","message":"GET /profile/address 200 40500 - 21.030 ms","timestamp":"2026-08-20 21:40:37"}
+{"level":"info","message":"POST /profile/address/delete/6a8726ecf8da861b6acdea7a 302 45 - 18.314 ms","timestamp":"2026-08-20 21:41:08"}
+{"level":"info","message":"GET /profile/address 200 38250 - 20.778 ms","timestamp":"2026-08-20 21:41:08"}
+{"level":"info","message":"GET / 304 - - 8.308 ms","timestamp":"2026-08-20 21:41:15"}
+{"level":"info","message":"GET /profile 200 39315 - 15.795 ms","timestamp":"2026-08-20 21:41:17"}
+{"level":"info","message":"GET /logout 302 30 - 6.962 ms","timestamp":"2026-08-20 21:42:14"}
+{"level":"info","message":"GET / 200 38496 - 4.795 ms","timestamp":"2026-08-20 21:42:14"}
+{"level":"info","message":"GET /login 200 24987 - 7.141 ms","timestamp":"2026-08-20 21:42:17"}
+{"level":"info","message":"GET /forgotPassword 304 - - 5.185 ms","timestamp":"2026-08-20 21:42:18"}
+{"level":"info","message":"resent otp 266063","timestamp":"2026-08-20 21:43:03"}
+{"level":"info","message":"POST /forgotPassword 302 54 - 4683.031 ms","timestamp":"2026-08-20 21:43:03"}
+{"level":"info","message":"GET /forgotPassword/verifyOtp 200 34410 - 7.822 ms","timestamp":"2026-08-20 21:43:03"}
+{"level":"info","message":"GET /login 200 24987 - 4.995 ms","timestamp":"2026-08-20 21:45:29"}
+{"level":"info","message":"GET /login 200 24987 - 3.268 ms","timestamp":"2026-08-20 21:45:32"}
+{"level":"info","message":"POST /login 401 25104 - 8.548 ms","timestamp":"2026-08-20 21:45:52"}
+{"level":"info","message":"GET /admin/customer/customers 200 41945 - 110.712 ms","timestamp":"2026-08-20 21:46:01"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 2.236 ms","timestamp":"2026-08-20 21:46:02"}
+{"level":"info","message":"POST /login 302 30 - 64.803 ms","timestamp":"2026-08-20 21:46:16"}
+{"level":"info","message":"GET / 200 38412 - 7.342 ms","timestamp":"2026-08-20 21:46:16"}
+{"level":"info","message":"POST /admin/customer/blockCustomer?id=6a86d6c65e8e73013964e42c 302 54 - 7.138 ms","timestamp":"2026-08-20 21:46:23"}
+{"level":"info","message":"GET /admin/customer/customers 200 41936 - 31.899 ms","timestamp":"2026-08-20 21:46:23"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 0.898 ms","timestamp":"2026-08-20 21:46:23"}
+{"level":"info","message":"GET /profile 302 35 - 0.678 ms","timestamp":"2026-08-20 21:46:27"}
+{"level":"info","message":"GET /login 200 24987 - 5.407 ms","timestamp":"2026-08-20 21:46:27"}
+{"level":"info","message":"POST /login 401 25103 - 67.834 ms","timestamp":"2026-08-20 21:46:50"}
+{"level":"info","message":"POST /login 401 25103 - 67.646 ms","timestamp":"2026-08-20 21:47:03"}
+{"level":"info","message":"POST /admin/customer/unblockCustomer?id=6a86d6c65e8e73013964e42c 302 54 - 3.543 ms","timestamp":"2026-08-20 21:47:12"}
+{"level":"info","message":"GET /admin/customer/customers 200 41945 - 21.921 ms","timestamp":"2026-08-20 21:47:12"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.798 ms","timestamp":"2026-08-20 21:47:12"}
+{"level":"info","message":"POST /login 302 30 - 64.074 ms","timestamp":"2026-08-20 21:47:30"}
+{"level":"info","message":"GET / 304 - - 7.423 ms","timestamp":"2026-08-20 21:47:30"}
+{"level":"info","message":"GET /profile 200 38716 - 15.335 ms","timestamp":"2026-08-20 21:47:33"}
+{"level":"info","message":"POST /profile/delete-account 200 42 - 8.579 ms","timestamp":"2026-08-20 21:47:46"}
+{"level":"info","message":"GET / 200 38496 - 5.901 ms","timestamp":"2026-08-20 21:47:49"}
+{"level":"info","message":"GET /admin/customer/customers 200 41273 - 14.746 ms","timestamp":"2026-08-20 21:48:00"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.050 ms","timestamp":"2026-08-20 21:48:00"}
+{"level":"info","message":"GET /admin/product/products 302 41 - 0.731 ms","timestamp":"2026-08-20 21:48:12"}
+{"level":"info","message":"GET /admin/login 200 12114 - 7.959 ms","timestamp":"2026-08-20 21:48:12"}
+{"level":"info","message":"POST /admin/login 302 35 - 66.307 ms","timestamp":"2026-08-20 21:48:28"}
+{"level":"info","message":"GET /admin 200 28487 - 8.390 ms","timestamp":"2026-08-20 21:48:28"}
+{"level":"info","message":"GET /images/admin/default-avatar.jpg 404 170 - 1.326 ms","timestamp":"2026-08-20 21:48:28"}
+{"level":"info","message":"GET /admin/product/products 200 39861 - 73.452 ms","timestamp":"2026-08-20 21:48:31"}
+{"level":"info","message":"GET /admin/product/YOUR_ADMIN_IMAGE 404 169 - 1.979 ms","timestamp":"2026-08-20 21:48:31"}
+{"level":"info","message":"GET /admin/product/addProduct 200 40593 - 25.091 ms","timestamp":"2026-08-20 21:48:39"}
+{"level":"info","message":"GET /admin/category/categories 304 - - 29.593 ms","timestamp":"2026-08-20 21:49:55"}
+{"level":"info","message":"GET /admin/category/YOUR_ADMIN_IMAGE 404 170 - 3.410 ms","timestamp":"2026-08-20 21:49:55"}
+{"level":"info","message":"GET /admin/category/addCategory 200 28065 - 22.840 ms","timestamp":"2026-08-20 21:50:08"}
+{"level":"info","message":"GET /images/admin/default-avatar.jpg 404 170 - 1.248 ms","timestamp":"2026-08-20 21:50:09"}
+{"level":"info","message":"GET /.well-known/appspecific/com.chrome.devtools.json 404 187 - 2.743 ms","timestamp":"2026-08-20 21:51:18"}
+{"level":"info","message":"GET /login 200 24987 - 5.756 ms","timestamp":"2026-08-20 21:56:13"}
+{"level":"info","message":"GET /.well-known/appspecific/com.chrome.devtools.json 404 187 - 2.519 ms","timestamp":"2026-08-20 21:56:13"}
+{"level":"info","message":"GET /signup 200 24410 - 8.345 ms","timestamp":"2026-08-20 21:56:46"}
+{"level":"info","message":"POST /signup 400 24547 - 4.604 ms","timestamp":"2026-08-20 21:57:07"}
+{"level":"info","message":"POST /signup 400 24554 - 4.853 ms","timestamp":"2026-08-20 21:57:57"}
+{"level":"info","message":"POST /signup 400 24547 - 3.892 ms","timestamp":"2026-08-20 21:58:15"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-20 22:34:25"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:53:02"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:53:57"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:57:26"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:57:28"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:57:34"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:57:36"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:57:38"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:57:42"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:57:45"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:57:49"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:57:50"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:57:59"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 11:58:05"}
+{"level":"info","message":"GET / 304 - - 56.100 ms","timestamp":"2026-08-21 11:58:15"}
+{"level":"info","message":"GET /favicon.ico 404 150 - 9.555 ms","timestamp":"2026-08-21 11:58:17"}
+{"level":"info","message":"GET /login 200 24987 - 20.958 ms","timestamp":"2026-08-21 11:58:20"}
+{"level":"info","message":"GET /signup 200 24410 - 31.388 ms","timestamp":"2026-08-21 11:59:01"}
+{"level":"info","message":488750,"timestamp":"2026-08-21 11:59:25"}
+{"level":"info","message":"POST /signup 200 37522 - 5615.496 ms","timestamp":"2026-08-21 11:59:31"}
+{"level":"info","message":"POST /verify-otp 302 30 - 27.172 ms","timestamp":"2026-08-21 11:59:48"}
+{"level":"info","message":"GET / 200 38412 - 14.109 ms","timestamp":"2026-08-21 11:59:48"}
+{"level":"info","message":"GET / 200 38496 - 10.856 ms","timestamp":"2026-08-21 12:00:01"}
+{"level":"info","message":"GET /login 200 24987 - 13.869 ms","timestamp":"2026-08-21 12:00:04"}
+{"level":"info","message":"GET /forgotPassword 200 24660 - 25.878 ms","timestamp":"2026-08-21 12:00:06"}
+{"level":"info","message":"forgot otp148760","timestamp":"2026-08-21 12:00:09"}
+{"level":"info","message":"resent otp 148760","timestamp":"2026-08-21 12:00:16"}
+{"level":"info","message":"POST /forgotPassword 302 54 - 6847.603 ms","timestamp":"2026-08-21 12:00:16"}
+{"level":"info","message":"GET /forgotPassword/verifyOtp 304 - - 27.930 ms","timestamp":"2026-08-21 12:00:16"}
+{"level":"info","message":"Forgot password OTP verified","timestamp":"2026-08-21 12:01:07"}
+{"level":"info","message":"POST /forgotPassword/verifyOtp 302 43 - 11.904 ms","timestamp":"2026-08-21 12:01:07"}
+{"level":"info","message":"GET /resetPassword 200 34108 - 14.377 ms","timestamp":"2026-08-21 12:01:07"}
+{"level":"info","message":"POST /resetPassword 400 34235 - 7.662 ms","timestamp":"2026-08-21 12:01:25"}
+{"level":"info","message":"POST /resetPassword 302 35 - 94.169 ms","timestamp":"2026-08-21 12:01:40"}
+{"level":"info","message":"GET /login 200 24987 - 5.834 ms","timestamp":"2026-08-21 12:01:40"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:02:18"}
+{"level":"info","message":"GET /login 200 24259 - 37.921 ms","timestamp":"2026-08-21 12:03:56"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:04:37"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:04:46"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:04:49"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:04:54"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:05:28"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:06:15"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:06:49"}
+{"level":"info","message":"GET / 304 - - 60.198 ms","timestamp":"2026-08-21 12:07:01"}
+{"level":"info","message":"GET /admin/login 200 12114 - 26.434 ms","timestamp":"2026-08-21 12:07:03"}
+{"level":"info","message":"POST /admin/login 302 35 - 136.079 ms","timestamp":"2026-08-21 12:07:20"}
+{"level":"info","message":"GET /admin 200 28487 - 53.523 ms","timestamp":"2026-08-21 12:07:20"}
+{"level":"info","message":"GET /images/admin/default-avatar.jpg 404 170 - 2.613 ms","timestamp":"2026-08-21 12:07:20"}
+{"level":"info","message":"GET /admin/customer/customers 200 41959 - 174.531 ms","timestamp":"2026-08-21 12:07:28"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 1.947 ms","timestamp":"2026-08-21 12:07:28"}
+{"level":"info","message":"POST /login 302 30 - 75.601 ms","timestamp":"2026-08-21 12:07:44"}
+{"level":"info","message":"GET / 200 38412 - 11.374 ms","timestamp":"2026-08-21 12:07:44"}
+{"level":"info","message":"GET /profile 200 38947 - 50.747 ms","timestamp":"2026-08-21 12:07:46"}
+{"level":"info","message":"GET /profile/address 200 36132 - 54.855 ms","timestamp":"2026-08-21 12:07:53"}
+{"level":"info","message":"GET /profile/address 200 36132 - 33.204 ms","timestamp":"2026-08-21 12:08:21"}
+{"level":"info","message":"GET /profile/address/add 200 28237 - 42.860 ms","timestamp":"2026-08-21 12:08:25"}
+{"level":"info","message":"GET /profile/address/add 200 28237 - 17.445 ms","timestamp":"2026-08-21 12:08:30"}
+{"level":"info","message":"POST /profile/address/add 302 45 - 48.083 ms","timestamp":"2026-08-21 12:10:21"}
+{"level":"info","message":"GET /profile/address 200 38284 - 36.332 ms","timestamp":"2026-08-21 12:10:21"}
+{"level":"info","message":"GET / 304 - - 11.929 ms","timestamp":"2026-08-21 12:10:35"}
+{"level":"info","message":"GET /profile 200 39564 - 21.825 ms","timestamp":"2026-08-21 12:10:38"}
+{"level":"info","message":"GET /profile/address 200 38284 - 30.376 ms","timestamp":"2026-08-21 12:10:51"}
+{"level":"info","message":"GET /profile/address/add 200 28237 - 26.831 ms","timestamp":"2026-08-21 12:11:06"}
+{"level":"info","message":"GET /profile/address 200 38284 - 19.164 ms","timestamp":"2026-08-21 12:11:10"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:11:50"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:11:53"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:12:10"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:13:31"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:13:43"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:13:47"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:13:54"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:13:58"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:14:04"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:14:08"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:14:15"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:14:23"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:14:35"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:16:21"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:17:13"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:17:19"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:20:45"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:22:34"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:22:40"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:23:31"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:23:44"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:23:48"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:23:55"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:24:02"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:24:06"}
+{"level":"info","message":"GET /logout 302 30 - 29.714 ms","timestamp":"2026-08-21 12:24:19"}
+{"level":"info","message":"GET / 200 38496 - 27.160 ms","timestamp":"2026-08-21 12:24:19"}
+{"level":"info","message":"GET /login 200 24259 - 12.959 ms","timestamp":"2026-08-21 12:24:25"}
+{"level":"info","message":"GET /signup 200 24410 - 10.387 ms","timestamp":"2026-08-21 12:24:32"}
+{"level":"info","message":"GET /admin/customer/customers 200 41293 - 103.774 ms","timestamp":"2026-08-21 12:25:37"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 3.783 ms","timestamp":"2026-08-21 12:25:37"}
+{"level":"error","message":"phone is not defined","stack":"ReferenceError: phone is not defined\n    at registerUser (file:///C:/Users/User/Desktop/Dattero-e-commerce/ecommerce/controllers/user/authContoller.js:95:29)\n    at Layer.handle [as handle_request] (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at Function.handle (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:47:12)","timestamp":"2026-08-21 12:26:32"}
+{"level":"info","message":"POST /signup 500 24532 - 30.557 ms","timestamp":"2026-08-21 12:26:32"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:27:18"}
+{"level":"info","message":"POST /signup 400 24602 - 69.165 ms","timestamp":"2026-08-21 12:27:43"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-21 12:47:20"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 12:21:49"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 12:31:21"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 12:31:24"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 12:31:27"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 12:31:31"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 12:40:47"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 12:40:50"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 12:50:30"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 12:53:27"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:06:04"}
+{"level":"info","message":"GET / 304 - - 49.078 ms","timestamp":"2026-08-22 16:06:10"}
+{"level":"info","message":"GET /signup 200 24410 - 22.904 ms","timestamp":"2026-08-22 16:06:12"}
+{"level":"info","message":"GET /favicon.ico 404 150 - 2.363 ms","timestamp":"2026-08-22 16:06:12"}
+{"level":"info","message":"GET / 304 - - 14.026 ms","timestamp":"2026-08-22 16:06:15"}
+{"level":"info","message":"GET / 304 - - 17.111 ms","timestamp":"2026-08-22 16:06:20"}
+{"level":"info","message":"GET /admin/login 200 12114 - 11.485 ms","timestamp":"2026-08-22 16:06:20"}
+{"level":"info","message":"GET / 304 - - 8.572 ms","timestamp":"2026-08-22 16:06:20"}
+{"level":"info","message":"GET /admin/login 200 12114 - 8.651 ms","timestamp":"2026-08-22 16:06:22"}
+{"level":"info","message":"GET /login 200 24259 - 13.042 ms","timestamp":"2026-08-22 16:06:52"}
+{"level":"info","message":"GET /signup 200 24410 - 9.582 ms","timestamp":"2026-08-22 16:07:01"}
+{"level":"error","message":"confirmPassword is not defined","stack":"ReferenceError: confirmPassword is not defined\n    at registerUser (file:///C:/Users/User/Desktop/Dattero-e-commerce/ecommerce/controllers/user/authContoller.js:127:22)\n    at Layer.handle [as handle_request] (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at Function.handle (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:47:12)","timestamp":"2026-08-22 16:07:33"}
+{"level":"info","message":"POST /signup 500 24532 - 283.857 ms","timestamp":"2026-08-22 16:07:33"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:09:15"}
+{"level":"info","message":"POST /signup 400 24535 - 66.680 ms","timestamp":"2026-08-22 16:09:53"}
+{"level":"info","message":"POST /signup 400 24535 - 9.556 ms","timestamp":"2026-08-22 16:10:35"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:11:26"}
+{"level":"error","message":"confirmPassword is not defined","stack":"ReferenceError: confirmPassword is not defined\n    at registerUser (file:///C:/Users/User/Desktop/Dattero-e-commerce/ecommerce/controllers/user/authContoller.js:127:22)\n    at Layer.handle [as handle_request] (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at Function.handle (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:47:12)","timestamp":"2026-08-22 16:11:46"}
+{"level":"info","message":"POST /signup 500 24532 - 55.044 ms","timestamp":"2026-08-22 16:11:46"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:12:26"}
+{"level":"info","message":433874,"timestamp":"2026-08-22 16:12:34"}
+{"level":"info","message":"POST /signup 200 37522 - 4603.044 ms","timestamp":"2026-08-22 16:12:39"}
+{"level":"info","message":"POST /admin/login 302 35 - 87.979 ms","timestamp":"2026-08-22 16:13:30"}
+{"level":"info","message":"GET /admin 200 28487 - 39.211 ms","timestamp":"2026-08-22 16:13:30"}
+{"level":"info","message":"GET /images/admin/default-avatar.jpg 404 170 - 3.262 ms","timestamp":"2026-08-22 16:13:30"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 153.631 ms","timestamp":"2026-08-22 16:13:32"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 12.809 ms","timestamp":"2026-08-22 16:13:32"}
+{"level":"info","message":"GET /admin/customers?search=set 404 154 - 1.243 ms","timestamp":"2026-08-22 16:14:00"}
+{"level":"info","message":"GET /admin/customers?search=set 404 154 - 5.067 ms","timestamp":"2026-08-22 16:14:09"}
+{"level":"info","message":"GET /admin/customers?search=set 404 154 - 1.918 ms","timestamp":"2026-08-22 16:14:44"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 22.909 ms","timestamp":"2026-08-22 16:17:19"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 3.777 ms","timestamp":"2026-08-22 16:17:19"}
+{"level":"info","message":"GET /admin/customers?search=set 404 154 - 1.697 ms","timestamp":"2026-08-22 16:17:26"}
+{"level":"info","message":749080,"timestamp":"2026-08-22 16:19:51"}
+{"level":"info","message":"POST /signup 200 37522 - 4092.126 ms","timestamp":"2026-08-22 16:19:55"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:20:25"}
+{"level":"info","message":"GET /admin/customers?search=set 404 154 - 10.282 ms","timestamp":"2026-08-22 16:20:41"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:20:54"}
+{"level":"info","message":"GET /admin/customers?search=set 404 154 - 9.706 ms","timestamp":"2026-08-22 16:23:21"}
+{"level":"info","message":"resend otp984312","timestamp":"2026-08-22 16:23:38"}
+{"level":"info","message":"Resent signup OTP: 984312","timestamp":"2026-08-22 16:23:42"}
+{"level":"info","message":"POST /resend-signup-otp 200 37 - 3832.872 ms","timestamp":"2026-08-22 16:23:42"}
+{"level":"info","message":"POST /verify-otp 302 30 - 56.736 ms","timestamp":"2026-08-22 16:23:59"}
+{"level":"info","message":"GET / 200 38412 - 85.027 ms","timestamp":"2026-08-22 16:23:59"}
+{"level":"info","message":"GET /admin/customers?search=set 404 154 - 4.954 ms","timestamp":"2026-08-22 16:30:58"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:37:32"}
+{"level":"info","message":"GET /admin/customers?search=set 404 154 - 20.672 ms","timestamp":"2026-08-22 16:40:51"}
+{"level":"info","message":"GET /admin/customer/customers 200 42010 - 63.564 ms","timestamp":"2026-08-22 16:40:54"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 5.470 ms","timestamp":"2026-08-22 16:40:54"}
+{"level":"info","message":"GET /admin/customer/customers?search=se 200 36548 - 35.920 ms","timestamp":"2026-08-22 16:40:57"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 7.621 ms","timestamp":"2026-08-22 16:40:57"}
+{"level":"info","message":"GET /admin/customer/customers?search=se 304 - - 27.380 ms","timestamp":"2026-08-22 16:40:59"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 6.058 ms","timestamp":"2026-08-22 16:40:59"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:41:00"}
+{"level":"info","message":"GET /admin/customer/customers?search=se 304 - - 117.410 ms","timestamp":"2026-08-22 16:41:03"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 5.983 ms","timestamp":"2026-08-22 16:41:03"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:41:06"}
+{"level":"info","message":"GET /admin/customer/customers?search=se 304 - - 152.954 ms","timestamp":"2026-08-22 16:41:06"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 10.057 ms","timestamp":"2026-08-22 16:41:06"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:41:10"}
+{"level":"info","message":"GET /admin/product/products 200 39867 - 90.665 ms","timestamp":"2026-08-22 16:41:22"}
+{"level":"info","message":"GET /admin/product/YOUR_ADMIN_IMAGE 404 169 - 7.237 ms","timestamp":"2026-08-22 16:41:22"}
+{"level":"info","message":"GET /admin/product/addProduct 200 40593 - 15.292 ms","timestamp":"2026-08-22 16:41:24"}
+{"level":"info","message":"GET /admin/category/categories 200 37076 - 45.764 ms","timestamp":"2026-08-22 16:41:30"}
+{"level":"info","message":"GET /admin/category/YOUR_ADMIN_IMAGE 404 170 - 8.451 ms","timestamp":"2026-08-22 16:41:30"}
+{"level":"info","message":"GET /admin/category/addCategory 200 28074 - 12.293 ms","timestamp":"2026-08-22 16:41:31"}
+{"level":"info","message":"GET /images/admin/default-avatar.jpg 404 170 - 5.114 ms","timestamp":"2026-08-22 16:41:31"}
+{"level":"info","message":"GET /admin/customer/customers?search=se 200 36548 - 22.421 ms","timestamp":"2026-08-22 16:41:39"}
+{"level":"info","message":"GET /admin/customer/customers?search=se 200 36548 - 25.982 ms","timestamp":"2026-08-22 16:41:40"}
+{"level":"info","message":"GET /admin/customer/customers?search=se 200 36548 - 17.304 ms","timestamp":"2026-08-22 16:41:40"}
+{"level":"info","message":"GET /admin 200 28496 - 8.373 ms","timestamp":"2026-08-22 16:41:41"}
+{"level":"info","message":"GET /admin/login 302 35 - 7.042 ms","timestamp":"2026-08-22 16:41:41"}
+{"level":"info","message":"GET /admin 200 28496 - 11.969 ms","timestamp":"2026-08-22 16:41:41"}
+{"level":"info","message":"GET /admin/customer/customers 304 - - 21.366 ms","timestamp":"2026-08-22 16:41:43"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 7.398 ms","timestamp":"2026-08-22 16:41:43"}
+{"level":"info","message":"GET /admin/customer/customers 200 42010 - 16.930 ms","timestamp":"2026-08-22 16:41:45"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 3.979 ms","timestamp":"2026-08-22 16:41:45"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:42:12"}
+{"level":"info","message":"GET /admin/customer/customers?search=se 500 791 - 52.608 ms","timestamp":"2026-08-22 16:42:17"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:42:29"}
+{"level":"info","message":"GET /admin/customer/customers 200 42010 - 79.540 ms","timestamp":"2026-08-22 16:43:45"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 9.130 ms","timestamp":"2026-08-22 16:43:45"}
+{"level":"info","message":"GET /admin/customer/customers?search=se 200 36548 - 27.034 ms","timestamp":"2026-08-22 16:43:49"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 5.899 ms","timestamp":"2026-08-22 16:43:49"}
+{"level":"info","message":"GET /admin/customer/customers?search=user1 200 31077 - 23.209 ms","timestamp":"2026-08-22 16:44:07"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 7.865 ms","timestamp":"2026-08-22 16:44:07"}
+{"level":"info","message":"GET /admin/customer/customers?search=se 200 36548 - 22.529 ms","timestamp":"2026-08-22 16:44:16"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 5.617 ms","timestamp":"2026-08-22 16:44:16"}
+{"level":"info","message":"GET /admin/product/products 200 39867 - 41.645 ms","timestamp":"2026-08-22 16:44:32"}
+{"level":"info","message":"GET /admin/product/YOUR_ADMIN_IMAGE 404 169 - 5.793 ms","timestamp":"2026-08-22 16:44:32"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:44:53"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:44:58"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-22 16:45:16"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-23 14:35:45"}
+{"level":"info","message":"GET / 304 - - 334.035 ms","timestamp":"2026-08-23 14:35:46"}
+{"level":"info","message":"GET /favicon.ico 404 150 - 147.093 ms","timestamp":"2026-08-23 14:35:48"}
+{"level":"info","message":"GET / 304 - - 59.489 ms","timestamp":"2026-08-23 14:35:51"}
+{"level":"info","message":"GET /admin/login 302 35 - 48.403 ms","timestamp":"2026-08-23 14:35:55"}
+{"level":"info","message":"GET /admin 200 28496 - 79.230 ms","timestamp":"2026-08-23 14:35:55"}
+{"level":"info","message":"GET /images/admin/default-avatar.jpg 404 170 - 53.028 ms","timestamp":"2026-08-23 14:35:55"}
+{"level":"info","message":"GET /admin/customer/customers 200 42010 - 389.993 ms","timestamp":"2026-08-23 14:35:59"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 41.305 ms","timestamp":"2026-08-23 14:35:59"}
+{"level":"info","message":"GET /admin/customer/customers?search=set 200 31091 - 68.728 ms","timestamp":"2026-08-23 14:36:07"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 26.877 ms","timestamp":"2026-08-23 14:36:07"}
+{"level":"info","message":"GET /admin/customer/customers 200 42010 - 39.647 ms","timestamp":"2026-08-23 14:36:14"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 9.373 ms","timestamp":"2026-08-23 14:36:14"}
+{"level":"info","message":"POST /admin/customer/blockCustomer?id=6a897fc7bfd2e4316da55e96 302 54 - 377.993 ms","timestamp":"2026-08-23 14:36:31"}
+{"level":"info","message":"GET /admin/customer/customers 200 42001 - 48.096 ms","timestamp":"2026-08-23 14:36:31"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 4.925 ms","timestamp":"2026-08-23 14:36:31"}
+{"level":"info","message":"POST /admin/customer/unblockCustomer?id=6a897fc7bfd2e4316da55e96 302 54 - 11.550 ms","timestamp":"2026-08-23 14:36:35"}
+{"level":"info","message":"GET /admin/customer/customers 200 42010 - 39.790 ms","timestamp":"2026-08-23 14:36:35"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 2.140 ms","timestamp":"2026-08-23 14:36:35"}
+{"level":"info","message":"GET /admin/customer/customers?page=2 200 31021 - 29.543 ms","timestamp":"2026-08-23 14:36:44"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 3.767 ms","timestamp":"2026-08-23 14:36:44"}
+{"level":"info","message":"GET /admin/customer/customers?page=1 200 42010 - 30.269 ms","timestamp":"2026-08-23 14:36:56"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 7.026 ms","timestamp":"2026-08-23 14:36:56"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-23 14:38:17"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-23 14:38:29"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-23 14:38:31"}
+{"level":"info","message":"GET /profile 302 35 - 23.208 ms","timestamp":"2026-08-23 14:38:39"}
+{"level":"info","message":"GET /login 200 24259 - 84.953 ms","timestamp":"2026-08-23 14:38:39"}
+{"level":"info","message":"GET /signup 200 24410 - 36.325 ms","timestamp":"2026-08-23 14:38:43"}
+{"level":"info","message":578632,"timestamp":"2026-08-23 14:39:29"}
+{"level":"info","message":"POST /signup 200 37522 - 3605.808 ms","timestamp":"2026-08-23 14:39:33"}
+{"level":"error","message":"JWT_SECRET is not defined","stack":"ReferenceError: JWT_SECRET is not defined\n    at resendSignupOtp (file:///C:/Users/User/Desktop/Dattero-e-commerce/ecommerce/controllers/user/authContoller.js:498:41)\n    at Layer.handle [as handle_request] (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at Function.handle (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\User\\Desktop\\Dattero-e-commerce\\ecommerce\\node_modules\\express\\lib\\router\\index.js:47:12)","timestamp":"2026-08-23 14:44:28"}
+{"level":"info","message":"POST /resend-signup-otp 500 37689 - 13.340 ms","timestamp":"2026-08-23 14:44:28"}
+{"level":"info","message":"POST /resend-signup-otp 400 24555 - 8.976 ms","timestamp":"2026-08-23 14:44:38"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-23 14:45:45"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-23 14:45:56"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-23 14:46:50"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-23 14:46:53"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-23 14:48:00"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-08-23 14:48:03"}
+{"level":"info","message":224237,"timestamp":"2026-08-23 14:48:16"}
+{"level":"info","message":"POST /resend-signup-otp 400 24555 - 40.662 ms","timestamp":"2026-08-23 14:48:17"}
+{"level":"info","message":"POST /resend-signup-otp 400 24555 - 11.162 ms","timestamp":"2026-08-23 14:48:19"}
+{"level":"info","message":"POST /signup 200 37522 - 4418.859 ms","timestamp":"2026-08-23 14:48:20"}
+{"level":"info","message":"GET /.well-known/appspecific/com.chrome.devtools.json 404 187 - 7.647 ms","timestamp":"2026-08-23 14:49:02"}
+{"level":"info","message":"resend otp510685","timestamp":"2026-08-23 14:50:13"}
+{"level":"info","message":"Resent signup OTP: 510685","timestamp":"2026-08-23 14:50:16"}
+{"level":"info","message":"POST /resend-signup-otp 200 37 - 2942.568 ms","timestamp":"2026-08-23 14:50:16"}
+{"level":"info","message":"POST /verify-otp 400 37685 - 25.099 ms","timestamp":"2026-08-23 14:50:40"}
+{"level":"info","message":"GET /.well-known/appspecific/com.chrome.devtools.json 404 187 - 4.404 ms","timestamp":"2026-08-23 14:50:41"}
+{"level":"info","message":"POST /verify-otp 302 30 - 61.973 ms","timestamp":"2026-08-23 14:51:00"}
+{"level":"info","message":"GET / 304 - - 45.617 ms","timestamp":"2026-08-23 14:51:00"}
+{"level":"info","message":"GET /.well-known/appspecific/com.chrome.devtools.json 404 187 - 9.778 ms","timestamp":"2026-08-23 14:51:00"}
+{"level":"info","message":"GET /profile 200 38933 - 82.557 ms","timestamp":"2026-08-23 14:51:16"}
+{"level":"info","message":"GET /profile/edit 200 34825 - 49.649 ms","timestamp":"2026-08-23 14:51:24"}
+{"level":"info","message":"Email update OTP sent to sreehari1@gmail.com: 394329","timestamp":"2026-08-23 14:53:01"}
+{"level":"info","message":"POST /profile/edit 302 54 - 6171.720 ms","timestamp":"2026-08-23 14:53:01"}
+{"level":"info","message":"GET /profile/verify-email-otp 200 33201 - 59.326 ms","timestamp":"2026-08-23 14:53:01"}
+{"level":"info","message":"POST /profile/verify-email-otp 302 37 - 35.643 ms","timestamp":"2026-08-23 14:53:37"}
+{"level":"info","message":"GET /profile 200 38727 - 53.174 ms","timestamp":"2026-08-23 14:53:38"}
+{"level":"info","message":"GET /profile/address/add 200 28237 - 41.735 ms","timestamp":"2026-08-23 14:53:44"}
+{"level":"info","message":"GET /profile/address 200 36132 - 76.701 ms","timestamp":"2026-08-23 14:53:52"}
+{"level":"info","message":"GET /admin/customer/customers?page=1 200 42004 - 105.117 ms","timestamp":"2026-08-23 14:54:08"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 17.423 ms","timestamp":"2026-08-23 14:54:08"}
+{"level":"info","message":"GET /admin/customer/customers?page=1 200 40597 - 55.685 ms","timestamp":"2026-08-23 14:57:02"}
+{"level":"info","message":"GET /admin/customer/YOUR_ADMIN_IMAGE 404 170 - 58.624 ms","timestamp":"2026-08-23 14:57:02"}
+{"level":"info","message":"GET /admin/customer/alt=%22Customer%22 404 172 - 11.248 ms","timestamp":"2026-08-23 14:57:02"}
+{"level":"info","message":"GET /admin/customer/alt=%22Customer%22 404 172 - 7.685 ms","timestamp":"2026-08-23 14:57:02"}

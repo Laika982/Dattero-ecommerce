@@ -2,154 +2,105 @@ import express from "express";
 import jwt from "jsonwebtoken";
 const router = express.Router();
 
-import { isAuthenticated,
-    isGuest } from "../../middleware/authMidilware.js";
+import { isAuthenticated, isGuest } from "../../middleware/authMidilware.js";
 
 import userController from "../../controllers/user/authContoller.js";
 import passport from "passport";
 
-
 // ==================== PUBLIC ====================
 
 // Home
-router.get(
-    "/",
-    userController.loadHomepage
-);
-
+router.get("/", userController.loadHomepage);
 
 // ==================== GUEST ROUTES ====================
 
 // Login page
-router.get(
-    "/login",
-    isGuest,
-    userController.loadLogin
-);
+router.get("/login", isGuest, userController.loadLogin);
 
 // Signup page
-router.get(
-    "/signup",
-    isGuest,
-    userController.loadSignUp
-);
+router.get("/signup", isGuest, userController.loadSignUp);
 
 // Forgot password
-router.get(
-    "/forgotPassword",
-    isGuest,
-    userController.loadForgotPassword
-);
+router.get("/forgotPassword", isGuest, userController.loadForgotPassword);
 
 // Forgot password OTP
 router.get(
-    "/forgotPassword/verifyOtp",
-    isGuest,
-    userController.loadForgotPasswordVarifyOtp
+  "/forgotPassword/verifyOtp",
+  isGuest,
+  userController.loadForgotPasswordVarifyOtp,
 );
 
 // Reset password
-router.get(
-    "/resetPassword",
-    isGuest,
-    userController.loadResetPassword
-);
-
+router.get("/resetPassword", isGuest, userController.loadResetPassword);
 
 // ==================== AUTH ACTIONS ====================
 
 // Register
-router.post(
-    "/signup",
-    userController.registerUser
-);
+router.post("/signup", userController.registerUser);
 
 // Verify signup OTP
-router.post(
-    "/verify-otp",
-    userController.verifyOtp
-);
+router.post("/verify-otp", userController.verifyOtp);
 
 // Resend signup OTP
-router.post(
-    "/resend-signup-otp",
-    userController.resendSignupOtp
-);
+router.post("/resend-signup-otp", userController.resendSignupOtp);
 
 // Login
-router.post(
-    "/login",
-    userController.loginUser
-);
+router.post("/login", userController.loginUser);
 
 // Forgot password
-router.post(
-    "/forgotPassword",
-    userController.forgotPassword
-);
+router.post("/forgotPassword", userController.forgotPassword);
 
 // Verify forgot password OTP
 router.post(
-    "/forgotPassword/verifyOtp",
-    userController.forgotPasswordVerifyOtp
+  "/forgotPassword/verifyOtp",
+  userController.forgotPasswordVerifyOtp,
 );
 
 // Reset password
-router.post(
-    "/resetPassword",
-    userController.resetPassword
-);
-
+router.post("/resetPassword", userController.resetPassword);
 
 // ==================== GOOGLE AUTH ====================
 
 // Google login
 router.get(
-    "/auth/google",
-    passport.authenticate("google", {
-        scope: ["profile", "email"],
-        prompt: "select_account"
-    })
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    prompt: "select_account",
+  }),
 );
-
 
 // Google callback
 router.get(
-    "/auth/google/callback",
-    passport.authenticate("google", {
-        session: false,
-        failureRedirect: "/signup"
-    }),
-    (req, res) => {
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: "/signup",
+  }),
+  (req, res) => {
+    const token = jwt.sign(
+      {
+        userId: req.user._id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      },
+    );
 
-        const token = jwt.sign(
-            {
-                userId: req.user._id
-            },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: "1d"
-            }
-        );
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 24 * 60 * 60 * 1000
-        });
-
-        return res.redirect("/");
-    }
+    return res.redirect("/");
+  },
 );
-
 
 // Logout
-router.get(
-    "/logout",
-    userController.logoutUser
-);
-
+router.get("/logout", userController.logoutUser);
 
 //products
 

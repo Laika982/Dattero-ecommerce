@@ -91,23 +91,42 @@ const registerUser = async (req, res) => {
     referralCode = referralCode?.trim();
 
     // Validate required fields
-    if (!name || !email || !password || !confirmpassword) {
+    // 1. Required field validation
+    if (!name || !email || !password || !confirmpassword ) {
       return res.status(400).render("user/signup", {
-        error: "All required fields must be provided",
+        error: "All fields are required.",
       });
     }
 
-    // Password length
-    if (password.length < 8) {
+    const nameRegex = /^[A-Za-z\s]+$/;
+
+    if (!nameRegex.test(name)) {
       return res.status(400).render("user/signup", {
-        error: "Password must be at least 8 characters long",
+        error: "Name must contain only letters and spaces.",
       });
     }
 
-    // Password confirmation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).render("user/signup", {
+        error: "Please enter a valid email address.",
+      });
+    }
+
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).render("user/signup", {
+        error:
+          "Password must be at least 8 characters and contain a letter, number, and special character.",
+      });
+    }
+
     if (password !== confirmpassword) {
       return res.status(400).render("user/signup", {
-        error: "Passwords do not match",
+        error: "Passwords do not match.",
       });
     }
 
@@ -144,14 +163,14 @@ const registerUser = async (req, res) => {
         password: hashedPassword,
         referralCode,
       },
-      "5m"
+      "2m"
     );
 
     // Store OTP token in cookie
     res.cookie("otpToken", otpToken, {
       httpOnly: true,
       secure: false, // true in production with HTTPS
-      maxAge: 5 * 60 * 1000,
+      maxAge: 2 * 60 * 1000,
     });
 
     // Show OTP page
@@ -323,13 +342,13 @@ const forgotPassword = async (req, res) => {
         otp,
         email,
       },
-      "5m"
+      "2m"
     );
 
     res.cookie("forgotOtpToken", otpToken, {
       httpOnly: true,
       secure: false,
-      maxAge: 5 * 60 * 1000,
+      maxAge: 2 * 60 * 1000,
     });
 
     return res.redirect("/forgotPassword/verifyOtp");
@@ -476,7 +495,7 @@ const resendSignupOtp = async (req, res) => {
     }
 
     // Read signup details from existing token
-    const decoded = jwt.decode(otpToken);
+    const decoded = jwt.verify(otpToken,process.env.JWT_SECRET);
 
     if (!decoded || !decoded.email) {
       return res.status(400).render("user/signup", {
@@ -510,14 +529,14 @@ const resendSignupOtp = async (req, res) => {
         password: decoded.password,
         referralCode: decoded.referralCode
       },
-      "5m"
+      "2m"
     );
 
     // Replace old OTP token
     res.cookie("otpToken", newOtpToken, {
       httpOnly: true,
       secure: false,
-      maxAge: 5 * 60 * 1000
+      maxAge: 2 * 60 * 1000
     });
 
     return res.status(200).json({ message: "OTP resent successfully" });

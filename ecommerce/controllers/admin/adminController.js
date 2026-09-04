@@ -88,12 +88,6 @@ const logout = async (req, res) => {
   }
 };
 
-export {
-  loadLogin,
-  adminLogin,
-  loadAdminDashboard,
-  logout,
-};
 
 export default {
   loadLogin,

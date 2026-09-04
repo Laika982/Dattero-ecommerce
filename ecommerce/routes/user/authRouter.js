@@ -1,16 +1,19 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-const router = express.Router();
+import passport from "passport";
 
-import { isAuthenticated, isGuest } from "../../middleware/authMidilware.js";
+import { isAuthenticated, isGuest, isOtpSession } 
+  from "../../middleware/authMidilware.js";
 
 import userController from "../../controllers/user/authContoller.js";
-import passport from "passport";
+
+const router = express.Router();
 
 // ==================== PUBLIC ====================
 
 // Home
 router.get("/", userController.loadHomepage);
+
 
 // ==================== GUEST ROUTES ====================
 
@@ -21,53 +24,108 @@ router.get("/login", isGuest, userController.loadLogin);
 router.get("/signup", isGuest, userController.loadSignUp);
 
 // Forgot password
-router.get("/forgotPassword", isGuest, userController.loadForgotPassword);
+router.get(
+  "/forgotPassword",
+  userController.loadForgotPassword
+);
 
-// Forgot password OTP
+// Forgot password OTP page
 router.get(
   "/forgotPassword/verifyOtp",
   isGuest,
-  userController.loadForgotPasswordVarifyOtp,
+  userController.loadForgotPasswordVarifyOtp
 );
 
-// Reset password
-router.get("/resetPassword", isGuest, userController.loadResetPassword);
+// Reset password page
+router.get(
+  "/resetPassword",
+  isGuest,
+  userController.loadResetPassword
+);
 
-// ==================== AUTH ACTIONS ====================
 
-// Register
-router.post("/signup", userController.registerUser);
+// ==================== SIGNUP + OTP ====================
+
+// Register user
+router.post(
+  "/signup",
+  isGuest,
+  userController.registerUser
+);
+
+// Show signup OTP page
+router.get(
+  "/verify-otp",
+  isOtpSession,
+  userController.loadVerifyOtp
+);
 
 // Verify signup OTP
-router.post("/verify-otp", userController.verifyOtp);
+router.post(
+  "/verify-otp",
+  isOtpSession,
+  userController.verifyOtp
+);
 
 // Resend signup OTP
-router.post("/resend-signup-otp", userController.resendSignupOtp);
+router.post(
+  "/resend-signup-otp",
+  isOtpSession,
+  userController.resendSignupOtp
+);
+
+
+// ==================== LOGIN ====================
 
 // Login
-router.post("/login", userController.loginUser);
+router.post(
+  "/login",
+  isGuest,
+  userController.loginUser
+);
 
-// Forgot password
-router.post("/forgotPassword", userController.forgotPassword);
 
-// Verify forgot password OTP
+// ==================== FORGOT PASSWORD ====================
+
+// Send forgot-password OTP
+router.post(
+  "/forgotPassword",
+  isGuest,
+  userController.forgotPassword
+);
+
+// Verify forgot-password OTP
 router.post(
   "/forgotPassword/verifyOtp",
-  userController.forgotPasswordVerifyOtp,
+  isGuest,
+  userController.forgotPasswordVerifyOtp
+);
+
+// Resend forgot-password OTP
+router.post(
+  "/resend-forgot-password-otp",
+  isGuest,
+  userController.resendForgotPasswordOtp
 );
 
 // Reset password
-router.post("/resetPassword", userController.resetPassword);
+router.post(
+  "/resetPassword",
+  isGuest,
+  userController.resetPassword
+);
+
 
 // ==================== GOOGLE AUTH ====================
 
-// Google login
+// Start Google login
 router.get(
   "/auth/google",
+  isGuest,
   passport.authenticate("google", {
     scope: ["profile", "email"],
     prompt: "select_account",
-  }),
+  })
 );
 
 // Google callback
@@ -75,9 +133,10 @@ router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     session: false,
-    failureRedirect: "/signup",
+    failureRedirect: "/login",
   }),
   (req, res) => {
+
     const token = jwt.sign(
       {
         userId: req.user._id,
@@ -85,7 +144,7 @@ router.get(
       process.env.JWT_SECRET,
       {
         expiresIn: "1d",
-      },
+      }
     );
 
     res.cookie("token", token, {
@@ -96,14 +155,18 @@ router.get(
     });
 
     return res.redirect("/");
-  },
+  }
 );
 
+
+// ==================== AUTHENTICATED ====================
+
 // Logout
-router.get("/logout", userController.logoutUser);
+router.get(
+  "/logout",
+  isAuthenticated,
+  userController.logoutUser
+);
 
-//products
-
-router.get("/products", userController.loadProducts);
 
 export default router;

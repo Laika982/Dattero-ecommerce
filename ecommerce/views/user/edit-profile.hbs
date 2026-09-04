@@ -1,212 +1,215 @@
 {{>user/header}}
 <main class="flex-1 pt-20 p-container-padding max-w-max-width mx-auto w-full">
-            <div class="flex flex-col w-full max-w-max-width mx-auto">
-                <!-- Header Area -->
-                <div class="flex items-center justify-between mb-section-gap pt-6">
-                    <div class="flex items-center gap-stack-md">
-                        <a class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors shadow-sm"
-                            href="/profile">
-                            <span class="material-symbols-outlined text-[20px]">arrow_back</span>
-                        </a>
-                        <div>
-                            <h1 class="font-display-lg text-display-lg text-on-surface">Edit Personal Information</h1>
-                            <p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage your account details and contact preferences.</p>
-                        </div>
+    <div class="flex flex-col w-full max-w-max-width mx-auto">
+        <!-- Header Area -->
+        <div class="flex items-center justify-between mb-section-gap pt-6">
+            <div class="flex items-center gap-stack-md">
+                <a class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors shadow-sm"
+                    href="/profile">
+                    <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                </a>
+                <div>
+                    <h1 class="font-display-lg text-display-lg text-on-surface">Edit Personal Information</h1>
+                    <p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage your account details and
+                        contact preferences.</p>
+                </div>
+            </div>
+            <div class="flex gap-stack-sm hidden md:flex">
+                <a href="/profile"
+                    class="px-6 py-2.5 rounded-full font-label-md text-label-md text-on-surface bg-surface hover:bg-surface-container-low transition-colors shadow-sm inline-block text-center">
+                    Discard Changes
+                </a>
+                <button
+                    class="px-6 py-2.5 rounded-full font-label-md text-label-md text-on-primary bg-primary hover:bg-on-surface transition-colors shadow-md"
+                    form="personal-info-form" type="submit">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+        <!-- Main Content Area: Split Layout -->
+        <div class="flex flex-col lg:flex-row gap-grid-gutter w-full">
+            <!-- Left Column: Avatar & Quick Actions (1/3 width) -->
+            <div class="w-full lg:w-1/3 flex flex-col gap-stack-lg">
+                <div
+                    class="bg-surface rounded-xl p-container-padding shadow-sm flex flex-col items-center text-center relative overflow-hidden group">
+                    <!-- Decorative background blur -->
+                    <div
+                        class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-brand-gold/10 blur-2xl rounded-full -z-10 pointer-events-none">
                     </div>
-                    <div class="flex gap-stack-sm hidden md:flex">
-                        <a href="/profile"
-                            class="px-6 py-2.5 rounded-full font-label-md text-label-md text-on-surface bg-surface hover:bg-surface-container-low transition-colors shadow-sm inline-block text-center">
-                            Discard Changes
-                        </a>
-                        <button
-                            class="px-6 py-2.5 rounded-full font-label-md text-label-md text-on-primary bg-primary hover:bg-on-surface transition-colors shadow-md"
-                            form="personal-info-form" type="submit">
-                            Save Changes
+                    <div class="relative mb-stack-lg">
+                        <div
+                            class="w-32 h-32 rounded-full overflow-hidden shadow-md ring-4 ring-surface bg-surface-container-low">
+                            <img alt="Profile Avatar" class="w-full h-full object-cover" id="avatar-preview"
+                                src="{{#if userData.profileImage}}{{userData.profileImage}}{{else}}https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E{{/if}}">
+                        </div>
+                        <button type="button" id="trigger-upload"
+                            class="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg hover:bg-on-surface transition-transform hover:scale-105 active:scale-95 group-hover:-translate-y-1">
+                            <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                        </button>
+                    </div>
+                    <h3 class="font-headline-lg text-headline-lg text-on-surface mb-1">{{userData.name}}</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-lg">Customer</p>
+                    <div class="flex flex-col gap-stack-sm w-full">
+                        <button type="button" id="change-photo-btn"
+                            class="w-full py-2.5 rounded-lg font-label-md text-label-md text-on-primary bg-primary hover:bg-on-surface transition-colors shadow-sm">
+                            Change Photo
+                        </button>
+                        <button type="button" id="remove-photo-btn"
+                            class="w-full py-2.5 rounded-lg font-label-md text-label-md text-error bg-error-container hover:bg-error/20 transition-colors shadow-sm">
+                            Remove Photo
                         </button>
                     </div>
                 </div>
-                <!-- Main Content Area: Split Layout -->
-                <div class="flex flex-col lg:flex-row gap-grid-gutter w-full">
-                    <!-- Left Column: Avatar & Quick Actions (1/3 width) -->
-                    <div class="w-full lg:w-1/3 flex flex-col gap-stack-lg">
-                        <div
-                            class="bg-surface rounded-xl p-container-padding shadow-sm flex flex-col items-center text-center relative overflow-hidden group">
-                            <!-- Decorative background blur -->
-                            <div
-                                class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-brand-gold/10 blur-2xl rounded-full -z-10 pointer-events-none">
-                            </div>
-                            <div class="relative mb-stack-lg">
-                                <div class="w-32 h-32 rounded-full overflow-hidden shadow-md ring-4 ring-surface bg-surface-container-low">
-                                    <img alt="Profile Avatar" class="w-full h-full object-cover" id="avatar-preview"
-                                        src="{{#if userData.profileImage}}{{userData.profileImage}}{{else}}https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E{{/if}}">
-                                </div>
-                                <button type="button" id="trigger-upload"
-                                    class="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg hover:bg-on-surface transition-transform hover:scale-105 active:scale-95 group-hover:-translate-y-1">
-                                    <span class="material-symbols-outlined text-[18px]">photo_camera</span>
-                                </button>
-                            </div>
-                            <h3 class="font-headline-lg text-headline-lg text-on-surface mb-1">{{userData.name}}</h3>
-                            <p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-lg">Customer</p>
-                            <div class="flex flex-col gap-stack-sm w-full">
-                                <button type="button" id="change-photo-btn"
-                                    class="w-full py-2.5 rounded-lg font-label-md text-label-md text-on-primary bg-primary hover:bg-on-surface transition-colors shadow-sm">
-                                    Change Photo
-                                </button>
-                                <button type="button" id="remove-photo-btn"
-                                    class="w-full py-2.5 rounded-lg font-label-md text-label-md text-error bg-error-container hover:bg-error/20 transition-colors shadow-sm">
-                                    Remove Photo
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Security Reminder Card -->
-                        <div
-                            class="bg-surface-container-low rounded-xl p-stack-lg shadow-sm flex items-start gap-stack-md">
-                            <div
-                                class="w-8 h-8 rounded-full bg-brand-gold/20 flex items-center justify-center shrink-0 mt-1">
-                                <span class="material-symbols-outlined text-brand-gold text-[16px]">security</span>
-                            </div>
-                            <div>
-                                <h4 class="font-label-md text-label-md text-on-surface mb-1">Data Security</h4>
-                                <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                    Your personal information is encrypted and securely stored. We never share your
-                                    contact details without explicit consent.
-                                </p>
-                            </div>
-                        </div>
+                <!-- Security Reminder Card -->
+                <div class="bg-surface-container-low rounded-xl p-stack-lg shadow-sm flex items-start gap-stack-md">
+                    <div class="w-8 h-8 rounded-full bg-brand-gold/20 flex items-center justify-center shrink-0 mt-1">
+                        <span class="material-symbols-outlined text-brand-gold text-[16px]">security</span>
                     </div>
-                    <!-- Right Column: Form Fields (2/3 width) -->
-                    <div class="w-full lg:w-2/3">
-                        <div class="bg-surface rounded-xl p-container-padding shadow-sm relative overflow-hidden">
-                            <form action="/profile/edit" method="POST" enctype="multipart/form-data" class="flex flex-col gap-stack-lg relative z-10" id="personal-info-form">
-                                {{#if error}}
-<div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
-    {{error}}
-</div>
-{{/if}}
-
-                                <!-- Hidden inputs for profile image upload and removal -->
-                                <input accept="image/*" class="hidden" id="avatar-upload" name="profileImage" type="file">
-                                <input type="hidden" name="removeProfileImage" id="removeProfileImage" value="false">
-
-                                <div class="flex items-center gap-2 mb-2 pb-4 border-b border-surface-variant/50">
-                                    <span class="material-symbols-outlined text-on-surface-variant">badge</span>
-                                    <h2 class="font-headline-lg text-headline-lg text-on-surface">General Details</h2>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-grid-gutter"><!-- Full Name -->
-                                    <div class="flex flex-col gap-1.5 md:col-span-2">
-                                        <label class="font-label-md text-label-md text-on-surface" for="name">Full Name</label>
-                                        <div class="relative">
-                                            <input
-                                                class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 px-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
-                                                id="name" name="name" placeholder="Full Name" type="text"
-                                                value="{{userData.name}}" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="flex items-center gap-2 mt-stack-md mb-2 pb-4 border-b border-surface-variant/50">
-                                    <span class="material-symbols-outlined text-on-surface-variant">contact_mail</span>
-                                    <h2 class="font-headline-lg text-headline-lg text-on-surface">Contact Information</h2>
-                                </div>
-                                <div class="grid grid-cols-1 gap-grid-gutter">
-                                    <!-- Email Address -->
-                                    <div class="flex flex-col gap-1.5">
-                                        <label class="font-label-md text-label-md text-on-surface" for="email">Email Address</label>
-                                        <div class="relative group">
-                                            <span
-                                                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-brand-gold transition-colors">mail</span>
-                                            <input
-                                                class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
-                                                id="email" name="email" type="email" value="{{userData.email}}" required>
-                                        </div>
-                                        <p class="font-label-sm text-label-sm text-on-surface-variant mt-1">This email is used for account recovery and notifications.</p>
-                                    </div>
-                                    <!-- Phone Number -->
-                                    <div class="flex flex-col gap-1.5">
-                                        <label class="font-label-md text-label-md text-on-surface" for="phone">Phone Number</label>
-                                        <div class="relative group">
-                                            <span
-                                                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-brand-gold transition-colors">call</span>
-                                            <input
-                                                class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
-                                                id="phone" name="phone" type="tel" value="{{userData.phone}}">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Mobile-only Actions -->
-                                <div class="flex flex-col gap-stack-sm mt-stack-lg md:hidden">
-                                    <button
-                                        class="w-full py-3 rounded-full font-label-md text-label-md text-on-primary bg-primary shadow-md"
-                                        form="personal-info-form" type="submit">
-                                        Save Changes
-                                    </button>
-                                    <a href="/profile"
-                                        class="w-full py-3 rounded-full font-label-md text-label-md text-on-surface bg-surface-container-low shadow-sm inline-block text-center">
-                                        Discard
-                                    </a>
-                                </div>
-                            </form>
-                        </div>
+                    <div>
+                        <h4 class="font-label-md text-label-md text-on-surface mb-1">Data Security</h4>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                            Your personal information is encrypted and securely stored. We never share your
+                            contact details without explicit consent.
+                        </p>
                     </div>
                 </div>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const form = document.getElementById('personal-info-form');
-                    const saveBtn = document.querySelector('button[type="submit"]');
+            <!-- Right Column: Form Fields (2/3 width) -->
+            <div class="w-full lg:w-2/3">
+                <div class="bg-surface rounded-xl p-container-padding shadow-sm relative overflow-hidden">
+                    <form action="/profile/edit" method="POST" enctype="multipart/form-data"
+                        class="flex flex-col gap-stack-lg relative z-10" id="personal-info-form">
+                        {{#if error}}
+                        <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
+                            {{error}}
+                        </div>
+                        {{/if}}
 
-                    // Avatar interactive elements
-                    const avatarUpload = document.getElementById('avatar-upload');
-                    const avatarPreview = document.getElementById('avatar-preview');
-                    const triggerUpload = document.getElementById('trigger-upload');
-                    const changePhotoBtn = document.getElementById('change-photo-btn');
-                    const removePhotoBtn = document.getElementById('remove-photo-btn');
-                    const removeProfileImageInput = document.getElementById('removeProfileImage');
+                        <!-- Hidden inputs for profile image upload and removal -->
+                        <input accept="image/*" class="hidden" id="avatar-upload" name="profileImage" type="file">
+                        <input type="hidden" name="removeProfileImage" id="removeProfileImage" value="false">
 
-                    const fallbackAvatarUrl = 'https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E';
+                        <div class="flex items-center gap-2 mb-2 pb-4 border-b border-surface-variant/50">
+                            <span class="material-symbols-outlined text-on-surface-variant">badge</span>
+                            <h2 class="font-headline-lg text-headline-lg text-on-surface">General Details</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-grid-gutter"><!-- Full Name -->
+                            <div class="flex flex-col gap-1.5 md:col-span-2">
+                                <label class="font-label-md text-label-md text-on-surface" for="name">Full Name</label>
+                                <div class="relative">
+                                    <input
+                                        class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 px-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
+                                        id="name" name="name" placeholder="Full Name" type="text"
+                                        value="{{userData.name}}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 mt-stack-md mb-2 pb-4 border-b border-surface-variant/50">
+                            <span class="material-symbols-outlined text-on-surface-variant">contact_mail</span>
+                            <h2 class="font-headline-lg text-headline-lg text-on-surface">Contact Information</h2>
+                        </div>
+                        <div class="grid grid-cols-1 gap-grid-gutter">
+                            <!-- Email Address -->
+                            <div class="flex flex-col gap-1.5">
+                                <label class="font-label-md text-label-md text-on-surface" for="email">Email
+                                    Address</label>
+                                <div class="relative group">
+                                    <span
+                                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-brand-gold transition-colors">mail</span>
+                                    <input
+                                        class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
+                                        id="email" name="email" type="email" value="{{userData.email}}" required>
+                                </div>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant mt-1">This email is used
+                                    for account recovery and notifications.</p>
+                            </div>
+                            <!-- Phone Number -->
+                            <div class="flex flex-col gap-1.5">
+                                <label class="font-label-md text-label-md text-on-surface" for="phone">Phone
+                                    Number</label>
+                                <div class="relative group">
+                                    <span
+                                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-brand-gold transition-colors">call</span>
+                                    <input
+                                        class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
+                                        id="phone" name="phone" type="tel" value="{{userData.phone}}">
+                                </div>
+                            </div>
+                        </div>
 
-                    // Function to trigger upload dialog
-                    const openUploadDialog = () => {
-                        avatarUpload.click();
-                    };
-
-                    if (triggerUpload) triggerUpload.addEventListener('click', openUploadDialog);
-                    if (changePhotoBtn) changePhotoBtn.addEventListener('click', openUploadDialog);
-
-                    // File upload change listener
-                    if (avatarUpload) {
-                        avatarUpload.addEventListener('change', function (e) {
-                            if (this.files && this.files[0]) {
-                                const reader = new FileReader();
-                                reader.onload = function (e) {
-                                    avatarPreview.src = e.target.result;
-                                }
-                                reader.readAsDataURL(this.files[0]);
-                                removeProfileImageInput.value = 'false';
-                            }
-                        });
-                    }
-
-                    // Remove photo listener
-                    if (removePhotoBtn) {
-                        removePhotoBtn.addEventListener('click', () => {
-                            avatarPreview.src = fallbackAvatarUrl;
-                            avatarUpload.value = ''; // Clear selected file
-                            removeProfileImageInput.value = 'true';
-                        });
-                    }
-
-                    // Handle form submission visuals
-                    form.addEventListener('submit', (e) => {
-                        // Simple visual feedback for saving state
-                        const originalText = saveBtn.innerText;
-                        saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">sync</span> Saving...';
-                        saveBtn.classList.add('opacity-80', 'cursor-wait');
-                    });
-                });
-            </script>
-        </main>
+                        <!-- Mobile-only Actions -->
+                        <div class="flex flex-col gap-stack-sm mt-stack-lg md:hidden">
+                            <button
+                                class="w-full py-3 rounded-full font-label-md text-label-md text-on-primary bg-primary shadow-md"
+                                form="personal-info-form" type="submit">
+                                Save Changes
+                            </button>
+                            <a href="/profile"
+                                class="w-full py-3 rounded-full font-label-md text-label-md text-on-surface bg-surface-container-low shadow-sm inline-block text-center">
+                                Discard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('personal-info-form');
+            const saveBtn = document.querySelector('button[type="submit"]');
+
+            // Avatar interactive elements
+            const avatarUpload = document.getElementById('avatar-upload');
+            const avatarPreview = document.getElementById('avatar-preview');
+            const triggerUpload = document.getElementById('trigger-upload');
+            const changePhotoBtn = document.getElementById('change-photo-btn');
+            const removePhotoBtn = document.getElementById('remove-photo-btn');
+            const removeProfileImageInput = document.getElementById('removeProfileImage');
+
+            const fallbackAvatarUrl = 'https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E';
+
+            // Function to trigger upload dialog
+            const openUploadDialog = () => {
+                avatarUpload.click();
+            };
+
+            if (triggerUpload) triggerUpload.addEventListener('click', openUploadDialog);
+            if (changePhotoBtn) changePhotoBtn.addEventListener('click', openUploadDialog);
+
+            // File upload change listener
+            if (avatarUpload) {
+                avatarUpload.addEventListener('change', function (e) {
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            avatarPreview.src = e.target.result;
+                        }
+                        reader.readAsDataURL(this.files[0]);
+                        removeProfileImageInput.value = 'false';
+                    }
+                });
+            }
+
+            // Remove photo listener
+            if (removePhotoBtn) {
+                removePhotoBtn.addEventListener('click', () => {
+                    avatarPreview.src = fallbackAvatarUrl;
+                    avatarUpload.value = ''; // Clear selected file
+                    removeProfileImageInput.value = 'true';
+                });
+            }
+
+            // Handle form submission visuals
+            form.addEventListener('submit', (e) => {
+                // Simple visual feedback for saving state
+                const originalText = saveBtn.innerText;
+                saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">sync</span> Saving...';
+                saveBtn.classList.add('opacity-80', 'cursor-wait');
+            });
+        });
+    </script>
+</main>
+</div>
 
 {{>user/footer}}

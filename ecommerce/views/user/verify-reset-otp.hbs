@@ -1,171 +1,237 @@
 {{>user/header}}
 <!-- Main Content Canvas -->
-  <div class="fixed inset-0 bg-surface z-40 hidden flex-col pt-24 px-container-padding" id="mobile-menu">
-    <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface" href="#">Home</a>
-    <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Products</a>
-    <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">About Us</a>
-    <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Contact</a>
-    <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between"
-      href="#">Account <span class="material-symbols-outlined">person</span></a>
-  </div>
-  <main class="flex-grow flex items-center justify-center px-container-padding py-section-gap">
-    <!-- Verification Card -->
-    <div
-      class="w-full max-w-[480px] bg-surface-container-lowest rounded-xl p-8 md:p-12 border border-outline-variant/30 ambient-shadow relative overflow-hidden">
-      <!-- Subtle Background Motif -->
-      <div class="absolute -top-24 -right-24 w-48 h-48 bg-primary-fixed/20 rounded-full blur-3xl"></div>
-      <!-- Content -->
-      <div class="relative z-10 text-center">
-        <div
-          class="mb-stack-lg inline-flex items-center justify-center w-16 h-16 rounded-full bg-surface-container-high text-primary">
-          <span class="material-symbols-outlined text-4xl" data-icon="mark_email_unread">mark_email_unread</span>
+<div class="fixed inset-0 bg-surface z-40 hidden flex-col pt-24 px-container-padding" id="mobile-menu">
+  <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface" href="#">Home</a>
+  <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Products</a>
+  <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">About Us</a>
+  <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Contact</a>
+  <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between"
+    href="#">Account <span class="material-symbols-outlined">person</span></a>
+</div>
+<main class="flex-grow flex items-center justify-center px-container-padding py-section-gap">
+  <!-- Verification Card -->
+  <div
+    class="w-full max-w-[480px] bg-surface-container-lowest rounded-xl p-8 md:p-12 border border-outline-variant/30 ambient-shadow relative overflow-hidden">
+    <!-- Subtle Background Motif -->
+    <div class="absolute -top-24 -right-24 w-48 h-48 bg-primary-fixed/20 rounded-full blur-3xl"></div>
+    <!-- Content -->
+    <div class="relative z-10 text-center">
+      <div
+        class="mb-stack-lg inline-flex items-center justify-center w-16 h-16 rounded-full bg-surface-container-high text-primary">
+        <span class="material-symbols-outlined text-4xl" data-icon="mark_email_unread">mark_email_unread</span>
+      </div>
+      <h2 class="font-headline-xl text-headline-xl text-on-surface mb-2">Verify your email</h2>
+      <p class="font-body-md text-on-surface-variant mb-10">We've sent a 6-digit verification code to your inbox.
+        Please enter it below to continue your luxury wellness journey.</p>
+      <!-- OTP Input Area -->
+      {{#if error}}
+      <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
+        {{error}}
+      </div>
+      {{/if}}
+
+      {{#if success}}
+      <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
+        {{success}}
+      </div>
+      {{/if}}
+
+      <form class="space-y-8" id="otp-form" action="/forgotPassword/verifyOtp" method="POST">
+        <input type="hidden" name="otp" id="otp-value">
+        <div class="flex justify-between gap-2 md:gap-4">
+          <input
+            class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+            maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric" autocomplete="one-time-code">
+          <input
+            class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+            maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
+          <input
+            class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+            maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
+          <input
+            class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+            maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
+          <input
+            class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+            maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
+          <input
+            class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+            maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
         </div>
-        <h2 class="font-headline-xl text-headline-xl text-on-surface mb-2">Verify your email</h2>
-        <p class="font-body-md text-on-surface-variant mb-10">We've sent a 6-digit verification code to your inbox.
-          Please enter it below to continue your luxury wellness journey.</p>
-        <!-- OTP Input Area -->
-                {{#if error}}
-        <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
-            {{error}}
-        </div>
-        {{/if}}
-        
-        {{#if success}}
-        <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
-            {{success}}
-        </div>
-        {{/if}}
+        <button
+          class="w-full py-4 font-label-md text-label-md rounded-full hover:opacity-90 active:scale-[0.98] transition-all uppercase tracking-widest shadow-lg shadow-primary-container/20 bg-ink-black text-on-primary"
+          type="submit">
+          Verify Identity
+        </button>
+      </form>
+      <script>
+        const otpForm = document.getElementById('otp-form');
+        const otpInputs = Array.from(otpForm.querySelectorAll('.otp-input'));
+        const otpValueInput = document.getElementById('otp-value');
 
-<form class="space-y-8" id="otp-form" action="/forgotPassword/verifyOtp" method="POST">
-          <input type="hidden" name="otp" id="otp-value">
-          <div class="flex justify-between gap-2 md:gap-4">
-            <input
-              class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
-              maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric" autocomplete="one-time-code">
-            <input
-              class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
-              maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
-            <input
-              class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
-              maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
-            <input
-              class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
-              maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
-            <input
-              class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
-              maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
-            <input
-              class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
-              maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
-          </div>
-          <button
-            class="w-full py-4 font-label-md text-label-md rounded-full hover:opacity-90 active:scale-[0.98] transition-all uppercase tracking-widest shadow-lg shadow-primary-container/20 bg-ink-black text-on-primary"
-            type="submit">
-            Verify Identity
-          </button>
-        </form>
-        <script>
-          const otpForm = document.getElementById('otp-form');
-          const otpInputs = Array.from(otpForm.querySelectorAll('.otp-input'));
-          const otpValueInput = document.getElementById('otp-value');
+        otpInputs.forEach((input, index) => {
+          input.addEventListener('input', (event) => {
+            const value = event.target.value.replace(/\D/g, '').slice(0, 1);
+            event.target.value = value;
 
-          otpInputs.forEach((input, index) => {
-            input.addEventListener('input', (event) => {
-              const value = event.target.value.replace(/\D/g, '').slice(0, 1);
-              event.target.value = value;
+            if (value && index < otpInputs.length - 1) {
+              otpInputs[index + 1].focus();
+            }
 
-              if (value && index < otpInputs.length - 1) {
-                otpInputs[index + 1].focus();
-              }
-
-              otpValueInput.value = otpInputs.map((item) => item.value).join('');
-            });
-
-            input.addEventListener('keydown', (event) => {
-              if (event.key === 'Backspace' && !event.target.value && index > 0) {
-                otpInputs[index - 1].focus();
-              }
-            });
-          });
-
-          otpForm.addEventListener('submit', () => {
             otpValueInput.value = otpInputs.map((item) => item.value).join('');
           });
-        </script>
-        <!-- Resend & Timer Logic -->
-        <div class="mt-8 pt-8 border-t border-outline-variant/20">
-          <p class="font-body-md text-on-surface-variant" id="timer-container">
-            Didn't receive the code?
-            <span class="text-primary font-semibold cursor-not-allowed opacity-50 transition-colors"
-              id="resend-link">Resend Code</span>
-            <span class="text-primary font-mono ml-2" id="timer">01:50</span>
-          </p>
-        </div>
+
+          input.addEventListener('keydown', (event) => {
+            if (event.key === 'Backspace' && !event.target.value && index > 0) {
+              otpInputs[index - 1].focus();
+            }
+          });
+        });
+
+        otpForm.addEventListener('submit', () => {
+          otpValueInput.value = otpInputs.map((item) => item.value).join('');
+        });
+      </script>
+      <!-- Resend & Timer Logic -->
+      <div class="mt-8 pt-8 border-t border-outline-variant/20">
+        <p class="font-body-md text-on-surface-variant" id="timer-container">
+          Didn't receive the code?
+          <button type="button"
+            class="text-primary font-semibold cursor-not-allowed opacity-50 transition-colors"
+            id="resend-link" disabled>Resend Code</button>
+          <span class="text-primary font-mono ml-2" id="timer">01:50</span>
+        </p>
       </div>
     </div>
-    <!-- Background Atmospheric Element (Image) -->
+  </div>
+  <!-- Background Atmospheric Element (Image) -->
 
-  </main>
-  {{> user/footer}}
-  <script>
-    // OTP Focus Logic
-    const inputs = document.querySelectorAll('.otp-input');
+</main>
+{{> user/footer}}
+<script>
+  // OTP Focus Logic
+  const inputs = document.querySelectorAll('.otp-input');
 
-    inputs.forEach((input, index) => {
-      input.addEventListener('input', (e) => {
-        if (e.target.value.length === 1 && index < inputs.length - 1) {
-          inputs[index + 1].focus();
-        }
-      });
-
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !e.target.value && index > 0) {
-          inputs[index - 1].focus();
-        }
-      });
-
-      // Prevent non-numeric
-      input.addEventListener('keypress', (e) => {
-        if (!/[0-9]/.test(e.key)) {
-          e.preventDefault();
-        }
-      });
+  inputs.forEach((input, index) => {
+    input.addEventListener('input', (e) => {
+      if (e.target.value.length === 1 && index < inputs.length - 1) {
+        inputs[index + 1].focus();
+      }
     });
 
-    // Timer Logic
-    let timeLeft = 110; // 1 minute 50 seconds to match 01:50
-    const timerElement = document.getElementById('timer');
-    const resendLink = document.getElementById('resend-link');
-
-    function updateTimer() {
-      const minutes = Math.floor(timeLeft / 60);
-      let seconds = timeLeft % 60;
-      seconds = seconds < 10 ? '0' + seconds : seconds;
-      timerElement.textContent = `0${minutes}:${seconds}`;
-
-      if (timeLeft > 0) {
-        timeLeft--;
-        setTimeout(updateTimer, 1000);
-      } else {
-        resendLink.classList.remove('cursor-not-allowed', 'opacity-50');
-        resendLink.classList.add('cursor-pointer', 'hover:text-primary-fixed-variant');
-        timerElement.classList.add('hidden');
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !e.target.value && index > 0) {
+        inputs[index - 1].focus();
       }
+    });
+
+    // Prevent non-numeric
+    input.addEventListener('keypress', (e) => {
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault();
+      }
+    });
+  });
+
+  // Resend & Timer Logic
+  const STORAGE_KEY = 'reset_otp_expiry';
+  const DURATION = 110;
+  const timerElement = document.getElementById('timer');
+  const resendLink = document.getElementById('resend-link');
+  let countdown;
+
+  function getRemainingTime() {
+    const stored = sessionStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const remaining = Math.ceil((parseInt(stored, 10) - Date.now()) / 1000);
+      return remaining > 0 ? remaining : 0;
+    }
+    return null;
+  }
+
+  function setExpiry(seconds) {
+    const expiry = Date.now() + seconds * 1000;
+    sessionStorage.setItem(STORAGE_KEY, expiry.toString());
+    return seconds;
+  }
+
+  function startTimer(forceReset = false) {
+    clearInterval(countdown);
+
+    let remaining = getRemainingTime();
+    if (forceReset || remaining === null) {
+      remaining = setExpiry(DURATION);
     }
 
-    updateTimer();
+    if (remaining <= 0) {
+      timerElement.classList.add('hidden');
+      resendLink.disabled = false;
+      resendLink.classList.remove('cursor-not-allowed', 'opacity-50');
+      resendLink.classList.add('cursor-pointer', 'hover:text-primary-fixed-variant');
+      sessionStorage.removeItem(STORAGE_KEY);
+      return;
+    }
 
+    resendLink.classList.add('cursor-not-allowed', 'opacity-50');
+    resendLink.classList.remove('cursor-pointer', 'hover:text-primary-fixed-variant');
+    timerElement.classList.remove('hidden');
 
-    // Resend Action
-    resendLink.addEventListener('click', () => {
-      if (timeLeft <= 0) {
-        alert('A new code has been sent to your email.');
-        timeLeft = 110;
-        resendLink.classList.add('cursor-not-allowed', 'opacity-50');
-        timerElement.classList.remove('hidden');
-        updateTimer();
+    updateDisplay(remaining);
+
+    countdown = setInterval(() => {
+      const currentRemaining = getRemainingTime();
+      if (currentRemaining === null || currentRemaining <= 0) {
+        clearInterval(countdown);
+        timerElement.classList.add('hidden');
+        resendLink.disabled = false;
+        resendLink.classList.remove('cursor-not-allowed', 'opacity-50');
+        resendLink.classList.add('cursor-pointer', 'hover:text-primary-fixed-variant');
+        sessionStorage.removeItem(STORAGE_KEY);
+      } else {
+        updateDisplay(currentRemaining);
       }
-    });
-  </script>
+    }, 1000);
+        resendLink.disabled = true;
+  }
+
+  function updateDisplay(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    let secs = seconds % 60;
+    secs = secs < 10 ? '0' + secs : secs;
+    timerElement.textContent = `0${minutes}:${secs}`;
+  }
+
+  // Start countdown when page loads (resumes previous timer on wrong OTP submission)
+  startTimer();
+
+  // Resend Action
+  resendLink.addEventListener('click', async () => {
+    if (resendLink.disabled) return;
+
+    resendLink.disabled = true;
+
+    try {
+      const response = await fetch('/resend-forgot-password-otp', {
+        method: 'POST'
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to resend OTP');
+      }
+
+      otpInputs.forEach((input) => {
+        input.value = '';
+      });
+      otpValueInput.value = '';
+      otpInputs[0].focus();
+      startTimer(true);
+    } catch (error) {
+      console.error('Resend OTP error:', error);
+      resendLink.disabled = false;
+      resendLink.classList.remove('cursor-not-allowed', 'opacity-50');
+      resendLink.classList.add('cursor-pointer', 'hover:text-primary-fixed-variant');
+    }
+  });
+</script>
 
 {{>user/footer}}

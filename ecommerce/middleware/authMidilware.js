@@ -2,39 +2,44 @@ import jwt from "jsonwebtoken";
 import User from "../models/userSchema.js";
 
 const isAuthenticated = async (req, res, next) => {
-    try {
-        res.set("Cache-Control", "no-store");
+  try {
+    res.set("Cache-Control", "no-store");
 
-        const token = req.cookies.token;
-
-        if (!token) {
-            return res.redirect("/login");
-        }
-
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET
-        );
-
-        const user = await User.findById(decoded.userId);
-
-         // Check blocked status
-        if (!user || user.isBlocked) {
-            res.clearCookie("token");
-
-            return res.redirect("/login?blocked=true");
-        }
-
-        req.user = user;
-
-        next();
-
-    } catch (error) {
-        console.error("isAuthenticated middleware error:", error);
-        res.clearCookie("token");
-
-        return res.redirect("/login");
+    const token = req.cookies.token;
+    if (!token) {
+      return res.redirect("/login");
     }
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
+
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      res.clearCookie("token");
+      return res.redirect("/login");
+    }
+
+    if (user.isBlocked === true) {
+
+      res.clearCookie("token");
+
+      return res.redirect("/login?blocked=true");
+    }
+
+    req.user = user;
+
+    next();
+
+  } catch (error) {
+    console.error("Authentication error:", error);
+
+    res.clearCookie("token");
+
+    return res.redirect("/login");
+  }
 };
 
 const isGuest = (req, res, next) => {
@@ -119,16 +124,86 @@ const isAdminLoggedIn = (req, res, next) => {
     }
 };
 
+
+// export const isOtpSession = (req, res, next) => {
+//   try {
+//     const otpToken = req.cookies.otpToken;
+
+//     if (!otpToken) {
+//       return res.redirect("/signup");
+//     }
+
+//     const decoded = jwt.verify(
+//       otpToken,
+//       process.env.JWT_SECRET
+//     );
+
+//     // Make user information available to controller
+//     req.otpUser = decoded;
+
+//     next();
+
+//   } catch (error) {
+//     res.clearCookie("otpToken");
+
+//     return res.redirect("/signup");
+//   }
+// };
+
+export const isOtpSession = (req, res, next) => {
+  try {
+    // Never cache OTP pages
+    res.set(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate"
+    );
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
+
+    // If user is already authenticated,
+    // they should never see the OTP page again.
+    const token = req.cookies.token;
+
+    if (token) {
+      try {
+        jwt.verify(token, process.env.JWT_SECRET);
+
+        // Successful signup already completed
+        return res.redirect("/");
+      } catch (error) {
+        // Normal if token is expired/invalid
+        res.clearCookie("token");
+      }
+    }
+
+    // Check temporary signup OTP session
+    const otpToken = req.cookies.otpToken;
+
+    if (!otpToken) {
+      return res.redirect("/signup");
+    }
+
+    jwt.verify(otpToken, process.env.JWT_SECRET);
+
+    next();
+
+  } catch (error) {
+    res.clearCookie("otpToken");
+    return res.redirect("/signup");
+  }
+};
+
 export {
 isAuthenticated,
 isGuest,
 isAdminAuthenticated,
-isAdminLoggedIn
+isAdminLoggedIn,
 };
 
 export default {
 isAuthenticated,
 isGuest,
 isAdminAuthenticated,
-isAdminLoggedIn
+isAdminLoggedIn,
+isOtpSession
 };

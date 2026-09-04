@@ -54,22 +54,28 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Global User Locals Middleware
 app.use(async (req, res, next) => {
   try {
     const token = req.cookies.token;
+
     if (token) {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET
+      );
+
       const user = await User.findById(decoded.userId);
+
       if (user && !user.isBlocked) {
         res.locals.user = user;
-      } else {
-        res.clearCookie("token");
       }
     }
+
   } catch (error) {
-    res.clearCookie("token");
+    // Don't redirect here
+    // Authentication is handled by isAuthenticated
   }
+
   next();
 });
 
@@ -79,38 +85,11 @@ hbs.registerPartials(path.join(__dirname, "views", "partials"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 
-hbs.registerHelper("gt", function (a, b) {
-    return a > b;
-});
 
-hbs.registerHelper("lt", function (a, b) {
-    return a < b;
-});
+// hbsHelper
+import registerHbsHelpers from "./utils/hbsHelper.js";
+registerHbsHelpers();
 
-hbs.registerHelper("add", function (a, b) {
-    return a + b;
-});
-
-hbs.registerHelper("subtract", function (a, b) {
-    return a - b;
-});
-hbs.registerHelper("eq", function (a, b) {
-    return String(a) === String(b);
-});
-
-hbs.registerHelper("multiply", function (a, b) {
-    return Number(a) * Number(b);
-});
-
-hbs.registerHelper("range", function (start, end) {
-    const result = [];
-
-    for (let i = start; i <= end; i++) {
-        result.push(i);
-    }
-
-    return result;
-});
 
 // Middleware
 app.use(express.json());
@@ -136,3 +115,7 @@ app.listen(PORT, () => {
     `Server is running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`
   );
 });
+
+
+
+

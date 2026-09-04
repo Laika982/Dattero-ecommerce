@@ -181,7 +181,7 @@
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">lock</span>
 <input class="w-full pl-12 pr-12 py-4 bg-surface-container-low border-none rounded-lg font-body-md text-on-surface placeholder:text-on-surface-variant/50 input-focus-ring" id="password" name="password" placeholder="••••••••" required="" type="password">
-<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors" onclick="togglePassword()" type="button">
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors" onclick="togglePasswordVisibility('password')" type="button">
 <span class="material-symbols-outlined text-xl" id="passwordIcon">visibility</span>
 </button>
 </div>
@@ -218,16 +218,16 @@
 </main>
 <script>
     // Show / hide password
-    function togglePassword() {
-        const passwordInput = document.getElementById("password");
-        const passwordIcon = document.getElementById("passwordIcon");
-
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            passwordIcon.innerText = "visibility_off";
+    function togglePasswordVisibility(id) {
+        const input = document.getElementById(id);
+        if (!input) return;
+        const icon = input.nextElementSibling ? input.nextElementSibling.querySelector('.material-symbols-outlined') : (input.parentElement ? input.parentElement.querySelector('.material-symbols-outlined') : null);
+        if (input.type === "password") {
+            input.type = "text";
+            if (icon) icon.textContent = "visibility_off";
         } else {
-            passwordInput.type = "password";
-            passwordIcon.innerText = "visibility";
+            input.type = "password";
+            if (icon) icon.textContent = "visibility";
         }
     }
 

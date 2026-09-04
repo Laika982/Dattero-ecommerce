@@ -23,7 +23,18 @@ const loadHomepage = async (req, res) => {
 const loadLogin = async (req, res) => {
   try {
     res.set("Cache-Control", "no-store");
-    res.render("user/login");
+
+    let error = null;
+
+    // Check if user was redirected because account is blocked
+    if (req.query.blocked === "true") {
+      error = "Your account has been blocked by the administrator.";
+    }
+
+    res.render("user/login", {
+      error
+    });
+
   } catch (error) {
     logger.error(error);
 
@@ -174,7 +185,7 @@ const registerUser = async (req, res) => {
     });
 
     // Show OTP page
-    return res.render("user/verify-otp");
+    return res.redirect("/verify-otp");
   } catch (error) {
     logger.error(error);
 
@@ -335,7 +346,7 @@ const forgotPassword = async (req, res) => {
       });
     }
 
-    logger.info(`resent otp ${otp}`);
+    logger.info(`forgot otp ${otp}`);
 
     const otpToken = generateToken(
       {
@@ -417,6 +428,56 @@ const forgotPasswordVerifyOtp = async (req, res) => {
     return res.status(500).render("user/verify-otp", {
       error: "Internal Server Error",
     });
+  }
+};
+
+const resendForgotPasswordOtp = async (req, res) => {
+  try {
+    const otpToken = req.cookies.forgotOtpToken;
+
+    if (!otpToken) {
+      return res.status(400).json({
+        message: "Forgot-password session expired. Please request a new OTP.",
+      });
+    }
+
+    const decoded = jwt.verify(otpToken, process.env.JWT_SECRET);
+    const otp = generateOtp();
+    const emailSent = await sendVerificationEmail(decoded.email, otp);
+
+    if (!emailSent) {
+      return res.status(500).json({
+        message: "Unable to send OTP. Please try again.",
+      });
+    }
+
+    logger.info(`Resent forgot-password OTP: ${otp}`);
+
+    const newOtpToken = generateToken(
+      {
+        otp,
+        email: decoded.email,
+      },
+      "2m"
+    );
+
+    res.cookie("forgotOtpToken", newOtpToken, {
+      httpOnly: true,
+      secure: false,
+      maxAge: 2 * 60 * 1000,
+    });
+
+    return res.status(200).json({ message: "OTP resent successfully" });
+  } catch (error) {
+    logger.error(error);
+
+    if (error.name === "TokenExpiredError") {
+      return res.status(400).json({
+        message: "OTP expired. Please request a new password reset.",
+      });
+    }
+
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -505,8 +566,6 @@ const resendSignupOtp = async (req, res) => {
 
     const otp = generateOtp();
 
-    logger.info("resend otp" + otp)
-
     const emailSent = await sendVerificationEmail(
       decoded.email,
       otp
@@ -551,21 +610,17 @@ const resendSignupOtp = async (req, res) => {
 //functions
 
 
-
-
-
 const loadVerifyOtp = async (req, res) => {
   try {
-    const otpToken = req.cookies.otpToken;
-    if (!otpToken) {
-      return res.redirect("/signup");
-    }
     return res.render("user/verify-otp");
   } catch (error) {
     logger.error(error);
-    return res.redirect("/signup");
+
+    return res.status(500).render("user/server-error");
   }
 };
+
+
 
 const logoutUser = async (req, res) => {
   try {
@@ -599,6 +654,7 @@ export {
   loginUser,
   forgotPassword,
   forgotPasswordVerifyOtp,
+  resendForgotPasswordOtp,
   resetPassword,
   resendSignupOtp,
   logoutUser,
@@ -618,6 +674,7 @@ export default {
   loginUser,
   forgotPassword,
   forgotPasswordVerifyOtp,
+  resendForgotPasswordOtp,
   resetPassword,
   resendSignupOtp,
   logoutUser,

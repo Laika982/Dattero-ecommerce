@@ -15,4 +15,13 @@ router.get("/verify-email-otp", isAuthenticated, profileController.loadVerifyEma
 router.post("/verify-email-otp", isAuthenticated, profileController.verifyEmailOtp);
 router.post("/resend-email-otp", isAuthenticated, profileController.resendEmailOtp);
 
+router.post("/change-password",isAuthenticated,profileController.changePassword);
+
+// DELETE ACCOUNT
+router.post(
+  "/delete-account",
+  isAuthenticated,
+  profileController.deleteAccount
+);
+
 export default router;

@@ -105,12 +105,31 @@
             if (window.scrollY > 20) {
                 nav.classList.add('shadow-sm');
                 nav.classList.replace('bg-surface/80', 'bg-surface/95');
-                nav.classList.replace('border-outline-variant/30', 'border-outline-variant/10');
             } else {
                 nav.classList.remove('shadow-sm');
                 nav.classList.replace('bg-surface/95', 'bg-surface/80');
                 nav.classList.replace('border-outline-variant/10', 'border-outline-variant/30');
             }
         });
+    </script>
+    <script>
+        function togglePasswordVisibility(id) {
+            const input = document.getElementById(id);
+            if (!input) return;
+            const icon = input.nextElementSibling ? input.nextElementSibling.querySelector('.material-symbols-outlined') : (input.parentElement ? input.parentElement.querySelector('.material-symbols-outlined') : null);
+            if (input.type === "password") {
+                input.type = "text";
+                if (icon) {
+                    icon.textContent = "visibility_off";
+                    if (icon.hasAttribute('data-icon')) icon.setAttribute('data-icon', 'visibility_off');
+                }
+            } else {
+                input.type = "password";
+                if (icon) {
+                    icon.textContent = "visibility";
+                    if (icon.hasAttribute('data-icon')) icon.setAttribute('data-icon', 'visibility');
+                }
+            }
+        }
     </script>
 </body></html>

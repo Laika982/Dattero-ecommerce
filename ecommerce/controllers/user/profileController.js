@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { sendVerificationEmail } from "../../services/emailService.js";
 import { generateOtp } from "../../utils/otp.js";
 import { generateToken } from "../../utils/token.js";
+import { hashPassword, verifyPassword } from "../../utils/password.js";
 
 const getProfile = async (req, res) => {
   try {
@@ -47,6 +48,7 @@ const getEditProfile = async (req, res) => {
 
     return res.render("user/edit-profile", {
       userData,
+      error: req.query.error,
     });
   } catch (error) {
     logger.error("Get edit profile page error:", error);
@@ -279,6 +281,64 @@ const deleteAccount = async (req, res) => {
   }
 };
 
+const changePassword = async (req,res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.redirect("/user/login");
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.redirect("/user/login");
+    }
+
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    const isPasswordCorrect = await verifyPassword(
+      currentPassword,
+      user.password,
+    );
+
+    if (!isPasswordCorrect) {
+      return res
+        .status(400)
+        .render("user/profile", { error: "Incorrect current password" });
+    }
+
+      const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!passwordRegex.test(newPassword)) {
+      return res.status(400).render("user/profile", {
+        error:
+          "Password must be at least 8 characters and contain a letter, number, and special character.",
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res
+        .status(400)
+        .render("user/profile", { error: "both password should be same" });
+    }
+
+    const hashedPassword = await hashPassword(newPassword);
+
+    await User.findByIdAndUpdate(userId, { password: hashedPassword });
+
+    return res.redirect("/profile");
+  } catch (error) {
+    logger.error("change password error:", error);
+
+    return res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
+};
+
 export default {
   getProfile,
   getEditProfile,
@@ -287,4 +347,5 @@ export default {
   verifyEmailOtp,
   resendEmailOtp,
   deleteAccount,
+  changePassword,
 };

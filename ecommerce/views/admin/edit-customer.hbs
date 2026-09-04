@@ -1,0 +1,437 @@
+<!DOCTYPE html><html lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-surface":"#111827","surface-container-low":"#f1f4f4","error-container":"#ffdad6","primary-fixed-dim":"#c8c6c5","on-error":"#ffffff","tertiary":"#000000","on-primary-fixed-variant":"#474746","on-primary-fixed":"#1c1b1b","secondary":"#5e5e5e","on-secondary-fixed-variant":"#464747","on-tertiary-fixed-variant":"#5d4200","tertiary-container":"#261900","background":"#f3f4f6","surface-container-lowest":"#ffffff","outline-variant":"#c4c7c7","surface":"#ffffff","on-tertiary":"#ffffff","on-secondary":"#ffffff","surface-bright":"#f7fafa","on-tertiary-fixed":"#261900","brand-gold":"#c89b3c","error":"#ba1a1a","secondary-fixed":"#e4e2e2","on-tertiary-container":"#a77d1f","surface-tint":"#5f5e5e","secondary-fixed-dim":"#c7c6c6","inverse-surface":"#2d3131","surface-container-highest":"#e0e3e3","outline":"#747878","surface-container-high":"#e5e9e8","on-secondary-fixed":"#1b1c1c","on-surface-variant":"#444748","on-primary":"#ffffff","tertiary-fixed-dim":"#f0bf5c","inverse-primary":"#c8c6c5","on-background":"#181c1d","on-error-container":"#93000a","inverse-on-surface":"#eef1f1","surface-dim":"#d7dbda","primary-container":"#1c1b1b","tertiary-fixed":"#ffdea4","primary":"#000000","primary-fixed":"#e5e2e1","surface-variant":"#e0e3e3","on-secondary-container":"#636262","on-primary-container":"#858383","secondary-container":"#e1dfdf","surface-container":"#ebeeee"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"stack-sm":"8px","max-width":"1280px","container-padding":"32px","grid-gutter":"24px","stack-lg":"24px","stack-md":"16px","section-gap":"48px"},fontFamily:{"label-sm":["Inter"],"label-md":["Inter"],"headline-lg":["Plus Jakarta Sans"],"body-sm":["Inter"],"body-md":["Inter"],"display-lg":["Plus Jakarta Sans"]},fontSize:{"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.1em","fontWeight":"700"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.05em","fontWeight":"600"}],"headline-lg":["20px",{"lineHeight":"28px","fontWeight":"700"}],"body-sm":["13px",{"lineHeight":"18px","fontWeight":"500"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"display-lg":["30px",{"lineHeight":"36px","letterSpacing":"-0.02em","fontWeight":"800"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface">
+ {{> admin/aside}}
+<div class="pl-64">
+ {{> admin/header}}
+<main class="relative pt-16 min-h-screen bg-background p-container-padding max-w-max-width"><div class="flex flex-col w-full">
+<div class="flex flex-col gap-6 w-full">
+<div class="flex flex-col gap-3">
+<nav class="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant">
+<span class="hover:text-on-surface transition-colors cursor-pointer">Admin</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-on-surface transition-colors" data-path="customers" href="#">Customers</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface font-semibold">Edit Customer</span>
+</nav>
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+<div class="flex items-start gap-4">
+<a class="w-10 h-10 rounded-xl bg-surface shadow-sm hover:shadow-md flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-all shrink-0" data-path="customers" href="#">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</a>
+<div class="flex flex-col">
+<div class="flex items-center gap-3">
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight">Edit Customer</h1>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-brand-gold font-label-sm text-label-sm uppercase tracking-wider">ID #{{customer._id}}</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+              Update profile information, membership tier, contact credentials, and account permissions for <span class="font-semibold text-on-surface">{{customer.name}}</span>.
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<a href="/admin/customer/customers" class="px-4 py-2.5 rounded-xl bg-surface text-on-surface font-label-md text-label-md shadow-sm hover:shadow-md hover:bg-surface-container-low transition-all" type="button">
+            Discard Changes
+          </a>
+<button form="editCustomerForm" class="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md shadow-md hover:bg-primary-container hover:text-surface transition-all flex items-center gap-2" type="submit">
+<span class="material-symbols-outlined text-[18px] text-brand-gold">check_circle</span>
+<span class="">Save Changes</span>
+</button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
+<div class="flex flex-col gap-6 col-span-12">
+<form id="editCustomerForm" action="/admin/customer/editCustomer/{{customer._id}}" method="POST" enctype="multipart/form-data" class="bg-surface rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between pb-5">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-surface-container-low flex items-center justify-center text-brand-gold">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Basic Profile &amp; Credentials</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Primary contact persona and metadata</span>
+</div>
+</div>
+</div>
+
+<!-- Customer Photo Section -->
+<div class="flex items-center gap-4">
+
+  <!-- Current / Preview Image -->
+  <div class="w-24 h-24">
+    <img
+      id="photoPreview"
+      src="{{customer.profileImage}}"
+      alt="Customer Photo"
+      class="w-24 h-24 rounded-full object-cover border"
+    >
+  </div>
+
+  <div class="flex flex-col gap-1 sm:flex-1 text-center sm:text-left">
+    <span class="font-headline-lg text-body-sm font-semibold text-on-surface">
+      Customer Avatar
+    </span>
+
+    <span class="font-body-sm text-body-sm text-on-surface-variant">
+      Recommended size 400x400px. High-resolution portrait preferred.
+    </span>
+  </div>
+
+  <div class="flex items-center gap-2">
+
+    <!-- Change Photo -->
+    <button
+      id="changePhotoBtn"
+      type="button"
+      class="px-3.5 py-2 rounded-xl bg-surface text-on-surface font-label-md text-label-md shadow-sm hover:bg-surface-container-high transition-colors"
+    >
+      Change Photo
+    </button>
+
+    <!-- Hidden File Input -->
+    <input
+      type="file"
+      id="photoInput"
+      name="profileImage"
+      accept="image/jpeg,image/png,image/webp"
+      class="hidden"
+    >
+
+    <!-- Remove -->
+    <button
+      id="removePhotoBtn"
+      type="button"
+      class="px-3.5 py-2 rounded-xl text-error font-label-md text-label-md hover:bg-error-container/40 transition-colors"
+    >
+      Remove
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+  const changePhotoBtn = document.getElementById("changePhotoBtn");
+  const photoInput = document.getElementById("photoInput");
+  const photoPreview = document.getElementById("photoPreview");
+
+  // Open file selector
+  changePhotoBtn.addEventListener("click", () => {
+    photoInput.click();
+  });
+
+  // Preview selected image
+  photoInput.addEventListener("change", () => {
+
+    const file = photoInput.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    // Check if selected file is an image
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file.");
+      photoInput.value = "";
+      return;
+    }
+
+    // Create temporary URL for preview
+    const imageURL = URL.createObjectURL(file);
+
+    // Show selected image
+    photoPreview.src = imageURL;
+  });
+</script>
+
+
+<div class="flex flex-col gap-1.5 sm:col-span-2">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface-variant">First Name</label>
+<input name="name" class="w-full bg-surface-container-low text-on-surface px-3.5 py-2.5 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-brand-gold" type="text" value="{{customer.name}}">
+</div>
+<div class="flex flex-col gap-1.5 sm:col-span-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface-variant">Email Address</label>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-brand-gold" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                  Verified
+                </span>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-3 text-[18px] text-on-surface-variant">mail</span>
+<input name="email" class="w-full bg-surface-container-low text-on-surface pl-10 pr-3.5 py-2.5 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-brand-gold" type="email" value="{{customer.email}}">
+</div>
+</div>
+<div class="flex flex-col gap-1.5 sm:col-span-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface-variant">Primary Phone</label>
+
+
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-3 text-[18px] text-on-surface-variant">call</span>
+<input name="phone" class="w-full bg-surface-container-low text-on-surface pl-10 pr-3.5 py-2.5 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-1 focus:ring-brand-gold" type="tel" value="{{customer.phone}}">
+</div>
+</div>
+<div class="flex flex-col gap-1.5 sm:col-span-2 pt-1">
+<label class="font-label-md text-label-md text-on-surface-variant">Registration Date</label>
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low">
+<div class="flex items-center gap-2 text-on-surface font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-brand-gold">calendar_today</span>
+<span class="">{{customer.formattedDate}}</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Via Private Concierge Invitation</span>
+</div>
+</div>
+</div>
+</form>
+
+
+</div>
+
+</div>
+
+<section class="bg-surface rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow w-full">
+
+  <div class="flex items-center justify-between pb-5">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-surface-container-low flex items-center justify-center text-brand-gold">
+        <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+      </div>
+
+      <div class="flex flex-col">
+        <h2 class="font-headline-lg text-headline-lg text-on-surface">
+          Addresses &amp; Shipping
+        </h2>
+
+        <span class="font-label-sm text-label-sm text-on-surface-variant">
+          Verified residences and delivery instructions
+        </span>
+      </div>
+    </div>
+
+    <button
+      class="px-3.5 py-1.5 rounded-xl bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-colors"
+      type="button"
+    >
+      <span class="material-symbols-outlined text-[16px] text-brand-gold">
+        add
+      </span>
+
+      <span class="">Add Address</span>
+    </button>
+  </div>
+
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+    {{#if customer.addresses}}
+
+      {{#each customer.addresses}}
+
+        <div class="p-4 rounded-xl bg-surface-container-low flex flex-col justify-between gap-4">
+
+          <div class="flex flex-col gap-2">
+
+            <div class="flex items-center justify-between">
+
+              {{#if this.isDefault}}
+
+                <span class="px-2 py-0.5 rounded-full bg-primary text-brand-gold font-label-sm text-label-sm uppercase tracking-wider">
+                  Primary Shipping
+                </span>
+
+              {{else}}
+
+                <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm uppercase tracking-wider">
+                  {{this.addressLabel}}
+                </span>
+
+              {{/if}}
+
+
+              <div class="flex items-center gap-1 text-on-surface-variant">
+
+                <button
+                  class="w-7 h-7 rounded-lg hover:bg-surface flex items-center justify-center transition-colors"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[16px]">
+                    edit
+                  </span>
+                </button>
+
+                <button
+                  class="w-7 h-7 rounded-lg hover:bg-surface flex items-center justify-center transition-colors text-error"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-[16px]">
+                    delete
+                  </span>
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <div class="flex flex-col">
+
+              <span class="font-headline-lg text-body-sm font-bold text-on-surface">
+                {{this.fullName}}
+              </span>
+
+              <span class="font-body-sm text-body-sm text-on-surface-variant">
+                {{this.street}}
+                {{#if this.suite}}, {{this.suite}}{{/if}}
+              </span>
+
+              <span class="font-body-sm text-body-sm text-on-surface-variant">
+                {{this.city}}, {{this.state}} {{this.zip}}, {{this.country}}
+              </span>
+
+              <span class="font-body-sm text-body-sm text-on-surface-variant">
+                {{this.phone}}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="flex items-center gap-2 pt-2 text-on-surface-variant font-label-sm text-label-sm">
+
+            <span class="material-symbols-outlined text-[16px] text-brand-gold">
+              lock
+            </span>
+
+            <span class="">
+              Verified delivery address
+            </span>
+
+          </div>
+
+        </div>
+
+      {{/each}}
+
+    {{else}}
+
+      <div class="p-4 rounded-xl bg-surface-container-low">
+        <span class="font-body-sm text-body-sm text-on-surface-variant">
+          No addresses available
+        </span>
+      </div>
+
+    {{/if}}
+
+  </div>
+
+</section>
+
+
+<section class="bg-surface rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow w-full">
+<div class="flex items-center justify-between pb-5">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-surface-container-low flex items-center justify-center text-brand-gold">
+<span class="material-symbols-outlined text-[20px]">insights</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Customer Activity &amp; Lifetime Value</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Financial overview and order telemetry</span>
+</div>
+</div>
+<a class="font-label-md text-label-md text-brand-gold hover:underline flex items-center gap-1" data-path="orders" href="#">
+<span class="">View All Orders</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+<div class="p-4 rounded-xl bg-surface-container-low flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Orders</span>
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">28</span>
+<span class="font-label-sm text-label-sm text-brand-gold font-medium">100% fulfillment</span>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Spend</span>
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">$3,420.50</span>
+<span class="font-label-sm text-label-sm text-brand-gold font-medium">Avg. $122.16 / ord</span>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Wallet Balance</span>
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">$120.00</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Store Credit Active</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md text-on-surface-variant mb-1">Recent Transactions</span>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+<th class="py-2.5 px-4 rounded-l-lg">Order ID</th>
+<th class="py-2.5 px-4">Date</th>
+<th class="py-2.5 px-4">Products</th>
+<th class="py-2.5 px-4">Amount</th>
+<th class="py-2.5 px-4 text-right rounded-r-lg">Status</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm text-on-surface">
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-4 font-semibold text-on-surface">#ORD-98412</td>
+<td class="py-3 px-4 text-on-surface-variant">Mar 28, 2024</td>
+<td class="py-3 px-4">Cellular Marine Collagen x 2</td>
+<td class="py-3 px-4 font-medium">$248.00</td>
+<td class="py-3 px-4 text-right">
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-brand-gold font-label-sm text-label-sm font-semibold">Delivered</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-4 font-semibold text-on-surface">#ORD-97650</td>
+<td class="py-3 px-4 text-on-surface-variant">Mar 12, 2024</td>
+<td class="py-3 px-4">Sovereign Nootropic Elixir</td>
+<td class="py-3 px-4 font-medium">$135.50</td>
+<td class="py-3 px-4 text-right">
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-brand-gold font-label-sm text-label-sm font-semibold">Delivered</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-4 font-semibold text-on-surface">#ORD-96109</td>
+<td class="py-3 px-4 text-on-surface-variant">Feb 19, 2024</td>
+<td class="py-3 px-4">Gold Botanical Restorative Infusion</td>
+<td class="py-3 px-4 font-medium">$410.00</td>
+<td class="py-3 px-4 text-right">
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-brand-gold font-label-sm text-label-sm font-semibold">Delivered</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="bg-surface rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-4 w-full border border-error-container/40"><div class="flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-error-container flex items-center justify-center text-error"><span class="material-symbols-outlined text-[20px]">warning</span></div><div class="flex flex-col"><h2 class="font-headline-lg text-headline-lg text-on-surface">Danger Zone</h2><span class="font-label-sm text-label-sm text-on-surface-variant">Irreversible administrative actions</span></div></div></div><div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-error-container/20 mt-1"><div class="flex flex-col gap-1"><span class="font-body-sm text-body-sm font-semibold text-error">Delete Customer Account</span><span class="font-label-sm text-label-sm text-error/80">Permanent operation. Will purge all personal data in compliance with GDPR &amp; CCPA privacy mandates.</span></div><button class="px-4 py-2 rounded-xl bg-surface text-error hover:bg-error hover:text-on-error font-label-md text-label-md shadow-sm transition-colors shrink-0" type="button">Delete Account</button></div>
+</section>
+
+</div>
+</div></main></div>
+
+<script>
+  const changePhotoBtn = document.getElementById("changePhotoBtn");
+  const photoInput = document.getElementById("photoInput");
+
+  changePhotoBtn.addEventListener("click", () => {
+    photoInput.click();
+  });
+
+  photoInput.addEventListener("change", () => {
+    const file = photoInput.files[0];
+
+    if (file) {
+      console.log("Selected image:", file.name);
+    }
+  });
+</script>
+
+</body></html>

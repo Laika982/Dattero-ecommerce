@@ -20,6 +20,333 @@ const loadHomepage = async (req, res) => {
   }
 };
 
+const loadSignUp = async (req, res) => {
+  try {
+    res.set("Cache-Control", "no-store");
+    res.render("user/signup");
+  } catch (error) {
+    logger.info(error);
+
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+const registerUser = async (req, res) => {
+  try {
+    let {
+      name,
+      email,
+      password,
+      confirmpassword,
+      referralCode
+    } = req.body;
+
+    name = name?.trim();
+    email = email?.trim().toLowerCase();
+    referralCode = referralCode?.trim();
+
+    if (!name || !email || !password || !confirmpassword) {
+      return res.status(400).render("user/signup", {
+        error: "All fields are required."
+      });
+    }
+
+    const nameRegex = /^[A-Za-z\s]+$/;
+
+    if (!nameRegex.test(name)) {
+      return res.status(400).render("user/signup", {
+        error: "Name must contain only letters and spaces."
+      });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).render("user/signup", {
+        error: "Please enter a valid email address."
+      });
+    }
+
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).render("user/signup", {
+        error:
+          "Password must be at least 8 characters and contain a letter, number, and special character."
+      });
+    }
+
+    if (password !== confirmpassword) {
+      return res.status(400).render("user/signup", {
+        error: "Passwords do not match."
+      });
+    }
+
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(409).render("user/signup", {
+        error: "User already exists"
+      });
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    const otp = generateOtp();
+
+    const emailSent = await sendVerificationEmail(email, otp);
+
+    if (!emailSent) {
+      return res.status(500).render("user/signup", {
+        error: "Unable to send verification email. Please try again."
+      });
+    }
+
+    console.log(`sign up otp is ${otp}`)
+
+    // Store signup information
+    const signupToken = generateToken(
+      {
+        purpose: "signup",
+        name,
+        email,
+        password: hashedPassword,
+        referralCode
+      },
+      "10m"
+    );
+
+    res.cookie("signupToken", signupToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 10 * 60 * 1000
+    });
+
+
+const otpToken = generateToken(
+    {
+        purpose: "signup",
+        otp,
+        email,
+
+        // OTP is valid for 60 seconds
+        otpExpiresAt: Date.now() + 60 * 1000
+    },
+    "10m"
+);
+
+res.cookie("otpToken", otpToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+
+    // OTP session is valid for 10 minutes
+    maxAge: 10 * 60 * 1000
+});
+    return res.redirect("/verify-otp");
+
+  } catch (error) {
+    logger.error(error);
+
+    return res.status(500).render("user/signup", {
+      error: "Internal Server Error"
+    });
+  }
+};
+
+const verifyOtp = async (req, res) => {
+  try {
+    const otp = String(req.body.otp || "").trim();
+
+    if (!otp) {
+      return res.status(400).render("user/verify-otp", {
+        error: "Please enter OTP."
+      });
+    }
+
+    const otpToken = req.cookies.otpToken;
+
+    if (!otpToken) {
+      return res.status(400).render("user/verify-otp", {
+        error: "OTP session expired. Please request a new OTP."
+      });
+    }
+const otpData = jwt.verify(
+    otpToken,
+    process.env.JWT_SECRET
+);
+
+
+// =================================
+// CHECK OTP EXPIRY
+// =================================
+
+if (Date.now() > otpData.otpExpiresAt) {
+    return res.status(400).render("user/verify-otp", {
+        error: "OTP expired. Please click Resend OTP."
+    });
+}
+
+
+// =================================
+// CHECK OTP VALUE
+// =================================
+
+if (otp !== String(otpData.otp)) {
+    return res.status(400).render("user/verify-otp", {
+        error: "Enter a valid OTP."
+    });
+}
+    // =========================
+    // SIGNUP
+    // =========================
+
+    if (otpData.purpose === "signup") {
+
+      const signupToken = req.cookies.signupToken;
+
+      if (!signupToken) {
+        return res.status(400).render("user/verify-otp", {
+          error: "Signup session expired. Please signup again."
+        });
+      }
+
+      const signupData = jwt.verify(
+        signupToken,
+        process.env.JWT_SECRET
+      );
+
+      // Check duplicate email again
+      const existingUser = await User.findOne({
+        email: signupData.email
+      });
+
+      if (existingUser) {
+        res.clearCookie("otpToken");
+        res.clearCookie("signupToken");
+
+        return res.status(409).render("user/signup", {
+          error: "Email is already registered. Please login."
+        });
+      }
+
+      // Create user
+      const saveUser = new User({
+        name: signupData.name,
+        email: signupData.email,
+        password: signupData.password,
+        referralCode: signupData.referralCode
+      });
+
+      await saveUser.save();
+
+      // Clear temporary cookies
+      res.clearCookie("otpToken");
+      res.clearCookie("signupToken");
+
+      // Login user
+      const token = generateToken({
+        userId: saveUser._id
+      });
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 24 * 60 * 60 * 1000
+      });
+
+      return res.redirect("/");
+    }
+
+    // =========================
+    // FORGOT PASSWORD
+    // =========================
+
+    if (otpData.purpose === "forgot-password") {
+
+      const resetToken = generateToken(
+        {
+          purpose: "reset-password",
+          email: otpData.email
+        },
+        "10m"
+      );
+
+      res.clearCookie("otpToken");
+
+      res.cookie("resetEmail", resetToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 10 * 60 * 1000
+      });
+
+      return res.redirect("/resetPassword");
+    }
+
+    // =========================
+    // CHANGE EMAIL
+    // =========================
+
+    if (otpData.purpose === "change-email") {
+
+      const userId = otpData.userId;
+      const newEmail = otpData.newEmail;
+
+      // Check whether new email is already used
+      const existingUser = await User.findOne({
+        email: newEmail,
+        _id: { $ne: userId }
+      });
+
+      if (existingUser) {
+        res.clearCookie("otpToken");
+
+        return res.status(409).render("user/verify-otp", {
+          error: "This email is already registered."
+        });
+      }
+
+      await User.findByIdAndUpdate(
+        userId,
+        {
+          email: newEmail
+        }
+      );
+
+      res.clearCookie("otpToken");
+
+      return res.redirect("/profile");
+    }
+
+    // Unknown purpose
+    res.clearCookie("otpToken");
+
+    return res.status(400).render("user/verify-otp", {
+      error: "Invalid OTP session."
+    });
+
+  } catch (error) {
+
+    logger.error(error);
+
+    if (error.name === "TokenExpiredError") {
+      return res.status(400).render("user/verify-otp", {
+        error: "OTP expired. Please click Resend OTP."
+      });
+    }
+
+    return res.status(500).render("user/verify-otp", {
+      error: "Internal Server Error"
+    });
+  }
+};
+
 const loadLogin = async (req, res) => {
   try {
     res.set("Cache-Control", "no-store");
@@ -40,219 +367,6 @@ const loadLogin = async (req, res) => {
 
     res.status(500).json({
       message: "Internal Server Error",
-    });
-  }
-};
-
-const loadSignUp = async (req, res) => {
-  try {
-    res.set("Cache-Control", "no-store");
-    res.render("user/signup");
-  } catch (error) {
-    logger.info(error);
-
-    res.status(500).json({
-      message: "Internal Server Error",
-    });
-  }
-};
-
-const loadForgotPassword = async (req, res) => {
-  try {
-    return res.render("user/forgotPassword");
-  } catch (error) {
-    logger.error(error);
-
-    return res.status(500).render("user/forgotPassword", {
-      error: "Internal Server Error",
-    });
-  }
-};
-
-const loadForgotPasswordVarifyOtp = async (req, res) => {
-  try {
-    return res.render("user/verify-reset-otp");
-  } catch (error) {
-    logger.error(error);
-
-    return res.status(500).render("user/forgotPassword", {
-      error: "Internal Server Error",
-    });
-  }
-};
-
-const loadResetPassword = async (req, res) => {
-  try {
-    return res.render("user/reset-password");
-  } catch (error) {
-    logger.error(error);
-
-    return res.status(500).render("user/verify-otp", {
-      error: "Internal Server Error",
-    });
-  }
-};
-
-const registerUser = async (req, res) => {
-  try {
-    let { name, email, password, confirmpassword, referralCode } = req.body;
-
-    name = name?.trim();
-    email = email?.trim().toLowerCase();
-    referralCode = referralCode?.trim();
-
-    // Validate required fields
-    // 1. Required field validation
-    if (!name || !email || !password || !confirmpassword ) {
-      return res.status(400).render("user/signup", {
-        error: "All fields are required.",
-      });
-    }
-
-    const nameRegex = /^[A-Za-z\s]+$/;
-
-    if (!nameRegex.test(name)) {
-      return res.status(400).render("user/signup", {
-        error: "Name must contain only letters and spaces.",
-      });
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      return res.status(400).render("user/signup", {
-        error: "Please enter a valid email address.",
-      });
-    }
-
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-    if (!passwordRegex.test(password)) {
-      return res.status(400).render("user/signup", {
-        error:
-          "Password must be at least 8 characters and contain a letter, number, and special character.",
-      });
-    }
-
-    if (password !== confirmpassword) {
-      return res.status(400).render("user/signup", {
-        error: "Passwords do not match.",
-      });
-    }
-
-    // Check existing user
-    const user = await User.findOne({ email });
-
-    if (user) {
-      return res.status(409).render("user/signup", {
-        error: "User already exists",
-      });
-    }
-
-    // Generate OTP
-    const otp = generateOtp();
-    logger.info(otp);
-
-    // Send OTP email
-    const emailSent = await sendVerificationEmail(email, otp);
-
-    if (!emailSent) {
-      return res.status(500).render("user/signup", {
-        error: "Unable to send verification email. Please try again.",
-      });
-    }
-
-    // Create OTP JWT
-    const hashedPassword = await hashPassword(password);
-
-    const otpToken = generateToken(
-      {
-        otp,
-        name,
-        email,
-        password: hashedPassword,
-        referralCode,
-      },
-      "2m"
-    );
-
-    // Store OTP token in cookie
-    res.cookie("otpToken", otpToken, {
-      httpOnly: true,
-      secure: false, // true in production with HTTPS
-      maxAge: 2 * 60 * 1000,
-    });
-
-    // Show OTP page
-    return res.redirect("/verify-otp");
-  } catch (error) {
-    logger.error(error);
-
-    return res.status(500).render("user/signup", {
-      error: "Internal Server Error",
-    });
-  }
-};
-
-const verifyOtp = async (req, res) => {
-  try {
-    const otpValue = req.body.otp || "";
-    const otp = otpValue.toString().trim();
-
-    const otpToken = req.cookies.otpToken;
-
-    if (!otpToken) {
-      return res.status(400).render("user/verify-otp", {
-        error: "OTP expired. Please request a new OTP.",
-      });
-    }
-
-    const user = jwt.verify(otpToken, process.env.JWT_SECRET);
-
-    if (String(otp) !== String(user.otp)) {
-      return res.status(400).render("user/verify-otp", {
-        error: "Enter a valid OTP",
-      });
-    }
-
-    // Create user
-    const saveUser = new User({
-      name: user.name,
-      email: user.email,
-      password: user.password,
-      referralCode: user.referralCode,
-    });
-
-    await saveUser.save();
-
-    // Remove OTP cookie
-    res.clearCookie("otpToken");
-
-    // Generate login JWT
-    const token = generateToken({
-      userId: saveUser._id,
-    });
-
-    // Store authentication JWT
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false,
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-
-    return res.redirect("/");
-  } catch (error) {
-    logger.error(error);
-
-    if (error.name === "TokenExpiredError") {
-      return res.status(400).render("user/verify-otp", {
-        error: "OTP expired. Please request a new OTP",
-      });
-    }
-
-    return res.status(500).render("user/verify-otp", {
-      error: "Internal Server Error",
     });
   }
 };
@@ -316,53 +430,9 @@ const loginUser = async (req, res) => {
   }
 };
 
-const forgotPassword = async (req, res) => {
+const loadForgotPassword = async (req, res) => {
   try {
-    let { email } = req.body;
-
-    email = email?.trim().toLowerCase();
-
-    if (!email) {
-      return res.status(400).render("user/forgotPassword", {
-        error: "Enter email",
-      });
-    }
-
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(400).render("user/forgotPassword", {
-        error: "Enter a valid email",
-      });
-    }
-
-    const otp = generateOtp();
-
-    const emailSent = await sendVerificationEmail(email, otp);
-
-    if (!emailSent) {
-      return res.status(500).render("user/forgotPassword", {
-        error: "Unable to send OTP. Please try again.",
-      });
-    }
-
-    logger.info(`forgot otp ${otp}`);
-
-    const otpToken = generateToken(
-      {
-        otp,
-        email,
-      },
-      "2m"
-    );
-
-    res.cookie("forgotOtpToken", otpToken, {
-      httpOnly: true,
-      secure: false,
-      maxAge: 2 * 60 * 1000,
-    });
-
-    return res.redirect("/forgotPassword/verifyOtp");
+    return res.render("user/forgotPassword");
   } catch (error) {
     logger.error(error);
 
@@ -372,112 +442,82 @@ const forgotPassword = async (req, res) => {
   }
 };
 
-const forgotPasswordVerifyOtp = async (req, res) => {
+const forgotPassword = async (req, res) => {
   try {
-    const otpValue = req.body.otp || "";
-    const otp = otpValue.toString().trim();
+    let { email } = req.body;
 
-    // Get OTP token from cookie
-    const otpToken = req.cookies.forgotOtpToken;
+    email = email?.trim().toLowerCase();
 
-    if (!otpToken) {
-      return res.status(400).render("user/verify-reset-otp", {
-        error: "OTP expired. Please request a new OTP",
+    if (!email) {
+      return res.status(400).render("user/forgotPassword", {
+        error: "Enter email"
       });
     }
 
-    // Verify OTP JWT
-    const decoded = jwt.verify(otpToken, process.env.JWT_SECRET);
+    const user = await User.findOne({ email });
 
-    // Compare OTP
-    if (String(otp) !== String(decoded.otp)) {
-      return res.status(400).render("user/verify-reset-otp", {
-        error: "Invalid OTP",
+    if (!user) {
+      return res.status(400).render("user/forgotPassword", {
+        error: "Enter a valid email"
       });
     }
 
-    // OTP verified
-    logger.info("Forgot password OTP verified");
-    const resetToken = generateToken(
-      {
-        email: decoded.email,
-      },
-      "10m"
+    const otp = generateOtp();
+
+    const emailSent = await sendVerificationEmail(
+      email,
+      otp
     );
-    // Remove OTP cookie
-    res.clearCookie("forgotOtpToken");
 
-    // Store email temporarily for reset password
-    res.cookie("resetEmail", resetToken, {
-      httpOnly: true,
-      secure: false,
-      maxAge: 10 * 60 * 1000,
-    });
+    if (!emailSent) {
+      return res.status(500).render("user/forgotPassword", {
+        error: "Unable to send OTP. Please try again."
+      });
+    }
 
-    // Go to reset password page
-    return res.redirect("/resetPassword");
+    logger.info(`Forgot password OTP: ${otp}`);
+
+    const otpToken = generateToken(
+    {
+        purpose: "forgot-password",
+        otp,
+        email,
+
+        // OTP valid for 60 seconds
+        otpExpiresAt: Date.now() + 60 * 1000
+    },
+    "10m"
+);
+
+res.cookie("otpToken", otpToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+
+    // OTP session valid for 10 minutes
+    maxAge: 10 * 60 * 1000
+});
+
+    return res.redirect("/verify-otp");
+
   } catch (error) {
     logger.error(error);
 
-    if (error.name === "TokenExpiredError") {
-      return res.status(400).render("user/verify-otp", {
-        error: "OTP expired. Please request a new OTP",
-      });
-    }
-
-    return res.status(500).render("user/verify-otp", {
-      error: "Internal Server Error",
+    return res.status(500).render("user/forgotPassword", {
+      error: "Internal Server Error"
     });
   }
 };
 
-const resendForgotPasswordOtp = async (req, res) => {
+const loadResetPassword = async (req, res) => {
   try {
-    const otpToken = req.cookies.forgotOtpToken;
-
-    if (!otpToken) {
-      return res.status(400).json({
-        message: "Forgot-password session expired. Please request a new OTP.",
-      });
-    }
-
-    const decoded = jwt.verify(otpToken, process.env.JWT_SECRET);
-    const otp = generateOtp();
-    const emailSent = await sendVerificationEmail(decoded.email, otp);
-
-    if (!emailSent) {
-      return res.status(500).json({
-        message: "Unable to send OTP. Please try again.",
-      });
-    }
-
-    logger.info(`Resent forgot-password OTP: ${otp}`);
-
-    const newOtpToken = generateToken(
-      {
-        otp,
-        email: decoded.email,
-      },
-      "2m"
-    );
-
-    res.cookie("forgotOtpToken", newOtpToken, {
-      httpOnly: true,
-      secure: false,
-      maxAge: 2 * 60 * 1000,
-    });
-
-    return res.status(200).json({ message: "OTP resent successfully" });
+    return res.render("user/reset-password");
   } catch (error) {
     logger.error(error);
 
-    if (error.name === "TokenExpiredError") {
-      return res.status(400).json({
-        message: "OTP expired. Please request a new password reset.",
-      });
-    }
-
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).render("user/verify-otp", {
+      error: "Internal Server Error",
+    });
   }
 };
 
@@ -544,71 +584,6 @@ const resetPassword = async (req, res) => {
   }
 };
 
-//AI
-const resendSignupOtp = async (req, res) => {
-  try {
-    const otpToken = req.cookies.otpToken;
-
-    if (!otpToken) {
-      return res.status(400).render("user/signup", {
-        error: "Signup session expired. Please signup again."
-      });
-    }
-
-    // Read signup details from existing token
-    const decoded = jwt.verify(otpToken,process.env.JWT_SECRET);
-
-    if (!decoded || !decoded.email) {
-      return res.status(400).render("user/signup", {
-        error: "Invalid signup session. Please signup again."
-      });
-    }
-
-    const otp = generateOtp();
-
-    const emailSent = await sendVerificationEmail(
-      decoded.email,
-      otp
-    );
-
-    if (!emailSent) {
-      return res.status(500).render("user/verify-otp", {
-        error: "Unable to send OTP. Please try again."
-      });
-    }
-
-    logger.info(`Resent signup OTP: ${otp}`);
-
-    // Create new OTP token
-    const newOtpToken = generateToken(
-      {
-        otp,
-        name: decoded.name,
-        email: decoded.email,
-        password: decoded.password,
-        referralCode: decoded.referralCode
-      },
-      "2m"
-    );
-
-    // Replace old OTP token
-    res.cookie("otpToken", newOtpToken, {
-      httpOnly: true,
-      secure: false,
-      maxAge: 2 * 60 * 1000
-    });
-
-    return res.status(200).json({ message: "OTP resent successfully" });
-  } catch (error) {
-    logger.error(error);
-
-    return res.status(500).render("user/verify-otp", {
-      error: "Internal Server Error"
-    });
-  }
-};
-//functions
-
 
 const loadVerifyOtp = async (req, res) => {
   try {
@@ -620,6 +595,167 @@ const loadVerifyOtp = async (req, res) => {
   }
 };
 
+const resendOtp = async (req, res) => {
+    try {
+
+        // =================================
+        // GET OTP SESSION
+        // =================================
+
+        const otpToken = req.cookies.otpToken;
+
+        if (!otpToken) {
+            return res.status(400).json({
+                success: false,
+                message: "OTP session expired. Please start again."
+            });
+        }
+
+
+        // =================================
+        // VERIFY JWT
+        // =================================
+
+        const decoded = jwt.verify(
+            otpToken,
+            process.env.JWT_SECRET
+        );
+
+
+        // =================================
+        // GENERATE NEW OTP
+        // =================================
+
+        const otp = generateOtp();
+
+        let email;
+
+
+        // =================================
+        // DETERMINE EMAIL
+        // =================================
+
+        if (decoded.purpose === "signup") {
+
+            email = decoded.email;
+
+        } else if (decoded.purpose === "forgot-password") {
+
+            email = decoded.email;
+
+        } else if (decoded.purpose === "change-email") {
+
+            email = decoded.newEmail;
+
+        } else {
+
+            return res.status(400).json({
+                success: false,
+                message: "Invalid OTP session."
+            });
+        }
+
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: "Email not found."
+            });
+        }
+
+
+        // =================================
+        // SEND NEW OTP
+        // =================================
+
+        console.log(`Resend OTP: ${otp}`);
+
+        const emailSent = await sendVerificationEmail(
+            email,
+            otp
+        );
+
+
+        if (!emailSent) {
+            return res.status(500).json({
+                success: false,
+                message: "Unable to send OTP. Please try again."
+            });
+        }
+
+
+        // =================================
+        // CREATE NEW OTP TOKEN
+        // =================================
+
+        const newTokenData = {
+            purpose: decoded.purpose,
+            otp,
+            email,
+
+            // New OTP gets a fresh 60 seconds
+            otpExpiresAt: Date.now() + 60 * 1000
+        };
+
+
+        // Change-email specific data
+        if (decoded.purpose === "change-email") {
+
+            newTokenData.userId = decoded.userId;
+            newTokenData.newEmail = decoded.newEmail;
+        }
+
+
+        // =================================
+        // JWT SESSION = 10 MINUTES
+        // OTP = 60 SECONDS
+        // =================================
+
+        const newOtpToken = generateToken(
+            newTokenData,
+            "10m"
+        );
+
+
+        res.cookie("otpToken", newOtpToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 10 * 60 * 1000
+        });
+
+
+        logger.info(
+            `OTP resent for ${decoded.purpose}`
+        );
+
+
+        return res.status(200).json({
+            success: true,
+            message: "OTP resent successfully"
+        });
+
+
+    } catch (error) {
+
+        logger.error(error);
+
+
+        if (error.name === "TokenExpiredError") {
+
+            return res.status(400).json({
+                success: false,
+                message: "OTP session expired. Please start again."
+            });
+        }
+
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    }
+};
 
 
 const logoutUser = async (req, res) => {
@@ -647,19 +783,16 @@ export {
   loadLogin,
   loadSignUp,
   loadForgotPassword,
-  loadForgotPasswordVarifyOtp,
   loadResetPassword,
   registerUser,
   verifyOtp,
   loginUser,
   forgotPassword,
-  forgotPasswordVerifyOtp,
-  resendForgotPasswordOtp,
   resetPassword,
-  resendSignupOtp,
   logoutUser,
   loadVerifyOtp,
-  loadProducts
+  loadProducts,
+  resendOtp
 };
 
 export default {
@@ -667,17 +800,14 @@ export default {
   loadLogin,
   loadSignUp,
   loadForgotPassword,
-  loadForgotPasswordVarifyOtp,
   loadResetPassword,
   registerUser,
   verifyOtp,
   loginUser,
   forgotPassword,
-  forgotPasswordVerifyOtp,
-  resendForgotPasswordOtp,
   resetPassword,
-  resendSignupOtp,
   logoutUser,
   loadVerifyOtp,
-  loadProducts
+  loadProducts,
+  resendOtp
 };

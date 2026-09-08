@@ -125,72 +125,121 @@ const isAdminLoggedIn = (req, res, next) => {
 };
 
 
-// export const isOtpSession = (req, res, next) => {
-//   try {
-//     const otpToken = req.cookies.otpToken;
-
-//     if (!otpToken) {
-//       return res.redirect("/signup");
-//     }
-
-//     const decoded = jwt.verify(
-//       otpToken,
-//       process.env.JWT_SECRET
-//     );
-
-//     // Make user information available to controller
-//     req.otpUser = decoded;
-
-//     next();
-
-//   } catch (error) {
-//     res.clearCookie("otpToken");
-
-//     return res.redirect("/signup");
-//   }
-// };
-
 export const isOtpSession = (req, res, next) => {
-  try {
-    // Never cache OTP pages
+    try {
+
+        res.set(
+            "Cache-Control",
+            "no-store, no-cache, must-revalidate, proxy-revalidate"
+        );
+
+        res.set("Pragma", "no-cache");
+        res.set("Expires", "0");
+
+
+        const otpToken = req.cookies.otpToken;
+
+        if (!otpToken) {
+            return res.redirect("/login");
+        }
+
+
+        const decoded = jwt.verify(
+            otpToken,
+            process.env.JWT_SECRET
+        );
+
+
+        const validPurposes = [
+            "signup",
+            "forgot-password",
+            "change-email"
+        ];
+
+
+        if (!validPurposes.includes(decoded.purpose)) {
+
+            res.clearCookie("otpToken");
+
+            return res.redirect("/login");
+        }
+
+
+        req.otpSession = decoded;
+
+        next();
+
+    } catch (error) {
+
+        console.error("OTP session error:", error);
+
+        res.clearCookie("otpToken");
+
+        return res.redirect("/login");
+    }
+};
+
+
+export const noCache = (req, res, next) => {
     res.set(
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate, proxy-revalidate"
+        "Cache-Control",
+        "no-store, no-cache, must-revalidate, proxy-revalidate"
     );
+
     res.set("Pragma", "no-cache");
     res.set("Expires", "0");
 
-    // If user is already authenticated,
-    // they should never see the OTP page again.
-    const token = req.cookies.token;
-
-    if (token) {
-      try {
-        jwt.verify(token, process.env.JWT_SECRET);
-
-        // Successful signup already completed
-        return res.redirect("/");
-      } catch (error) {
-        // Normal if token is expired/invalid
-        res.clearCookie("token");
-      }
-    }
-
-    // Check temporary signup OTP session
-    const otpToken = req.cookies.otpToken;
-
-    if (!otpToken) {
-      return res.redirect("/signup");
-    }
-
-    jwt.verify(otpToken, process.env.JWT_SECRET);
-
     next();
+};
 
-  } catch (error) {
-    res.clearCookie("otpToken");
-    return res.redirect("/signup");
-  }
+
+export const isResetSession = (req, res, next) => {
+    try {
+
+        const resetToken = req.cookies.resetEmail;
+
+        if (!resetToken) {
+            return res.redirect("/forgotPassword");
+        }
+
+        const decoded = jwt.verify(
+            resetToken,
+            process.env.JWT_SECRET
+        );
+
+        if (decoded.purpose !== "reset-password") {
+            res.clearCookie("resetEmail");
+
+            return res.redirect("/forgotPassword");
+        }
+
+        req.resetSession = decoded;
+
+        next();
+
+    } catch (error) {
+
+        res.clearCookie("resetEmail");
+
+        return res.redirect("/forgotPassword");
+    }
+};
+
+
+export const preventForgotPasswordBack = (req, res, next) => {
+    try {
+
+        const resetToken = req.cookies.resetEmail;
+
+        if (resetToken) {
+            return res.redirect("/resetPassword");
+        }
+
+        next();
+
+    } catch (error) {
+        next();
+    }
 };
 
 export {

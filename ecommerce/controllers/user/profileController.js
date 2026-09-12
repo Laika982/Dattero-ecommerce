@@ -58,203 +58,222 @@ const getEditProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  try {
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decoded.userId;
+    try {
+        const token = req.cookies.token;
 
-    let { name, email, phone, removeProfileImage } = req.body;
-    name = name?.trim();
-    email = email?.toLowerCase().trim();
-    phone = phone?.trim();
-    const shouldRemovePhoto = removeProfileImage === "true";
+        if (!token) {
+            return res.redirect("/login");
+        }
 
-    if (!name || !email) {
-      const userData = await User.findById(userId).lean();
-      return res.status(400).render("user/edit-profile", {
-        userData,
-        error: "Name and Email are required",
-      });
-    }
+        const decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        );
 
-    const currentUser = await User.findById(userId).lean();
-    if (!currentUser) {
-      return res.redirect("/login");
-    }
+        const userId = decoded.userId;
 
-    // Check if email has changed
-    if (email !== currentUser.email) {
-      const existingUser = await User.findOne({ email }).lean();
-      if (existingUser) {
-        const userData = await User.findById(userId).lean();
-        return res.status(400).render("user/edit-profile", {
-          userData,
-          error: "Email is already in use by another account",
-        });
+        // Get current user BEFORE validation
+        const currentUser = await User.findById(userId).lean();
+
+        if (!currentUser) {
+            res.clearCookie("token");
+            return res.redirect("/login");
+        }
+
+        let {
+            name,
+            email,
+            phone,
+            removeProfileImage
+        } = req.body;
+
+        name = name?.trim();
+        email = email?.toLowerCase().trim();
+        phone = phone?.trim();
+
+        const shouldRemovePhoto =
+            removeProfileImage === "true";
+
+
+        // =========================
+        // NAME + EMAIL REQUIRED
+        // =========================
+
+        if (!name || !email) {
+            return res.status(400).render(
+                "user/edit-profile",
+                {
+                    userData: currentUser,
+                    error: "Name and Email are required"
+                }
+            );
+        }
+
+
+        // =========================
+        // NAME VALIDATION
+        // =========================
+
+        const nameRegex = /^[A-Za-z\s]+$/;
+
+        if (!nameRegex.test(name)) {
+            return res.status(400).render(
+                "user/edit-profile",
+                {
+                    userData: currentUser,
+                    error: "Name must contain only letters and spaces."
+                }
+            );
+        }
+
+
+        // =========================
+        // EMAIL VALIDATION
+        // =========================
+
+        const emailRegex =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+            return res.status(400).render(
+                "user/edit-profile",
+                {
+                    userData: currentUser,
+                    error: "Please enter a valid email address."
+                }
+            );
+        }
+
+
+        // =========================
+        // PHONE VALIDATION
+        // =========================
+        if(phone){
+        const phoneRegex = /^[6-9]\d{9}$/;
+
+        if (!phoneRegex.test(phone)) {
+            return res.status(400).render(
+                "user/edit-profile",
+                {
+                    userData: currentUser,
+                    error: "Phone number must be a valid 10-digit number."
+                }
+            );
+        }
       }
 
-      // Generate OTP and send email
-      const otp = generateOtp();
-      const emailSent = await sendVerificationEmail(email, otp);
-      if (!emailSent) {
-        const userData = await User.findById(userId).lean();
-        return res.status(500).render("user/edit-profile", {
-          userData,
-          error: "Failed to send verification email. Please try again.",
-        });
-      }
 
-      logger.info(`Email update OTP sent to ${email}: ${otp}`);
+        // =========================
+        // EMAIL CHANGED?
+        // =========================
 
-      // Create a pending token cookie
-      const pendingEmailToken = generateToken(
-        {
-          userId,
-          newEmail: email,
-          name,
-          phone,
-          profileImage: shouldRemovePhoto
-            ? null
-            : req.file
-              ? req.file.path
-              : currentUser.profileImage,
-          otp,
-        },
-        "10m",
-      );
+        if (email !== currentUser.email) {
 
-      res.cookie("pendingEmailToken", pendingEmailToken, {
-        httpOnly: true,
-        secure: false,
-        maxAge: 10 * 60 * 1000,
-      });
+            const existingUser =
+                await User.findOne({ email }).lean();
 
-      return res.redirect("/profile/verify-email-otp");
+            if (existingUser) {
+                return res.status(400).render(
+                    "user/edit-profile",
+                    {
+                        userData: currentUser,
+                        error: "Email is already in use by another account"
+                    }
+                );
+            }
+
+
+            // =========================
+            // GENERATE OTP
+            // =========================
+
+            const otp = generateOtp();
+
+            const emailSent =
+                await sendVerificationEmail(email, otp);
+
+            if (!emailSent) {
+                return res.status(500).render(
+                    "user/edit-profile",
+                    {
+                        userData: currentUser,
+                        error: "Failed to send verification email. Please try again."
+                    }
+                );
+            }
+
+
+            logger.info(
+                `Email update OTP sent to ${email}: ${otp}`
+            );
+
+
+            // =========================
+            // OTP TOKEN
+            // =========================
+
+            const otpToken = generateToken(
+                {
+                    purpose: "change-email",
+                    userId,
+                    newEmail: email,
+                    name,
+                    phone,
+
+                    profileImage: shouldRemovePhoto
+                        ? null
+                        : req.file
+                            ? req.file.path
+                            : currentUser.profileImage,
+
+                    otp,
+                    otpExpiresAt: Date.now() + 60 * 1000
+                },
+                "10m"
+            );
+
+
+            res.cookie("otpToken", otpToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "lax",
+                maxAge: 10 * 60 * 1000
+            });
+
+            return res.redirect("/verify-otp");
+        }
+
+
+        // =========================
+        // SAME EMAIL
+        // =========================
+
+        const updateData = {
+            name,
+            phone: phone || null
+        };
+
+        if (shouldRemovePhoto) {
+            updateData.profileImage = null;
+        } else if (req.file) {
+            updateData.profileImage = req.file.path;
+        }
+
+        await User.findByIdAndUpdate(
+            userId,
+            updateData
+        );
+
+        return res.redirect("/profile");
+
+    } catch (error) {
+
+        logger.error("Profile update error:", error);
+
+        res.clearCookie("token");
+
+        return res.redirect("/login");
     }
-
-    // Email is the same, just update name, phone, and profileImage directly
-    const updateData = {
-      name,
-      phone: phone || null,
-    };
-    if (shouldRemovePhoto) {
-      updateData.profileImage = null;
-    } else if (req.file) {
-      updateData.profileImage = req.file.path;
-    }
-
-    await User.findByIdAndUpdate(userId, updateData);
-
-    return res.redirect("/profile");
-  } catch (error) {
-    logger.error("Profile update error:", error);
-    res.clearCookie("token");
-    return res.redirect("/login");
-  }
-};
-
-const loadVerifyEmailOtp = async (req, res) => {
-  try {
-    const token = req.cookies.pendingEmailToken;
-    if (!token) {
-      return res.redirect("/profile/edit");
-    }
-
-    // Verify token structure
-    jwt.verify(token, process.env.JWT_SECRET);
-
-    return res.render("user/verify-profile-email-otp");
-  } catch (error) {
-    logger.error("Load verify email OTP page error:", error);
-    res.clearCookie("pendingEmailToken");
-    return res.redirect("/profile/edit");
-  }
-};
-
-const verifyEmailOtp = async (req, res) => {
-  try {
-    const otpValue = req.body.otp || "";
-    const otp = otpValue.toString().trim();
-
-    const token = req.cookies.pendingEmailToken;
-    if (!token) {
-      return res.status(400).render("user/verify-profile-email-otp", {
-        error: "OTP session expired. Please update profile again.",
-      });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (String(otp) !== String(decoded.otp)) {
-      return res.status(400).render("user/verify-profile-email-otp", {
-        error: "Invalid OTP code",
-      });
-    }
-
-    // Update details in the database
-    await User.findByIdAndUpdate(decoded.userId, {
-      email: decoded.newEmail,
-      name: decoded.name,
-      phone: decoded.phone || null,
-      profileImage: decoded.profileImage || null,
-    });
-
-    // Clear session cookies
-    res.clearCookie("pendingEmailToken");
-
-    return res.redirect("/profile");
-  } catch (error) {
-    logger.error("Verify email OTP error:", error);
-    if (error.name === "TokenExpiredError") {
-      return res.status(400).render("user/verify-profile-email-otp", {
-        error: "OTP expired. Please try again.",
-      });
-    }
-    return res.status(500).render("user/verify-profile-email-otp", {
-      error: "Internal Server Error",
-    });
-  }
-};
-
-const resendEmailOtp = async (req, res) => {
-  try {
-    const token = req.cookies.pendingEmailToken;
-    if (!token) {
-      return res.status(400).json({ error: "Session expired" });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const otp = generateOtp();
-
-    const emailSent = await sendVerificationEmail(decoded.newEmail, otp);
-    if (!emailSent) {
-      return res.status(500).json({ error: "Failed to send email" });
-    }
-
-    logger.info(`Resent email update OTP to ${decoded.newEmail}: ${otp}`);
-
-    const newPendingToken = generateToken(
-      {
-        userId: decoded.userId,
-        newEmail: decoded.newEmail,
-        name: decoded.name,
-        phone: decoded.phone,
-        profileImage: decoded.profileImage || null,
-        otp,
-      },
-      "10m",
-    );
-
-    res.cookie("pendingEmailToken", newPendingToken, {
-      httpOnly: true,
-      secure: false,
-      maxAge: 10 * 60 * 1000,
-    });
-
-    return res.status(200).json({ message: "OTP resent successfully" });
-  } catch (error) {
-    logger.error("Resend email OTP error:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
 };
 
 const deleteAccount = async (req, res) => {
@@ -343,9 +362,6 @@ export default {
   getProfile,
   getEditProfile,
   updateProfile,
-  loadVerifyEmailOtp,
-  verifyEmailOtp,
-  resendEmailOtp,
   deleteAccount,
   changePassword,
 };

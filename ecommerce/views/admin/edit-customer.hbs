@@ -77,6 +77,11 @@
     </span>
   </div>
 
+<div class="flex items-center gap-4">
+
+  <!-- Image Preview -->
+
+
   <div class="flex items-center gap-2">
 
     <!-- Change Photo -->
@@ -88,13 +93,21 @@
       Change Photo
     </button>
 
-    <!-- Hidden File Input -->
+    <!-- File Input -->
     <input
       type="file"
       id="photoInput"
       name="profileImage"
       accept="image/jpeg,image/png,image/webp"
       class="hidden"
+    >
+
+    <!-- Remove Flag -->
+    <input
+      type="hidden"
+      name="removePhoto"
+      id="removePhoto"
+      value="false"
     >
 
     <!-- Remove -->
@@ -107,6 +120,191 @@
     </button>
 
   </div>
+
+</div>
+
+
+<!-- Remove Confirmation Modal -->
+<div
+  id="removePhotoModal"
+  class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+>
+  <div class="bg-surface rounded-2xl p-6 w-full max-w-sm shadow-xl">
+
+    <h2 class="text-lg font-semibold text-on-surface">
+      Remove Profile Photo?
+    </h2>
+
+    <p class="mt-2 text-sm text-on-surface-variant">
+      Are you sure you want to remove this profile photo?
+    </p>
+
+    <div class="flex justify-end gap-3 mt-6">
+
+      <!-- Cancel -->
+      <button
+        id="cancelRemoveBtn"
+        type="button"
+        class="px-4 py-2 rounded-xl bg-surface-container-high text-on-surface"
+      >
+        Cancel
+      </button>
+
+      <!-- Confirm -->
+      <button
+        id="confirmRemoveBtn"
+        type="button"
+        class="px-4 py-2 rounded-xl bg-error text-white"
+      >
+        Remove
+      </button>
+
+    </div>
+
+  </div>
+</div>
+<script>
+
+  const changePhotoBtn =
+    document.getElementById("changePhotoBtn");
+
+  const photoInput =
+    document.getElementById("photoInput");
+
+  const photoPreview =
+    document.getElementById("photoPreview");
+
+  const removePhotoBtn =
+    document.getElementById("removePhotoBtn");
+
+  const removePhoto =
+    document.getElementById("removePhoto");
+
+  const removePhotoModal =
+    document.getElementById("removePhotoModal");
+
+  const cancelRemoveBtn =
+    document.getElementById("cancelRemoveBtn");
+
+  const confirmRemoveBtn =
+    document.getElementById("confirmRemoveBtn");
+
+
+  // =====================================
+  // CHANGE PHOTO BUTTON
+  // =====================================
+
+  changePhotoBtn.addEventListener("click", () => {
+
+    photoInput.click();
+
+  });
+
+
+  // =====================================
+  // IMAGE PREVIEW
+  // =====================================
+
+  photoInput.addEventListener("change", () => {
+
+    const file = photoInput.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    // User selected a new image,
+    // so cancel previous remove action.
+    removePhoto.value = "false";
+
+
+    // Create temporary preview
+    const imageURL = URL.createObjectURL(file);
+
+    photoPreview.src = imageURL;
+
+  });
+
+
+  // =====================================
+  // OPEN REMOVE CONFIRMATION
+  // =====================================
+
+  removePhotoBtn.addEventListener("click", () => {
+
+    removePhotoModal.classList.remove("hidden");
+
+  });
+
+
+  // =====================================
+  // CANCEL REMOVE
+  // =====================================
+
+  cancelRemoveBtn.addEventListener("click", () => {
+
+    removePhotoModal.classList.add("hidden");
+
+  });
+
+
+  // =====================================
+  // CONFIRM REMOVE
+  // =====================================
+
+  confirmRemoveBtn.addEventListener("click", () => {
+
+    console.log("REMOVE CONFIRMED");
+
+    // Tell backend to remove image
+    removePhoto.value = "true";
+
+    // Clear selected new image
+    photoInput.value = "";
+
+    // Remove preview
+    photoPreview.src = "";
+
+    // Close modal
+    removePhotoModal.classList.add("hidden");
+
+  });
+
+</script>
+
+<script>
+  const changePhotoBtn = document.getElementById("changePhotoBtn");
+  const photoInput = document.getElementById("photoInput");
+
+  const removePhotoBtn = document.getElementById("removePhotoBtn");
+  const removePhoto = document.getElementById("removePhoto");
+
+  // Change Photo
+  changePhotoBtn.addEventListener("click", () => {
+    photoInput.click();
+  });
+
+  // New photo selected
+  photoInput.addEventListener("change", () => {
+    if (photoInput.files.length > 0) {
+      // If user selects a new image,
+      // cancel the remove operation
+      removePhoto.value = "false";
+
+      console.log("New photo selected");
+    }
+  });
+
+  // Remove photo
+  removePhotoBtn.addEventListener("click", () => {
+    removePhoto.value = "true";
+
+    // Clear newly selected image
+    photoInput.value = "";
+
+    console.log("Remove photo:", removePhoto.value);
+  });
+</script>
 
 </div>
 

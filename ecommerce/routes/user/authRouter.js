@@ -3,12 +3,12 @@ import jwt from "jsonwebtoken";
 import passport from "passport";
 
 import {
-    isAuthenticated,
-    isGuest,
-    isOtpSession,
-    noCache,
-    isResetSession,
-    preventForgotPasswordBack
+  isAuthenticated,
+  isGuest,
+  isOtpSession,
+  noCache,
+  isResetSession,
+  preventForgotPasswordBack,
 } from "../../middleware/authMidilware.js";
 
 import userController from "../../controllers/user/authContoller.js";
@@ -20,14 +20,13 @@ const router = express.Router();
 // Home
 router.get("/", userController.loadHomepage);
 
-
 // ==================== GUEST ROUTES ====================
 
 // Login page
-router.get("/login", isGuest, userController.loadLogin);
+router.get("/login", isGuest,  noCache, userController.loadLogin);
 
 // Signup page
-router.get("/signup", isGuest, userController.loadSignUp);
+router.get("/signup", isGuest, noCache, userController.loadSignUp);
 
 // Forgot password
 router.get(
@@ -35,7 +34,7 @@ router.get(
   noCache,
   isGuest,
   preventForgotPasswordBack,
-  userController.loadForgotPassword
+  userController.loadForgotPassword,
 );
 
 // Reset password page
@@ -44,69 +43,34 @@ router.get(
   noCache,
   isGuest,
   isResetSession,
-  userController.loadResetPassword
+  userController.loadResetPassword,
 );
-
 
 // ==================== SIGNUP + OTP ====================
 
 // Register user
-router.post(
-  "/signup",
-  isGuest,
-  userController.registerUser
-);
+router.post("/signup", isGuest, userController.registerUser);
 
 // Show signup OTP page
-router.get(
-  "/verify-otp",
-  isOtpSession,
-  userController.loadVerifyOtp
-);
+router.get("/verify-otp", isOtpSession, userController.loadVerifyOtp);
 
 // Verify signup OTP
-router.post(
-  "/verify-otp",
-  isOtpSession,
-  userController.verifyOtp
-);
-
-
+router.post("/verify-otp", isOtpSession, userController.verifyOtp);
 
 // ==================== LOGIN ====================
 
 // Login
-router.post(
-  "/login",
-  isGuest,
-  userController.loginUser
-);
-
+router.post("/login", isGuest, userController.loginUser);
 
 // ==================== FORGOT PASSWORD ====================
 
 // Send forgot-password OTP
-router.post(
-  "/forgotPassword",
-  isGuest,
-  userController.forgotPassword
-);
-
-
+router.post("/forgotPassword", isGuest, userController.forgotPassword);
 
 // Reset password
-router.post(
-  "/resetPassword",
-  isGuest,
-  userController.resetPassword
-);
+router.post("/resetPassword", isGuest, userController.resetPassword);
 
-router.post(
-  "/resend-otp",
-  isOtpSession,
-  userController.resendOtp
-);
-
+router.post("/resend-otp", isOtpSession, userController.resendOtp);
 
 // ==================== GOOGLE AUTH ====================
 
@@ -117,7 +81,7 @@ router.get(
   passport.authenticate("google", {
     scope: ["profile", "email"],
     prompt: "select_account",
-  })
+  }),
 );
 
 // Google callback
@@ -128,7 +92,6 @@ router.get(
     failureRedirect: "/login",
   }),
   (req, res) => {
-
     const token = jwt.sign(
       {
         userId: req.user._id,
@@ -136,7 +99,7 @@ router.get(
       process.env.JWT_SECRET,
       {
         expiresIn: "1d",
-      }
+      },
     );
 
     res.cookie("token", token, {
@@ -147,18 +110,12 @@ router.get(
     });
 
     return res.redirect("/");
-  }
+  },
 );
-
 
 // ==================== AUTHENTICATED ====================
 
 // Logout
-router.get(
-  "/logout",
-  isAuthenticated,
-  userController.logoutUser
-);
-
+router.get("/logout", isAuthenticated, userController.logoutUser);
 
 export default router;

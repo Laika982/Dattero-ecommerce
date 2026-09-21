@@ -9,6 +9,7 @@ import logger from "./utils/logger.js";
 import connectDB from "./config/db.js";
 import passport from "./config/passport.js";
 import userRouter from "./routes/user/authRouter.js";
+import userProductRouter from "./routes/user/productRouter.js"
 import userProfileRouter from "./routes/user/profileRouter.js";
 import addressRouter from "./routes/user/addressRouter.js";
 import adminRouter from "./routes/admin/authRouter.js";
@@ -102,6 +103,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
 app.use("/", userRouter);
+app.use("/products", userProductRouter);
 app.use("/profile",userProfileRouter);
 app.use("/profile/address", addressRouter);
 app.use("/admin", adminRouter);

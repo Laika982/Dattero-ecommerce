@@ -1,222 +1,1113 @@
 {{>user/header}}
-<!-- Main Content -->
-<main class="flex-grow pt-section-gap pb-section-gap px-container-padding max-w-max-width mx-auto w-full">
-<div class="max-w-max-width mx-auto px-container-padding mt-6">
-    {{#if error}}
-    <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
-        {{error}}
-    </div>
-    {{/if}}
-    
-    {{#if success}}
-    <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
-        {{success}}
-    </div>
-    {{/if}}
-</div>
 
-<!-- Header & Controls -->
-<div class="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-surface-variant pb-stack-lg">
-<div>
-<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-ink-black mb-stack-sm tracking-tight">Shop All</h1>
-<p class="font-body-xl text-body-xl text-on-surface-variant max-w-2xl">Handcrafted protein excellence for your daily performance.</p>
-</div>
-<div class="mt-stack-lg md:mt-0 flex items-center gap-stack-sm bg-surface-gray px-4 py-2 rounded-full">
-<label class="font-body-md text-body-md text-on-surface-variant" for="sort">Sort By:</label>
-<select class="bg-transparent border-none text-ink-black font-body-md font-medium text-body-md focus:ring-0 py-0 pl-2 pr-8 cursor-pointer" id="sort">
-<option>Featured</option>
-<option>Price: Low to High</option>
-<option>Price: High to Low</option>
-<option>Highest Rated</option>
-</select>
-</div>
-</div>
-<div class="flex flex-col md:flex-row gap-12">
-<!-- Sidebar Filters -->
-<aside class="w-full md:w-64 shrink-0 flex flex-col gap-8 hidden md:flex">
-<!-- Category Filter -->
-<div>
-<h3 class="font-label-md text-label-md text-ink-black mb-stack-md uppercase tracking-wider">Category</h3>
-<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
-<li>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input checked="" class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
-<span class="group-hover:text-ink-black transition-colors">Burfi</span>
-</label>
-</li>
-<li>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
-<span class="group-hover:text-ink-black transition-colors">Bars</span>
-</label>
-</li>
-<li>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
-<span class="group-hover:text-ink-black transition-colors">Samplers</span>
-</label>
-</li>
-</ul>
-</div>
-<!-- Price Filter -->
-<div>
-<h3 class="font-label-md text-label-md text-ink-black mb-stack-md uppercase tracking-wider pt-8 border-t border-surface-variant">Price Range</h3>
-<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
-<li>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" name="price" type="radio">
-<span class="group-hover:text-ink-black transition-colors">Under $20</span>
-</label>
-</li>
-<li>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" name="price" type="radio">
-<span class="group-hover:text-ink-black transition-colors">$20 - $40</span>
-</label>
-</li>
-<li>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" name="price" type="radio">
-<span class="group-hover:text-ink-black transition-colors">Over $40</span>
-</label>
-</li>
-</ul>
-</div>
-<!-- Protein Content Filter -->
-<div>
-<h3 class="font-label-md text-label-md text-ink-black mb-stack-md uppercase tracking-wider pt-8 border-t border-surface-variant">Protein Content</h3>
-<ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
-<li>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
-<span class="group-hover:text-ink-black transition-colors">10g - 15g</span>
-</label>
-</li>
-<li>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
-<span class="group-hover:text-ink-black transition-colors">16g - 20g</span>
-</label>
-</li>
-<li>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="rounded-sm border-surface-variant text-ink-black focus:ring-ink-black w-4 h-4 transition-colors" type="checkbox">
-<span class="group-hover:text-ink-black transition-colors">20g+</span>
-</label>
-</li>
-</ul>
-</div>
-</aside>
-<!-- Product Grid -->
-<div class="flex-grow grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-<!-- Product Card 1: Dates Burfi -->
-<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden apple-shadow relative transition-transform duration-300 hover:-translate-y-1 p-4 border border-surface-variant/30">
-<!-- Badges & Wishlist -->
-<div class="absolute top-6 left-6 right-6 flex justify-between items-start z-10">
-<span class="bg-surface-container-lowest/90 backdrop-blur-md border border-surface-variant/50 text-ink-black font-label-md text-xs px-3 py-1.5 rounded-full shadow-sm">Best Seller</span>
-<button aria-label="Add to wishlist" class="w-8 h-8 flex items-center justify-center bg-surface-container-lowest/90 backdrop-blur-md rounded-full text-ink-black hover:bg-surface-gray transition-colors border border-surface-variant/50">
-<span class="material-symbols-outlined text-[18px]">favorite</span>
-</button>
-</div>
-<!-- Image -->
-<div class="h-64 overflow-hidden rounded-xl bg-surface-gray mb-4">
-<img alt="Dates Burfi" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A close-up, high-end editorial shot of artisanal Dates Burfi resting on a smooth cream marble surface. The lighting is soft and natural, creating a gentle golden glow that highlights the rich, dark texture of the dates and embedded premium nuts. Minimalist white background with subtle depth. The aesthetic is clean, luxurious, and appetizing, emphasizing culinary craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9bsfGRhb3GIRilsd8H0yYP7jtkuatScH_lhLc4TkjT3vIdr1D5uxfUVLjp3hXzCt3KYG0E-es5brFAI9I2ILaIPpKxoQH_BZEV4tMqSiYCx-WYjDWZ5LWl72olV3ayXFr01b0l-lom-7VjHr5RVHDZ5QuuCJ-AO7KkG9tJdmFo0ad2jWzYozSQaPodxo6HTAfzdYvbRzaxSK9RZl6aG8pozrZ7JQXzC8MyIiSwBVEsfR5suq-J54zcXed7O2h6qRvks8Qp78mYzs">
-</div>
-<!-- Content -->
-<div class="flex flex-col flex-grow px-2 pb-2">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline-lg text-xl text-ink-black tracking-tight">Dates Burfi</h3>
-<span class="font-body-md text-sm text-on-surface-variant bg-surface-gray py-1 px-3 rounded-full">15g Protein</span>
-</div>
-<div class="flex items-center mb-4 text-ink-black">
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star_half</span>
-<span class="ml-2 font-body-md text-sm text-on-surface-variant">(128)</span>
-</div>
-<div class="mt-auto pt-4 border-t border-surface-variant/50 flex items-center justify-between">
-<p class="font-headline-lg text-xl text-ink-black">$24.00</p>
-<button class="bg-ink-black text-white font-body-md font-medium text-sm py-2 px-4 rounded-full hover:bg-ink-black/90 transition-colors flex items-center gap-2">
-                            Add
-                            <span class="material-symbols-outlined text-[16px]">add</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Product Card 2: Peanut Burfi -->
-<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden apple-shadow relative transition-transform duration-300 hover:-translate-y-1 p-4 border border-surface-variant/30">
-<!-- Badges & Wishlist -->
-<div class="absolute top-6 left-6 right-6 flex justify-between items-start z-10">
-<span class="bg-surface-container-lowest/90 backdrop-blur-md border border-surface-variant/50 text-ink-black font-label-md text-xs px-3 py-1.5 rounded-full shadow-sm">New</span>
-<button aria-label="Add to wishlist" class="w-8 h-8 flex items-center justify-center bg-surface-container-lowest/90 backdrop-blur-md rounded-full text-ink-black hover:bg-surface-gray transition-colors border border-surface-variant/50">
-<span class="material-symbols-outlined text-[18px]">favorite</span>
-</button>
-</div>
-<!-- Image -->
-<div class="h-64 overflow-hidden rounded-xl bg-surface-gray mb-4">
-<img alt="Peanut Burfi" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="An elegant product photograph of square-cut Peanut Burfi pieces stacked beautifully on a minimalist beige ceramic plate. A soft ray of sunlight casts a gentle, warm light across the textured surface of the sweets, revealing crushed roasted peanuts. The background is a clean, out-of-focus soft white space. The overall tone is sophisticated, organic, and highly appetizing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClcNweRlZHt2Y38g1YlawGZ2Ziu7ScQSxlnRFZwE0K65CNBUcB1EQXm8FSNK0essqy512vjQk6LQL5rkxfakOGrjt2UP9zoA4oK8P8mg9qYI6mj6djN2pO1UbU4GCO3fJ487nlWnbeXFKbelKE3ZdIXx5NXBlAzu5Abm1KztXTk5-KfzyNt3wwtvyGiWCYsOi7EEYmURfd3nM_IbAlRrTu6LtPD-HJXbb1VGMjQwfkLWG6mrkfEmly25u7u9hEcL_ZPZBlCKmVBqg">
-</div>
-<!-- Content -->
-<div class="flex flex-col flex-grow px-2 pb-2">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline-lg text-xl text-ink-black tracking-tight">Peanut Burfi</h3>
-<span class="font-body-md text-sm text-on-surface-variant bg-surface-gray py-1 px-3 rounded-full">18g Protein</span>
-</div>
-<div class="flex items-center mb-4 text-ink-black">
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]">star</span>
-<span class="ml-2 font-body-md text-sm text-on-surface-variant">(84)</span>
-</div>
-<div class="mt-auto pt-4 border-t border-surface-variant/50 flex items-center justify-between">
-<p class="font-headline-lg text-xl text-ink-black">$22.00</p>
-<button class="bg-surface-gray text-ink-black font-body-md font-medium text-sm py-2 px-4 rounded-full hover:bg-surface-variant transition-colors flex items-center gap-2">
-                            Add
-                            <span class="material-symbols-outlined text-[16px]">add</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Product Card 3: Protein Bar -->
-<div class="group flex flex-col bg-surface-container-lowest rounded-2xl overflow-hidden apple-shadow relative transition-transform duration-300 hover:-translate-y-1 p-4 border border-surface-variant/30">
-<!-- Badges & Wishlist -->
-<div class="absolute top-6 right-6 flex justify-end items-start z-10 w-full px-6">
-<button aria-label="Add to wishlist" class="w-8 h-8 flex items-center justify-center bg-surface-container-lowest/90 backdrop-blur-md rounded-full text-ink-black hover:bg-surface-gray transition-colors border border-surface-variant/50">
-<span class="material-symbols-outlined text-[18px]">favorite</span>
-</button>
-</div>
-<!-- Image -->
-<div class="h-64 overflow-hidden rounded-xl bg-surface-gray mb-4">
-<img alt="Protein Bar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A striking, modern visual of a premium nutritional Protein Bar partially unwrapped from sleek matte packaging. The bar rests on a smooth, dark brown slate surface with minimalist styling. Lighting is dramatic yet clean, highlighting the dense, nougat-like texture and a subtle chocolate drizzle. The composition embodies high-performance nutrition with a luxurious, culinary edge." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvQHfmqjyWswHFg0RfP-zPjkAhAbrPV45-kFdUgeht0dWfuDRAaDtNkpz2-Kr6xn-KglO5EQnBDLJVPUD5MwBvrnZOmJPkUZa3gMhS7P1UJi59a9MLAV7neiaY-KUzely_F8gQmMrFnGdqZWfzcLMJxmEifmWZ0dcni_62OrzfgckYvSI5J7tHI11ftSeUulM5rFhLER2EzPLFObo5bJLshXjUAXPv2zBeMOGK3WYqqyySL2KpYtQppyqobvx7g4Z3FCVhBwNQj6M">
-</div>
-<!-- Content -->
-<div class="flex flex-col flex-grow px-2 pb-2">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline-lg text-xl text-ink-black tracking-tight">Signature Protein Bar</h3>
-<span class="font-body-md text-sm text-on-surface-variant bg-surface-gray py-1 px-3 rounded-full">22g Protein</span>
-</div>
-<div class="flex items-center mb-4 text-ink-black">
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="ml-2 font-body-md text-sm text-on-surface-variant">(342)</span>
-</div>
-<div class="mt-auto pt-4 border-t border-surface-variant/50 flex items-center justify-between">
-<p class="font-headline-lg text-xl text-ink-black">$3.50 <span class="text-sm font-normal text-on-surface-variant">/ each</span></p>
-<button class="bg-surface-gray text-ink-black font-body-md font-medium text-sm py-2 px-4 rounded-full hover:bg-surface-variant transition-colors flex items-center gap-2">
-                            Add
-                            <span class="material-symbols-outlined text-[16px]">add</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-</div>
+<main class="flex-grow pt-section-gap pb-section-gap px-container-padding max-w-max-width mx-auto w-full">
+
+    <!-- ========================= -->
+    <!-- PAGE HEADER -->
+    <!-- ========================= -->
+
+    <div class="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-surface-variant pb-stack-lg">
+
+        <div>
+            <h1 class="font-headline-xl text-4xl md:text-5xl text-ink-black">
+                Shop All
+            </h1>
+
+            <p class="font-body-md text-on-surface-variant mt-3">
+                Handcrafted protein excellence, made for your lifestyle.
+            </p>
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- SEARCH -->
+        <!-- ========================= -->
+
+        <div class="mt-stack-lg md:mt-0 flex items-center bg-surface-gray pl-4 pr-1.5 h-[48px] rounded-full relative group transition-all duration-300 gap-2">
+
+            <span class="material-symbols-outlined text-on-surface-variant font-light text-[20px] group-focus-within:text-ink-black transition-colors shrink-0">
+                search
+            </span>
+
+            <input
+                id="searchInput"
+                class="w-full bg-transparent border-none py-2 px-1 font-body-md text-body-md text-ink-black placeholder:text-on-surface-variant/60 focus:ring-0 transition-all duration-300 outline-none"
+                placeholder="Search our collections..."
+                type="text"
+                value="{{search}}"
+            >
+
+            <button
+                type="button"
+                onclick="applySearch()"
+                class="px-5 py-2 bg-on-surface text-surface rounded-full font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all duration-150 flex items-center shrink-0 shadow-sm"
+            >
+                Search
+            </button>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- DESKTOP SORT -->
+        <!-- ========================= -->
+
+        <div class="hidden md:flex items-center gap-3 mt-6 md:mt-0">
+
+            <label
+                for="sort"
+                class="font-body-md text-sm text-on-surface-variant"
+            >
+                Sort By:
+            </label>
+
+            <select
+                id="sort"
+                onchange="changeSort(this.value)"
+                class="border border-surface-variant rounded-lg px-4 py-2 bg-white focus:outline-none"
+            >
+
+                <option
+                    value=""
+                    {{#if (eq sort "")}}selected{{/if}}
+                >
+                    Featured
+                </option>
+
+                <option
+                    value="priceAcc"
+                    {{#if (eq sort "priceAcc")}}selected{{/if}}
+                >
+                    Price: Low to High
+                </option>
+
+                <option
+                    value="priceDesc"
+                    {{#if (eq sort "priceDesc")}}selected{{/if}}
+                >
+                    Price: High to Low
+                </option>
+
+                <option
+                    value="az"
+                    {{#if (eq sort "az")}}selected{{/if}}
+                >
+                    A-Z
+                </option>
+
+                <option
+                    value="za"
+                    {{#if (eq sort "za")}}selected{{/if}}
+                >
+                    Z-A
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MOBILE FILTER + SORT -->
+    <!-- ========================= -->
+
+    <div class="md:hidden flex gap-3 mb-8">
+
+        <!-- FILTER BUTTON -->
+
+        <button
+            type="button"
+            onclick="openFilters()"
+            class="flex-1 h-11 flex items-center justify-center gap-2 border border-surface-variant rounded-lg bg-white text-ink-black"
+        >
+
+            <span class="material-symbols-outlined text-[18px]">
+                tune
+            </span>
+
+            <span class="font-body-md text-sm">
+                Filter
+            </span>
+
+        </button>
+
+
+        <!-- SORT BUTTON -->
+
+        <button
+            type="button"
+            onclick="toggleMobileSort()"
+            class="flex-1 h-11 flex items-center justify-center gap-2 border border-surface-variant rounded-lg bg-white text-ink-black"
+        >
+
+            <span class="material-symbols-outlined text-[18px]">
+                swap_vert
+            </span>
+
+            <span class="font-body-md text-sm">
+                Sort
+            </span>
+
+        </button>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MOBILE SORT OPTIONS -->
+    <!-- ========================= -->
+
+    <div
+        id="mobileSort"
+        class="hidden md:hidden mb-8 border border-surface-variant rounded-xl bg-white p-4"
+    >
+
+        <p class="font-body-md text-sm text-on-surface-variant mb-3">
+            Sort By
+        </p>
+
+        <div class="space-y-2">
+
+            <button
+                type="button"
+                onclick="changeSort('')"
+                class="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-gray text-sm"
+            >
+                Featured
+            </button>
+
+            <button
+                type="button"
+                onclick="changeSort('priceAcc')"
+                class="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-gray text-sm"
+            >
+                Price: Low to High
+            </button>
+
+            <button
+                type="button"
+                onclick="changeSort('priceDesc')"
+                class="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-gray text-sm"
+            >
+                Price: High to Low
+            </button>
+
+            <button
+                type="button"
+                onclick="changeSort('az')"
+                class="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-gray text-sm"
+            >
+                A-Z
+            </button>
+
+            <button
+                type="button"
+                onclick="changeSort('za')"
+                class="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-gray text-sm"
+            >
+                Z-A
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MAIN CONTENT -->
+    <!-- ========================= -->
+
+    <div class="flex flex-col md:flex-row gap-12">
+
+
+        <!-- ========================= -->
+        <!-- FILTER SIDEBAR -->
+        <!-- ========================= -->
+
+        <aside
+            id="filterSidebar"
+            class="hidden md:block md:w-64 flex-shrink-0"
+        >
+
+            <!-- MOBILE HEADER -->
+
+            <div class="md:hidden flex items-center justify-between mb-8">
+
+                <h2 class="font-headline-lg text-xl text-ink-black">
+                    Filters
+                </h2>
+
+                <button
+                    type="button"
+                    onclick="closeFilters()"
+                    class="text-on-surface-variant"
+                >
+
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- CATEGORY -->
+            <!-- ========================= -->
+
+            <div class="mb-10">
+
+                <div class="flex items-center justify-between mb-5">
+
+                    <h3 class="font-headline-md text-lg text-ink-black">
+                        Category
+                    </h3>
+
+
+                    <!-- CLEAR CATEGORY -->
+
+                    {{#if category}}
+
+                        <button
+                            type="button"
+                            onclick="clearCategory()"
+                            class="text-sm text-on-surface-variant hover:text-ink-black underline transition"
+                        >
+                            Clear
+                        </button>
+
+                    {{/if}}
+
+                </div>
+
+
+                <!-- CATEGORY LIST -->
+
+                <div class="space-y-3">
+
+                    {{#if categories.length}}
+
+                        {{#each categories}}
+
+                            <label class="flex items-center gap-3 cursor-pointer">
+
+                                <input
+                                    type="checkbox"
+                                    name="category"
+                                    value="{{_id}}"
+                                    class="categoryFilter w-4 h-4"
+                                    {{#if (includes ../category _id)}}checked{{/if}}
+                                >
+
+                                <span class="font-body-md text-sm text-on-surface-variant">
+                                    {{category_name}}
+                                </span>
+
+                            </label>
+
+                        {{/each}}
+
+                    {{else}}
+
+                        <p class="text-sm text-on-surface-variant">
+                            No categories available.
+                        </p>
+
+                    {{/if}}
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- PRICE -->
+            <!-- ========================= -->
+
+            <div class="mb-10">
+
+                <h3 class="font-headline-md text-lg text-ink-black mb-5">
+                    Price
+                </h3>
+
+                <div class="flex items-center gap-3">
+
+                    <!-- MIN PRICE -->
+
+                    <input
+                        type="number"
+                        id="minPrice"
+                        name="minPrice"
+                        min="0"
+                        placeholder="Min"
+                        value="{{minPrice}}"
+                        class="w-full border border-surface-variant rounded-lg px-3 py-2 text-sm bg-white focus:outline-none"
+                    >
+
+                    <span class="text-on-surface-variant flex-shrink-0">
+                        —
+                    </span>
+
+
+                    <!-- MAX PRICE -->
+
+                    <input
+                        type="number"
+                        id="maxPrice"
+                        name="maxPrice"
+                        min="0"
+                        placeholder="Max"
+                        value="{{maxPrice}}"
+                        class="w-full border border-surface-variant rounded-lg px-3 py-2 text-sm bg-white focus:outline-none"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- APPLY FILTER -->
+            <!-- ========================= -->
+
+            <button
+                type="button"
+                onclick="applyFilters()"
+                class="w-full border border-ink-black rounded-lg px-4 py-3 text-sm text-ink-black hover:bg-ink-black hover:text-white transition"
+            >
+                Apply Filter
+            </button>
+
+        </aside>
+
+
+        <!-- ========================= -->
+        <!-- PRODUCTS -->
+        <!-- ========================= -->
+
+        <div class="flex-grow grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            {{#if products.length}}
+
+                {{#each products}}
+
+
+                    <!-- ========================= -->
+                    <!-- PRODUCT CARD -->
+                    <!-- ========================= -->
+
+                    <a
+                        href="/products/{{_id}}"
+                        class="group flex flex-col cursor-pointer"
+                    >
+
+
+                        <!-- ========================= -->
+                        <!-- PRODUCT IMAGE -->
+                        <!-- ========================= -->
+
+                        <div class="relative">
+
+
+                            <!-- WISHLIST -->
+
+                            <div class="absolute top-6 right-6 z-10">
+
+                                <button
+                                    type="button"
+                                    onclick="event.preventDefault(); event.stopPropagation();"
+                                    class="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center"
+                                >
+
+                                    <span class="material-symbols-outlined text-[18px]">
+                                        favorite
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+
+                            <!-- IMAGE -->
+
+                            <div class="h-64 overflow-hidden rounded-xl bg-surface-gray mb-4">
+
+                                {{#if images.length}}
+
+                                    <img
+                                        src="{{images.[0].url}}"
+                                        alt="{{productName}}"
+                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                    >
+
+                                {{else}}
+
+                                    <div class="w-full h-full flex items-center justify-center text-on-surface-variant">
+                                        No Image
+                                    </div>
+
+                                {{/if}}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ========================= -->
+                        <!-- PRODUCT INFO -->
+                        <!-- ========================= -->
+
+                        <div class="flex flex-col flex-grow px-2 pb-2">
+
+
+                            <!-- PRODUCT NAME -->
+
+                            <div class="flex justify-between items-start mb-2">
+
+                                <h3 class="font-headline-md text-lg text-ink-black">
+                                    {{productName}}
+                                </h3>
+
+                            </div>
+
+
+                            <!-- PRODUCT DESCRIPTION -->
+
+                            <div class="flex justify-between items-start mb-2">
+
+                                <p class="font-headline-md text-s text-ink-black">
+                                    {{productDescription}}
+                                </p>
+
+                            </div>
+
+
+                            <!-- ========================= -->
+                            <!-- CATEGORY NAME -->
+                            <!-- ========================= -->
+
+                            {{#if category_id}}
+
+                                <p class="text-sm text-on-surface-variant mb-2">
+                                    {{category_id.category_name}}
+                                </p>
+
+                            {{/if}}
+
+
+                            <!-- ========================= -->
+                            <!-- RATING -->
+                            <!-- ========================= -->
+
+                            <div class="flex items-center mb-4 text-ink-black">
+
+                                <span
+                                    class="material-symbols-outlined text-[16px]"
+                                    style="font-variation-settings: 'FILL' 1;"
+                                >
+                                    star
+                                </span>
+
+                                <span class="font-body-md text-sm ml-2 text-on-surface-variant">
+
+                                    {{#if average_rating}}
+
+                                        {{average_rating}}
+
+                                    {{else}}
+
+                                        No rating
+
+                                    {{/if}}
+
+
+                                    {{#if review_count}}
+
+                                        ({{review_count}})
+
+                                    {{/if}}
+
+                                </span>
+
+                            </div>
+
+
+                            <!-- ========================= -->
+                            <!-- PRICE -->
+                            <!-- ========================= -->
+
+                            <div class="mt-auto pt-4 border-t border-surface-variant/50 flex items-center justify-between">
+
+                                <p class="font-headline-lg text-xl text-ink-black">
+                                    ₹{{listPrice}}
+                                </p>
+
+
+                                <!-- ADD BUTTON -->
+
+                                <button
+                                    type="button"
+                                    onclick="event.preventDefault(); event.stopPropagation();"
+                                    class="flex items-center gap-1 text-sm"
+                                >
+
+                                    Add
+
+                                    <span class="material-symbols-outlined text-[18px]">
+                                        add
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                {{/each}}
+
+
+            {{else}}
+
+
+                <!-- ========================= -->
+                <!-- NO PRODUCTS -->
+                <!-- ========================= -->
+
+                <div class="col-span-full flex flex-col items-center justify-center py-20">
+
+                    <span class="material-symbols-outlined text-5xl text-on-surface-variant">
+                        inventory_2
+                    </span>
+
+                    <h2 class="font-headline-lg text-2xl text-ink-black mt-4">
+                        No products found
+                    </h2>
+
+                    <p class="font-body-md text-on-surface-variant mt-2">
+                        Try changing your search or filters.
+                    </p>
+
+                </div>
+
+            {{/if}}
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- PAGINATION -->
+    <!-- ========================= -->
+
+    {{#if totalPage}}
+
+        {{#if (gt totalPage 1)}}
+
+            <div class="mt-16 mb-12 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-surface-variant/50 pt-8 w-full">
+
+
+                <!-- SHOWING -->
+
+                <p class="font-body-md text-sm text-on-surface-variant">
+
+                    Showing
+
+                    {{#if totalProduct}}
+
+                        {{add (multiply (subtract page 1) 10) 1}}
+
+                    {{else}}
+
+                        0
+
+                    {{/if}}
+
+                    -
+
+                    {{#if (lt (multiply page 10) totalProduct)}}
+
+                        {{multiply page 10}}
+
+                    {{else}}
+
+                        {{totalProduct}}
+
+                    {{/if}}
+
+                    of {{totalProduct}} products
+
+                </p>
+
+
+                <!-- PAGINATION -->
+
+                <div class="flex items-center gap-2">
+
+
+                    <!-- PREVIOUS -->
+
+                    {{#if (gt page 1)}}
+
+                        <button
+                            type="button"
+                            onclick="goToPage({{subtract page 1}})"
+                            class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg hover:bg-surface-gray transition"
+                        >
+
+                            <span class="material-symbols-outlined text-[18px]">
+                                chevron_left
+                            </span>
+
+                        </button>
+
+                    {{else}}
+
+                        <button
+                            type="button"
+                            disabled
+                            class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg opacity-40 cursor-not-allowed"
+                        >
+
+                            <span class="material-symbols-outlined text-[18px]">
+                                chevron_left
+                            </span>
+
+                        </button>
+
+                    {{/if}}
+
+
+                    <!-- PAGE NUMBERS -->
+
+                    {{#each (range 1 totalPage)}}
+
+                        <button
+                            type="button"
+                            onclick="goToPage({{this}})"
+                            class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg text-sm
+
+                            {{#if (eq this ../page)}}
+                                bg-ink-black text-white
+                            {{else}}
+                                hover:bg-surface-gray text-ink-black
+                            {{/if}}
+
+                            transition"
+                        >
+                            {{this}}
+                        </button>
+
+                    {{/each}}
+
+
+                    <!-- NEXT -->
+
+                    {{#if (lt page totalPage)}}
+
+                        <button
+                            type="button"
+                            onclick="goToPage({{add page 1}})"
+                            class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg hover:bg-surface-gray transition"
+                        >
+
+                            <span class="material-symbols-outlined text-[18px]">
+                                chevron_right
+                            </span>
+
+                        </button>
+
+                    {{else}}
+
+                        <button
+                            type="button"
+                            disabled
+                            class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg opacity-40 cursor-not-allowed"
+                        >
+
+                            <span class="material-symbols-outlined text-[18px]">
+                                chevron_right
+                            </span>
+
+                        </button>
+
+                    {{/if}}
+
+                </div>
+
+            </div>
+
+        {{/if}}
+
+    {{/if}}
+
 </main>
+
+
+<script>
+
+
+    // =========================================
+    // SEARCH
+    // =========================================
+
+    function applySearch() {
+
+        const searchInput =
+            document.getElementById("searchInput");
+
+        const search =
+            searchInput.value.trim();
+
+        const url =
+            new URL(window.location.href);
+
+
+        if (search) {
+
+            url.searchParams.set(
+                "search",
+                search
+            );
+
+        } else {
+
+            url.searchParams.delete(
+                "search"
+            );
+
+        }
+
+
+        // Reset pagination
+
+        url.searchParams.set(
+            "page",
+            "1"
+        );
+
+
+        window.location.href =
+            url.toString();
+
+    }
+
+
+    // =========================================
+    // SEARCH USING ENTER KEY
+    // =========================================
+
+    document
+        .getElementById("searchInput")
+        .addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Enter") {
+
+                    applySearch();
+
+                }
+
+            }
+        );
+
+
+    // =========================================
+    // SORT
+    // =========================================
+
+    function changeSort(value) {
+
+        const url =
+            new URL(window.location.href);
+
+
+        if (value) {
+
+            url.searchParams.set(
+                "sort",
+                value
+            );
+
+        } else {
+
+            url.searchParams.delete(
+                "sort"
+            );
+
+        }
+
+
+        // Reset pagination
+
+        url.searchParams.set(
+            "page",
+            "1"
+        );
+
+
+        window.location.href =
+            url.toString();
+
+    }
+
+
+    // =========================================
+    // MOBILE SORT
+    // =========================================
+
+    function toggleMobileSort() {
+
+        const mobileSort =
+            document.getElementById(
+                "mobileSort"
+            );
+
+
+        mobileSort.classList.toggle(
+            "hidden"
+        );
+
+    }
+
+
+    // =========================================
+    // APPLY FILTERS
+    // =========================================
+
+    function applyFilters() {
+
+
+        const minPrice =
+            document.getElementById(
+                "minPrice"
+            ).value;
+
+
+        const maxPrice =
+            document.getElementById(
+                "maxPrice"
+            ).value;
+
+
+        // Get ALL selected categories
+
+        const selectedCategories =
+            document.querySelectorAll(
+                'input[name="category"]:checked'
+            );
+
+
+        const url =
+            new URL(window.location.href);
+
+
+        // =========================================
+        // CATEGORY
+        // =========================================
+
+        // Delete all old category parameters
+
+        url.searchParams.delete(
+            "category"
+        );
+
+
+        // Add every selected category
+
+        selectedCategories.forEach(
+            function (checkbox) {
+
+                url.searchParams.append(
+                    "category",
+                    checkbox.value
+                );
+
+            }
+        );
+
+
+        // =========================================
+        // MIN PRICE
+        // =========================================
+
+        if (minPrice) {
+
+            url.searchParams.set(
+                "minPrice",
+                minPrice
+            );
+
+        } else {
+
+            url.searchParams.delete(
+                "minPrice"
+            );
+
+        }
+
+
+        // =========================================
+        // MAX PRICE
+        // =========================================
+
+        if (maxPrice) {
+
+            url.searchParams.set(
+                "maxPrice",
+                maxPrice
+            );
+
+        } else {
+
+            url.searchParams.delete(
+                "maxPrice"
+            );
+
+        }
+
+
+        // =========================================
+        // RESET PAGE
+        // =========================================
+
+        url.searchParams.set(
+            "page",
+            "1"
+        );
+
+
+        // =========================================
+        // REDIRECT
+        // =========================================
+
+        window.location.href =
+            url.toString();
+
+    }
+
+
+    // =========================================
+    // CLEAR CATEGORY
+    // =========================================
+
+    function clearCategory() {
+
+        const url =
+            new URL(window.location.href);
+
+
+        // Remove ALL category parameters
+
+        url.searchParams.delete(
+            "category"
+        );
+
+
+        // Reset pagination
+
+        url.searchParams.set(
+            "page",
+            "1"
+        );
+
+
+        window.location.href =
+            url.toString();
+
+    }
+
+
+    // =========================================
+    // PAGINATION
+    // =========================================
+
+    function goToPage(pageNumber) {
+
+        const url =
+            new URL(window.location.href);
+
+
+        // Only change page.
+        // Existing search, category,
+        // price and sort parameters remain.
+
+        url.searchParams.set(
+            "page",
+            pageNumber
+        );
+
+
+        window.location.href =
+            url.toString();
+
+    }
+
+
+    // =========================================
+    // OPEN MOBILE FILTER
+    // =========================================
+
+    function openFilters() {
+
+        const sidebar =
+            document.getElementById(
+                "filterSidebar"
+            );
+
+
+        sidebar.classList.remove(
+            "hidden"
+        );
+
+
+        sidebar.classList.add(
+            "fixed",
+            "inset-0",
+            "z-50",
+            "bg-white",
+            "p-6",
+            "overflow-y-auto"
+        );
+
+    }
+
+
+    // =========================================
+    // CLOSE MOBILE FILTER
+    // =========================================
+
+    function closeFilters() {
+
+        const sidebar =
+            document.getElementById(
+                "filterSidebar"
+            );
+
+
+        sidebar.classList.add(
+            "hidden"
+        );
+
+
+        sidebar.classList.remove(
+            "fixed",
+            "inset-0",
+            "z-50",
+            "bg-white",
+            "p-6",
+            "overflow-y-auto"
+        );
+
+    }
+
+</script>
+
+
 {{>user/footer}}

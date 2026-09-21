@@ -34,6 +34,14 @@ const registerHbsHelpers = () => {
 
     return result;
   });
+
+  hbs.registerHelper("includes", function (array, value) {
+  if (!Array.isArray(array)) {
+    return false;
+  }
+
+  return array.map(String).includes(String(value));
+});
 };
 
 export default registerHbsHelpers;

@@ -54,6 +54,12 @@ const userSchema = new mongoose.Schema(
             required: false,
             default: false
         },
+        isGoogleUser: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+
 
         addresses: [{
             fullName: { type: String, required: true },

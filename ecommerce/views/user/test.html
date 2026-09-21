@@ -1,295 +1,601 @@
-<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<!DOCTYPE html><html class="scroll-smooth" lang="en" style="width: 100%; height: auto; overflow: auto; position: relative; opacity: 0;" data-stitch-anim-opacity="true"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Nutri Luxe Admin - Customers</title>
+<title>Dates Burfi - Nutri Burfi</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "surface-variant": "#e3e2e2",
-                    "surface": "#fbf9f9",
-                    "outline": "#747878",
-                    "background": "#fbf9f9",
-                    "on-primary-fixed-variant": "#464747",
-                    "on-tertiary": "#ffffff",
-                    "primary-fixed-dim": "#c7c6c6",
-                    "inverse-primary": "#c7c6c6",
-                    "surface-container-highest": "#e3e2e2",
-                    "on-secondary-container": "#646464",
-                    "on-error-container": "#93000a",
-                    "tertiary-container": "#747474",
-                    "surface-bright": "#fbf9f9",
-                    "secondary": "#5e5e5e",
-                    "secondary-container": "#e3e2e2",
-                    "on-primary-container": "#fefcfc",
-                    "on-surface-variant": "#444748",
-                    "outline-variant": "#c4c7c7",
-                    "surface-tint": "#5e5e5e",
-                    "tertiary-fixed-dim": "#c6c6c6",
-                    "on-primary": "#ffffff",
-                    "primary": "#5c5c5c",
-                    "on-primary-fixed": "#1b1c1c",
-                    "inverse-on-surface": "#f2f0f0",
-                    "secondary-fixed": "#e3e2e2",
-                    "on-secondary-fixed": "#1b1c1c",
-                    "surface-dim": "#dbdad9",
-                    "primary-fixed": "#e3e2e2",
-                    "secondary-fixed-dim": "#c7c6c6",
-                    "error-container": "#ffdad6",
-                    "on-tertiary-fixed-variant": "#474747",
-                    "inverse-surface": "#303031",
-                    "tertiary-fixed": "#e2e2e2",
-                    "surface-container-lowest": "#ffffff",
-                    "surface-container": "#efeded",
-                    "surface-container-high": "#e9e8e7",
-                    "tertiary": "#5c5c5c",
-                    "surface-container-low": "#f5f3f3",
-                    "on-tertiary-fixed": "#1b1b1b",
-                    "on-surface": "#1b1c1c",
-                    "on-secondary": "#ffffff",
-                    "on-background": "#1b1c1c",
-                    "primary-container": "#747474",
-                    "on-tertiary-container": "#fcfcfc",
-                    "on-secondary-fixed-variant": "#464747",
-                    "on-error": "#ffffff",
-                    "error": "#ba1a1a"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-            },
-            "spacing": {
-                    "stack-lg": "24px",
-                    "grid-gutter": "24px",
-                    "container-padding": "32px",
-                    "stack-sm": "8px",
-                    "max-width": "1280px",
-                    "section-gap-mobile": "64px",
-                    "stack-md": "16px",
-                    "section-gap": "120px"
-            },
-            "fontFamily": {
-                    "body-xl": ["Inter"],
-                    "body-lg": ["Inter"],
-                    "body-md": ["Inter"],
-                    "label-md": ["Inter"],
-                    "headline-xl": ["Plus Jakarta Sans"],
-                    "headline-lg": ["Plus Jakarta Sans"],
-                    "display-lg-mobile": ["Plus Jakarta Sans"],
-                    "display-lg": ["Plus Jakarta Sans"]
-            },
-            "fontSize": {
-                    "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                    "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                    "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
-                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
-                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
-                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
-                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
-            }
-          },
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "primary-fixed": "#ffdea4",
+                "outline": "#807665",
+                "surface-dim": "#dbdad5",
+                "primary": "#7b5900",
+                "surface-container-low": "#f5f3ee",
+                "on-primary-fixed-variant": "#5d4200",
+                "on-error-container": "#93000a",
+                "inverse-primary": "#f0bf5c",
+                "on-surface-variant": "#4e4637",
+                "secondary-fixed-dim": "#e1c0ac",
+                "surface-container": "#efeee9",
+                "secondary-container": "#fbd9c4",
+                "tertiary": "#385e9a",
+                "on-secondary": "#ffffff",
+                "on-tertiary-fixed": "#001b3d",
+                "inverse-on-surface": "#f2f1ec",
+                "on-tertiary-container": "#033871",
+                "on-background": "#1b1c19",
+                "background": "#fbf9f4",
+                "surface-container-high": "#eae8e3",
+                "secondary": "#725949",
+                "error": "#ba1a1a",
+                "on-secondary-fixed-variant": "#594233",
+                "on-primary": "#ffffff",
+                "on-primary-fixed": "#261900",
+                "on-tertiary": "#ffffff",
+                "surface": "#ffffff",
+                "accent-blue": "#0071E3",
+                "secondary-fixed": "#fedcc7",
+                "primary-fixed-dim": "#f0bf5c",
+                "on-secondary-fixed": "#29180b",
+                "tertiary-fixed-dim": "#a9c7ff",
+                "surface-container-highest": "#e4e2de",
+                "surface-bright": "#ffffff",
+                "on-error": "#ffffff",
+                "surface-gray": "#F5F5F7",
+                "tertiary-fixed": "#d6e3ff",
+                "surface-variant": "#e4e2de",
+                "on-tertiary-fixed-variant": "#1b4680",
+                "outline-variant": "#d2c5b1",
+                "inverse-surface": "#30312e",
+                "on-surface": "#1b1c19",
+                "primary-container": "#c89b3c",
+                "tertiary-container": "#7ea3e3",
+                "on-secondary-container": "#775d4d",
+                "on-primary-container": "#4b3500",
+                "surface-tint": "#7b5900",
+                "error-container": "#ffdad6",
+                "ink-black": "#1D1D1F",
+                "surface-container-lowest": "#ffffff"
         },
-      }
-    </script>
-<style>
-        body {
-            background-color: #fbf9f9;
-            color: #1b1c1c;
-            -webkit-font-smoothing: antialiased;
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "2xl": "16px",
+                "full": "9999px"
+        },
+        "spacing": {
+                "section-gap": "120px",
+                "max-width": "1280px",
+                "section-gap-mobile": "64px",
+                "container-padding": "32px",
+                "stack-md": "16px",
+                "grid-gutter": "24px",
+                "stack-sm": "8px",
+                "stack-lg": "24px"
+        },
+        "fontFamily": {
+                "label-md": [
+                        "Inter"
+                ],
+                "display-lg": [
+                        "Plus Jakarta Sans"
+                ],
+                "headline-xl": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "headline-lg": [
+                        "Plus Jakarta Sans"
+                ],
+                "display-lg-mobile": [
+                        "Plus Jakarta Sans"
+                ],
+                "body-xl": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "56px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-xl": [
+                        "40px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "17px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-md": [
+                        "15px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "1.25",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg-mobile": [
+                        "40px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-xl": [
+                        "20px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ]
         }
+},
+    },
+  }
+</script>
+<style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        .glass-effect {
-            backdrop-filter: blur(12px);
-            background-color: rgba(251, 249, 249, 0.8);
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
         }
-        .bento-card {
-            background: #ffffff;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(0,0,0,0.05);
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
-        .bento-card:hover {
-            box-shadow: 0 40px 40px rgba(0, 0, 0, 0.04);
-            transform: translateY(-2px);
-        }
-        /* Custom scrollbar for minimalist look */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #e3e2e2; border-radius: 10px; }
     </style>
 </head>
-<body class="font-body-md text-body-md overflow-x-hidden">
-<!-- SideNavBar Shell -->
-<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col h-screen py-container-padding px-stack-md z-50">
-<div class="mb-10 px-2">
-<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface dark:text-on-primary-fixed tracking-tight">Nutri Luxe</h1>
-<p class="font-label-md text-label-md text-on-surface-variant/70">Luxury Wellness Admin</p>
-</div>
-<nav class="flex-1 space-y-1"><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span><span class="font-label-md text-label-md">Dashboard</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span><span class="font-label-md text-label-md">Products</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span><span class="font-label-md text-label-md">Orders</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="category">category</span><span class="font-label-md text-label-md">Categories</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span><span class="font-label-md text-label-md">Coupons</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="branding_watermark">branding_watermark</span><span class="font-label-md text-label-md">Banners</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="local_offer">local_offer</span><span class="font-label-md text-label-md">Offers</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary dark:text-primary-fixed font-bold border-r-2 border-primary dark:border-primary-fixed bg-surface-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="group">group</span><span class="font-label-md text-label-md">Customers</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span><span class="font-label-md text-label-md">Sales Report</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span><span class="font-label-md text-label-md">Logout</span></a></nav>
-<div class="mt-auto border-t border-outline-variant/30 pt-6 px-2">
-<button class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-primary text-on-primary font-label-md transition-all active:scale-95 hover:bg-opacity-90"><span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>View Store</button>
-</div>
-</aside>
-<!-- Main Content Area -->
-<main class="ml-64 min-h-screen flex flex-col">
+<body class="bg-surface text-ink-black font-body-md antialiased pt-20">
 <!-- TopNavBar -->
-<header class="sticky top-0 w-full z-40 flex justify-between items-center h-16 px-container-padding bg-surface/80 backdrop-blur-md border-b border-outline-variant/30">
-<div class="flex items-center gap-6 w-full max-w-xl">
-<div class="relative w-full group">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">search</span>
-<input class="w-full pl-10 pr-4 py-2 bg-surface-container border-none rounded-full font-body-md focus:ring-1 focus:ring-primary/20 transition-all outline-none" placeholder="Search customers, emails, or tiers..." type="text">
+<nav class="fixed top-0 w-full z-50 bg-surface/95 dark:bg-surface/90 backdrop-blur-md border-b border-secondary/10 dark:border-secondary-fixed-dim/10 transition-all duration-300 shadow-sm" id="main-nav">
+<div class="flex justify-between items-center w-full px-container-padding max-w-max-width mx-auto h-20">
+<!-- Brand Logo -->
+<a class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0" href="#">
+                Nutri Burfi
+            </a>
+<!-- Navigation Links (Desktop) -->
+<div class="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+<a class="text-on-surface font-label-md text-label-md border-b-2 border-on-surface pb-1" href="{{DATA:SCREEN:SCREEN_69}}">Home</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="{{DATA:SCREEN:SCREEN_81}}">Products</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="#">About Us</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="#">Contact</a>
 </div>
-</div>
-<div class="flex items-center gap-4">
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors active:scale-95">
-<span class="material-symbols-outlined">notifications</span>
+<!-- Trailing Icon Actions -->
+<div class="flex items-center gap-4 text-on-surface z-10 flex-shrink-0">
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="search">search</span>
 </button>
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors active:scale-95">
-<span class="material-symbols-outlined">settings</span>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
 </button>
-<div class="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
-<div class="flex items-center gap-3 cursor-pointer group active:scale-95 transition-transform">
-<div class="text-right">
-<p class="font-label-md text-on-surface leading-tight">Administrator</p>
-<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Admin Profile</p>
-</div>
-<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/50">
-<img class="w-full h-full object-cover" data-alt="A sophisticated professional portrait of a wellness brand administrator, high-key studio lighting, clean minimalist aesthetic, neutral tones, focused look, short well-groomed appearance, 8k resolution, Apple-inspired editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2xPG8xQRfEm753Y0Ys6OFtznPa3wJzAWxsk7wQhkUIaazu6xuyW5OS3ryIlKGnexinhNJmeLpF3VBu1-9I8qSgRwKRdFcC1-rdl9wTfYiwzeL0lrEp3yDV0G6TpYi2hgRfQL98cd9_b0NDGPU8WzQuGFTxsDymsEFAPu1Xswt4dRzXzOL0w-KOyUHBc_c9mnCkymPi0_SnIcbvCYUqZqKftZLucd5hW2Ek2lL3N3AiRe7k6WYc-FaCZx-abUR-PgP0TMhgZADOXw">
-</div>
-</div>
-</div>
-</header>
-<!-- Canvas -->
-<div class="p-container-padding flex-1">
-<!-- Page Header -->
-<div class="mb-10 flex justify-between items-end">
-<div>
-<h2 class="font-headline-xl text-headline-xl text-on-surface mb-2">Customer Management</h2>
-<p class="font-body-lg text-on-surface-variant max-w-2xl opacity-70">Oversee your elite customer base, track lifetime value, and manage exclusive luxe tiers.</p>
-</div>
-<div class="flex gap-4">
-
-
-</div>
-</div>
-<!-- Dashboard Stats Bar -->
-<div class="grid grid-cols-4 gap-6 mb-10">
-<div class="bento-card p-6 rounded-xl flex items-center justify-between">
-<div>
-<p class="text-[11px] uppercase tracking-widest text-on-surface-variant mb-1">Total Customers</p>
-<h3 class="font-headline-lg text-headline-lg">12,840</h3>
-</div>
-<div class="p-3 bg-primary/5 rounded-full">
-<span class="material-symbols-outlined text-primary">groups</span>
-</div>
-</div>
-<div class="bento-card p-6 rounded-xl flex items-center justify-between">
-<div>
-<p class="text-[11px] uppercase tracking-widest text-on-surface-variant mb-1">Average LTV</p>
-<h3 class="font-headline-lg text-headline-lg">₹4,250</h3>
-</div>
-<div class="p-3 bg-secondary/5 rounded-full">
-<span class="material-symbols-outlined text-secondary">payments</span>
-</div>
-</div>
-
-
-</div>
-<!-- Detailed Table Container -->
-<div class="bento-card rounded-2xl overflow-hidden mb-section-gap">
-<!-- Filters & Search Toolbar -->
-<div class="p-6 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-lowest">
-<div class="flex items-center gap-4">
-<div class="flex bg-surface-container-low p-1 rounded-lg">
-
-
-
-</div>
-<div class="h-6 w-[1px] bg-outline-variant/50"></div>
-<button class="flex items-center gap-2 px-3 py-1.5 font-label-md text-on-surface-variant hover:text-primary">
-<span class="material-symbols-outlined text-[20px]">filter_list</span>
-                            More Filters
-                        </button>
-</div>
-<div class="text-on-surface-variant font-label-md">
-                        Showing 1-15 of 12,840 results
-                    </div>
-</div>
-<!-- Table Content -->
-<div class="overflow-x-auto">
-<table class="w-full text-left">
-<thead><tr class="bg-surface-container-low/50"><th class="px-6 py-4 font-label-md text-on-surface-variant border-b border-outline-variant/20"><div class="flex items-center gap-2">Customer <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span></div></th><th class="px-6 py-4 font-label-md text-on-surface-variant border-b border-outline-variant/20">Phone Number</th><th class="px-6 py-4 font-label-md text-on-surface-variant border-b border-outline-variant/20">Join Date</th><th class="px-6 py-4 font-label-md text-on-surface-variant border-b border-outline-variant/20 text-right">Actions</th></tr></thead>
-<tbody class="divide-y divide-outline-variant/10"><tr class="hover:bg-surface-variant/30 transition-colors cursor-pointer group"><td class="px-6 py-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden flex-shrink-0"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC11aKUo2hVOMBq1U3n3MluU1uw9WyKh3IejLn5ciRzvQve8r14fSyXvYPiLPdHrJYMyq1Xxn9WO9q6VRQXMuQk53AVpByFGSXv01Gf4jDfTTqUyZzyanX5_VTwmAis8jaqYPL708Cf6aRqybiaPc9ZJ6jTzTTt_EEcSeDGz4_yaBW8YYABnHxCHUPtkelltq5mUWXANRHSFnJZ6AI9oSnFW-9LnJCodHzVrjk2IWqC8-sGNyUyeBn2MbVEAyzvSywRhCWLLiAXEog" alt="Ananya Sharma"></div><div><p class="font-label-md text-on-surface">Ananya Sharma</p><p class="text-[12px] text-on-surface-variant">ananya.s@luxe.com</p></div></div></td><td class="px-6 py-5 text-on-surface-variant font-body-md">+91 98765 43210</td><td class="px-6 py-5 text-on-surface-variant font-body-md">Jan 12, 2024</td><td class="px-6 py-5 text-right"><div class="flex items-center justify-end gap-2"><button class="p-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:bg-surface-variant transition-colors" title="Edit Customer"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="p-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" title="Delete Customer"><span class="material-symbols-outlined text-[18px]">delete</span></button><button class="px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-error/10 text-error hover:bg-error/20 transition-colors">Block</button></div></td></tr>
-    <tr class="hover:bg-surface-variant/30 transition-colors cursor-pointer group"><td class="px-6 py-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden flex-shrink-0"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqZaYzRgFNwLqiadeYxlJZZs8IaAPJ9sDjSkbtdGhGrVP5JLcSNR5ndj1aoKoV2EdmTclPSiPHShUTtw6yyE9ESyjOahub9UOTUNfyrRrFAnVsCiMGobZLq_U5mEE1Hdk7bLJ3Vby5fitRYnp8fG4XwB8DBEOL326v4q5O8EADLSNJWeMGeTZtk4z-_kx1d9VTWQYcNWSCjHA6KjBznVrUCCOBEQgt6r0xmLuNcvSm2WJylqrPWy73abauZRT49laQaMyCIHoffNg" alt="Rohan Mehta"></div><div><p class="font-label-md text-on-surface">Rohan Mehta</p><p class="text-[12px] text-on-surface-variant">rohan.mehta@outlook.com</p></div></div></td><td class="px-6 py-5 text-on-surface-variant font-body-md">+91 98765 43211</td><td class="px-6 py-5 text-on-surface-variant font-body-md">Feb 03, 2024</td><td class="px-6 py-5 text-right"><div class="flex items-center justify-end gap-2"><button class="p-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:bg-surface-variant transition-colors" title="Edit Customer"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="p-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" title="Delete Customer"><span class="material-symbols-outlined text-[18px]">delete</span></button><button class="px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant hover:bg-surface-variant transition-colors">Unblock</button></div></td></tr><tr class="hover:bg-surface-variant/30 transition-colors cursor-pointer group"><td class="px-6 py-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden flex-shrink-0"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFOVinFftx9f63kTy62vzlmFWarH12naAtS_6hTowfeFMFHhX8wj_EHNTuseiNj9RIdBDvqljnVKCowAuZNWiIqBDzYGLMaTWyvRUpQ7lbqaCqBrnrZq37hHkImWv12LzV4MK7eDXQzpbuHFaj6J0TuzmraUj4PLpy88T6l6Zvn3Tpotr20tumLQDJYljo9r6Jry8nKsSPVhkbQsL9KKQFeI5DqeTWa9RKRQjOr_LNK2KBA7R78OezwZkJ_nTFbr8BAXWkyCNHHg0" alt="Vikram Singh"></div><div><p class="font-label-md text-on-surface">Vikram Singh</p><p class="text-[12px] text-on-surface-variant">v.singh@gmail.com</p></div></div></td><td class="px-6 py-5 text-on-surface-variant font-body-md">+91 98765 43212</td><td class="px-6 py-5 text-on-surface-variant font-body-md">Mar 15, 2024</td><td class="px-6 py-5 text-right"><div class="flex items-center justify-end gap-2"><button class="p-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:bg-surface-variant transition-colors" title="Edit Customer"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="p-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" title="Delete Customer"><span class="material-symbols-outlined text-[18px]">delete</span></button><button class="px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-error/10 text-error hover:bg-error/20 transition-colors">Block</button></div></td></tr><tr class="hover:bg-surface-variant/30 transition-colors cursor-pointer group"><td class="px-6 py-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden flex-shrink-0"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABYBKZbvrhMvRqu1QDagAkTH0OgKc9IpXHkniUjAiPeAwc21O9ziu2ToQEMObXET_8Nr4RqDCZEa0opUAZLq5ZcmoWreq_Ji3gr0OUc5tXXBspc_qLEOKODznSmex4RBNAEzh7JqRS4xepKnJ5u1SA3bj4DedXG7XrB1IpguSbSsRGWWJYiDGa4vxHIPOj8ztkyDsxologqbjCypEHvmJrDpAtcUGUOIivkCvJYVentUt4COsFuwUwLrIj1JP6CK2vQOacP94S5Ug" alt="Priya Kapur"></div><div><p class="font-label-md text-on-surface">Priya Kapur</p><p class="text-[12px] text-on-surface-variant">priya.k@wellness.co</p></div></div></td><td class="px-6 py-5 text-on-surface-variant font-body-md">+91 98765 43213</td><td class="px-6 py-5 text-on-surface-variant font-body-md">Dec 18, 2023</td><td class="px-6 py-5 text-right"><div class="flex items-center justify-end gap-2"><button class="p-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:bg-surface-variant transition-colors" title="Edit Customer"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="p-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" title="Delete Customer"><span class="material-symbols-outlined text-[18px]">delete</span></button><button class="px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-error/10 text-error hover:bg-error/20 transition-colors">Block</button></div></td></tr><tr class="hover:bg-surface-variant/30 transition-colors cursor-pointer group"><td class="px-6 py-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden flex-shrink-0"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4Gbb_F0N7htehfaQUHChw2j-pF75Fh-3k9M77mauPGbKW7LWkmWV5a5olLZFOK13RBowSGytVaoh7gwlC59D8NzOFjYNzXKEMUCIDcrJbpVzs-owUfDKQ9AuB8ZHrjLAtSvzsxMWYS-3V-X7oFPwG_qWUv7RfoG921jumtPKxysYqGiczee4u9od-1ftDWkqkZgA1G9duVc7tTP1tNG3M3x3a7pklU0OzD76GT22_sD2Kzjw31c0cYfoHlazlGLcLhdloD1sVLZg" alt="Arjun Reddy"></div><div><p class="font-label-md text-on-surface">Arjun Reddy</p><p class="text-[12px] text-on-surface-variant">arjun.r@techluxe.in</p></div></div></td><td class="px-6 py-5 text-on-surface-variant font-body-md">+91 98765 43214</td><td class="px-6 py-5 text-on-surface-variant font-body-md">Jan 30, 2024</td><td class="px-6 py-5 text-right"><div class="flex items-center justify-end gap-2"><button class="p-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:bg-surface-variant transition-colors" title="Edit Customer"><span class="material-symbols-outlined text-[18px]">edit</span></button><button class="p-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" title="Delete Customer"><span class="material-symbols-outlined text-[18px]">delete</span></button><button class="px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant hover:bg-surface-variant transition-colors">Unblock</button></div></td></tr></tbody>
-</table>
-</div>
-<!-- Pagination -->
-<div class="p-6 flex items-center justify-between bg-surface-container-low/30 border-t border-outline-variant/20">
-<div class="flex items-center gap-2">
-<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-white transition-colors">
-<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 relative">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-accent-blue rounded-full"></span>
 </button>
-<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md">1</button>
-<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white transition-colors font-label-md">2</button>
-<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white transition-colors font-label-md">3</button>
-<span class="px-1 text-on-surface-variant">...</span>
-<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white transition-colors font-label-md">856</button>
-<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-white transition-colors">
-<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 hidden md:block">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 ml-2" id="mobile-menu-btn">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
 </button>
 </div>
-<div class="flex items-center gap-3">
-<span class="text-on-surface-variant font-label-md">Go to page:</span>
-<input class="w-12 h-8 rounded-lg border border-outline-variant/30 bg-white text-center font-label-md focus:ring-1 focus:ring-primary/20 outline-none" type="text" value="1">
+</div>
+</nav><div class="fixed inset-0 bg-surface z-40 hidden flex-col pt-24 px-container-padding" id="mobile-menu">
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface" href="#">Home</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Products</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">About Us</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Contact</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between" href="#">Account <span class="material-symbols-outlined">person</span></a>
+</div>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-max-width mx-auto px-container-padding py-stack-lg md:py-section-gap">
+<!-- Breadcrumb -->
+<nav aria-label="Breadcrumb" class="flex text-sm text-outline mb-stack-md">
+<ol class="inline-flex items-center space-x-1 md:space-x-3">
+<li class="inline-flex items-center">
+<a class="font-label-md text-label-md hover:text-ink-black transition-colors" href="{{DATA:SCREEN:SCREEN_69}}">Home</a>
+</li>
+<li class="">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<a class="font-label-md text-label-md hover:text-ink-black transition-colors" href="{{DATA:SCREEN:SCREEN_81}}">Products</a>
+</div>
+</li>
+<li aria-current="page" class="">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<span class="font-label-md text-label-md text-ink-black">Dates Burfi</span>
+</div>
+</li>
+</ol>
+</nav>
+<!-- Product Hero Section -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-grid-gutter mb-section-gap">
+<!-- Gallery (Left) -->
+<div class="lg:col-span-7 flex flex-col-reverse md:flex-row gap-stack-md h-full"><!-- Thumbnails --><div class="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto md:w-20 shrink-0 no-scrollbar"><button class="w-20 h-20 md:w-20 md:h-20 bg-surface-gray rounded-xl border-2 border-ink-black overflow-hidden shrink-0"><img alt="Dates Burfi thumbnail 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnTzgVKeRd72UzpxNk1lhrB1uIHnUWpazQJ2n5AIyb81LFSfCP_WXBrXzliP2vo7NLFqY8zHGrJy2bAIcBSIfF4vh7HHoqyLg92pxJAbmFRpMpXltX3DsV__IlxLFcCAB_zrQWXn88gNI9Ti7u-dzswWKIvY52mKJ_vz2J-yE-bfqgvUsTR6YdBdVOqIcqvcXgFIwx4m6x3AwaYRLlqs6o0xpEE-_WOfDz2IwS-OVkJ2h4ajMg54_5jBHLdWwwCElro4Q1EgZw27s"></button><button class="w-20 h-20 md:w-20 md:h-20 bg-surface-gray rounded-xl border border-transparent hover:border-ink-black/30 transition-colors overflow-hidden shrink-0 opacity-70 hover:opacity-100"><img alt="Dates Burfi thumbnail 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvic_xZR_9D4HrGfEc1m44RMjsf76kZPJ14NIyhrfNSw9zHGyuEtbmVFTQZAIy-BItnoktRF-By63YFv0jySXPd8w7Hc8rVdSDdAjX1raGNvk2tkQIfFbkeAVe6wxYFbnZFih0PXa1MSBMFnh9yadKu8iqQnDtct3d8DULjGV0k4EP2-fUE-g_qBA4mItUYMOEQkYdfsazQHre2OUOWQ3iNPdLL8wx3h4bZyI85yP6ouuQlTVN2QgSw2xMaYMFDcmE3L_LmyjVMz8"></button><button class="w-20 h-20 md:w-20 md:h-20 bg-surface-gray rounded-xl border border-transparent hover:border-ink-black/30 transition-colors overflow-hidden shrink-0 opacity-70 hover:opacity-100"><img alt="Dates Burfi thumbnail 3" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXUpkcVzAjDvJ9m-2v3cgtQSeJ22AIiztQPGOcaAQq_lrbgwMw5H3gygqybIgUQv3D9OTnlTmLJVG0ovETVl3i7CrUNeDRTKr4PxzNzqLwSwHj6B-kjjoDuVbgUqDQGS4OsWMwr5f3OlSF34np3T59jqCwBdjDgL-FsEkHJ7AHox2X_ZRbfCzmsozEn0v6ecUT5Nn1giCwyX3fnAmVdcsaiN023C4j62P_p-Q6m5rw6tSnfqNx8rNsduVVBwka9yuEET8mgVz7njA"></button><button class="w-20 h-20 md:w-20 md:h-20 bg-surface-gray rounded-xl border border-transparent hover:border-ink-black/30 transition-colors overflow-hidden shrink-0 opacity-70 hover:opacity-100 flex items-center justify-center"><div class="w-full h-full bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-outline">play_circle</span></div></button></div><!-- Main Image --><div class="flex-grow bg-surface-gray rounded-3xl overflow-hidden relative min-h-[500px] md:min-h-[640px] flex items-center justify-center"><div class="absolute top-6 left-6 flex flex-col gap-2 z-10"><span class="bg-white/90 backdrop-blur-md px-3.5 py-1 rounded-full border border-outline-variant/30 text-ink-black font-label-md text-xs shadow-sm">High Protein</span><span class="bg-white/90 backdrop-blur-md px-3.5 py-1 rounded-full border border-outline-variant/30 text-ink-black font-label-md text-xs shadow-sm">No Added Sugar</span></div><button class="absolute top-6 right-6 bg-white/90 backdrop-blur-md p-2.5 rounded-full border border-outline-variant/30 hover:bg-white transition-colors z-10 shadow-sm flex items-center justify-center"><span class="material-symbols-outlined text-ink-black text-[20px]">favorite</span></button><img alt="Premium Dates Burfi on pedestal" class="w-full h-full object-cover absolute inset-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKliF86eXU5vwDpstuzx3WDnqYgvpmnfe_IzhJOu6roeyp2x53iNUjghmTgfSJlaYCq3JWgHdg1dQBom6NW45yTT5fgJuv6zl5cuE6i5g1FM8U31MXWAL745bBuIJl7aBrgYnP9qFmrDYk12GjHfVETwPegYqgs7veYXCPFGvlzFgzRfuLf-cdUmfKVjDeiDEF0HRJX8Ooe0AYxSY0_DOhoCUgUbUlpLBXiqXznsTw_XX5E4oqi-co2qboWvEjQv_bV9y6xmVHzIM"></div></div>
+<!-- Product Info (Right) -->
+<div class="lg:col-span-5 flex flex-col pt-stack-md lg:pt-0 pl-0 lg:pl-stack-lg justify-center">
+<div class="mb-stack-lg">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-ink-black mb-2 tracking-tight">Premium Dates Burfi</h1>
+<div class="flex items-center gap-stack-sm mb-stack-md">
+<div class="flex text-accent-blue">
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">star_half</span>
+</div>
+<a class="text-on-surface-variant text-sm underline hover:text-ink-black transition-colors" href="#reviews">4.8 (124 Reviews)</a>
+</div>
+<p class="font-headline-xl text-headline-xl text-ink-black mb-stack-md tracking-tight">$24.00 <span class="text-lg font-normal text-outline line-through ml-2">$28.00</span></p>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg">
+                        Experience the perfect harmony of natural sweetness and premium nutrition. Handcrafted with rich, organic dates and roasted nuts, delivering sustained energy without refined sugars.
+                    </p>
+</div>
+<hr class="border-outline-variant/30 mb-stack-lg">
+<!-- Selection Actions -->
+<div class="mb-stack-lg space-y-6"><div class="space-y-3"><div class="flex items-center justify-between"><label class="font-label-md text-label-md text-ink-black">Select Size</label><span class="text-xs text-on-surface-variant font-medium">500g recommended</span></div><div class="grid grid-cols-3 gap-3"><button class="flex flex-col items-center justify-center p-3 rounded-2xl border border-outline-variant/40 bg-surface hover:border-ink-black/40 transition-all text-center group" type="button"><span class="font-label-md text-xs text-ink-black">250g</span><span class="text-[11px] text-on-surface-variant mt-0.5">Sample Box</span><span class="text-xs font-semibold text-ink-black mt-1.5">$14.00</span></button><button class="relative flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-ink-black bg-surface shadow-sm text-center" type="button"><div class="absolute -top-2 px-2 py-0.5 bg-ink-black text-white rounded-full text-[9px] font-semibold uppercase tracking-wider">Popular</div><span class="font-label-md text-xs font-bold text-ink-black">500g</span><span class="text-[11px] text-on-surface-variant mt-0.5">Standard</span><span class="text-xs font-bold text-ink-black mt-1.5">$24.00</span></button><button class="relative flex flex-col items-center justify-center p-3 rounded-2xl border border-outline-variant/40 bg-surface hover:border-ink-black/40 transition-all text-center group" type="button"><div class="absolute -top-2 px-2 py-0.5 bg-accent-blue text-white rounded-full text-[9px] font-semibold tracking-wider">Save 15%</div><span class="font-label-md text-xs text-ink-black">1kg</span><span class="text-[11px] text-on-surface-variant mt-0.5">Family Box</span><span class="text-xs font-semibold text-ink-black mt-1.5">$44.00</span></button></div></div></div><div class="space-y-stack-md mb-stack-lg">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-ink-black">Quantity</label>
+<div class="flex items-center border border-outline-variant/50 rounded-lg bg-surface h-12 w-32">
+<button class="px-4 text-ink-black hover:bg-surface-gray transition-colors h-full rounded-l-lg">-</button>
+<input class="flex-grow w-full text-center bg-transparent border-none text-ink-black font-label-md focus:ring-0 p-0 m-0 h-full" type="number" value="1">
+<button class="px-4 text-ink-black hover:bg-surface-gray transition-colors h-full rounded-r-lg">+</button>
 </div>
 </div>
 </div>
-<!-- Contextual Insights Section (Bento Style) -->
-<div class="grid grid-cols-12 gap-6 mb-section-gap">
-
-
+<div class="flex flex-col gap-stack-md mb-stack-lg">
+<button class="w-full bg-ink-black text-white font-label-md text-label-md py-4 rounded-2xl hover:bg-ink-black/90 transition-colors flex items-center justify-center gap-2 shadow-sm" onclick="window.location.href='{{DATA:SCREEN:SCREEN_77}}'">
+<span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+                        Add to Cart
+                    </button>
+<button class="w-full bg-surface border border-outline-variant/50 text-ink-black font-label-md text-label-md py-4 rounded-2xl hover:bg-surface-gray transition-colors" onclick="window.location.href='{{DATA:SCREEN:SCREEN_75}}'">
+                        Buy It Now
+                    </button>
+</div>
+<!-- Trust Badges -->
+<div class="grid grid-cols-3 gap-unit pt-stack-md border-t border-outline-variant/30 mt-stack-lg">
+<div class="flex flex-col items-center text-center gap-2">
+<span class="material-symbols-outlined text-ink-black text-2xl">verified</span>
+<span class="text-sm text-on-surface-variant font-label-md">100% Organic</span>
+</div>
+<div class="flex flex-col items-center text-center gap-2">
+<span class="material-symbols-outlined text-ink-black text-2xl">local_shipping</span>
+<span class="text-sm text-on-surface-variant font-label-md">Free Ship &gt; $50</span>
+</div>
+<div class="flex flex-col items-center text-center gap-2">
+<span class="material-symbols-outlined text-ink-black text-2xl">eco</span>
+<span class="text-sm text-on-surface-variant font-label-md">Vegan</span>
 </div>
 </div>
-<!-- Footer Shell -->
-<footer class="mt-auto py-8 px-container-padding bg-surface border-t border-outline-variant/10 text-center">
-
-</footer>
+</div>
+</section>
+<!-- Product Details Tabs -->
+<section class="mb-section-gap">
+<div class="border-b border-outline-variant/30 flex space-x-8 mb-stack-lg overflow-x-auto no-scrollbar">
+<button class="pb-3 border-b-2 border-ink-black font-label-md text-label-md text-ink-black whitespace-nowrap duration-300">The Ingredients</button>
+<button class="pb-3 border-b-2 border-transparent hover:border-outline-variant font-label-md text-label-md text-on-surface-variant hover:text-ink-black transition-all whitespace-nowrap duration-300">Nutritional Facts</button>
+<button class="pb-3 border-b-2 border-transparent hover:border-outline-variant font-label-md text-label-md text-on-surface-variant hover:text-ink-black transition-all whitespace-nowrap duration-300">Protein Profile</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-grid-gutter">
+<div class="font-body-lg text-body-lg text-on-surface-variant space-y-6 pt-4">
+<p class="">We believe in absolute transparency. Every piece is crafted from whole, unprocessed ingredients sourced from sustainable farms.</p>
+<ul class="list-none space-y-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-ink-black text-[20px] mt-0.5">check_circle</span>
+<span class=""><strong class="text-ink-black">Premium Medjool Dates:</strong> The natural binding and sweetening agent.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-ink-black text-[20px] mt-0.5">check_circle</span>
+<span class=""><strong class="text-ink-black">Roasted Almonds &amp; Pistachios:</strong> For crunch and healthy fats.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-ink-black text-[20px] mt-0.5">check_circle</span>
+<span class=""><strong class="text-ink-black">Whey Protein Isolate:</strong> Clean, fast-absorbing protein source.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-ink-black text-[20px] mt-0.5">check_circle</span>
+<span class=""><strong class="text-ink-black">Cardamom Extract:</strong> A touch of traditional warmth.</span>
+</li>
+</ul>
+</div>
+<!-- Nutrition Table styled beautifully -->
+<div class="bg-surface-gray rounded-3xl p-8 border border-outline-variant/20"><h3 class="font-headline-lg text-lg font-semibold text-ink-black mb-4 border-b border-outline-variant/20 pb-3 tracking-tight">Nutrition per 100g</h3><div class="space-y-3"><div class="flex justify-between items-center border-b border-outline-variant/20 pb-2.5"><span class="text-sm text-on-surface-variant font-medium">Calories</span><span class="font-label-md text-sm text-ink-black font-semibold">340 kcal</span></div><div class="flex justify-between items-center border-b border-outline-variant/20 pb-2.5"><span class="text-sm text-on-surface-variant font-medium">Protein</span><span class="font-label-md text-sm text-ink-black font-semibold">15g</span></div><div class="flex justify-between items-center border-b border-outline-variant/20 pb-2.5"><span class="text-sm text-on-surface-variant font-medium">Carbohydrates</span><span class="font-label-md text-sm text-ink-black font-semibold">42g</span></div><div class="flex justify-between items-center border-b border-outline-variant/20 pb-2.5 pl-4"><span class="text-xs text-outline font-normal">Dietary Fiber</span><span class="font-label-md text-sm text-ink-black font-medium">8g</span></div><div class="flex justify-between items-center border-b border-outline-variant/20 pb-2.5 pl-4"><span class="text-xs text-outline font-normal">Total Sugars (Natural)</span><span class="font-label-md text-sm text-ink-black font-medium">28g</span></div><div class="flex justify-between items-center pt-1"><span class="text-sm text-on-surface-variant font-medium">Total Fat</span><span class="font-label-md text-sm text-ink-black font-semibold">12g</span></div></div></div>
+</div>
+</section>
 </main>
-<!-- Interactions Script -->
+<!-- Footer -->
+<footer class="bg-surface-container-high w-full pt-section-gap pb-stack-lg border-t border-secondary/10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter px-container-padding max-w-max-width mx-auto">
+<!-- Brand Column -->
+<div class="flex flex-col gap-6 col-span-1 md:col-span-1">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Nutri Burfi</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">
+                    Elevating functional nutrition through the art of traditional craftsmanship. Premium protein sweets for the modern lifestyle.
+                </p>
+<div class="flex gap-4 mt-2">
+<!-- Social Icons placeholders -->
+<a class="text-on-surface-variant hover:text-accent-blue transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</a>
+</div>
+</div>
+<!-- Links Column 1 -->
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">Shop</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="{{DATA:SCREEN:SCREEN_81}}">Shop All</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Protein Burfi</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Performance Bars</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Wholesale</a>
+</div>
+<!-- Links Column 2 -->
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">About</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Our Story</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Ingredients</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Nutritional Science</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Contact Us</a>
+</div>
+<!-- Links Column 3 -->
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">Support</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">FAQ</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Shipping Info</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Returns</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Privacy Policy</a>
+</div>
+<!-- Bottom Copyright -->
+<div class="col-span-1 md:col-span-4 mt-12 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4"><p class="font-label-md text-xs text-on-surface-variant font-normal">© 2024 Nutri Burfi. Handcrafted Protein Excellence.</p><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">lock</span><span class="font-label-md text-xs text-on-surface-variant font-normal">Secure Checkout</span></div></div>
+</div>
+</footer>
 <script>
-        // Simple row selection toggle
-        document.querySelectorAll('tbody tr').forEach(row => {
-            row.addEventListener('click', () => {
-                // Visual feedback only for demo
-                row.classList.toggle('bg-primary/5');
-            });
-        });
-
-        // Search highlight interaction
-        const searchInput = document.querySelector('input[type="text"]');
-        searchInput.addEventListener('focus', () => {
-            searchInput.parentElement.classList.add('scale-[1.01]');
-        });
-        searchInput.addEventListener('blur', () => {
-            searchInput.parentElement.classList.remove('scale-[1.01]');
+        // Simple scroll behavior for nav shadow
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-md');
+                nav.classList.remove('shadow-sm');
+            } else {
+                nav.classList.remove('shadow-md');
+                nav.classList.add('shadow-sm');
+            }
         });
     </script>
 
 
+</body></html>{{>user/header}}
+<!-- Main Content Canvas -->
+<main class="w-full max-w-max-width mx-auto px-container-padding py-stack-lg md:py-section-gap">
+<div class="max-w-max-width mx-auto px-container-padding mt-6">
+    {{#if error}}
+    <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
+        {{error}}
+    </div>
+    {{/if}}
+    
+    {{#if success}}
+    <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
+        {{success}}
+    </div>
+    {{/if}}
+</div>
 
 
 
+<!-- Breadcrumb -->
+<nav aria-label="Breadcrumb" class="flex text-sm text-outline mb-stack-md">
+<ol class="inline-flex items-center space-x-1 md:space-x-3">
+<li class="inline-flex items-center">
+<a class="font-label-md text-label-md hover:text-ink-black transition-colors" href="#">Home</a>
+</li>
+<li>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<a class="font-label-md text-label-md hover:text-ink-black transition-colors" href="#">Products</a>
+</div>
+</li>
+<li aria-current="page">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<span class="font-label-md text-label-md text-ink-black">Dates Burfi</span>
+</div>
+</li>
+</ol>
+</nav>
+<!-- Product Hero Section -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-grid-gutter mb-section-gap">
+<!-- Gallery (Left) -->
+<div class="lg:col-span-7 flex flex-col-reverse md:flex-row gap-stack-md h-full">
+<!-- Thumbnails -->
+<div class="flex md:flex-col gap-stack-sm overflow-x-auto md:overflow-y-auto md:w-24 shrink-0 no-scrollbar">
+<button class="w-20 h-24 md:w-full md:h-24 bg-surface-gray rounded-xl border-2 border-ink-black overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A close-up, high-end editorial shot of a single piece of Dates Burfi, resting on a textured cream slate. The lighting is warm and directional, emphasizing the rich, dark brown texture of the dates and the subtle gleam of crushed nuts embedded within. A minimalist aesthetic with deep contrast, exuding premium organic nutrition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnTzgVKeRd72UzpxNk1lhrB1uIHnUWpazQJ2n5AIyb81LFSfCP_WXBrXzliP2vo7NLFqY8zHGrJy2bAIcBSIfF4vh7HHoqyLg92pxJAbmFRpMpXltX3DsV__IlxLFcCAB_zrQWXn88gNI9Ti7u-dzswWKIvY52mKJ_vz2J-yE-bfqgvUsTR6YdBdVOqIcqvcXgFIwx4m6x3AwaYRLlqs6o0xpEE-_WOfDz2IwS-OVkJ2h4ajMg54_5jBHLdWwwCElro4Q1EgZw27s">
+</button>
+<button class="w-20 h-24 md:w-full md:h-24 bg-surface-gray rounded-xl border border-transparent hover:border-ink-black/30 transition-colors overflow-hidden shrink-0 opacity-70 hover:opacity-100">
+<img class="w-full h-full object-cover" data-alt="Overhead shot of several pieces of Dates Burfi arranged asymmetrically on a matte white surface. Soft, diffused lighting creates gentle shadows. The organic shapes of the sweets are highlighted against the pristine background, communicating quiet luxury and pure ingredients." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvic_xZR_9D4HrGfEc1m44RMjsf76kZPJ14NIyhrfNSw9zHGyuEtbmVFTQZAIy-BItnoktRF-By63YFv0jySXPd8w7Hc8rVdSDdAjX1raGNvk2tkQIfFbkeAVe6wxYFbnZFih0PXa1MSBMFnh9yadKu8iqQnDtct3d8DULjGV0k4EP2-fUE-g_qBA4mItUYMOEQkYdfsazQHre2OUOWQ3iNPdLL8wx3h4bZyI85yP6ouuQlTVN2QgSw2xMaYMFDcmE3L_LmyjVMz8">
+</button>
+<button class="w-20 h-24 md:w-full md:h-24 bg-surface-gray rounded-xl border border-transparent hover:border-ink-black/30 transition-colors overflow-hidden shrink-0 opacity-70 hover:opacity-100">
+<img class="w-full h-full object-cover" data-alt="A detailed macro photograph showing the cross-section of a broken piece of Dates Burfi. The rough texture of finely ground dates, pistachios, and almonds is sharply in focus. The background is a soft, out-of-focus deep brown, creating a warm, premium culinary mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXUpkcVzAjDvJ9m-2v3cgtQSeJ22AIiztQPGOcaAQq_lrbgwMw5H3gygqybIgUQv3D9OTnlTmLJVG0ovETVl3i7CrUNeDRTKr4PxzNzqLwSwHj6B-kjjoDuVbgUqDQGS4OsWMwr5f3OlSF34np3T59jqCwBdjDgL-FsEkHJ7AHox2X_ZRbfCzmsozEn0v6ecUT5Nn1giCwyX3fnAmVdcsaiN023C4j62P_p-Q6m5rw6tSnfqNx8rNsduVVBwka9yuEET8mgVz7njA">
+</button>
+<button class="w-20 h-24 md:w-full md:h-24 bg-surface-gray rounded-xl border border-transparent hover:border-ink-black/30 transition-colors overflow-hidden shrink-0 opacity-70 hover:opacity-100">
+<div class="w-full h-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">play_circle</span>
+</div>
+</button>
+</div>
+<!-- Main Image -->
+<div class="flex-grow bg-surface-gray rounded-3xl overflow-hidden relative min-h-[500px] md:min-h-[700px]">
+<div class="absolute top-6 left-6 flex flex-col gap-2 z-10">
+<span class="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-outline-variant/30 text-ink-black font-label-md text-label-md shadow-sm">High Protein</span>
+<span class="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-outline-variant/30 text-ink-black font-label-md text-label-md shadow-sm">No Added Sugar</span>
+</div>
+<button class="absolute top-6 right-6 bg-white/90 backdrop-blur-md p-3 rounded-full border border-outline-variant/30 hover:bg-white transition-colors z-10 shadow-sm">
+<span class="material-symbols-outlined text-ink-black">favorite</span>
+</button>
+<img class="w-full h-full object-cover absolute inset-0" data-alt="A large, striking editorial photograph of Dates Burfi elegantly stacked on a very subtle cream pedestal. The background is pure white minimalism, allowing the rich, earthy tones of the dates to dominate. High-end studio lighting creates a sophisticated 'golden glow' shadow beneath the pedestal, emphasizing luxury and craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKliF86eXU5vwDpstuzx3WDnqYgvpmnfe_IzhJOu6roeyp2x53iNUjghmTgfSJlaYCq3JWgHdg1dQBom6NW45yTT5fgJuv6zl5cuE6i5g1FM8U31MXWAL745bBuIJl7aBrgYnP9qFmrDYk12GjHfVETwPegYqgs7veYXCPFGvlzFgzRfuLf-cdUmfKVjDeiDEF0HRJX8Ooe0AYxSY0_DOhoCUgUbUlpLBXiqXznsTw_XX5E4oqi-co2qboWvEjQv_bV9y6xmVHzIM">
+</div>
+</div>
+<!-- Product Info (Right) -->
+<div class="lg:col-span-5 flex flex-col pt-stack-md lg:pt-0 pl-0 lg:pl-stack-lg justify-center">
+<div class="mb-stack-lg">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-ink-black mb-2 tracking-tight">Premium Dates Burfi</h1>
+<div class="flex items-center gap-stack-sm mb-stack-md">
+<div class="flex text-accent-blue">
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">star_half</span>
+</div>
+<a class="text-on-surface-variant text-sm underline hover:text-ink-black transition-colors" href="#reviews">4.8 (124 Reviews)</a>
+</div>
+<p class="font-headline-xl text-headline-xl text-ink-black mb-stack-md tracking-tight">$24.00 <span class="text-lg font-normal text-outline line-through ml-2">$28.00</span></p>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg">
+                        Experience the perfect harmony of natural sweetness and premium nutrition. Handcrafted with rich, organic dates and roasted nuts, delivering sustained energy without refined sugars.
+                    </p>
+</div>
 
 
+<hr class="border-outline-variant/30 mb-stack-lg">
 
-</body></html>
+<div class="mb-stack-lg space-y-6"><div class="space-y-3"><div class="flex items-center justify-between"><label class="font-label-md text-label-md text-ink-black">Select Size</label><span class="text-xs text-on-surface-variant font-medium">500g recommended</span></div><div class="grid grid-cols-3 gap-3"><button class="flex flex-col items-center justify-center p-3 rounded-2xl border border-outline-variant/40 bg-surface hover:border-ink-black/40 transition-all text-center group" type="button"><span class="font-label-md text-xs text-ink-black">250g</span><span class="text-[11px] text-on-surface-variant mt-0.5">Sample Box</span><span class="text-xs font-semibold text-ink-black mt-1.5">$14.00</span></button><button class="relative flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-ink-black bg-surface shadow-sm text-center" type="button"><div class="absolute -top-2 px-2 py-0.5 bg-ink-black text-white rounded-full text-[9px] font-semibold uppercase tracking-wider">Popular</div><span class="font-label-md text-xs font-bold text-ink-black">500g</span><span class="text-[11px] text-on-surface-variant mt-0.5">Standard</span><span class="text-xs font-bold text-ink-black mt-1.5">$24.00</span></button><button class="relative flex flex-col items-center justify-center p-3 rounded-2xl border border-outline-variant/40 bg-surface hover:border-ink-black/40 transition-all text-center group" type="button"><div class="absolute -top-2 px-2 py-0.5 bg-accent-blue text-white rounded-full text-[9px] font-semibold tracking-wider">Save 15%</div><span class="font-label-md text-xs text-ink-black">1kg</span><span class="text-[11px] text-on-surface-variant mt-0.5">Family Box</span><span class="text-xs font-semibold text-ink-black mt-1.5">$44.00</span></button></div></div></div><div class="space-y-stack-md mb-stack-lg">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-ink-black">Quantity</label>
+<div class="flex items-center border border-outline-variant/50 rounded-lg bg-surface h-12 w-32">
+<button class="px-4 text-ink-black hover:bg-surface-gray transition-colors h-full rounded-l-lg">-</button>
+<input class="flex-grow w-full text-center bg-transparent border-none text-ink-black font-label-md focus:ring-0 p-0 m-0 h-full" type="number" value="1">
+<button class="px-4 text-ink-black hover:bg-surface-gray transition-colors h-full rounded-r-lg">+</button>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-stack-md mb-stack-lg">
+<button class="w-full bg-ink-black text-white font-label-md text-label-md py-4 rounded-2xl hover:bg-ink-black/90 transition-colors flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+                        Add to Cart
+                    </button>
+<button class="w-full bg-surface border border-outline-variant/50 text-ink-black font-label-md text-label-md py-4 rounded-2xl hover:bg-surface-gray transition-colors">
+                        Buy It Now
+                    </button>
+</div>
+<!-- Trust Badges -->
+<div class="grid grid-cols-3 gap-unit pt-stack-md border-t border-outline-variant/30 mt-stack-lg">
+<div class="flex flex-col items-center text-center gap-2">
+<span class="material-symbols-outlined text-ink-black text-2xl">verified</span>
+<span class="text-sm text-on-surface-variant font-label-md">100% Organic</span>
+</div>
+<div class="flex flex-col items-center text-center gap-2">
+<span class="material-symbols-outlined text-ink-black text-2xl">local_shipping</span>
+<span class="text-sm text-on-surface-variant font-label-md">Free Ship &gt; $50</span>
+</div>
+<div class="flex flex-col items-center text-center gap-2">
+<span class="material-symbols-outlined text-ink-black text-2xl">eco</span>
+<span class="text-sm text-on-surface-variant font-label-md">Vegan</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Product Details Tabs -->
+<section class="mb-section-gap">
+<div class="border-b border-outline-variant/30 flex space-x-8 mb-stack-lg overflow-x-auto no-scrollbar">
+<button class="pb-3 border-b-2 border-ink-black font-label-md text-label-md text-ink-black whitespace-nowrap">The Ingredients</button>
+<button class="pb-3 border-b-2 border-transparent hover:border-outline-variant font-label-md text-label-md text-on-surface-variant hover:text-ink-black transition-all whitespace-nowrap">Nutritional Facts</button>
+<button class="pb-3 border-b-2 border-transparent hover:border-outline-variant font-label-md text-label-md text-on-surface-variant hover:text-ink-black transition-all whitespace-nowrap">Protein Profile</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-grid-gutter">
+<div class="font-body-lg text-body-lg text-on-surface-variant space-y-6 pt-4">
+<p>We believe in absolute transparency. Every piece is crafted from whole, unprocessed ingredients sourced from sustainable farms.</p>
+<ul class="list-none space-y-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-ink-black text-[20px] mt-0.5">check_circle</span>
+<span><strong class="text-ink-black">Premium Medjool Dates:</strong> The natural binding and sweetening agent.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-ink-black text-[20px] mt-0.5">check_circle</span>
+<span><strong class="text-ink-black">Roasted Almonds &amp; Pistachios:</strong> For crunch and healthy fats.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-ink-black text-[20px] mt-0.5">check_circle</span>
+<span><strong class="text-ink-black">Whey Protein Isolate:</strong> Clean, fast-absorbing protein source.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-ink-black text-[20px] mt-0.5">check_circle</span>
+<span><strong class="text-ink-black">Cardamom Extract:</strong> A touch of traditional warmth.</span>
+</li>
+</ul>
+</div>
+<!-- Nutrition Table styled beautifully -->
+<div class="bg-surface-gray rounded-3xl p-8 border border-outline-variant/20">
+<h3 class="font-headline-lg text-xl font-semibold text-ink-black mb-6 border-b border-outline-variant/20 pb-4 tracking-tight">Nutrition per 100g</h3>
+<div class="space-y-4">
+<div class="flex justify-between border-b border-outline-variant/20 pb-3">
+<span class="font-body-lg text-on-surface-variant">Calories</span>
+<span class="font-label-md text-ink-black">340 kcal</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/20 pb-3">
+<span class="font-body-lg text-on-surface-variant">Protein</span>
+<span class="font-label-md text-ink-black">15g</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/20 pb-3">
+<span class="font-body-lg text-on-surface-variant">Carbohydrates</span>
+<span class="font-label-md text-ink-black">42g</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/20 pb-3 pl-4">
+<span class="font-body-md text-outline">Dietary Fiber</span>
+<span class="font-label-md text-ink-black">8g</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/20 pb-3 pl-4">
+<span class="font-body-md text-outline">Total Sugars (Natural)</span>
+<span class="font-label-md text-ink-black">28g</span>
+</div>
+<div class="flex justify-between pt-2">
+<span class="font-body-lg text-on-surface-variant">Total Fat</span>
+<span class="font-label-md text-ink-black">12g</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+{{>user/footer}}

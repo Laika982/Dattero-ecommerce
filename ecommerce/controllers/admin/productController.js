@@ -4,10 +4,6 @@ import Category from "../../models/categorySchema.js";
 import cloudinary from "../../config/cloudinary.js";
 import { generatePageArray } from "../../utils/pagination.js";
 
-// ============================================================
-// GET ALL PRODUCTS
-// ============================================================
-
 const productInfo = async (req, res) => {
   try {
     const { search, filter, page = 1 } = req.query;
@@ -26,9 +22,6 @@ const productInfo = async (req, res) => {
         $options: "i",
       };
     }
-    // ====================================================
-    // FILTER BASED ON VARIANTS
-    // ====================================================
 
     if (filter) {
       let variantQuery = {};
@@ -56,16 +49,12 @@ const productInfo = async (req, res) => {
       }
 
       if (filter === "listed") {
-    productQuery.is_listed = true;
-}
+        productQuery.is_listed = true;
+      }
 
-if (filter === "unlisted") {
-    productQuery.is_listed = false;
-}
-
-      // -----------------------------
-      // FIND VARIANTS
-      // -----------------------------
+      if (filter === "unlisted") {
+        productQuery.is_listed = false;
+      }
 
       const variants = await Variant.find(variantQuery).select("product_id");
 
@@ -78,10 +67,6 @@ if (filter === "unlisted") {
 
     const totalProducts = await Product.countDocuments(productQuery);
 
-    // ====================================================
-    // GET PRODUCTS
-    // ====================================================
-
     const products = await Product.find(productQuery)
       .populate("category_id", "category_name")
       .sort({
@@ -91,29 +76,20 @@ if (filter === "unlisted") {
       .limit(limit)
       .lean();
 
+    const productsWithStock = await Variant.distinct("product_id", {
+      stock_quantity: {
+        $gt: 0,
+      },
+    });
 
-
-// Get products that have at least one variant
-// with stock greater than 0
-const productsWithStock = await Variant.distinct("product_id", {
-  stock_quantity: {
-    $gt: 0,
-  },
-});
-
-
-// Products whose ALL variants are out of stock
-const outOfStockProducts = await Product.countDocuments({
-  _id: {
-    $nin: productsWithStock,
-  },
-});
-const activeCategories = await Product.countDocuments({
-    is_listed: true
-});
-    // ====================================================
-    // GET VARIANTS
-    // ====================================================
+    const outOfStockProducts = await Product.countDocuments({
+      _id: {
+        $nin: productsWithStock,
+      },
+    });
+    const activeCategories = await Product.countDocuments({
+      is_listed: true,
+    });
 
     const productIds = products.map((product) => product._id);
 
@@ -123,38 +99,26 @@ const activeCategories = await Product.countDocuments({
       },
     }).lean();
 
-    // ====================================================
-    // ATTACH VARIANTS TO PRODUCTS
-    // ====================================================
-
     products.forEach((product) => {
       product.variants = variants.filter(
         (variant) => variant.product_id.toString() === product._id.toString(),
       );
     });
 
-    // ====================================================
-    // PAGINATION
-    // ====================================================
-
     const totalPages = Math.ceil(totalProducts / limit);
     const pages = generatePageArray(totalPages);
 
-    // ====================================================
-    // RENDER
-    // ====================================================
-
-return res.render("admin/products", {
-  products,
-  search,
-  filter,
-  currentPage,
-  totalPages,
-  totalProducts,
-  outOfStockProducts,
-    activeCategories,
-  pages,
-});
+    return res.render("admin/products", {
+      products,
+      search,
+      filter,
+      currentPage,
+      totalPages,
+      totalProducts,
+      outOfStockProducts,
+      activeCategories,
+      pages,
+    });
   } catch (error) {
     console.error("Product info error:", error);
 
@@ -165,17 +129,11 @@ return res.render("admin/products", {
   }
 };
 
-// ============================================================
-// LOAD ADD PRODUCT PAGE
-// ============================================================
-
 const loadAddProduct = async (req, res) => {
   try {
     const categories = await Category.find({
       isListed: true,
     }).lean();
-
-    console.log("Categories:", categories);
 
     return res.render("admin/addProduct", {
       categories,
@@ -190,35 +148,13 @@ const loadAddProduct = async (req, res) => {
   }
 };
 
-// ============================================================
-// ADD PRODUCT
-// ============================================================
-
 const addProduct = async (req, res) => {
   try {
     let { product_name, description, category_id, variants } = req.body;
 
-    console.log("=== ADD PRODUCT REQUEST ===");
-    console.log("Body:", req.body);
-    console.log("Files Count:", req.files?.length || 0);
-    console.log("Files:", req.files);
-    console.log("Variants (before conversion):", variants);
-
-    // ====================================================
-    // CONVERT VARIANTS OBJECT TO ARRAY
-    // ====================================================
-
     if (variants && typeof variants === "object" && !Array.isArray(variants)) {
       variants = Object.values(variants);
     }
-
-    console.log("Variants (after conversion):", variants);
-    console.log("Is variants array?", Array.isArray(variants));
-    console.log("Variants length:", variants?.length);
-
-    // ====================================================
-    // PRODUCT VALIDATION
-    // ====================================================
 
     if (!product_name || !description || !category_id) {
       console.log("VALIDATION ERROR: Missing required fields");
@@ -231,12 +167,6 @@ const addProduct = async (req, res) => {
         error: "Product name, description and category are required.",
       });
     }
-
-    console.log("✓ Product fields validation passed");
-
-    // ====================================================
-    // IMAGE VALIDATION
-    // ====================================================
 
     if (!req.files || req.files.length < 3) {
       console.log("VALIDATION ERROR: Not enough images");
@@ -262,12 +192,6 @@ const addProduct = async (req, res) => {
       });
     }
 
-    console.log("✓ Image validation passed");
-
-    // ====================================================
-    // CHECK CATEGORY
-    // ====================================================
-
     const category = await Category.findById(category_id);
 
     if (!category) {
@@ -282,12 +206,6 @@ const addProduct = async (req, res) => {
       });
     }
 
-    console.log("✓ Category validation passed");
-
-    // ====================================================
-    // CHECK VARIANTS
-    // ====================================================
-
     if (!variants || !Array.isArray(variants) || variants.length === 0) {
       console.log("VALIDATION ERROR: No variants");
       const categories = await Category.find({
@@ -300,23 +218,8 @@ const addProduct = async (req, res) => {
       });
     }
 
-    console.log("✓ Variants validation passed");
-
-    // ====================================================
-    // VALIDATE VARIANTS
-    // ====================================================
-
     for (let i = 0; i < variants.length; i++) {
       const variant = variants[i];
-      console.log(`\nValidating variant ${i}:`, variant);
-      console.log(`  weight: "${variant.weight}" (type: ${typeof variant.weight})`);
-      console.log(`  price: "${variant.price}" (type: ${typeof variant.price})`);
-      console.log(`  sku: "${variant.sku}" (type: ${typeof variant.sku})`);
-      console.log(`  stock_quantity: "${variant.stock_quantity}" (type: ${typeof variant.stock_quantity})`);
-
-      // ----------------------------------------------
-      // REQUIRED FIELDS
-      // ----------------------------------------------
 
       if (
         !variant.weight ||
@@ -335,10 +238,6 @@ const addProduct = async (req, res) => {
         });
       }
 
-      // ----------------------------------------------
-      // PRICE
-      // ----------------------------------------------
-
       if (Number.isNaN(Number(variant.price)) || Number(variant.price) < 0) {
         console.log(`VALIDATION ERROR: Invalid price in variant ${i}`);
         const categories = await Category.find({
@@ -350,10 +249,6 @@ const addProduct = async (req, res) => {
           error: "Price must be a valid positive number.",
         });
       }
-
-      // ----------------------------------------------
-      // STOCK
-      // ----------------------------------------------
 
       if (
         Number.isNaN(Number(variant.stock_quantity)) ||
@@ -371,18 +266,7 @@ const addProduct = async (req, res) => {
       }
     }
 
-    console.log("✓ All variant fields validation passed");
-
-    // ====================================================
-    // SKU LIST
-    // ====================================================
-
     const skuList = variants.map((variant) => variant.sku.trim().toUpperCase());
-    console.log("SKU List:", skuList);
-
-    // ====================================================
-    // DUPLICATE SKU INSIDE FORM
-    // ====================================================
 
     if (new Set(skuList).size !== skuList.length) {
       console.log("VALIDATION ERROR: Duplicate SKU in form");
@@ -396,12 +280,6 @@ const addProduct = async (req, res) => {
       });
     }
 
-    console.log("✓ No duplicate SKUs in form");
-
-    // ====================================================
-    // CHECK SKU IN DATABASE
-    // ====================================================
-
     console.log("Checking for existing SKU in database...");
     const existingSku = await Variant.findOne({
       sku: {
@@ -410,7 +288,10 @@ const addProduct = async (req, res) => {
     });
 
     if (existingSku) {
-      console.log("VALIDATION ERROR: SKU already exists in DB:", existingSku.sku);
+      console.log(
+        "VALIDATION ERROR: SKU already exists in DB:",
+        existingSku.sku,
+      );
       const categories = await Category.find({
         isListed: true,
       }).lean();
@@ -421,28 +302,17 @@ const addProduct = async (req, res) => {
       });
     }
 
-    console.log("✓ SKU is unique in database");
-
-    // ====================================================
-    // PRODUCT IMAGES
-    // ====================================================
-
     console.log("Processing images...");
     const images = req.files.map((file) => ({
       url: file.path,
       public_id: file.filename,
     }));
-    console.log("Images processed:", images.length);
-
-    // ====================================================
-    // CREATE PRODUCT
-    // ====================================================
 
     console.log("Creating product with data:", {
       productName: product_name.trim(),
       productDescription: description.trim(),
       category_id,
-      images_count: images.length
+      images_count: images.length,
     });
 
     const product = await Product.create({
@@ -455,13 +325,6 @@ const addProduct = async (req, res) => {
       images: images,
     });
 
-    console.log("✓ Product created:", product._id);
-
-    // ====================================================
-    // CREATE VARIANTS
-    // ====================================================
-
-    console.log("Creating variants...");
     const variantData = variants.map((variant) => ({
       product_id: product._id,
 
@@ -474,17 +337,8 @@ const addProduct = async (req, res) => {
       stock_quantity: Number(variant.stock_quantity),
     }));
 
-    console.log("Variant data prepared:", variantData);
-
     await Variant.insertMany(variantData);
 
-    console.log("✓ Variants created successfully");
-
-    // ====================================================
-    // REDIRECT
-    // ====================================================
-
-    console.log("✓ Product added successfully! Redirecting...");
     return res.redirect("/admin/product/products");
   } catch (error) {
     console.error("❌ ADD PRODUCT ERROR:", error.message);
@@ -501,10 +355,6 @@ const addProduct = async (req, res) => {
     });
   }
 };
-
-// ============================================================
-// LOAD EDIT PRODUCT PAGE
-// ============================================================
 
 const loadEditProduct = async (req, res) => {
   try {
@@ -541,28 +391,22 @@ const loadEditProduct = async (req, res) => {
   }
 };
 
-// ============================================================
-// EDIT PRODUCT
-// ============================================================
-
 const editProduct = async (req, res) => {
   try {
-
     const { id } = req.params;
 
-    const { category_id, product_name, description, variants, deletedImages , status } = req.body;
-
-    // ====================================================
-    // CHECK PRODUCT ID
-    // ====================================================
+    const {
+      category_id,
+      product_name,
+      description,
+      variants,
+      deletedImages,
+      status,
+    } = req.body;
 
     if (!id) {
       return res.status(400).send("Product ID is required");
     }
-
-    // ====================================================
-    // FIND PRODUCT
-    // ====================================================
 
     const product = await Product.findById(id);
 
@@ -570,29 +414,17 @@ const editProduct = async (req, res) => {
       return res.status(404).send("Product not found");
     }
 
-    // ====================================================
-    // VALIDATE PRODUCT
-    // ====================================================
-
     if (!product_name || !description || !category_id) {
       return res
         .status(400)
         .send("Product name, description and category are required.");
     }
 
-    // ====================================================
-    // CHECK CATEGORY
-    // ====================================================
-
     const category = await Category.findById(category_id);
 
     if (!category) {
       return res.status(400).send("Selected category does not exist.");
     }
-
-    // ====================================================
-    // CHECK DUPLICATE PRODUCT NAME
-    // ====================================================
 
     const duplicateProduct = await Product.findOne({
       productName: product_name.trim(),
@@ -606,29 +438,13 @@ const editProduct = async (req, res) => {
       return res.status(409).send("Product name already exists");
     }
 
-    // ====================================================
-    // UPDATE PRODUCT DETAILS
-    // ====================================================
-
     product.category_id = category_id;
 
     product.productName = product_name.trim();
 
     product.productDescription = description.trim();
 
-
-        // ====================================================
-    // UPDATE PRODUCT LISTING STATUS
-    // ====================================================
-    //
-    // Active -> true
-    // Delete -> false
-    //
-
     product.is_listed = status === "Active";
-    // ====================================================
-    // HANDLE DELETED EXISTING IMAGES
-    // ====================================================
 
     let deletedImageIds = [];
 
@@ -641,10 +457,6 @@ const editProduct = async (req, res) => {
       }
     }
 
-    // ====================================================
-    // DELETE IMAGES FROM CLOUDINARY
-    // ====================================================
-
     if (deletedImageIds.length > 0) {
       for (const publicId of deletedImageIds) {
         try {
@@ -654,21 +466,12 @@ const editProduct = async (req, res) => {
         }
       }
 
-      // ==================================================
-      // REMOVE DELETED IMAGES FROM MONGODB
-      // ==================================================
-
       product.images = product.images.filter(
         (image) => !deletedImageIds.includes(image.public_id),
       );
     }
 
-    // ====================================================
-    // ADD NEW IMAGES
-    // ====================================================
-
     if (req.files && req.files.length > 0) {
-
       const newImages = req.files.map((file) => ({
         url: file.path,
 
@@ -678,10 +481,6 @@ const editProduct = async (req, res) => {
       product.images.push(...newImages);
     }
 
-    // ====================================================
-    // TOTAL IMAGE VALIDATION
-    // ====================================================
-
     if (product.images.length < 3) {
       return res.status(400).send("Product must have at least 3 images.");
     }
@@ -689,11 +488,6 @@ const editProduct = async (req, res) => {
     if (product.images.length > 5) {
       return res.status(400).send("Maximum 5 images are allowed.");
     }
-
-
-    // ====================================================
-    // UPDATE VARIANTS
-    // ====================================================
 
     let variantData = [];
 
@@ -704,11 +498,6 @@ const editProduct = async (req, res) => {
       if (!Array.isArray(variantData)) {
         variantData = [variantData];
       }
-
-
-      // ==================================================
-      // VALIDATE VARIANTS
-      // ==================================================
 
       for (const variant of variantData) {
         if (
@@ -736,32 +525,16 @@ const editProduct = async (req, res) => {
         }
       }
 
-      // ==================================================
-      // SKU LIST
-      // ==================================================
-
       const skuList = variantData.map((variant) =>
         variant.sku.trim().toUpperCase(),
       );
-
-      // ==================================================
-      // DUPLICATE SKU INSIDE REQUEST
-      // ==================================================
 
       if (new Set(skuList).size !== skuList.length) {
         return res.status(400).send("Duplicate SKU found.");
       }
 
-      // ==================================================
-      // UPDATE / CREATE VARIANTS
-      // ==================================================
-
       for (const variant of variantData) {
         const sku = variant.sku.trim().toUpperCase();
-
-        // ==============================================
-        // EXISTING VARIANT
-        // ==============================================
 
         if (variant._id) {
           const duplicateSku = await Variant.findOne({
@@ -793,12 +566,7 @@ const editProduct = async (req, res) => {
               runValidators: true,
             },
           );
-        }
-
-        // ==============================================
-        // NEW VARIANT
-        // ==============================================
-        else {
+        } else {
           const existingSku = await Variant.findOne({
             sku,
           });
@@ -822,16 +590,7 @@ const editProduct = async (req, res) => {
       }
     }
 
-    // ====================================================
-    // SAVE PRODUCT
-    // ====================================================
-
     await product.save();
-
-
-        // ====================================================
-    // SUCCESS
-    // ====================================================
 
     return res.redirect("/admin/product/products");
   } catch (error) {
@@ -841,29 +600,23 @@ const editProduct = async (req, res) => {
   }
 };
 
-// ============================================================
-// SOFT DELETE PRODUCT
-// ============================================================
-
-
 const deleteProduct = async (req, res) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        const product = await Product.findById(id);
+    const product = await Product.findById(id);
 
-        if (!product) {
-            return res.status(404).send("Category not found");
-        }
-
-        await Product.findByIdAndDelete(id);
-
-        return res.redirect("/admin/product/products");
-
-    } catch (error) {
-        console.error("Error deleting category:", error);
-        return res.status(500).send("Internal Server Error");
+    if (!product) {
+      return res.status(404).send("Category not found");
     }
+
+    await Product.findByIdAndDelete(id);
+
+    return res.redirect("/admin/product/products");
+  } catch (error) {
+    console.error("Error deleting category:", error);
+    return res.status(500).send("Internal Server Error");
+  }
 };
 
 export {

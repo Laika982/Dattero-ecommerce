@@ -170,7 +170,7 @@ const loadProduct = async (req, res) => {
       .lean();
 
     if (!product) {
-      console.log("Product not found");
+      req.session.error = " Product Not Found"
 
       return res.redirect("/products");
     }
@@ -180,7 +180,7 @@ const loadProduct = async (req, res) => {
     }).lean();
 
     if (!variants.length) {
-      console.log("No variants found");
+      req.session.error = "No Varient Found"
 
       return res.redirect("/products");
     }

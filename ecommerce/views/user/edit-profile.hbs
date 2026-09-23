@@ -79,11 +79,7 @@
                 <div class="bg-surface rounded-xl p-container-padding shadow-sm relative overflow-hidden">
                     <form action="/profile/edit" method="POST" enctype="multipart/form-data"
                         class="flex flex-col gap-stack-lg relative z-10" id="personal-info-form">
-                        {{#if error}}
-                        <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
-                            {{error}}
-                        </div>
-                        {{/if}}
+{{> user/notification}}
 
                         <!-- Hidden inputs for profile image upload and removal -->
                         <input accept="image/*" class="hidden" id="avatar-upload" name="profileImage" type="file">

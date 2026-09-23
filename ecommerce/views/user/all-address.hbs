@@ -1,7 +1,7 @@
 {{>user/header}}
-<div class="max-w-max-width mx-auto flex min-h-screen">
+<div class="max-w-max-width mt-10 mx-auto flex min-h-screen">
 <!-- Sidebar Navigation -->
-
+{{> user/notification}}
 <!-- Main Content -->
 <main class="flex-1 p-container-padding lg:p-12 overflow-y-auto w-full">
 <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
@@ -16,7 +16,7 @@
 </header>
 <!-- Address Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-grid-gutter">
-{{#each userData.addresses}}
+{{#each address}}
 <!-- Address Card -->
 <div class="bg-surface-container-lowest border border-on-surface/5 rounded-xl p-8 address-card-hover flex flex-col relative overflow-hidden group">
 {{#if this.isDefault}}
@@ -52,17 +52,7 @@
   Primary
 </div>
 {{else}}
-{{#if error}}
-<div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
-    {{error}}
-</div>
-{{/if}}
 
-{{#if success}}
-<div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
-    {{success}}
-</div>
-{{/if}}
 
 <form action="/profile/address/make-primary/{{this._id}}" method="POST" class="inline">
   <button type="submit" class="text-label-md font-medium text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 group/btn">

@@ -1,0 +1,180 @@
+{{#if error}}
+
+<div
+    id="errorToast"
+    class="fixed top-20 right-5 z-[9999]
+           w-[calc(100%-2rem)] max-w-sm
+           overflow-hidden rounded-2xl
+           border border-gray-200 bg-white
+           shadow-[0_10px_30px_rgba(0,0,0,0.10)]"
+>
+
+    <div class="flex items-start gap-3 p-4">
+
+        <!-- Error Icon -->
+        <div
+            class="flex h-9 w-9 shrink-0 items-center
+                   justify-center rounded-full
+                   bg-red-50 text-red-600"
+        >
+            <span class="text-lg font-bold">!</span>
+        </div>
+
+        <!-- Error Message -->
+        <div class="min-w-0 flex-1">
+
+            <p class="text-sm font-semibold text-gray-900">
+                Error
+            </p>
+
+            <p class="mt-1 break-words text-sm leading-5 text-gray-500">
+                {{error}}
+            </p>
+
+        </div>
+
+        <!-- Close Button -->
+        <button
+            type="button"
+            onclick="closeToast('errorToast')"
+            class="flex h-7 w-7 shrink-0
+                   cursor-pointer
+                   items-center justify-center
+                   rounded-lg
+                   text-xl leading-none
+                   text-gray-400
+                   hover:bg-gray-100
+                   hover:text-gray-700"
+        >
+            &times;
+        </button>
+
+    </div>
+
+    <!-- Progress bar -->
+    <div class="h-[2px] w-full bg-red-100">
+        <div class="h-full w-full bg-red-500"></div>
+    </div>
+
+</div>
+
+{{/if}}
+
+
+{{#if success}}
+
+<div
+    id="successToast"
+    class="fixed top-20 right-5 z-[9999]
+           w-[calc(100%-2rem)] max-w-sm
+           overflow-hidden rounded-2xl
+           border border-gray-200 bg-white
+           shadow-[0_10px_30px_rgba(0,0,0,0.10)]"
+>
+
+    <div class="flex items-start gap-3 p-4">
+
+        <!-- Success Icon -->
+        <div
+            class="flex h-9 w-9 shrink-0 items-center
+                   justify-center rounded-full
+                   bg-green-50 text-green-600"
+        >
+            <span class="text-lg font-bold">✓</span>
+        </div>
+
+        <!-- Success Message -->
+        <div class="min-w-0 flex-1">
+
+            <p class="text-sm font-semibold text-gray-900">
+                Success
+            </p>
+
+            <p class="mt-1 break-words text-sm leading-5 text-gray-500">
+                {{success}}
+            </p>
+
+        </div>
+
+        <!-- Close Button -->
+        <button
+            type="button"
+            onclick="closeToast('successToast')"
+            class="flex h-7 w-7 shrink-0
+                   cursor-pointer
+                   items-center justify-center
+                   rounded-lg
+                   text-xl leading-none
+                   text-gray-400
+                   hover:bg-gray-100
+                   hover:text-gray-700"
+        >
+            &times;
+        </button>
+
+    </div>
+
+    <!-- Progress bar -->
+    <div class="h-[2px] w-full bg-green-100">
+        <div class="h-full w-full bg-green-500"></div>
+    </div>
+
+</div>
+
+{{/if}}
+
+
+<!-- Toast JavaScript -->
+<script>
+
+    // ==========================================
+    // MANUAL CLOSE
+    // ==========================================
+
+    function closeToast(toastId) {
+
+        const toast = document.getElementById(toastId);
+
+        if (toast) {
+            toast.remove();
+        }
+
+    }
+
+
+    // ==========================================
+    // AUTOMATIC CLOSE AFTER 5 SECONDS
+    // ==========================================
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const errorToast = document.getElementById("errorToast");
+        const successToast = document.getElementById("successToast");
+
+
+        // Error toast
+        if (errorToast) {
+
+            setTimeout(function () {
+
+                closeToast("errorToast");
+
+            }, 5000);
+
+        }
+
+
+        // Success toast
+        if (successToast) {
+
+            setTimeout(function () {
+
+                closeToast("successToast");
+
+            }, 5000);
+
+        }
+
+    });
+
+</script>

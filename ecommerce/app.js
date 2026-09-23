@@ -97,6 +97,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
+// Success / Error message middleware
+app.use((req, res, next) => {
+
+  res.locals.success = req.session.success;
+  res.locals.error = req.session.error;
+
+  delete req.session.success;
+  delete req.session.error;
+
+  next();
+});
+
 // Uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

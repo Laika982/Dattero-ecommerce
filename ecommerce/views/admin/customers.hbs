@@ -132,7 +132,9 @@
 <!-- SideNavBar Shell -->
  {{> admin/aside}}
 <!-- Main Content Area -->
+
 <main class="ml-64 min-h-screen flex flex-col">
+    {{> user/notification}}
 <!-- TopNavBar -->
 <header
     class="sticky top-0 ml-64 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 h-16 flex justify-between items-center px-container-padding"
@@ -142,18 +144,6 @@
     <div class="flex items-center flex-1">
 
         <div class="relative w-full max-w-md">
-
-                        {{#if error}}
-            <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
-                {{error}}
-            </div>
-            {{/if}}
-            
-            {{#if success}}
-            <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
-                {{success}}
-            </div>
-            {{/if}}
 
 <form
                 action="/admin/customer/customers"

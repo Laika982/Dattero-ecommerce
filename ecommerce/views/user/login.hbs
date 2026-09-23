@@ -7,69 +7,8 @@
 <h1 class="font-display-lg text-[40px] md:text-[48px] font-bold text-ink-black mb-3 tracking-tight">Welcome Back</h1>
 <p class="font-body-lg text-body-lg text-on-surface-variant">Sign in to access your premium nutrition.</p>
 </div>
-{{#if success}}
-<div class="mb-8 flex items-center gap-4 rounded-2xl border border-secondary/10 bg-white px-5 py-4 shadow-[0_20px_40px_rgba(0,0,0,0.04)]">
-
-    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container-low text-accent-blue">
-        <span class="material-symbols-outlined">
-            check
-        </span>
-    </div>
-
-    <div class="flex-1">
-        <p class="font-label-md text-sm font-semibold text-on-surface">
-            {{success}}
-        </p>
-
-        <p class="font-body-md text-sm text-on-surface-variant mt-0.5">
-            {{success}}
-        </p>
-    </div>
-
-    <button
-        onclick="this.closest('div').remove()"
-        class="text-on-surface-variant hover:text-on-surface transition-colors"
-    >
-        <span class="material-symbols-outlined text-[20px]">
-            close
-        </span>
-    </button>
-
-</div>
-{{/if}}
-
-
-{{#if error}}
-<div class="mb-8 flex items-center gap-4 rounded-2xl border border-secondary/10 bg-white px-5 py-4 shadow-[0_20px_40px_rgba(0,0,0,0.04)]">
-
-    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-red-50 text-red-500">
-        <span class="material-symbols-outlined">
-            priority_high
-        </span>
-    </div>
-
-    <div class="flex-1">
-        <p class="font-label-md text-sm font-semibold text-on-surface">
-            {{error}}
-        </p>
-
-        <p class="font-body-md text-sm text-on-surface-variant mt-0.5">
-            {{error}}
-        </p>
-    </div>
-
-    <button
-        onclick="this.closest('div').remove()"
-        class="text-on-surface-variant hover:text-on-surface transition-colors"
-    >
-        <span class="material-symbols-outlined text-[20px]">
-            close
-        </span>
-    </button>
-
-</div>
-{{/if}}
-
+{{!-- SUCCESS MESSAGE --}}
+{{> user/notification}}
 <form action="/login" class="space-y-6" method="POST">
 <!-- Email Field -->
 <div class="space-y-2">

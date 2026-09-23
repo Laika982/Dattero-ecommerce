@@ -1,4 +1,5 @@
 import User from "../../models/userSchema.js";
+import Address from "../../models/addressSchema.js";
 import logger from "../../utils/logger.js";
 import jwt from "jsonwebtoken";
 import { sendVerificationEmail } from "../../services/emailService.js";
@@ -15,17 +16,25 @@ const getProfile = async (req, res) => {
     const userData = await User.findById(decoded.userId).lean();
 
     if (!userData) {
+      req.session.error = "User Not Found Please Login"
       return res.redirect("/login");
     }
 
-    const defaultAddress =
-      userData.addresses?.find((addr) => addr.isDefault) ||
-      userData.addresses?.[0] ||
-      null;
+    let isGoogleUser = false
+
+    if(userData.googleId){
+      isGoogleUser = true
+    }
+
+    const defaultAddress = await Address.findOne({
+      user_id:userData._id,
+      isDefault:true
+    })
 
     return res.render("user/profile", {
       userData,
       defaultAddress,
+      isGoogleUser
     });
   } catch (error) {
     logger.error("Profile error:", error);
@@ -43,6 +52,7 @@ const getEditProfile = async (req, res) => {
     const userData = await User.findById(decoded.userId).lean();
 
     if (!userData) {
+      req.session.error= "User Not Found Please Login"
       return res.redirect("/login");
     }
 
@@ -56,6 +66,7 @@ const getEditProfile = async (req, res) => {
     return res.redirect("/login");
   }
 };
+
 
 const updateProfile = async (req, res) => {
     try {
@@ -276,6 +287,7 @@ const updateProfile = async (req, res) => {
     }
 };
 
+
 const deleteAccount = async (req, res) => {
   try {
     const token = req.cookies.token;
@@ -287,6 +299,8 @@ const deleteAccount = async (req, res) => {
     await User.findByIdAndDelete(userId);
 
     res.clearCookie("token");
+
+    req.session.success = "Account Deleted Successfull"
 
     return res.status(200).json({
       message: "Account deleted successfully",
@@ -323,30 +337,34 @@ const changePassword = async (req,res) => {
     );
 
     if (!isPasswordCorrect) {
+      req.session.error = "Incorrect current password" 
       return res
         .status(400)
-        .render("user/profile", { error: "Incorrect current password" });
+        .render("user/profile", 
+        );
     }
 
       const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    if (!passwordRegex.test(newPassword)) {
-      return res.status(400).render("user/profile", {
-        error:
-          "Password must be at least 8 characters and contain a letter, number, and special character.",
-      });
+      if (!passwordRegex.test(newPassword)) {
+      req.session.error = "Password must be at least 8 characters and contain a letter, number, and special character." 
+      return res.status(400).render("user/profile");
     }
 
     if (newPassword !== confirmPassword) {
+      req.session.error= "both password should be same"
       return res
         .status(400)
-        .render("user/profile", { error: "both password should be same" });
+        .render("user/profile"
+         );
     }
 
     const hashedPassword = await hashPassword(newPassword);
 
     await User.findByIdAndUpdate(userId, { password: hashedPassword });
+
+    req.session.success = "Password change Successfully"
 
     return res.redirect("/profile");
   } catch (error) {

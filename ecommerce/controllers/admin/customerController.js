@@ -81,6 +81,8 @@ const customerBlocked = async (req, res) => {
       });
     }
 
+    req.session.success = `Customer ${user.name} Blocked Success`;
+
     return res.redirect("/admin/customer/customers");
   } catch (error) {
     console.error("Error blocking customer:", error);
@@ -106,6 +108,8 @@ const customerUnBlocked = async (req, res) => {
         error: "User not found",
       });
     }
+
+    req.session.success = `Customer ${user.name} Unblocked Success`;
 
     return res.redirect("/admin/customer/customers");
   } catch (error) {
@@ -140,50 +144,11 @@ const loadEditCustomer = async (req, res) => {
   }
 };
 
-// const editCustomer = async (req, res) => {
-//   try {
-//     const userId = req.params.id;
-//     const { name, email, phone } = req.body;
-//     const image = req.file;
-
-//     const fullname = name?.trim();
-//     const editEmail = email?.trim();
-//     const editPhone = phone?.trim();
-
-//     const user = await User.findById(userId);
-
-//     if (!user) {
-//       return res.status(404).render("admin/edit-customer", {
-//         error: "User not found",
-//       });
-//     }
-
-//     const updateData = { name: fullname, email: editEmail, phone: editPhone };
-//     if (image) {
-//       updateData.profileImage = image.path;
-//     }
-//     await User.findByIdAndUpdate(userId, updateData, { new: true });
-
-//     res.redirect("/admin/customer/customers");
-//   } catch (error) {
-//     console.error("Error unblocking customer:", error);
-
-//     return res.status(500).render("admin/customer/customers", {
-//       error: "Internal Server Error",
-//     });
-//   }
-// };
-
 const editCustomer = async (req, res) => {
   try {
     const userId = req.params.id;
 
-    const {
-      name,
-      email,
-      phone,
-      removePhoto
-    } = req.body;
+    const { name, email, phone, removePhoto } = req.body;
 
     const image = req.file;
 
@@ -221,17 +186,14 @@ const editCustomer = async (req, res) => {
 
     console.log("Update Data:", updateData);
 
-    await User.findByIdAndUpdate(
-      userId,
-      updateData,
-      {
-        new: true,
-        runValidators: true
-      }
-    );
+    await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    req.session.success = `User ${user.name} Edited Successfull`
 
     res.redirect("/admin/customer/customers");
-
   } catch (error) {
     console.error("Error editing customer:", error);
 

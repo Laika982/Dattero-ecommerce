@@ -5,10 +5,10 @@ import adminController from "../../controllers/admin/adminController.js";
 
 
 import { isAdminAuthenticated,
-  isAdminLoggedIn, } from "../../middleware/authMidilware.js";
+  isAdminLoggedIn,noCache } from "../../middleware/authMidilware.js";
 
 //adminLogin
-router.get("/login", isAdminLoggedIn, adminController.loadLogin);
+router.get("/login", noCache,isAdminLoggedIn, adminController.loadLogin);
 //loadAdminDashboard
 router.get("/", isAdminAuthenticated, adminController.loadAdminDashboard);
 router.post("/login", adminController.adminLogin);

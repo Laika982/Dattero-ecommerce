@@ -14,11 +14,7 @@
                 for your Nutri Luxe shipments.</p>
         </div>
         <div class="bg-surface-container-lowest rounded-xl p-8 border border-black/5 shadow-sm">
-            {{#if error}}
-            <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
-                {{error}}
-            </div>
-            {{/if}}
+{{> user/notification}}
 
             <form id="addressForm" action="/profile/address/edit/{{address._id}}" method="POST" class="space-y-6">
                 <input type="hidden" name="isDefault" id="isDefault"

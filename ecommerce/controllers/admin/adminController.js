@@ -18,26 +18,24 @@ const adminLogin = async (req, res) => {
 
     // Validate fields
     if (!email || !password) {
-      return res.status(400).render("admin/login", {
-        error: "Both fields are required",
-      });
+      req.session.error = "Both fields are required"
+      return res.status(400).render("admin/login");
     }
 
     // Find admin
     const admin = await User.findOne({ email, isAdmin: true });
 
     if (!admin) {
-      return res.status(404).render("admin/login", {
-        error: "Admin not found",
-      });
+     req.session.error= "Admin not found"
+      return res.status(404).render("admin/login");
     }
 
     // Check password
     const matchPassword = await verifyPassword(password, admin.password);
 
     if (!matchPassword) {
+      req.session.error= "Incorrect password"
       return res.status(400).render("admin/login", {
-        error: "Incorrect password",
       });
     }
 
@@ -56,6 +54,7 @@ const adminLogin = async (req, res) => {
     });
 
     // Redirect to dashboard
+    req.session.success = "Login Successfull"
     return res.redirect("/admin");
   } catch (error) {
     console.error("Admin login error:", error);
@@ -79,6 +78,8 @@ const loadAdminDashboard = async (req, res) => {
 const logout = async (req, res) => {
   try {
     res.clearCookie("adminToken");
+
+    req.session.success = "Logout success"
 
     return res.redirect("/admin/login");
   } catch (error) {

@@ -126,6 +126,8 @@ const addCategory = async (req, res) => {
 
     await newCategory.save();
 
+    req.session.success = "Category Created Successfully"
+
     return res.redirect("/admin/category/categories");
   } catch (error) {
     console.error("Error adding category:", error);
@@ -140,7 +142,8 @@ const editCategoryInfo = async (req, res) => {
     const category = await Category.findById(id).lean();
 
     if (!category) {
-      return res.status(404).send("Category not found");
+      req.session.success = "Category Not Found"
+      return res.status(404)
     }
 
     return res.render("admin/editCategory", {
@@ -160,7 +163,8 @@ const editCategory = async (req, res) => {
     const category = await Category.findById(id);
 
     if (!category) {
-      return res.status(404).send("Category not found");
+      req.session.success = "Category Not Found"
+      return res.status(404)
     }
 
     const updateData = {
@@ -168,8 +172,7 @@ const editCategory = async (req, res) => {
 
       description: req.body.description?.trim() || category.description,
 
-      // "true" → true
-      // "false" → false
+
       isListed: req.body.isListed === "true",
     };
 
@@ -194,6 +197,7 @@ const editCategory = async (req, res) => {
       runValidators: true,
     });
 
+    req.session.success = "Category Edited Successfully"
     return res.redirect("/admin/category/categories");
   } catch (error) {
     console.error("Error editing category:", error);
@@ -209,10 +213,13 @@ const deleteCategory = async (req, res) => {
     const category = await Category.findById(id);
 
     if (!category) {
-      return res.status(404).send("Category not found");
+      req.session.error = "Category Not Found"
+      return res.status(404)
     }
 
     await Category.findByIdAndDelete(id);
+
+    req.session.success = "Category Deleted Succssfully"
 
     return res.redirect("/admin/category/categories");
   } catch (error) {

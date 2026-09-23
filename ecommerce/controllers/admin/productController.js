@@ -157,7 +157,6 @@ const addProduct = async (req, res) => {
     }
 
     if (!product_name || !description || !category_id) {
-      console.log("VALIDATION ERROR: Missing required fields");
       const categories = await Category.find({
         isListed: true,
       }).lean();
@@ -338,6 +337,8 @@ const addProduct = async (req, res) => {
     }));
 
     await Variant.insertMany(variantData);
+
+    req.session.success = `Product Added Successfull`
 
     return res.redirect("/admin/product/products");
   } catch (error) {
@@ -592,6 +593,8 @@ const editProduct = async (req, res) => {
 
     await product.save();
 
+    req.session.success = `Product Edited Successfull`
+
     return res.redirect("/admin/product/products");
   } catch (error) {
     console.error("EDIT PRODUCT ERROR:", error);
@@ -611,6 +614,8 @@ const deleteProduct = async (req, res) => {
     }
 
     await Product.findByIdAndDelete(id);
+
+    req.session.success = `Product Deleted Successfull`
 
     return res.redirect("/admin/product/products");
   } catch (error) {

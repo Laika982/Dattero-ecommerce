@@ -16,7 +16,7 @@
         <div class="bg-surface-container-lowest rounded-xl p-8 border border-black/5 shadow-sm">
 {{> user/notification}}
 
-            <form id="addressForm" action="/profile/address/edit/{{address._id}}" method="POST" class="space-y-6">
+            <form id="addressForm" action="/profile/address/edit/{{address._id}}?_method=PUT" method="POST" class="space-y-6">
                 <input type="hidden" name="isDefault" id="isDefault"
                     value="{{#if address.isDefault}}true{{else}}false{{/if}}">
                 <!-- Name & Phone -->

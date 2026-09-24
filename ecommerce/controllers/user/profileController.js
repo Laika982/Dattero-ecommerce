@@ -275,6 +275,8 @@ const updateProfile = async (req, res) => {
             updateData
         );
 
+        req.session.success = "Profile edited sucssfully"
+
         return res.redirect("/profile");
 
     } catch (error) {

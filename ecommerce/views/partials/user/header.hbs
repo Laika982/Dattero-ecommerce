@@ -199,15 +199,15 @@
 <nav class="fixed top-0 w-full z-50 bg-surface/95 dark:bg-surface/90 backdrop-blur-md border-b border-secondary/10 dark:border-secondary-fixed-dim/10 shadow-sm transition-all duration-300 shadow-md" id="main-nav">
 <div class="flex justify-between items-center w-full px-container-padding max-w-max-width mx-auto h-20">
 <!-- Brand Logo -->
-<a class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0" href="#">
+<a class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0" href="/">
                 Nutri Burfi
             </a>
 <!-- Navigation Links (Desktop) -->
-<div class="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-<a class="text-on-surface font-label-md text-label-md border-b-2 border-on-surface pb-1" href="/">Home</a>
-<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="products">Products</a>
-<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="about">About Us</a>
-<a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="contact">Contact</a>
+<div class="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2" id="nav-links-desktop">
+<a class="nav-link font-label-md text-label-md transition-colors {{#if (eq currentNav 'home')}}text-on-surface border-b-2 border-on-surface pb-1 font-semibold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}" href="/" data-nav="home">Home</a>
+<a class="nav-link font-label-md text-label-md transition-colors {{#if (eq currentNav 'products')}}text-on-surface border-b-2 border-on-surface pb-1 font-semibold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}" href="/products" data-nav="products">Products</a>
+<a class="nav-link font-label-md text-label-md transition-colors {{#if (eq currentNav 'about')}}text-on-surface border-b-2 border-on-surface pb-1 font-semibold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}" href="/about" data-nav="about">About Us</a>
+<a class="nav-link font-label-md text-label-md transition-colors {{#if (eq currentNav 'contact')}}text-on-surface border-b-2 border-on-surface pb-1 font-semibold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}" href="/contact" data-nav="contact">Contact</a>
 </div>
 <!-- Trailing Icon Actions -->
 <div class="flex items-center gap-4 text-on-surface z-10 flex-shrink-0">
@@ -264,10 +264,10 @@
 </nav>
 <!-- Mobile Menu Overlay (Hidden by default) -->
 <div class="fixed inset-0 bg-surface z-40 hidden flex-col pt-24 px-container-padding" id="mobile-menu">
-<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface" href="#">Home</a>
-<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Products</a>
-<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">About Us</a>
-<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Contact</a>
+<a class="mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 transition-colors {{#if (eq currentNav 'home')}}text-on-surface font-bold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}" href="/" data-nav="home">Home</a>
+<a class="mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 transition-colors {{#if (eq currentNav 'products')}}text-on-surface font-bold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}" href="/products" data-nav="products">Products</a>
+<a class="mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 transition-colors {{#if (eq currentNav 'about')}}text-on-surface font-bold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}" href="/about" data-nav="about">About Us</a>
+<a class="mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 transition-colors {{#if (eq currentNav 'contact')}}text-on-surface font-bold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}" href="/contact" data-nav="contact">Contact</a>
 
 {{#if user}}
 
@@ -431,5 +431,51 @@
     });
 
   }
+
+  // Active Navbar Link Dynamic Selection
+  (function () {
+    function highlightActiveNav() {
+      const path = (window.location.pathname || "/").toLowerCase();
+      let activeKey = "";
+
+      if (path === "/" || path === "") {
+        activeKey = "home";
+      } else if (path.startsWith("/product")) {
+        activeKey = "products";
+      } else if (path.startsWith("/about")) {
+        activeKey = "about";
+      } else if (path.startsWith("/contact")) {
+        activeKey = "contact";
+      }
+
+      // Desktop nav links
+      const desktopLinks = document.querySelectorAll("#nav-links-desktop a[data-nav]");
+      desktopLinks.forEach(function (link) {
+        const nav = link.getAttribute("data-nav");
+        if (nav === activeKey) {
+          link.className = "nav-link font-label-md text-label-md text-on-surface border-b-2 border-on-surface pb-1 font-semibold transition-colors";
+        } else {
+          link.className = "nav-link font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors";
+        }
+      });
+
+      // Mobile nav links
+      const mobileLinks = document.querySelectorAll("#mobile-menu a[data-nav]");
+      mobileLinks.forEach(function (link) {
+        const nav = link.getAttribute("data-nav");
+        if (nav === activeKey) {
+          link.className = "mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface font-bold transition-colors";
+        } else {
+          link.className = "mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface-variant hover:text-on-surface transition-colors";
+        }
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", highlightActiveNav);
+    } else {
+      highlightActiveNav();
+    }
+  })();
 
 </script>

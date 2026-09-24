@@ -15,7 +15,8 @@ router.post("/login", adminController.adminLogin);
 
 
 //logout
-router.get("/logout", adminController.logout);
+router.post("/logout", adminController.logout);
+router.get("/logout", (req, res) => res.redirect("/admin/login"));
 
 
 

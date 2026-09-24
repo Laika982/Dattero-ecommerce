@@ -54,7 +54,7 @@
 {{else}}
 
 
-<form action="/profile/address/make-primary/{{this._id}}" method="POST" class="inline">
+<form action="/profile/address/make-primary/{{this._id}}?_method=PATCH" method="POST" class="inline">
   <button type="submit" class="text-label-md font-medium text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 group/btn">
     <span class="material-symbols-outlined text-sm group-hover/btn:scale-110 transition-transform">star</span>
     Set as Primary
@@ -67,7 +67,7 @@
   Edit
 </a>
 
-<form action="/profile/address/delete/{{this._id}}" method="POST" class="inline delete-address-form">
+<form action="/profile/address/delete/{{this._id}}?_method=DELETE" method="POST" class="inline delete-address-form">
   <button type="submit" class="text-label-md font-medium text-error/80 hover:text-error transition-colors flex items-center gap-1 group/btn">
     <span class="material-symbols-outlined text-sm group-hover/btn:rotate-12 transition-transform">delete</span>
     Remove

@@ -13,8 +13,8 @@ router.get("/categories", isAdminAuthenticated, categoryController.categoryInfo)
 router.get("/addCategory", isAdminAuthenticated, categoryController.addCategoryInfo);
 router.post("/addCategory", isAdminAuthenticated, upload.single("image"), categoryController.addCategory);
 router.get("/editCategory/:id",isAdminAuthenticated,categoryController.editCategoryInfo,);
-router.post("/editCategory/:id",isAdminAuthenticated,upload.single("image"),categoryController.editCategory,);
-router.post("/deleteCategory/:id", isAdminAuthenticated, categoryController.deleteCategory);
+router.put("/editCategory/:id",isAdminAuthenticated,upload.single("image"),categoryController.editCategory,);
+router.delete("/deleteCategory/:id", isAdminAuthenticated, categoryController.deleteCategory);
 
 
 

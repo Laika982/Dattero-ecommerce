@@ -1,0 +1,274 @@
+<!-- Image Cropper & Resizer Modal Partial -->
+<div
+    id="imageCropperModal"
+    class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cropperModalTitle"
+>
+    <div class="relative w-full max-w-5xl max-h-[92vh] flex flex-col bg-surface-container-lowest rounded-2xl shadow-2xl border border-black/10 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant/20 bg-surface-container-low/40">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-on-surface text-surface flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[20px]">crop</span>
+                </div>
+                <div>
+                    <h3 id="cropperModalTitle" class="font-headline-lg text-[18px] font-bold text-on-surface">
+                        Crop & Resize Product Photo
+                    </h3>
+                    <p class="text-[12px] text-on-surface-variant font-body-md">
+                        Prepare high-resolution, uniform imagery for your catalog.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Queue Counter & Close -->
+            <div class="flex items-center gap-3">
+                <span id="cropperQueueBadge" class="hidden px-3 py-1 bg-surface-container-highest text-on-surface font-label-md text-[12px] rounded-full">
+                    Image 1 of 1
+                </span>
+                <button
+                    type="button"
+                    id="cropperCancelBtn"
+                    class="w-9 h-9 rounded-xl flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
+                    aria-label="Close modal"
+                >
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Body: 2 columns on desktop -->
+        <div class="flex-1 overflow-y-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Left: Cropper Viewport -->
+            <div class="lg:col-span-8 flex flex-col gap-3">
+                <div class="relative w-full h-[360px] sm:h-[420px] md:h-[460px] bg-[#161616] rounded-xl overflow-hidden flex items-center justify-center border border-black/10">
+                    <img
+                        id="cropperTargetImage"
+                        src=""
+                        alt="Crop target"
+                        class="max-w-full max-h-full block"
+                    >
+                    
+                    <!-- Real-time Dimension Badge -->
+                    <div class="absolute bottom-3 left-3 bg-black/75 backdrop-blur-md text-white text-[11px] font-mono px-3 py-1.5 rounded-lg flex items-center gap-2 pointer-events-none shadow">
+                        <span class="material-symbols-outlined text-[14px] text-emerald-400">aspect_ratio</span>
+                        <span id="cropperLiveDimensions">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- Fast Transform Controls Toolbar -->
+                <div class="flex flex-wrap items-center justify-between gap-2 p-2 bg-surface-container-low rounded-xl border border-outline-variant/20">
+                    <div class="flex items-center gap-1">
+                        <button
+                            type="button"
+                            id="btnRotateLeft"
+                            class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition"
+                            title="Rotate -90°"
+                        >
+                            <span class="material-symbols-outlined text-[20px]">rotate_left</span>
+                        </button>
+                        <button
+                            type="button"
+                            id="btnRotateRight"
+                            class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition"
+                            title="Rotate +90°"
+                        >
+                            <span class="material-symbols-outlined text-[20px]">rotate_right</span>
+                        </button>
+                        <div class="h-5 w-[1px] bg-outline-variant/30 mx-1"></div>
+                        <button
+                            type="button"
+                            id="btnFlipX"
+                            class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition"
+                            title="Flip Horizontal"
+                        >
+                            <span class="material-symbols-outlined text-[20px]">swap_horiz</span>
+                        </button>
+                        <button
+                            type="button"
+                            id="btnFlipY"
+                            class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition"
+                            title="Flip Vertical"
+                        >
+                            <span class="material-symbols-outlined text-[20px]">swap_vert</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-1">
+                        <button
+                            type="button"
+                            id="btnZoomIn"
+                            class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition"
+                            title="Zoom In"
+                        >
+                            <span class="material-symbols-outlined text-[20px]">zoom_in</span>
+                        </button>
+                        <button
+                            type="button"
+                            id="btnZoomOut"
+                            class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition"
+                            title="Zoom Out"
+                        >
+                            <span class="material-symbols-outlined text-[20px]">zoom_out</span>
+                        </button>
+                        <div class="h-5 w-[1px] bg-outline-variant/30 mx-1"></div>
+                        <button
+                            type="button"
+                            id="btnResetCrop"
+                            class="px-3 py-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-[12px] flex items-center gap-1 transition"
+                            title="Reset all transformations"
+                        >
+                            <span class="material-symbols-outlined text-[16px]">restart_alt</span>
+                            <span>Reset</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Settings & Presets Panel -->
+            <div class="lg:col-span-4 flex flex-col justify-between space-y-6 bg-surface-container-low/50 p-5 rounded-xl border border-outline-variant/20">
+                
+                <div class="space-y-6">
+                    <!-- Aspect Ratio Presets -->
+                    <div>
+                        <label class="block font-label-md text-[13px] text-on-surface mb-2 font-semibold flex items-center justify-between">
+                            <span>Aspect Ratio</span>
+                            <span class="text-[11px] font-normal text-on-surface-variant">Product cards: 1:1</span>
+                        </label>
+                        <div class="grid grid-cols-3 gap-2" id="aspectRatioGroup">
+                            <button
+                                type="button"
+                                data-aspect="1"
+                                class="aspect-btn active-aspect px-3 py-2 text-[12px] font-label-md rounded-lg border border-on-surface bg-on-surface text-surface transition"
+                            >
+                                1:1 Square
+                            </button>
+                            <button
+                                type="button"
+                                data-aspect="1.3333333"
+                                class="aspect-btn px-3 py-2 text-[12px] font-label-md rounded-lg border border-outline-variant/40 bg-surface-container-lowest text-on-surface hover:bg-surface-container transition"
+                            >
+                                4:3
+                            </button>
+                            <button
+                                type="button"
+                                data-aspect="0.75"
+                                class="aspect-btn px-3 py-2 text-[12px] font-label-md rounded-lg border border-outline-variant/40 bg-surface-container-lowest text-on-surface hover:bg-surface-container transition"
+                            >
+                                3:4
+                            </button>
+                            <button
+                                type="button"
+                                data-aspect="1.7777777"
+                                class="aspect-btn px-3 py-2 text-[12px] font-label-md rounded-lg border border-outline-variant/40 bg-surface-container-lowest text-on-surface hover:bg-surface-container transition"
+                            >
+                                16:9
+                            </button>
+                            <button
+                                type="button"
+                                data-aspect="NaN"
+                                class="aspect-btn col-span-2 px-3 py-2 text-[12px] font-label-md rounded-lg border border-outline-variant/40 bg-surface-container-lowest text-on-surface hover:bg-surface-container transition"
+                            >
+                                Free Crop (Custom)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Output Resolution Presets -->
+                    <div>
+                        <label class="block font-label-md text-[13px] text-on-surface mb-2 font-semibold flex items-center justify-between">
+                            <span>Target Resolution</span>
+                            <span class="text-[11px] font-normal text-on-surface-variant">Resized on export</span>
+                        </label>
+                        <div class="space-y-2" id="resolutionGroup">
+                            <label class="flex items-center justify-between p-3 rounded-xl border border-on-surface/40 bg-surface-container-lowest cursor-pointer hover:border-on-surface transition">
+                                <div class="flex items-center gap-2.5">
+                                    <input type="radio" name="targetResolution" value="800" checked class="text-on-surface focus:ring-on-surface">
+                                    <div>
+                                        <div class="font-label-md text-[13px] text-on-surface font-semibold">800 × 800 px</div>
+                                        <div class="text-[11px] text-on-surface-variant">Recommended (Fast & Sharp)</div>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">Best</span>
+                            </label>
+
+                            <label class="flex items-center justify-between p-3 rounded-xl border border-outline-variant/30 bg-surface-container-lowest cursor-pointer hover:border-outline-variant transition">
+                                <div class="flex items-center gap-2.5">
+                                    <input type="radio" name="targetResolution" value="1000" class="text-on-surface focus:ring-on-surface">
+                                    <div>
+                                        <div class="font-label-md text-[13px] text-on-surface font-semibold">1000 × 1000 px</div>
+                                        <div class="text-[11px] text-on-surface-variant">High Definition (Boutique)</div>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center justify-between p-3 rounded-xl border border-outline-variant/30 bg-surface-container-lowest cursor-pointer hover:border-outline-variant transition">
+                                <div class="flex items-center gap-2.5">
+                                    <input type="radio" name="targetResolution" value="1200" class="text-on-surface focus:ring-on-surface">
+                                    <div>
+                                        <div class="font-label-md text-[13px] text-on-surface font-semibold">1200 × 1200 px</div>
+                                        <div class="text-[11px] text-on-surface-variant">Ultra High Definition</div>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center justify-between p-3 rounded-xl border border-outline-variant/30 bg-surface-container-lowest cursor-pointer hover:border-outline-variant transition">
+                                <div class="flex items-center gap-2.5">
+                                    <input type="radio" name="targetResolution" value="original" class="text-on-surface focus:ring-on-surface">
+                                    <div>
+                                        <div class="font-label-md text-[13px] text-on-surface font-semibold">Native Crop Size</div>
+                                        <div class="text-[11px] text-on-surface-variant">Keeps exact crop pixels</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Output Format & Quality Info -->
+                    <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/20 flex items-center gap-3">
+                        <span class="material-symbols-outlined text-[20px] text-on-surface-variant">high_quality</span>
+                        <div class="text-[11px] text-on-surface-variant leading-tight">
+                            Exported as optimized JPEG with high-fidelity smoothing for maximum clarity and fast store load times.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="flex items-center justify-between px-6 py-4 border-t border-outline-variant/20 bg-surface-container-low/40">
+            <button
+                type="button"
+                id="cropperSkipBtn"
+                class="px-5 py-2.5 text-on-surface-variant hover:text-on-surface font-label-md text-[13px] rounded-lg border border-outline-variant/40 hover:bg-surface-container transition"
+            >
+                Skip (Keep Original)
+            </button>
+
+            <div class="flex items-center gap-3">
+                <button
+                    type="button"
+                    id="cropperDiscardBtn"
+                    class="px-5 py-2.5 text-on-surface-variant hover:text-on-surface font-label-md text-[13px] rounded-lg hover:bg-surface-container transition"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="button"
+                    id="cropperApplyBtn"
+                    class="px-7 py-2.5 bg-on-surface text-surface hover:opacity-90 font-label-md text-[13px] rounded-lg shadow transition flex items-center gap-2"
+                >
+                    <span class="material-symbols-outlined text-[18px]">check</span>
+                    <span id="cropperApplyBtnText">Apply & Crop</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

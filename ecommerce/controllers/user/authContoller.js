@@ -10,7 +10,9 @@ import { hashPassword, verifyPassword } from "../../utils/password.js";
 
 const loadHomepage = async (req, res) => {
   try {
-    res.render("user/home");
+    res.render("user/home", {
+      currentNav: "home",
+    });
   } catch (error) {
     logger.error(error);
 
@@ -432,18 +434,22 @@ const verifyOtp = async (req, res) => {
 
 const loadLogin = async (req, res) => {
   try {
-    // Check if user was redirected because account is blocked
-    if (req.query.blocked === "true") {
-      error = "Your account has been blocked by the administrator.";
+    const { blocked } = req.query;
+
+    let error = null;
+
+    if (blocked === "true") {
+      error = "Your account has been blocked.";
     }
 
-    return res.render("user/login");
-  } catch (error) {
-    logger.error(error);
-
-    return res.status(500).json({
-      message: "Internal Server Error",
+    return res.render("user/login", {
+      error,
     });
+
+  } catch (err) {
+    console.error("Load login error:", err);
+
+    return res.redirect("/");
   }
 };
 

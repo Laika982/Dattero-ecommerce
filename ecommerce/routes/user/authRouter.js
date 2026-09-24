@@ -20,6 +20,16 @@ const router = express.Router();
 // Home
 router.get("/", userController.loadHomepage);
 
+// About Us
+router.get("/about", (req, res) => {
+  res.render("user/aboutUs");
+});
+
+// Contact
+router.get("/contact", (req, res) => {
+  res.render("user/contact");
+});
+
 // ==================== GUEST ROUTES ====================
 
 // Login page
@@ -117,6 +127,7 @@ router.get(
 // ==================== AUTHENTICATED ====================
 
 // Logout
-router.get("/logout", isAuthenticated, userController.logoutUser);
+router.post("/logout", isAuthenticated, userController.logoutUser);
+router.get("/logout", (req, res) => res.redirect("/"));
 
 export default router;

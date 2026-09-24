@@ -138,6 +138,7 @@ const loadProducts = async (req, res) => {
     const paginatatedProduct = products.slice(skip, skip + limit);
 
     res.render("user/products", {
+      currentNav: "products",
       products: paginatatedProduct,
       categories,
 
@@ -269,6 +270,7 @@ const loadProduct = async (req, res) => {
     //Render product detail
 
     return res.render("user/productDetailPage", {
+      currentNav: "products",
       product,
 
       variants: variantsWithPrice,

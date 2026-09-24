@@ -27,13 +27,13 @@ router.get(
     productController.loadEditProduct
 );
 
-router.post(
+router.put(
     "/editProduct/:id",
     isAdminAuthenticated,
     upload.array("images", 5),
     productController.editProduct
 );
-router.post("/deleteProduct/:id", isAdminAuthenticated, productController.deleteProduct);
+router.delete("/deleteProduct/:id", isAdminAuthenticated, productController.deleteProduct);
 
 
 

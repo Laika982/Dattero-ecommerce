@@ -1,21 +1,16 @@
 {{>user/header}}
 <div class="flex min-h-screen">
-<!-- SideNavBar Shell -->
-<nav class="fixed top-0 w-full z-50 bg-surface/95 dark:bg-surface/90 backdrop-blur-md border-b border-secondary/10 dark:border-secondary-fixed-dim/10 shadow-sm transition-all duration-300 shadow-md" id="main-nav"><div class="flex justify-between items-center w-full px-container-padding max-w-max-width mx-auto h-20"><a class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0" href="#">Nutri Burfi</a><div class="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2"><a class="text-on-surface font-label-md text-label-md border-b-2 border-on-surface pb-1" href="#">Home</a><a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="#">Products</a><a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="#">About Us</a><a class="text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" href="#">Contact</a></div><div class="flex items-center gap-4 text-on-surface z-10 flex-shrink-0"><button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50"><span class="material-symbols-outlined">search</span></button><button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50"><span class="material-symbols-outlined">favorite</span></button><button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 relative"><span class="material-symbols-outlined">shopping_cart</span><span class="absolute top-1 right-1 w-2 h-2 bg-accent-blue rounded-full"></span></button><button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 hidden md:block"><span class="material-symbols-outlined">person</span></button><button class="md:hidden hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 ml-2" id="mobile-menu-btn"><span class="material-symbols-outlined">menu</span></button></div></div></nav>
 <!-- Main Canvas Area -->
 <aside class="hidden md:flex flex-col w-64 border-r border-outline/10 bg-surface fixed top-20 bottom-0 left-0 z-40 overflow-y-auto custom-scrollbar p-6 justify-between"><div class="space-y-6"><div class="flex items-center gap-3 pb-6 border-b border-outline/10"><div class="w-12 h-12 rounded-full overflow-hidden border border-outline/20 flex-shrink-0">
 <img src="{{#if userData.profileImage}}{{userData.profileImage}}{{else}}https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E{{/if}}" alt="Eleanor St. James" class="w-full h-full object-cover"></div>
 <div><h4 class="font-label-md text-label-md text-on-surface font-bold leading-tight">{{userData.name}}</h4>
 </div></div>
 <nav class="space-y-1">
-  <a href="" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">person</span>Profile</a>
-    <a href="" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">shopping_bag</span>My Orders</a>
-      <a href="" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">favorite</span>My Favorites</a>
-        <a href="/profile/address" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">location_on</span>Address Book</a>
-          {{!-- <a href="" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"> --}}
-            {{!-- <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>My Wallet</a><a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors">
-              <span class="material-symbols-outlined text-[20px]">settings</span>Account Settings</a> --}}
-              </nav></div></aside>
+  <a href="/profile" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-on-surface text-surface font-label-md text-label-md shadow-sm font-semibold"><span class="material-symbols-outlined text-[20px]">person</span>Profile</a>
+  <a href="/orders" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">shopping_bag</span>My Orders</a>
+  <a href="/wishlist" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">favorite</span>My Favorites</a>
+  <a href="/profile/address" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">location_on</span>Address Book</a>
+</nav></div></aside>
               <main class="flex-1 p-container-padding pt-24 md:ml-64">
   <div class="max-w-max-width mx-auto px-container-padding mt-2">
     {{> user/notification}}
@@ -208,7 +203,7 @@
 
     <div class="md:col-span-2">
       <form
-        action="/profile/change-password"
+        action="/profile/change-password?_method=PATCH"
         method="POST"
         class="space-y-6"
         id="change-password-form"
@@ -481,7 +476,11 @@
         icon: 'logout'
       }).then((confirmed) => {
         if (confirmed) {
-          window.location.href = url;
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = '/logout';
+          document.body.appendChild(form);
+          form.submit();
         }
       });
     });
@@ -510,7 +509,7 @@
           }).then((secondConfirmed) => {
             if (secondConfirmed) {
               fetch('/profile/delete-account', {
-                method: 'POST',
+                method: 'DELETE',
                 headers: {
                   'Content-Type': 'application/json'
                 }

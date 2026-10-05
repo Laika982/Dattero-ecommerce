@@ -24,7 +24,7 @@
             <p class="font-body-md text-on-surface-variant mb-10">We've sent a 6-digit verification code to your
                 inbox. Please enter it below to continue your luxury wellness journey.</p>
             <!-- OTP Input Area -->
-    {{> user/notification}}
+            {{> user/notification}}
 
             <form class="space-y-8" id="otp-form" action="/verify-otp" method="post">
                 <input type="hidden" name="otp" id="otp-value">
@@ -55,117 +55,117 @@
                     Verify Identity
                 </button>
             </form>
-<script>
-    const otpForm = document.getElementById('otp-form');
-    const otpInputs = Array.from(
-        otpForm.querySelectorAll('.otp-input')
-    );
-    const otpValueInput = document.getElementById('otp-value');
+            <script>
+                const otpForm = document.getElementById('otp-form');
+                const otpInputs = Array.from(
+                    otpForm.querySelectorAll('.otp-input')
+                );
+                const otpValueInput = document.getElementById('otp-value');
 
 
-    // ==============================
-    // UPDATE HIDDEN OTP VALUE
-    // ==============================
+                // ==============================
+                // UPDATE HIDDEN OTP VALUE
+                // ==============================
 
-    function updateOtpValue() {
-        otpValueInput.value = otpInputs
-            .map(input => input.value)
-            .join('');
-    }
-
-
-    // ==============================
-    // OTP INPUT
-    // ==============================
-
-    otpInputs.forEach((input, index) => {
-
-        input.addEventListener('input', (event) => {
-
-            // Allow numbers only
-            input.value = input.value.replace(/\D/g, '');
-
-            // Only one digit when typing
-            if (input.value.length > 1) {
-                input.value = input.value.charAt(0);
-            }
-
-            // Move to next input
-            if (
-                input.value &&
-                index < otpInputs.length - 1
-            ) {
-                otpInputs[index + 1].focus();
-            }
-
-            updateOtpValue();
-        });
+                function updateOtpValue() {
+                    otpValueInput.value = otpInputs
+                        .map(input => input.value)
+                        .join('');
+                }
 
 
-        // ==============================
-        // BACKSPACE
-        // ==============================
+                // ==============================
+                // OTP INPUT
+                // ==============================
 
-        input.addEventListener('keydown', (event) => {
+                otpInputs.forEach((input, index) => {
 
-            if (
-                event.key === 'Backspace' &&
-                !input.value &&
-                index > 0
-            ) {
-                otpInputs[index - 1].focus();
-            }
+                    input.addEventListener('input', (event) => {
 
-        });
+                        // Allow numbers only
+                        input.value = input.value.replace(/\D/g, '');
 
+                        // Only one digit when typing
+                        if (input.value.length > 1) {
+                            input.value = input.value.charAt(0);
+                        }
 
-        // ==============================
-        // PASTE OTP
-        // ==============================
+                        // Move to next input
+                        if (
+                            input.value &&
+                            index < otpInputs.length - 1
+                        ) {
+                            otpInputs[index + 1].focus();
+                        }
 
-        input.addEventListener('paste', (event) => {
-
-            event.preventDefault();
-
-            // Get copied text
-            const pastedData = event.clipboardData
-                .getData('text')
-                .replace(/\D/g, '')
-                .slice(0, otpInputs.length);
-
-            if (!pastedData) {
-                return;
-            }
-
-            // Clear all boxes first
-            otpInputs.forEach(input => {
-                input.value = '';
-            });
-
-            // Put each digit into each box
-            pastedData.split('').forEach((digit, i) => {
-                otpInputs[i].value = digit;
-            });
-
-            // Update hidden input
-            updateOtpValue();
-
-            // Focus last filled box
-            otpInputs[pastedData.length - 1].focus();
-        });
-
-    });
+                        updateOtpValue();
+                    });
 
 
-    // ==============================
-    // FORM SUBMIT
-    // ==============================
+                    // ==============================
+                    // BACKSPACE
+                    // ==============================
 
-    otpForm.addEventListener('submit', () => {
-        updateOtpValue();
-    });
+                    input.addEventListener('keydown', (event) => {
 
-</script>
+                        if (
+                            event.key === 'Backspace' &&
+                            !input.value &&
+                            index > 0
+                        ) {
+                            otpInputs[index - 1].focus();
+                        }
+
+                    });
+
+
+                    // ==============================
+                    // PASTE OTP
+                    // ==============================
+
+                    input.addEventListener('paste', (event) => {
+
+                        event.preventDefault();
+
+                        // Get copied text
+                        const pastedData = event.clipboardData
+                            .getData('text')
+                            .replace(/\D/g, '')
+                            .slice(0, otpInputs.length);
+
+                        if (!pastedData) {
+                            return;
+                        }
+
+                        // Clear all boxes first
+                        otpInputs.forEach(input => {
+                            input.value = '';
+                        });
+
+                        // Put each digit into each box
+                        pastedData.split('').forEach((digit, i) => {
+                            otpInputs[i].value = digit;
+                        });
+
+                        // Update hidden input
+                        updateOtpValue();
+
+                        // Focus last filled box
+                        otpInputs[pastedData.length - 1].focus();
+                    });
+
+                });
+
+
+                // ==============================
+                // FORM SUBMIT
+                // ==============================
+
+                otpForm.addEventListener('submit', () => {
+                    updateOtpValue();
+                });
+
+            </script>
             <!-- Resend & Timer Logic -->
             {{!-- <div class="mt-8 pt-8 border-t border-outline-variant/20">
                 <p class="font-body-md text-on-surface-variant" id="timer-container">

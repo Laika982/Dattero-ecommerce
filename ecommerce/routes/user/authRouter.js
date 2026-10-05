@@ -97,29 +97,49 @@ router.get(
 // Google callback
 router.get(
   "/auth/google/callback",
-  passport.authenticate("google", {
-    session: false,
-    failureRedirect: "/login",
-  }),
-  (req, res) => {
-    const token = jwt.sign(
-      {
-        userId: req.user._id,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1d",
-      },
-    );
+  (req, res, next) => {
+    passport.authenticate("google", { session: false }, (err, user, info) => {
+      if (err) {
+        console.error("Google authentication error:", err);
+        req.session.error = "Google authentication failed. Please try again.";
+        return res.redirect("/login");
+      }
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+      if (!user) {
+        res.clearCookie("token");
+        const message = (info && info.message) || "Authentication failed. Please try again.";
+        req.session.error = message;
+        if (message.toLowerCase().includes("blocked")) {
+          return res.redirect("/login?blocked=true");
+        }
+        return res.redirect("/login");
+      }
 
-    return res.redirect("/");
+      if (user.isBlocked) {
+        res.clearCookie("token");
+        req.session.error = "Your account has been blocked.";
+        return res.redirect("/login?blocked=true");
+      }
+
+      const token = jwt.sign(
+        {
+          userId: user._id,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1d",
+        },
+      );
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+
+      return res.redirect("/");
+    })(req, res, next);
   },
 );
 

@@ -436,11 +436,9 @@ const loadLogin = async (req, res) => {
   try {
     const { blocked } = req.query;
 
-    let error = null;
-
-    if (blocked === "true") {
-      error = "Your account has been blocked.";
-    }
+    const error = blocked === "true"
+      ? "Your account has been blocked."
+      : res.locals.error;
 
     return res.render("user/login", {
       error,
@@ -503,7 +501,7 @@ const loginUser = async (req, res) => {
   } catch (error) {
     logger.error(error);
 
-    req.session.loginError = "Internal Server Error";
+    req.session.error = "Internal Server Error";
 
     return res.redirect("/login");
   }

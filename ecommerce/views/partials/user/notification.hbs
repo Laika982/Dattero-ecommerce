@@ -1,22 +1,17 @@
 {{#if error}}
 
-<div
-    id="errorToast"
-    class="fixed top-20 right-5 z-[9999]
+<div id="errorToast" class="fixed top-20 right-5 z-[9999]
            w-[calc(100%-2rem)] max-w-sm
            overflow-hidden rounded-2xl
            border border-gray-200 bg-white
-           shadow-[0_10px_30px_rgba(0,0,0,0.10)]"
->
+           shadow-[0_10px_30px_rgba(0,0,0,0.10)]">
 
     <div class="flex items-start gap-3 p-4">
 
         <!-- Error Icon -->
-        <div
-            class="flex h-9 w-9 shrink-0 items-center
+        <div class="flex h-9 w-9 shrink-0 items-center
                    justify-center rounded-full
-                   bg-red-50 text-red-600"
-        >
+                   bg-red-50 text-red-600">
             <span class="text-lg font-bold">!</span>
         </div>
 
@@ -34,18 +29,14 @@
         </div>
 
         <!-- Close Button -->
-        <button
-            type="button"
-            onclick="closeToast('errorToast')"
-            class="flex h-7 w-7 shrink-0
+        <button type="button" onclick="closeToast('errorToast')" class="flex h-7 w-7 shrink-0
                    cursor-pointer
                    items-center justify-center
                    rounded-lg
                    text-xl leading-none
                    text-gray-400
                    hover:bg-gray-100
-                   hover:text-gray-700"
-        >
+                   hover:text-gray-700">
             &times;
         </button>
 
@@ -63,23 +54,18 @@
 
 {{#if success}}
 
-<div
-    id="successToast"
-    class="fixed top-20 right-5 z-[9999]
+<div id="successToast" class="fixed top-20 right-5 z-[9999]
            w-[calc(100%-2rem)] max-w-sm
            overflow-hidden rounded-2xl
            border border-gray-200 bg-white
-           shadow-[0_10px_30px_rgba(0,0,0,0.10)]"
->
+           shadow-[0_10px_30px_rgba(0,0,0,0.10)]">
 
     <div class="flex items-start gap-3 p-4">
 
         <!-- Success Icon -->
-        <div
-            class="flex h-9 w-9 shrink-0 items-center
+        <div class="flex h-9 w-9 shrink-0 items-center
                    justify-center rounded-full
-                   bg-green-50 text-green-600"
-        >
+                   bg-green-50 text-green-600">
             <span class="text-lg font-bold">✓</span>
         </div>
 
@@ -97,18 +83,14 @@
         </div>
 
         <!-- Close Button -->
-        <button
-            type="button"
-            onclick="closeToast('successToast')"
-            class="flex h-7 w-7 shrink-0
+        <button type="button" onclick="closeToast('successToast')" class="flex h-7 w-7 shrink-0
                    cursor-pointer
                    items-center justify-center
                    rounded-lg
                    text-xl leading-none
                    text-gray-400
                    hover:bg-gray-100
-                   hover:text-gray-700"
-        >
+                   hover:text-gray-700">
             &times;
         </button>
 
@@ -138,6 +120,71 @@
         if (toast) {
             toast.remove();
         }
+
+    }
+
+
+    function showNotification(type, message) {
+
+        const isSuccess = type === "success";
+        const toastId = isSuccess ? "successToast" : "errorToast";
+
+        closeToast("successToast");
+        closeToast("errorToast");
+
+        const toast = document.createElement("div");
+        toast.id = toastId;
+        toast.className = "fixed top-20 right-5 z-[9999] w-[calc(100%-2rem)] max-w-sm overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.10)]";
+
+        const row = document.createElement("div");
+        row.className = "flex items-start gap-3 p-4";
+
+        const icon = document.createElement("div");
+        icon.className = isSuccess
+            ? "flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-50 text-green-600"
+            : "flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600";
+
+        const iconText = document.createElement("span");
+        iconText.className = "text-lg font-bold";
+        iconText.textContent = isSuccess ? "✓" : "!";
+        icon.appendChild(iconText);
+
+        const text = document.createElement("div");
+        text.className = "min-w-0 flex-1";
+
+        const title = document.createElement("p");
+        title.className = "text-sm font-semibold text-gray-900";
+        title.textContent = isSuccess ? "Success" : "Error";
+
+        const detail = document.createElement("p");
+        detail.className = "mt-1 break-words text-sm leading-5 text-gray-500";
+        detail.textContent = String(message || (isSuccess ? "Done" : "Something went wrong"));
+        text.append(title, detail);
+
+        const closeButton = document.createElement("button");
+        closeButton.type = "button";
+        closeButton.className = "flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-lg text-xl leading-none text-gray-400 hover:bg-gray-100 hover:text-gray-700";
+        closeButton.setAttribute("aria-label", "Close notification");
+        closeButton.textContent = "×";
+        closeButton.addEventListener("click", function () {
+            closeToast(toastId);
+        });
+
+        row.append(icon, text, closeButton);
+
+        const progressTrack = document.createElement("div");
+        progressTrack.className = isSuccess ? "h-[2px] w-full bg-green-100" : "h-[2px] w-full bg-red-100";
+
+        const progress = document.createElement("div");
+        progress.className = isSuccess ? "h-full w-full bg-green-500" : "h-full w-full bg-red-500";
+        progressTrack.appendChild(progress);
+
+        toast.append(row, progressTrack);
+        document.body.appendChild(toast);
+
+        window.setTimeout(function () {
+            closeToast(toastId);
+        }, 5000);
 
     }
 

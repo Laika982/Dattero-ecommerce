@@ -42,6 +42,10 @@ const registerHbsHelpers = () => {
 
   return array.map(String).includes(String(value));
 });
+
+  hbs.registerHelper("json", function (context) {
+    return JSON.stringify(context);
+  });
 };
 
 export default registerHbsHelpers;

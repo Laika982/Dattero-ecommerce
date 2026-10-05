@@ -1,4 +1,4 @@
-```hbs
+
 {{>user/header}}
 
 <!-- Main Content Canvas -->
@@ -1089,6 +1089,232 @@
 
             }
         );
+
+    }
+
+</script>
+
+<script>
+
+    // =====================================================
+    // PRODUCT DETAIL - ADD TO CART
+    // =====================================================
+
+    const addToCartButton =
+        document.getElementById(
+            "addToCartButton"
+        );
+
+
+    if (addToCartButton) {
+
+        addToCartButton.addEventListener(
+            "click",
+            addProductDetailToCart
+        );
+
+    }
+
+
+    async function addProductDetailToCart() {
+
+        // -----------------------------------------
+        // Check variant selection
+        // -----------------------------------------
+
+        if (!selectedVariantId) {
+
+            showNotification("error", "Please select a variant first.");
+
+            return;
+        }
+
+
+        // -----------------------------------------
+        // Get product ID
+        // -----------------------------------------
+
+        const productId =
+            "{{product._id}}";
+
+
+        // -----------------------------------------
+        // Get quantity
+        // -----------------------------------------
+
+        const quantityInput =
+            document.getElementById(
+                "quantity"
+            );
+
+
+        const quantity =
+            Number(
+                quantityInput?.value || 1
+            );
+
+
+        // -----------------------------------------
+        // Validate quantity
+        // -----------------------------------------
+
+        if (
+            !Number.isInteger(quantity) ||
+            quantity <= 0
+        ) {
+
+            showNotification("error", "Please enter a valid quantity.");
+
+            return;
+        }
+
+
+        // -----------------------------------------
+        // Prevent multiple clicks
+        // -----------------------------------------
+
+        if (
+            addToCartButton.dataset.loading ===
+            "true"
+        ) {
+            return;
+        }
+
+
+        addToCartButton.dataset.loading =
+            "true";
+
+
+        addToCartButton.disabled = true;
+
+
+        // -----------------------------------------
+        // Save original button
+        // -----------------------------------------
+
+        const originalHTML =
+            addToCartButton.innerHTML;
+
+
+        try {
+
+            // -----------------------------------------
+            // API CALL
+            // -----------------------------------------
+
+            const response =
+                await fetch(
+                    `/cart/add?productId=${encodeURIComponent(productId)}&variantId=${encodeURIComponent(selectedVariantId)}&quantity=${quantity}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            // -----------------------------------------
+            // ERROR
+            // -----------------------------------------
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                showNotification("error", data.message || "Unable to add product to cart");
+
+                addToCartButton.innerHTML =
+                    originalHTML;
+
+                return;
+            }
+
+            showNotification("success", data.message || "Product added to cart");
+
+
+            // -----------------------------------------
+            // GET ACTUAL CART QUANTITY
+            // -----------------------------------------
+
+            let currentQuantity =
+                quantity;
+
+
+            if (
+                data.cart &&
+                data.cart.items
+            ) {
+
+                const cartItem =
+                    data.cart.items.find(
+                        item =>
+                            item.variant_id
+                                .toString() ===
+                            selectedVariantId
+                                .toString()
+                    );
+
+
+                if (cartItem) {
+
+                    currentQuantity =
+                        cartItem.quantity;
+
+                }
+
+            }
+
+
+            // -----------------------------------------
+            // CHANGE BUTTON
+            // -----------------------------------------
+
+            addToCartButton.innerHTML = `
+                <span
+                    class="material-symbols-outlined text-[20px]"
+                >
+                    shopping_bag
+                </span>
+
+                Added (${currentQuantity})
+            `;
+
+
+            // -----------------------------------------
+            // Store quantity
+            // -----------------------------------------
+
+            addToCartButton.dataset.quantity =
+                currentQuantity;
+
+
+        } catch (error) {
+
+            console.error(
+                "Product detail add cart error:",
+                error
+            );
+
+
+            showNotification("error", "Unable to add product to cart");
+
+
+        } finally {
+
+            addToCartButton.disabled =
+                false;
+
+            addToCartButton.dataset.loading =
+                "false";
+
+        }
 
     }
 

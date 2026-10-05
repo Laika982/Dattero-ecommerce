@@ -1,91 +1,180 @@
 {{>user/header}}
 <main class="max-w-max-width mx-auto px-container-padding py-section-gap-mobile md:py-[80px]">
-<div class="max-w-max-width mx-auto px-container-padding mt-6">
-{{> user/notification}}
-</div>
 
-<div class="flex flex-col lg:flex-row gap-8 relative">
+        <div class="max-w-max-width mx-auto px-container-padding mt-6">
+        {{> user/notification}}
+    </div>
+<div class="flex flex-col lg:flex-row gap-8 relative items-start">
 <!-- Left Column: Checkout Forms -->
 <div class="w-full lg:w-2/3 flex flex-col gap-8">
-<!-- Contact Information -->
-<section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative">
-<h2 class="font-headline-lg text-[24px] text-ink-black mb-6">Contact Information</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="flex flex-col gap-2 md:col-span-2">
-<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="email">Email Address</label>
-<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="email" placeholder="jane.doe@example.com" type="email">
-</div>
-</div>
+<!-- Contact / Delivery Address Section -->
+<section class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 apple-shadow relative transition-all duration-300" id="deliveryAddressSection">
+  <input type="hidden" name="selectedAddressId" id="selectedAddressId" value="{{#if selectedAddress}}{{selectedAddress._id}}{{/if}}">
+  
+  <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-[18px] text-on-surface-variant">location_on</span>
+      <span class="font-label-md text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Deliver to:</span>
+    </div>
+    <button type="button" id="openAddressModalBtn" class="text-xs md:text-sm font-semibold text-accent-blue hover:underline hover:opacity-80 transition-opacity cursor-pointer flex items-center gap-1 group">
+      <span>Change</span>
+      <span class="material-symbols-outlined text-[15px] group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+    </button>
+  </div>
+
+  <!-- Active Selected Address Content -->
+  <div id="selectedAddressContent" class="pt-4 {{#unless selectedAddress}}hidden{{/unless}}">
+    <div class="flex items-center flex-wrap gap-2">
+      <span id="displayFullName" class="font-headline-lg text-[16px] md:text-[18px] font-bold text-ink-black">{{selectedAddress.fullName}}</span>
+      <span id="displayLabel" class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold tracking-wide uppercase bg-secondary-container text-on-secondary-container">
+        {{#if selectedAddress.addressLabel}}{{selectedAddress.addressLabel}}{{else}}HOME{{/if}}
+      </span>
+      <span id="displayDefaultBadge" class="{{#unless selectedAddress.isDefault}}hidden{{/unless}} inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#EBF3FE] text-accent-blue border border-accent-blue/20">
+        DEFAULT
+      </span>
+    </div>
+    <p id="displayAddress" class="font-body-md text-sm text-on-surface-variant leading-relaxed mt-1.5">
+      {{selectedAddress.street}}{{#if selectedAddress.suite}}, {{selectedAddress.suite}}{{/if}}, {{selectedAddress.city}}, {{selectedAddress.state}} {{selectedAddress.zip}}, {{selectedAddress.country}}
+    </p>
+    <div class="flex items-center gap-1.5 text-sm font-medium text-ink-black mt-2.5">
+      <span class="material-symbols-outlined text-[16px] text-on-surface-variant">call</span>
+      <span id="displayPhone">{{selectedAddress.phone}}</span>
+    </div>
+  </div>
+
+  <!-- Empty State when no address exists -->
+  <div id="noAddressContent" class="pt-4 {{#if selectedAddress}}hidden{{/if}}">
+    <div class="p-4 rounded-xl bg-surface-gray/60 border border-dashed border-outline-variant/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-secondary-container/40 flex items-center justify-center text-primary shrink-0">
+          <span class="material-symbols-outlined text-[20px]">add_location</span>
+        </div>
+        <div>
+          <p class="text-sm font-bold text-ink-black">No Delivery Address</p>
+          <p class="text-xs text-on-surface-variant">Please choose or add an address to continue checkout.</p>
+        </div>
+      </div>
+      <button type="button" id="selectAddressEmptyBtn" class="px-4 py-2 bg-ink-black text-white text-xs font-semibold rounded-lg hover:bg-ink-black/90 active:scale-95 transition-all shadow-sm cursor-pointer">
+        Select Address
+      </button>
+    </div>
+  </div>
 </section>
 <!-- Shipping Address -->
-<section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative">
-<h2 class="font-headline-lg text-[24px] text-ink-black mb-6">Shipping Address</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="firstName">First Name</label>
-<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="firstName" type="text">
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="lastName">Last Name</label>
-<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="lastName" type="text">
-</div>
-<div class="flex flex-col gap-2 md:col-span-2">
-<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="address">Address</label>
-<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="address" placeholder="Street address, apartment, suite, etc." type="text">
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="city">City</label>
-<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="city" type="text">
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="state">State / Province</label>
-<select class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%231D1D1F%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[position:right_1rem_center] bg-[length:1.2em_1.2em]" id="state">
-<option value="">Select State</option>
-<option value="NY">New York</option>
-<option value="CA">California</option>
-</select>
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="zip">ZIP / Postal Code</label>
-<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="zip" type="text">
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md text-on-surface-variant uppercase" for="phone">Phone</label>
-<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" id="phone" type="tel">
-</div>
-</div>
+<section class="bg-surface-container-lowest p-6 md:p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative flex flex-col gap-6">
+  <div class="flex items-center justify-between border-b border-outline-variant/20 pb-4">
+    <div class="flex items-center gap-3">
+      <h2 class="font-headline-lg text-[22px] text-ink-black font-bold tracking-tight">Your Items in Order</h2>
+      <span class="px-2.5 py-0.5 rounded-full bg-surface-gray border border-outline-variant/30 text-on-surface-variant font-label-md text-[11px] font-semibold tracking-wide">2 Items</span>
+    </div>
+    <span class="text-xs text-on-surface-variant hidden sm:inline">Review &amp; Edit</span>
+  </div>
+
+  <div class="flex flex-col gap-6">
+    <!-- Product 1 -->
+    <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 pb-6 border-b border-outline-variant/20">
+      <!-- Product Image -->
+      <div class="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-outline-variant/20 flex-shrink-0 relative">
+        <img class="w-full h-full object-cover" data-alt="Classic Medjool Dates &amp; Dark Chocolate Burfi" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQPe6yFHwkU43cy6MYVCBsEqjR37ID47f6Fj-cyR71kPQciFmSFhijtqsKj4RyvfhxV6-ZGs1UbeMXvo28L2REt6Ysib1WmDxXt5yPklsnqjT8Rtu8a5Z0K2x5tIzHfiJ-JF1szGFBpWUmzJXAQDH8dMknKdk1gFygMkodZO4m_yJ3uIkB8K57VD_bgH4yzrXQnPVtTRq0Fzr0dA6lsAbXRw_I1bgj8ARNgVjzIJcWfeDu4ICUtet6CM30WTsbU8mBGOAOJ6bFapU" alt="Classic Dark Chocolate Protein Burfi">
+      </div>
+      <!-- Product Details & Controls -->
+      <div class="flex-1 flex flex-col justify-between min-w-0 gap-2">
+        <div>
+          <div class="flex items-start justify-between gap-2">
+            <h3 class="font-headline-lg text-[16px] font-semibold text-ink-black leading-snug">Classic Medjool Dates &amp; Dark Chocolate Burfi</h3>
+            <span class="font-headline-lg text-[16px] font-bold text-ink-black whitespace-nowrap">$48.00</span>
+          </div>
+          <p class="font-body-md text-[12px] text-on-surface-variant mt-0.5">Box of 12 (500g) • Artisanal Gold Edition</p>
+          <!-- Rating Row -->
+          <div class="flex items-center gap-1.5 mt-1.5">
+            <div class="flex items-center text-[#c89b3c] text-[13px]">
+              <span class="material-symbols-outlined text-[15px] leading-none" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="font-label-md text-[12px] font-bold ml-1">4.9</span>
+            </div>
+            <span class="text-[11px] text-on-surface-variant">(128 reviews)</span>
+          </div>
+          <!-- Price & Discount -->
+          <div class="flex items-center gap-2 mt-1.5">
+            <span class="text-xs text-on-surface-variant">$54.00</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 bg-[#fbd9c4] text-[#775d4d] rounded-full uppercase tracking-wider">-11% OFF</span>
+          </div>
+        </div>
+        <!-- Quantity Selector & Actions -->
+        <div class="flex items-center justify-between pt-2">
+          <div class="flex items-center border border-outline-variant/40 rounded-lg overflow-hidden bg-surface-gray/50">
+            <button type="button" class="w-7 h-7 flex items-center justify-center hover:bg-surface-variant text-ink-black transition-colors text-sm font-semibold">-</button>
+            <span class="w-8 text-center text-xs font-semibold text-ink-black">2</span>
+            <button type="button" class="w-7 h-7 flex items-center justify-center hover:bg-surface-variant text-ink-black transition-colors text-sm font-semibold">+</button>
+          </div>
+          <button type="button" class="flex items-center gap-1 text-xs text-on-surface-variant hover:text-[#ba1a1a] transition-colors py-1 px-2">
+            <span class="material-symbols-outlined text-[16px]">delete</span>
+            <span class="">Remove</span>
+          </button>
+        </div>
+        <!-- Delivery Info -->
+        <div class="flex items-center gap-1.5 text-[11px] text-[#0071E3] font-medium pt-1 border-t border-outline-variant/10 mt-1">
+          <span class="material-symbols-outlined text-[14px]">bolt</span>
+          <span class="">Standard Delivery: Arrives in 2-4 business days | Free Shipping eligible</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 pb-2">
+      <!-- Product Image -->
+      <div class="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-outline-variant/20 flex-shrink-0 relative">
+        <img class="w-full h-full object-cover" data-alt="Saffron Almond Elegance Burfi" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArYMI0U5PoilRR0XJh0U4Y6fVwOonWYHJEjBw6qGA4sWFeVK09PshO5mjAMyNBv3vH6xYe4zayxbr4rAtdmpQs8GAo4wkDEqoFus556ff7kt1vR-AQOf-NpRx4LQ6qtlyya77YVSv1eey3ecyw0zageWb78zFgazKSyZ54hTdRUaPvXjd5Zei5ypioyf9hW6tTmly5JGjTkVx_qihjSVIliraerHjLutLE482_-HXxlx1HWCHKVrk1tXLTsRay7ukcLeT917SzuIM" alt="Saffron Almond Elegance">
+      </div>
+      <!-- Product Details & Controls -->
+      <div class="flex-1 flex flex-col justify-between min-w-0 gap-2">
+        <div>
+          <div class="flex items-start justify-between gap-2">
+            <h3 class="font-headline-lg text-[16px] font-semibold text-ink-black leading-snug">Saffron Almond Elegance Pure Silver Foil</h3>
+            <span class="font-headline-lg text-[16px] font-bold text-ink-black whitespace-nowrap">$28.00</span>
+          </div>
+          <p class="font-body-md text-[12px] text-on-surface-variant mt-0.5">Box of 6 (250g) • Kashmir Lacha Saffron</p>
+          <!-- Rating Row -->
+          <div class="flex items-center gap-1.5 mt-1.5">
+            <div class="flex items-center text-[#c89b3c] text-[13px]">
+              <span class="material-symbols-outlined text-[15px] leading-none" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="font-label-md text-[12px] font-bold ml-1">5.0</span>
+            </div>
+            <span class="text-[11px] text-on-surface-variant">(94 reviews)</span>
+          </div>
+          <!-- Price & Discount -->
+          <div class="flex items-center gap-2 mt-1.5">
+            <span class="text-xs text-on-surface-variant">$32.00</span>
+            
+          </div>
+        </div>
+        <!-- Quantity Selector & Actions -->
+        <div class="flex items-center justify-between pt-2">
+          <div class="flex items-center border border-outline-variant/40 rounded-lg overflow-hidden bg-surface-gray/50">
+            <button type="button" class="w-7 h-7 flex items-center justify-center hover:bg-surface-variant text-ink-black transition-colors text-sm font-semibold">-</button>
+            <span class="w-8 text-center text-xs font-semibold text-ink-black">1</span>
+            <button type="button" class="w-7 h-7 flex items-center justify-center hover:bg-surface-variant text-ink-black transition-colors text-sm font-semibold">+</button>
+          </div>
+          <button type="button" class="flex items-center gap-1 text-xs text-on-surface-variant hover:text-[#ba1a1a] transition-colors py-1 px-2">
+            <span class="material-symbols-outlined text-[16px]">delete</span>
+            <span class="">Remove</span>
+          </button>
+        </div>
+        <!-- Delivery Info -->
+        <div class="flex items-center gap-1.5 text-[11px] text-[#0071E3] font-medium pt-1 border-t border-outline-variant/10 mt-1">
+          <span class="material-symbols-outlined text-[14px]">bolt</span>
+          <span class="">Standard Delivery: Arrives in 2-4 business days | Free Shipping eligible</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 <!-- Delivery Options -->
-<section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative">
-<h2 class="font-headline-lg text-[24px] text-ink-black mb-6">Delivery Method</h2>
-<div class="flex flex-col gap-4">
-<label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors relative">
-<div class="flex items-center gap-4">
-<input checked="" class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="delivery" type="radio" value="standard">
-<div>
-<span class="block font-label-md text-[16px] text-ink-black">Standard Shipping</span>
-<span class="block font-body-md text-body-md text-on-surface-variant text-sm mt-1">3-5 Business Days</span>
-</div>
-</div>
-<span class="font-label-md text-label-md text-ink-black">Free</span>
-</label>
-<label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors relative">
-<div class="flex items-center gap-4">
-<input class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="delivery" type="radio" value="express">
-<div>
-<span class="block font-label-md text-[16px] text-ink-black">Express Shipping</span>
-<span class="block font-body-md text-body-md text-on-surface-variant text-sm mt-1">1-2 Business Days</span>
-</div>
-</div>
-<span class="font-label-md text-label-md text-ink-black">$15.00</span>
-</label>
-</div>
-</section>
+
 <!-- Payment -->
 <section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative">
 <h2 class="font-headline-lg text-[24px] text-ink-black mb-6">Payment</h2>
 <div class="flex flex-col gap-2 mb-4">
-<label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-t-xl cursor-pointer bg-surface-gray/50">
+{{!-- <label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-t-xl cursor-pointer bg-surface-gray/50">
 <div class="flex items-center gap-4">
 <input checked="" class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="payment" type="radio" value="credit_card">
 <span class="font-label-md text-[16px] text-ink-black">Credit Card</span>
@@ -93,9 +182,9 @@
 <div class="flex gap-2">
 <span class="material-symbols-outlined text-outline">credit_card</span>
 </div>
-</label>
+</label> --}}
 <!-- Credit Card Form -->
-<div class="p-6 border-x border-b border-outline-variant/40 rounded-b-xl bg-surface-container-lowest">
+{{!-- <div class="p-6 border-x border-b border-outline-variant/40 rounded-b-xl bg-surface-container-lowest">
 <div class="grid grid-cols-2 gap-4">
 <div class="col-span-2 flex flex-col gap-2">
 <input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="Card Number" type="text">
@@ -110,17 +199,20 @@
 <input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="Name on Card" type="text">
 </div>
 </div>
-</div>
+</div> --}}
+
+{{!-- COD --}}
 <label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors mt-4">
 <div class="flex items-center gap-4">
 <input class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="payment" type="radio" value="paypal">
-<span class="font-label-md text-[16px] text-ink-black">PayPal</span>
+<span class="font-label-md text-[16px] text-ink-black">COD</span>
 </div>
 <div class="flex gap-2">
 <span class="material-symbols-outlined text-outline">account_balance_wallet</span>
 </div>
 </label>
-<label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors mt-2">
+{{!-- UPI --}}
+{{!-- <label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors mt-2">
 <div class="flex items-center gap-4">
 <input class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="payment" type="radio" value="upi">
 <span class="font-label-md text-[16px] text-ink-black">UPI</span>
@@ -128,7 +220,7 @@
 <div class="flex gap-2">
 <span class="material-symbols-outlined text-outline">qr_code_scanner</span>
 </div>
-</label>
+</label> --}}
 </div>
 </section>
 <div class="flex items-center justify-center gap-2 text-on-surface-variant font-body-md text-body-md mt-6 mb-8">
@@ -138,66 +230,307 @@
 </div>
 <!-- Right Column: Order Summary (Sticky) -->
 <div class="w-full lg:w-1/3">
-<div class="sticky top-28 bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow flex flex-col gap-8">
-<h2 class="font-headline-lg text-[24px] text-ink-black border-b border-outline-variant/20 pb-4">Order Summary</h2>
-<!-- Items -->
-<div class="flex flex-col gap-6 max-h-64 overflow-y-auto pr-2">
-<!-- Item 1 -->
-<div class="flex items-center gap-4">
-<div class="w-16 h-16 rounded-lg overflow-hidden bg-white border border-outline-variant/20 flex-shrink-0 relative">
-<img class="w-full h-full object-cover" data-alt="A close-up, high-key editorial photograph of a dark chocolate protein bar on a cream-colored marble surface. The lighting is soft and natural, emphasizing the rich texture of the chocolate and small embedded nuts. The composition is clean, modern, and appetizing, following a premium quiet luxury aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQPe6yFHwkU43cy6MYVCBsEqjR37ID47f6Fj-cyR71kPQciFmSFhijtqsKj4RyvfhxV6-ZGs1UbeMXvo28L2REt6Ysib1WmDxXt5yPklsnqjT8Rtu8a5Z0K2x5tIzHfiJ-JF1szGFBpWUmzJXAQDH8dMknKdk1gFygMkodZO4m_yJ3uIkB8K57VD_bgH4yzrXQnPVtTRq0Fzr0dA6lsAbXRw_I1bgj8ARNgVjzIJcWfeDu4ICUtet6CM30WTsbU8mBGOAOJ6bFapU">
-<div class="absolute -top-2 -right-2 bg-ink-black text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">2</div>
-</div>
-<div class="flex-grow">
-<h3 class="font-label-md text-[15px] text-ink-black line-clamp-1">Classic Dark Chocolate Protein Burfi</h3>
-<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-0.5">Box of 12</p>
-</div>
-<div class="font-label-md text-[15px] text-ink-black">$48.00</div>
-</div>
-<!-- Item 2 -->
-<div class="flex items-center gap-4">
-<div class="w-16 h-16 rounded-lg overflow-hidden bg-white border border-outline-variant/20 flex-shrink-0 relative">
-<img class="w-full h-full object-cover" data-alt="A top-down, minimalist shot of a golden almond saffron protein square resting on a textured white linen napkin. The lighting is bright and warm, highlighting the saffron strands on top. The mood is sophisticated and organic, fitting a high-end wellness brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArYMI0U5PoilRR0XJh0U4Y6fVwOonWYHJEjBw6qGA4sWFeVK09PshO5mjAMyNBv3vH6xYe4zayxbr4rAtdmpQs8GAo4wkDEqoFus556ff7kt1vR-AQOf-NpRx4LQ6qtlyya77YVSv1eey3ecyw0zageWb78zFgazKSyZ54hTdRUaPvXjd5Zei5ypioyf9hW6tTmly5JGjTkVx_qihjSVIliraerHjLutLE482_-HXxlx1HWCHKVrk1tXLTsRay7ukcLeT917SzuIM">
-<div class="absolute -top-2 -right-2 bg-ink-black text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">1</div>
-</div>
-<div class="flex-grow">
-<h3 class="font-label-md text-[15px] text-ink-black line-clamp-1">Saffron Almond Elegance</h3>
-<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-0.5">Box of 6</p>
-</div>
-<div class="font-label-md text-[15px] text-ink-black">$28.00</div>
-</div>
-</div>
-<!-- Discount Code -->
-<div class="flex gap-2 border-y border-outline-variant/20 py-6">
-<input class="form-input-premium flex-grow rounded-lg px-4 py-2 font-body-md text-body-md text-on-surface" placeholder="Gift card or discount code" type="text">
-<button class="bg-surface-gray text-ink-black border border-outline-variant/40 px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-variant transition-colors">Apply</button>
-</div>
-<!-- Totals -->
-<div class="flex flex-col gap-3">
-<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
-<span>Subtotal</span>
-<span class="text-ink-black">$76.00</span>
-</div>
-<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
-<span>Shipping</span>
-<span class="text-ink-black">Calculated at next step</span>
-</div>
-<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
-<span>Taxes</span>
-<span class="text-ink-black">$6.08</span>
-</div>
-<div class="flex justify-between font-headline-lg text-[24px] text-ink-black mt-4 pt-4 border-t border-outline-variant/20">
-<span>Total</span>
-<span>$82.08</span>
-</div>
-</div>
-<!-- Action -->
-<button class="w-full bg-ink-black text-white font-label-md text-[16px] py-4 rounded-xl hover:bg-ink-black/90 transition-colors mt-2 flex items-center justify-center gap-2">
-                        Place Order
-                        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
-</button>
-</div>
+<div class="sticky bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow flex flex-col gap-8 top-24 top-20"><div class="flex items-center justify-between border-b border-outline-variant/20 pb-4"><h2 class="font-headline-lg text-[20px] font-bold text-ink-black tracking-tight">Order Summary</h2><span class="px-2.5 py-0.5 rounded-full bg-surface-gray border border-outline-variant/30 text-on-surface-variant font-label-md text-[11px] font-semibold tracking-wide">2 Items</span></div><div class="flex flex-col gap-3 py-2 border-b border-outline-variant/20"><button type="button" class="inline-flex items-center gap-2 text-accent-blue hover:opacity-80 transition-opacity text-left group"><span class="material-symbols-outlined text-[18px]">sell</span><span class="font-label-md text-xs font-semibold tracking-wide">View Available Offers</span></button><div class="flex gap-2 items-center w-full mt-1"><input class="form-input-premium flex-1 rounded-lg px-3.5 py-2 font-body-md text-sm text-on-surface" placeholder="Gift card or discount code" type="text"><button type="button" class="bg-surface-gray text-ink-black border border-outline-variant/40 px-4 py-2 rounded-lg font-label-md text-xs font-semibold hover:bg-surface-variant transition-colors flex-shrink-0">Apply</button></div></div><div class="flex flex-col gap-2 py-1"><div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Subtotal</span><span class="font-medium text-ink-black">$76.00</span></div><div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Shipping</span><span class="font-medium text-ink-black">$10.00</span></div><div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Estimated Taxes</span><span class="font-medium text-ink-black">$6.08</span></div><div class="flex justify-between items-baseline pt-4 mt-2 border-t border-outline-variant/20"><span class="font-headline-lg text-[18px] font-bold text-ink-black">Total</span><span class="font-headline-lg text-[24px] font-bold text-ink-black">$82.08</span></div></div><div class="flex flex-col gap-2 mt-1"><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() =&gt; { window.location.href='{{DATA:SCREEN:SCREEN_65}}' }, 1500)" class="w-full bg-ink-black text-white font-label-md text-[15px] font-semibold py-3.5 px-6 rounded-xl hover:bg-ink-black/90 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm">Place Order <span class="material-symbols-outlined text-[18px]">arrow_forward</span></button><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() =&gt; { window.location.href='{{DATA:SCREEN:SCREEN_63}}' }, 1500)" class="w-full text-center text-xs text-on-surface-variant hover:text-ink-black hover:underline py-1.5 transition-colors">Simulate Payment Failure</button></div></div>
 </div>
 </div>
 </main>
-{{>user/footer}}
+
+<!-- Address Selection Modal Popup -->
+<div id="addressModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+  <div id="addressModalContent" class="relative w-full max-w-2xl bg-surface-container-lowest rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.2)] border border-outline-variant/30 flex flex-col max-h-[88vh] transform scale-95 transition-all duration-300 overflow-hidden">
+    
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between px-6 py-5 border-b border-outline-variant/20 bg-surface-container-lowest sticky top-0 z-10">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-secondary-container/50 flex items-center justify-center text-primary">
+          <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+        </div>
+        <div>
+          <h3 class="font-headline-lg text-[18px] md:text-[20px] font-bold text-ink-black tracking-tight">Select Delivery Address</h3>
+          <p class="text-xs text-on-surface-variant">Choose the destination for this order or add a new address</p>
+        </div>
+      </div>
+      <button type="button" id="closeAddressModalBtn" class="w-9 h-9 rounded-full bg-surface-gray hover:bg-surface-variant text-on-surface-variant hover:text-ink-black flex items-center justify-center transition-colors cursor-pointer" aria-label="Close modal">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+
+    <!-- Modal Body (Scrollable address list) -->
+    <div class="overflow-y-auto p-6 space-y-3.5 flex-1" id="modalAddressList">
+      {{#if addresses.length}}
+        <div class="space-y-3" id="addressListCardsContainer">
+          {{#each addresses}}
+          <div class="address-option-card relative p-4 md:p-5 rounded-2xl border-2 transition-all cursor-pointer group flex flex-col justify-between
+                      {{#if (eq this._id ../selectedAddress._id)}}border-primary bg-primary-fixed/15 ring-2 ring-primary/20 is-active{{else}}border-outline-variant/30 hover:border-outline-variant/70 bg-white hover:bg-surface-gray/30{{/if}}"
+               data-id="{{this._id}}"
+               data-fullname="{{this.fullName}}"
+               data-label="{{this.addressLabel}}"
+               data-isdefault="{{#if this.isDefault}}true{{else}}false{{/if}}"
+               data-street="{{this.street}}"
+               data-suite="{{this.suite}}"
+               data-city="{{this.city}}"
+               data-state="{{this.state}}"
+               data-zip="{{this.zip}}"
+               data-country="{{this.country}}"
+               data-phone="{{this.phone}}">
+            
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex items-start gap-3.5">
+                <!-- Custom Radio Indicator -->
+                <div class="mt-0.5">
+                  <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors radio-circle
+                              {{#if (eq this._id ../selectedAddress._id)}}border-primary bg-primary text-white{{else}}border-outline-variant/60 group-hover:border-primary text-transparent{{/if}}">
+                    <span class="material-symbols-outlined text-[13px] check-icon {{#unless (eq this._id ../selectedAddress._id)}}hidden{{/unless}}">check</span>
+                  </div>
+                </div>
+
+                <!-- Address Information -->
+                <div class="space-y-1">
+                  <div class="flex items-center flex-wrap gap-2">
+                    <span class="font-headline-lg text-[15px] font-bold text-ink-black">{{this.fullName}}</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-secondary-container text-on-secondary-container">
+                      {{this.addressLabel}}
+                    </span>
+                    {{#if this.isDefault}}
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#EBF3FE] text-accent-blue border border-accent-blue/20">
+                      Default
+                    </span>
+                    {{/if}}
+                  </div>
+
+                  <p class="text-xs md:text-sm text-on-surface-variant leading-relaxed pt-0.5">
+                    {{this.street}}{{#if this.suite}}, {{this.suite}}{{/if}}, {{this.city}}, {{this.state}} {{this.zip}}, {{this.country}}
+                  </p>
+
+                  <div class="flex items-center gap-1.5 text-xs font-medium text-ink-black pt-1">
+                    <span class="material-symbols-outlined text-[15px] text-on-surface-variant">call</span>
+                    <span>{{this.phone}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick action / badge -->
+              <div class="flex flex-col items-end gap-2 shrink-0">
+                <span class="selected-badge text-[11px] font-bold text-primary {{#unless (eq this._id ../selectedAddress._id)}}hidden{{/unless}} flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">done</span> Selected
+                </span>
+                <a href="/profile/address/edit/{{this._id}}" target="_blank" onclick="event.stopPropagation();" class="text-[11px] font-semibold text-on-surface-variant hover:text-accent-blue transition-colors flex items-center gap-0.5 py-1 px-2 rounded-md hover:bg-surface-gray">
+                  <span class="material-symbols-outlined text-[13px]">edit</span> Edit
+                </a>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      {{else}}
+        <!-- Empty State in Modal -->
+        <div class="py-12 px-4 flex flex-col items-center justify-center text-center">
+          <div class="w-16 h-16 rounded-full bg-secondary-container/40 flex items-center justify-center mb-4 text-primary">
+            <span class="material-symbols-outlined text-[32px]">location_off</span>
+          </div>
+          <h4 class="font-headline-lg text-lg font-bold text-ink-black mb-1">No Saved Addresses</h4>
+          <p class="text-sm text-on-surface-variant max-w-sm mb-6">You don't have any saved shipping addresses yet. Add one to complete your order.</p>
+          <a href="/profile/address/add" class="inline-flex items-center gap-2 px-6 py-3 bg-ink-black text-white rounded-full font-label-md text-sm font-semibold hover:bg-ink-black/90 active:scale-95 transition-all shadow-md">
+            <span class="material-symbols-outlined text-[18px]">add</span>
+            Add New Address
+          </a>
+        </div>
+      {{/if}}
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="px-6 py-4 border-t border-outline-variant/20 bg-surface-gray/50 flex flex-col sm:flex-row items-center justify-between gap-3 sticky bottom-0 z-10">
+      <a href="/profile/address/add" class="inline-flex items-center gap-1.5 text-xs md:text-sm font-semibold text-accent-blue hover:underline py-1.5 transition-colors">
+        <span class="material-symbols-outlined text-[18px]">add_circle</span>
+        Add New Address
+      </a>
+      
+      <div class="flex items-center gap-2.5 w-full sm:w-auto">
+        <button type="button" id="cancelAddressModalBtn" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl border border-outline-variant/40 text-on-surface font-label-md text-xs md:text-sm font-semibold hover:bg-surface-variant transition-colors cursor-pointer">
+          Cancel
+        </button>
+        {{#if addresses.length}}
+        <button type="button" id="confirmAddressSelectionBtn" class="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-ink-black text-white font-label-md text-xs md:text-sm font-semibold hover:bg-ink-black/90 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-[18px]">check</span>
+          Deliver to this Address
+        </button>
+        {{/if}}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const addressModal = document.getElementById('addressModal');
+  const addressModalContent = document.getElementById('addressModalContent');
+  const openAddressModalBtn = document.getElementById('openAddressModalBtn');
+  const selectAddressEmptyBtn = document.getElementById('selectAddressEmptyBtn');
+  const closeAddressModalBtn = document.getElementById('closeAddressModalBtn');
+  const cancelAddressModalBtn = document.getElementById('cancelAddressModalBtn');
+  const confirmAddressSelectionBtn = document.getElementById('confirmAddressSelectionBtn');
+
+  // Address card DOM elements on the checkout page
+  const selectedAddressContent = document.getElementById('selectedAddressContent');
+  const noAddressContent = document.getElementById('noAddressContent');
+  const selectedAddressIdInput = document.getElementById('selectedAddressId');
+  const displayFullName = document.getElementById('displayFullName');
+  const displayLabel = document.getElementById('displayLabel');
+  const displayDefaultBadge = document.getElementById('displayDefaultBadge');
+  const displayAddress = document.getElementById('displayAddress');
+  const displayPhone = document.getElementById('displayPhone');
+  const deliveryAddressSection = document.getElementById('deliveryAddressSection');
+
+  let activeCard = document.querySelector('.address-option-card.is-active') || document.querySelector('.address-option-card');
+
+  function openModal() {
+    if (!addressModal) return;
+    addressModal.classList.remove('opacity-0', 'pointer-events-none');
+    addressModal.classList.add('opacity-100', 'pointer-events-auto');
+    addressModalContent.classList.remove('scale-95');
+    addressModalContent.classList.add('scale-100');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (!addressModal) return;
+    addressModal.classList.remove('opacity-100', 'pointer-events-auto');
+    addressModal.classList.add('opacity-0', 'pointer-events-none');
+    addressModalContent.classList.remove('scale-100');
+    addressModalContent.classList.add('scale-95');
+    document.body.style.overflow = '';
+  }
+
+  if (openAddressModalBtn) {
+    openAddressModalBtn.addEventListener('click', openModal);
+  }
+  if (selectAddressEmptyBtn) {
+    selectAddressEmptyBtn.addEventListener('click', openModal);
+  }
+  if (closeAddressModalBtn) {
+    closeAddressModalBtn.addEventListener('click', closeModal);
+  }
+  if (cancelAddressModalBtn) {
+    cancelAddressModalBtn.addEventListener('click', closeModal);
+  }
+
+  // Close modal when clicking backdrop
+  if (addressModal) {
+    addressModal.addEventListener('click', (e) => {
+      if (e.target === addressModal) {
+        closeModal();
+      }
+    });
+  }
+
+  // Close modal on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && addressModal && !addressModal.classList.contains('pointer-events-none')) {
+      closeModal();
+    }
+  });
+
+  // Card selection in modal
+  const addressCards = document.querySelectorAll('.address-option-card');
+
+  function selectCard(card) {
+    addressCards.forEach(c => {
+      c.classList.remove('border-primary', 'bg-primary-fixed/15', 'ring-2', 'ring-primary/20', 'is-active');
+      c.classList.add('border-outline-variant/30', 'bg-white');
+      
+      const radio = c.querySelector('.radio-circle');
+      if (radio) {
+        radio.classList.remove('border-primary', 'bg-primary', 'text-white');
+        radio.classList.add('border-outline-variant/60', 'text-transparent');
+      }
+
+      const check = c.querySelector('.check-icon');
+      if (check) check.classList.add('hidden');
+
+      const badge = c.querySelector('.selected-badge');
+      if (badge) badge.classList.add('hidden');
+    });
+
+    card.classList.add('border-primary', 'bg-primary-fixed/15', 'ring-2', 'ring-primary/20', 'is-active');
+    card.classList.remove('border-outline-variant/30', 'bg-white');
+
+    const radio = card.querySelector('.radio-circle');
+    if (radio) {
+      radio.classList.add('border-primary', 'bg-primary', 'text-white');
+      radio.classList.remove('border-outline-variant/60', 'text-transparent');
+    }
+
+    const check = card.querySelector('.check-icon');
+    if (check) check.classList.remove('hidden');
+
+    const badge = card.querySelector('.selected-badge');
+    if (badge) badge.classList.remove('hidden');
+
+    activeCard = card;
+  }
+
+  addressCards.forEach(card => {
+    card.addEventListener('click', () => {
+      selectCard(card);
+    });
+
+    card.addEventListener('dblclick', () => {
+      selectCard(card);
+      applySelectedAddress();
+    });
+  });
+
+  function applySelectedAddress() {
+    if (!activeCard) {
+      closeModal();
+      return;
+    }
+
+    const { id, fullname, label, isdefault, street, suite, city, state, zip, country, phone } = activeCard.dataset;
+
+    if (selectedAddressIdInput) selectedAddressIdInput.value = id || '';
+    if (displayFullName) displayFullName.textContent = fullname || '';
+    if (displayLabel) displayLabel.textContent = label || 'HOME';
+    if (displayPhone) displayPhone.textContent = phone || '';
+
+    // Format address string
+    let formatted = street || '';
+    if (suite && suite.trim() !== '') {
+      formatted += `, ${suite}`;
+    }
+    if (city) formatted += `, ${city}`;
+    if (state || zip) formatted += `, ${state || ''} ${zip || ''}`.trim();
+    if (country) formatted += `, ${country}`;
+
+    if (displayAddress) displayAddress.textContent = formatted;
+
+    if (displayDefaultBadge) {
+      if (isdefault === 'true') {
+        displayDefaultBadge.classList.remove('hidden');
+      } else {
+        displayDefaultBadge.classList.add('hidden');
+      }
+    }
+
+    if (selectedAddressContent) selectedAddressContent.classList.remove('hidden');
+    if (noAddressContent) noAddressContent.classList.add('hidden');
+
+    // Subtle highlight feedback on address card
+    if (deliveryAddressSection) {
+      deliveryAddressSection.classList.add('ring-2', 'ring-primary', 'transition-all');
+      setTimeout(() => {
+        deliveryAddressSection.classList.remove('ring-2', 'ring-primary');
+      }, 900);
+    }
+
+    closeModal();
+  }
+
+  if (confirmAddressSelectionBtn) {
+    confirmAddressSelectionBtn.addEventListener('click', applySelectedAddress);
+  }
+});
+</script>
+
+{{> user/footer}}

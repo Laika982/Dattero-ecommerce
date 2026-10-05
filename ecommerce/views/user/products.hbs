@@ -549,19 +549,36 @@
 
                                 <!-- ADD BUTTON -->
 
-                                <button
-                                    type="button"
-                                    onclick="event.preventDefault(); event.stopPropagation();"
-                                    class="flex items-center gap-1 text-sm"
-                                >
+<button
+    type="button"
+    data-product-id="{{_id}}"
+    data-variant-id="{{defaultVariantId}}"
+    data-stock="{{defaultVariantStock}}"
+    onclick="addListingProductToCart(this, event)"
+    class="group inline-flex items-center gap-1.5
+           px-4 py-2
+           rounded-full
+           border border-ink-black/20
+           text-sm font-medium text-ink-black
+           transition-all duration-300 ease-out
+           hover:bg-ink-black
+           hover:text-white
+           hover:border-ink-black
+           hover:shadow-md
+           active:scale-95"
+>
+    <span class="listing-add-text">
+        Add
+    </span>
 
-                                    Add
-
-                                    <span class="material-symbols-outlined text-[18px]">
-                                        add
-                                    </span>
-
-                                </button>
+    <span
+        class="material-symbols-outlined text-[18px]
+               transition-transform duration-300
+               group-hover:rotate-90 listing-add-icon"
+    >
+        add
+    </span>
+</button>
 
                             </div>
 
@@ -1106,6 +1123,160 @@
             "overflow-y-auto"
         );
 
+    }
+
+</script>
+
+<script>
+
+    // =====================================================
+    // ADD PRODUCT FROM LISTING PAGE
+    // =====================================================
+
+    async function addListingProductToCart(button, event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const productId =
+            button.dataset.productId;
+
+        const variantId =
+            button.dataset.variantId;
+
+        const stock =
+            Number(button.dataset.stock || 0);
+
+        // -----------------------------------------
+        // Validate variant
+        // -----------------------------------------
+
+        if (!variantId) {
+
+            showNotification("error", "Please select a variant from the product page.");
+
+            return;
+        }
+
+        // -----------------------------------------
+        // Validate stock
+        // -----------------------------------------
+
+        if (stock <= 0) {
+
+            showNotification("error", "This product is out of stock.");
+
+            return;
+        }
+
+        // -----------------------------------------
+        // Prevent multiple clicks
+        // -----------------------------------------
+
+        if (button.dataset.loading === "true") {
+            return;
+        }
+
+        button.dataset.loading = "true";
+
+        const originalHTML =
+            button.innerHTML;
+
+        button.disabled = true;
+
+        try {
+
+            // -----------------------------------------
+            // ADD TO CART API
+            // -----------------------------------------
+
+            const response = await fetch(
+                `/cart/add?productId=${encodeURIComponent(productId)}&variantId=${encodeURIComponent(variantId)}&quantity=1`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+            const data =
+                await response.json();
+
+            // -----------------------------------------
+            // ERROR
+            // -----------------------------------------
+
+            if (!response.ok || !data.success) {
+
+                showNotification("error", data.message || "Unable to add product to cart");
+
+                button.innerHTML =
+                    originalHTML;
+
+                return;
+            }
+
+            showNotification("success", data.message || "Product added to cart");
+
+            // -----------------------------------------
+            // FIND CURRENT QUANTITY
+            // -----------------------------------------
+
+            let currentQuantity = 1;
+
+            if (data.cart && data.cart.items) {
+
+                const cartItem =
+                    data.cart.items.find(
+                        item =>
+                            item.variant_id
+                                .toString() ===
+                            variantId.toString()
+                    );
+
+                if (cartItem) {
+                    currentQuantity =
+                        cartItem.quantity;
+                }
+            }
+
+            // -----------------------------------------
+            // CHANGE ADD BUTTON
+            // -----------------------------------------
+
+            button.innerHTML = `
+                <span class="listing-cart-quantity">
+                    ${currentQuantity}
+                </span>
+
+                <span
+                    class="material-symbols-outlined text-[18px]"
+                >
+                    shopping_bag
+                </span>
+            `;
+
+            button.dataset.quantity =
+                currentQuantity;
+
+        } catch (error) {
+
+            console.error(
+                "Listing add cart error:",
+                error
+            );
+
+            showNotification("error", "Unable to add product to cart");
+
+        } finally {
+
+            button.disabled = false;
+
+            button.dataset.loading =
+                "false";
+        }
     }
 
 </script>

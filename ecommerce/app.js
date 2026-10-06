@@ -14,6 +14,7 @@ import userProfileRouter from "./routes/user/profileRouter.js";
 import addressRouter from "./routes/user/addressRouter.js";
 import cartRouter from "./routes/user/cartRouter.js"
 import checkoutRouter from "./routes/user/checkoutRouter.js"
+import orderRouter from "./routes/user/orderRouter.js"
 import adminRouter from "./routes/admin/authRouter.js";
 import categoryRouter from "./routes/admin/categoryRouter.js";
 import productRouter from "./routes/admin/productRouter.js";
@@ -152,6 +153,7 @@ app.use("/profile",userProfileRouter);
 app.use("/profile/address", addressRouter);
 app.use("/cart", cartRouter)
 app.use("/checkout", checkoutRouter)
+app.use("/order", orderRouter)
 app.use("/admin", adminRouter);
 app.use("/admin/category", categoryRouter);
 app.use("/admin/customer", customerRouter);

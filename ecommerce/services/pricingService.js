@@ -10,7 +10,6 @@ export const calculateItemPrice = (variant) => {
   return variant.regular_price;
 };
 
-
 export const calculateCartTotals = (items) => {
   let subtotal = 0;
 
@@ -25,11 +24,7 @@ export const calculateCartTotals = (items) => {
 
   const shipping = subtotal >= 1000 ? 0 : 50;
 
-  const finalAmount =
-    subtotal -
-    discount +
-    tax +
-    shipping;
+  const finalAmount = subtotal - discount + tax + shipping;
 
   return {
     subtotal,

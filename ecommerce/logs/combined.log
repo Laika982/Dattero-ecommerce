@@ -12374,3 +12374,259 @@
 {"level":"info","message":"GET /public/js/main.js 404 156 - 3.622 ms","timestamp":"2026-10-05 23:09:43"}
 {"level":"info","message":"Server is running in development mode on port 3001","timestamp":"2026-10-05 23:13:14"}
 {"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-05 23:13:14"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-05 23:13:17"}
+{"level":"info","message":"Server is running in development mode on port 3001","timestamp":"2026-10-05 23:13:17"}
+{"level":"info","message":"GET /checkout 200 59609 - 75.513 ms","timestamp":"2026-10-05 23:15:05"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 10.112 ms","timestamp":"2026-10-05 23:15:05"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 9.228 ms","timestamp":"2026-10-05 23:15:05"}
+{"level":"info","message":"GET /checkout 200 59609 - 29.064 ms","timestamp":"2026-10-05 23:15:08"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.127 ms","timestamp":"2026-10-05 23:15:08"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.099 ms","timestamp":"2026-10-05 23:15:08"}
+{"level":"info","message":"GET /products 200 72289 - 41.988 ms","timestamp":"2026-10-05 23:17:51"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 4.008 ms","timestamp":"2026-10-05 23:17:51"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.400 ms","timestamp":"2026-10-05 23:17:51"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 09:58:25"}
+{"level":"info","message":"GET / 304 - - 83.570 ms","timestamp":"2026-10-06 09:59:52"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 12.000 ms","timestamp":"2026-10-06 09:59:52"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 11.201 ms","timestamp":"2026-10-06 09:59:52"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 5.866 ms","timestamp":"2026-10-06 09:59:52"}
+{"level":"info","message":"GET /favicon.ico 404 150 - 8.405 ms","timestamp":"2026-10-06 09:59:54"}
+{"level":"info","message":"GET / 304 - - 20.449 ms","timestamp":"2026-10-06 09:59:56"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.013 ms","timestamp":"2026-10-06 09:59:56"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.968 ms","timestamp":"2026-10-06 09:59:56"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.738 ms","timestamp":"2026-10-06 09:59:56"}
+{"level":"info","message":"GET /admin/login 302 35 - 13.336 ms","timestamp":"2026-10-06 09:59:58"}
+{"level":"info","message":"GET /admin 200 32536 - 13.365 ms","timestamp":"2026-10-06 09:59:58"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 19.528 ms","timestamp":"2026-10-06 09:59:58"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 16.799 ms","timestamp":"2026-10-06 09:59:58"}
+{"level":"info","message":"GET /images/admin/default-avatar.jpg 404 170 - 16.955 ms","timestamp":"2026-10-06 09:59:58"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 4.202 ms","timestamp":"2026-10-06 09:59:58"}
+{"level":"info","message":"GET /profile 302 35 - 4.990 ms","timestamp":"2026-10-06 12:11:32"}
+{"level":"info","message":"GET /admin/customer/customers 302 41 - 6.143 ms","timestamp":"2026-10-06 12:11:32"}
+{"level":"info","message":"GET /admin/login 200 16625 - 8.900 ms","timestamp":"2026-10-06 12:11:32"}
+{"level":"info","message":"GET /login 200 31233 - 17.111 ms","timestamp":"2026-10-06 12:11:32"}
+{"level":"info","message":"GET /favicon.ico 404 150 - 1.406 ms","timestamp":"2026-10-06 12:11:33"}
+{"level":"info","message":"GET /login 200 31233 - 3.071 ms","timestamp":"2026-10-06 12:19:33"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 1.845 ms","timestamp":"2026-10-06 12:19:33"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 1.056 ms","timestamp":"2026-10-06 12:19:33"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 0.928 ms","timestamp":"2026-10-06 12:19:33"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:24:09"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:50:19"}
+{"level":"info","message":"GET / 304 - - 46.800 ms","timestamp":"2026-10-06 12:50:37"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 10.865 ms","timestamp":"2026-10-06 12:50:37"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 10.096 ms","timestamp":"2026-10-06 12:50:37"}
+{"level":"info","message":"GET /cart 200 40775 - 40.023 ms","timestamp":"2026-10-06 12:50:39"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 9.283 ms","timestamp":"2026-10-06 12:50:39"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 8.890 ms","timestamp":"2026-10-06 12:50:39"}
+{"level":"info","message":"GET /checkout 500 784 - 17.524 ms","timestamp":"2026-10-06 12:50:42"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:50:59"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:51:02"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:51:06"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:51:13"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:51:16"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:51:21"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:51:25"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:51:37"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:51:42"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:51:46"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:51:50"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:51:55"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:52:33"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:52:36"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:55:47"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:55:56"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:56:48"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:56:52"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:57:15"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:57:21"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 12:57:45"}
+{"level":"info","message":"GET /cart 200 40775 - 73.902 ms","timestamp":"2026-10-06 12:57:49"}
+{"level":"info","message":"GET /cart 200 40775 - 25.481 ms","timestamp":"2026-10-06 12:57:50"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.241 ms","timestamp":"2026-10-06 12:57:50"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 7.367 ms","timestamp":"2026-10-06 12:57:50"}
+{"level":"info","message":"GET /checkout 200 59609 - 24.889 ms","timestamp":"2026-10-06 12:57:51"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 3.904 ms","timestamp":"2026-10-06 12:57:51"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 4.736 ms","timestamp":"2026-10-06 12:57:51"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:00:53"}
+{"level":"info","message":"GET /checkout 200 57938 - 80.056 ms","timestamp":"2026-10-06 13:03:07"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 10.041 ms","timestamp":"2026-10-06 13:03:07"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 8.189 ms","timestamp":"2026-10-06 13:03:07"}
+{"level":"info","message":"GET /checkout 200 59609 - 28.948 ms","timestamp":"2026-10-06 13:04:13"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.772 ms","timestamp":"2026-10-06 13:04:13"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.517 ms","timestamp":"2026-10-06 13:04:13"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:05:14"}
+{"level":"info","message":"GET /checkout 500 1529 - 38.745 ms","timestamp":"2026-10-06 13:07:46"}
+{"level":"info","message":"GET /cart 200 40775 - 52.356 ms","timestamp":"2026-10-06 13:08:30"}
+{"level":"info","message":"GET /checkout 500 1529 - 12.371 ms","timestamp":"2026-10-06 13:08:31"}
+{"level":"info","message":"GET /checkout 200 56340 - 29.356 ms","timestamp":"2026-10-06 13:09:08"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 10.912 ms","timestamp":"2026-10-06 13:09:08"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 9.558 ms","timestamp":"2026-10-06 13:09:08"}
+{"level":"info","message":"GET /checkout 200 59609 - 28.255 ms","timestamp":"2026-10-06 13:09:30"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.589 ms","timestamp":"2026-10-06 13:09:30"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.409 ms","timestamp":"2026-10-06 13:09:30"}
+{"level":"info","message":"GET /checkout 200 55775 - 21.979 ms","timestamp":"2026-10-06 13:16:26"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.834 ms","timestamp":"2026-10-06 13:16:26"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 8.581 ms","timestamp":"2026-10-06 13:16:26"}
+{"level":"info","message":"GET /checkout 200 55748 - 22.001 ms","timestamp":"2026-10-06 13:17:58"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.124 ms","timestamp":"2026-10-06 13:17:58"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 4.764 ms","timestamp":"2026-10-06 13:17:58"}
+{"level":"info","message":"GET /checkout 200 55754 - 30.556 ms","timestamp":"2026-10-06 13:23:02"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 9.339 ms","timestamp":"2026-10-06 13:23:02"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 8.057 ms","timestamp":"2026-10-06 13:23:02"}
+{"level":"info","message":"GET /checkout 200 57460 - 21.982 ms","timestamp":"2026-10-06 13:28:50"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 9.038 ms","timestamp":"2026-10-06 13:28:50"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.326 ms","timestamp":"2026-10-06 13:28:50"}
+{"level":"info","message":"PATCH /cart/6ab109a482900730623a534e/decrease 200 64 - 16.544 ms","timestamp":"2026-10-06 13:28:53"}
+{"level":"info","message":"GET /checkout 200 59345 - 26.079 ms","timestamp":"2026-10-06 13:28:53"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.562 ms","timestamp":"2026-10-06 13:28:53"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.145 ms","timestamp":"2026-10-06 13:28:53"}
+{"level":"info","message":"PATCH /cart/6ab109a482900730623a534e/decrease 200 64 - 12.076 ms","timestamp":"2026-10-06 13:28:55"}
+{"level":"info","message":"GET /checkout 200 59345 - 22.347 ms","timestamp":"2026-10-06 13:28:55"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.890 ms","timestamp":"2026-10-06 13:28:55"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.790 ms","timestamp":"2026-10-06 13:28:55"}
+{"level":"info","message":"PATCH /cart/6ab109a482900730623a534e/decrease 200 64 - 10.619 ms","timestamp":"2026-10-06 13:28:56"}
+{"level":"info","message":"GET /checkout 200 59344 - 24.064 ms","timestamp":"2026-10-06 13:28:56"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 6.924 ms","timestamp":"2026-10-06 13:28:56"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.421 ms","timestamp":"2026-10-06 13:28:56"}
+{"level":"info","message":"DELETE /cart/6ab109a482900730623a534e 200 52 - 11.366 ms","timestamp":"2026-10-06 13:29:00"}
+{"level":"info","message":"GET /checkout 302 34 - 11.647 ms","timestamp":"2026-10-06 13:29:00"}
+{"level":"info","message":"GET /cart 200 31049 - 17.425 ms","timestamp":"2026-10-06 13:29:00"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 5.558 ms","timestamp":"2026-10-06 13:29:00"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 4.727 ms","timestamp":"2026-10-06 13:29:00"}
+{"level":"info","message":"GET /products 304 - - 32.619 ms","timestamp":"2026-10-06 13:29:04"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.466 ms","timestamp":"2026-10-06 13:29:04"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 9.426 ms","timestamp":"2026-10-06 13:29:04"}
+{"level":"info","message":"GET /products/6ab10ae782900730623a5355 200 60799 - 26.859 ms","timestamp":"2026-10-06 13:29:05"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 3.762 ms","timestamp":"2026-10-06 13:29:05"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.268 ms","timestamp":"2026-10-06 13:29:05"}
+{"level":"info","message":"POST /cart/add?productId=6ab10ae782900730623a5355&variantId=6ab10ae782900730623a5359&quantity=1 200 353 - 190.083 ms","timestamp":"2026-10-06 13:29:07"}
+{"level":"info","message":"GET /cart 200 40801 - 17.624 ms","timestamp":"2026-10-06 13:29:09"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.569 ms","timestamp":"2026-10-06 13:29:09"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.469 ms","timestamp":"2026-10-06 13:29:09"}
+{"level":"info","message":"PATCH /cart/6ab10ae782900730623a5359/increase 400 53 - 7.778 ms","timestamp":"2026-10-06 13:29:11"}
+{"level":"info","message":"GET /products 200 74157 - 29.052 ms","timestamp":"2026-10-06 13:29:16"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.510 ms","timestamp":"2026-10-06 13:29:16"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 9.568 ms","timestamp":"2026-10-06 13:29:16"}
+{"level":"info","message":"GET /products/6ab111d3e98be643dcf02a2c 200 59924 - 21.343 ms","timestamp":"2026-10-06 13:29:18"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.221 ms","timestamp":"2026-10-06 13:29:18"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.436 ms","timestamp":"2026-10-06 13:29:18"}
+{"level":"info","message":"POST /cart/add?productId=6ab111d3e98be643dcf02a2c&variantId=6ab111d3e98be643dcf02a31&quantity=1 200 481 - 16.133 ms","timestamp":"2026-10-06 13:29:20"}
+{"level":"info","message":"POST /cart/add?productId=6ab111d3e98be643dcf02a2c&variantId=6ab530e816e0322c51268c7e&quantity=1 200 609 - 14.158 ms","timestamp":"2026-10-06 13:29:22"}
+{"level":"info","message":"GET /cart 200 51365 - 17.626 ms","timestamp":"2026-10-06 13:29:24"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 9.061 ms","timestamp":"2026-10-06 13:29:24"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 9.194 ms","timestamp":"2026-10-06 13:29:24"}
+{"level":"info","message":"PATCH /cart/6ab111d3e98be643dcf02a31/increase 200 64 - 8.923 ms","timestamp":"2026-10-06 13:29:27"}
+{"level":"info","message":"GET /cart 200 53253 - 24.335 ms","timestamp":"2026-10-06 13:29:27"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.097 ms","timestamp":"2026-10-06 13:29:27"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.295 ms","timestamp":"2026-10-06 13:29:27"}
+{"level":"info","message":"GET /checkout 200 64279 - 17.849 ms","timestamp":"2026-10-06 13:29:33"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 3.518 ms","timestamp":"2026-10-06 13:29:33"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.524 ms","timestamp":"2026-10-06 13:29:33"}
+{"level":"info","message":"PATCH /cart/6ab111d3e98be643dcf02a31/decrease 200 64 - 8.098 ms","timestamp":"2026-10-06 13:29:36"}
+{"level":"info","message":"GET /checkout 200 66165 - 20.845 ms","timestamp":"2026-10-06 13:29:36"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 6.888 ms","timestamp":"2026-10-06 13:29:36"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.509 ms","timestamp":"2026-10-06 13:29:36"}
+{"level":"info","message":"DELETE /cart/6ab530e816e0322c51268c7e 200 52 - 7.211 ms","timestamp":"2026-10-06 13:29:43"}
+{"level":"info","message":"GET /checkout 200 62761 - 22.012 ms","timestamp":"2026-10-06 13:29:43"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 12.317 ms","timestamp":"2026-10-06 13:29:43"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 9.229 ms","timestamp":"2026-10-06 13:29:43"}
+{"level":"info","message":"DELETE /cart/6ab111d3e98be643dcf02a31 200 52 - 9.157 ms","timestamp":"2026-10-06 13:31:18"}
+{"level":"info","message":"GET /checkout 200 59352 - 27.725 ms","timestamp":"2026-10-06 13:31:18"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.425 ms","timestamp":"2026-10-06 13:31:18"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 8.844 ms","timestamp":"2026-10-06 13:31:18"}
+{"level":"info","message":"GET /checkout 200 57595 - 24.346 ms","timestamp":"2026-10-06 13:32:41"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 4.361 ms","timestamp":"2026-10-06 13:32:41"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 4.269 ms","timestamp":"2026-10-06 13:32:41"}
+{"level":"info","message":"DELETE /cart/6ab10ae782900730623a5359 200 52 - 6.477 ms","timestamp":"2026-10-06 13:32:44"}
+{"level":"info","message":"GET /checkout 302 34 - 10.931 ms","timestamp":"2026-10-06 13:32:44"}
+{"level":"info","message":"GET /cart 200 31049 - 21.108 ms","timestamp":"2026-10-06 13:32:44"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 6.241 ms","timestamp":"2026-10-06 13:32:44"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 4.601 ms","timestamp":"2026-10-06 13:32:44"}
+{"level":"info","message":"GET /products 200 72289 - 23.142 ms","timestamp":"2026-10-06 13:32:46"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 6.826 ms","timestamp":"2026-10-06 13:32:46"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.526 ms","timestamp":"2026-10-06 13:32:46"}
+{"level":"info","message":"GET /products/6ab10ae782900730623a5355 304 - - 20.027 ms","timestamp":"2026-10-06 13:32:47"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.167 ms","timestamp":"2026-10-06 13:32:47"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.451 ms","timestamp":"2026-10-06 13:32:47"}
+{"level":"info","message":"POST /cart/add?productId=6ab10ae782900730623a5355&variantId=6ab10ae782900730623a535a&quantity=1 200 354 - 11.936 ms","timestamp":"2026-10-06 13:32:52"}
+{"level":"info","message":"GET /cart 200 40804 - 24.818 ms","timestamp":"2026-10-06 13:32:55"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 6.776 ms","timestamp":"2026-10-06 13:32:55"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.480 ms","timestamp":"2026-10-06 13:32:55"}
+{"level":"info","message":"GET /checkout 200 57598 - 36.264 ms","timestamp":"2026-10-06 13:32:59"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.807 ms","timestamp":"2026-10-06 13:32:59"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.714 ms","timestamp":"2026-10-06 13:32:59"}
+{"level":"info","message":"GET /checkout 200 57598 - 26.124 ms","timestamp":"2026-10-06 13:33:07"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 6.801 ms","timestamp":"2026-10-06 13:33:07"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.062 ms","timestamp":"2026-10-06 13:33:07"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:38:29"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:38:35"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:38:36"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:38:38"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:38:40"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:38:43"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:38:48"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:38:54"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:38:57"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:08"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:10"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:14"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:24"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:29"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:34"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:43"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:45"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:46"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:49"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:52"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:54"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:39:59"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:02"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:06"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:07"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:18"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:20"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:22"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:27"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:36"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:38"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:46"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:49"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:53"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:40:59"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:41:01"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:41:11"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:41:14"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:41:19"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:41:26"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:41:29"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:41:41"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:41:50"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:46:22"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:49:42"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:49:57"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:50:00"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:50:24"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:50:27"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:50:34"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:50:38"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:50:42"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:50:46"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 13:50:47"}
+{"level":"info","message":"GET /checkout 200 57610 - 75.793 ms","timestamp":"2026-10-06 13:50:51"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 10.414 ms","timestamp":"2026-10-06 13:50:52"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 7.952 ms","timestamp":"2026-10-06 13:50:52"}
+{"level":"info","message":"GET /order/place 404 150 - 6.142 ms","timestamp":"2026-10-06 13:50:53"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:02:09"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:03:46"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:03:51"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:03:56"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:04:04"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:04:28"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:04:37"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:04:48"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:04:51"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:04:54"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:04:56"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:04:58"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:05:12"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:05:57"}

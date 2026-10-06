@@ -1,4 +1,4 @@
-import Variant from "../models/variantModel.js";
+import Variant from "../models/variantSchema.js";
 
 
 export const validateStock = async (variantId, quantity) => {

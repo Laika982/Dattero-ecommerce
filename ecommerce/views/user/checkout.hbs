@@ -71,20 +71,21 @@
   </div>
 
   <div class="flex flex-col gap-6">
-    <!-- Product 1 -->
-    <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 pb-6 border-b border-outline-variant/20">
+    {{#each checkoutItems}}
+    <!-- Product  -->
+    <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 pb-6 border-b border-outline-variant/20" data-cart-item data-variant-id="{{this.variantId}}">
       <!-- Product Image -->
       <div class="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-outline-variant/20 flex-shrink-0 relative">
-        <img class="w-full h-full object-cover" data-alt="Classic Medjool Dates &amp; Dark Chocolate Burfi" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQPe6yFHwkU43cy6MYVCBsEqjR37ID47f6Fj-cyR71kPQciFmSFhijtqsKj4RyvfhxV6-ZGs1UbeMXvo28L2REt6Ysib1WmDxXt5yPklsnqjT8Rtu8a5Z0K2x5tIzHfiJ-JF1szGFBpWUmzJXAQDH8dMknKdk1gFygMkodZO4m_yJ3uIkB8K57VD_bgH4yzrXQnPVtTRq0Fzr0dA6lsAbXRw_I1bgj8ARNgVjzIJcWfeDu4ICUtet6CM30WTsbU8mBGOAOJ6bFapU" alt="Classic Dark Chocolate Protein Burfi">
+        <img class="w-full h-full object-cover" data-alt="{{this.product_name}}" src="{{this.image}}" alt="{{this.product_name}}">
       </div>
       <!-- Product Details & Controls -->
       <div class="flex-1 flex flex-col justify-between min-w-0 gap-2">
         <div>
           <div class="flex items-start justify-between gap-2">
-            <h3 class="font-headline-lg text-[16px] font-semibold text-ink-black leading-snug">Classic Medjool Dates &amp; Dark Chocolate Burfi</h3>
-            <span class="font-headline-lg text-[16px] font-bold text-ink-black whitespace-nowrap">$48.00</span>
+            <h3 class="font-headline-lg text-[16px] font-semibold text-ink-black leading-snug">{{this.product_name}}</h3>
+            <span class="font-headline-lg text-[16px] font-bold text-ink-black whitespace-nowrap">₹{{this.price}}</span>
           </div>
-          <p class="font-body-md text-[12px] text-on-surface-variant mt-0.5">Box of 12 (500g) • Artisanal Gold Edition</p>
+          <p class="font-body-md text-[12px] text-on-surface-variant mt-0.5">{{this.weight}}g • SKU: {{this.sku}}</p>
           <!-- Rating Row -->
           <div class="flex items-center gap-1.5 mt-1.5">
             <div class="flex items-center text-[#c89b3c] text-[13px]">
@@ -95,70 +96,34 @@
           </div>
           <!-- Price & Discount -->
           <div class="flex items-center gap-2 mt-1.5">
-            <span class="text-xs text-on-surface-variant">$54.00</span>
-            <span class="text-[10px] font-bold px-2 py-0.5 bg-[#fbd9c4] text-[#775d4d] rounded-full uppercase tracking-wider">-11% OFF</span>
+            <span class="text-xs text-on-surface-variant">Item total: ₹{{this.item_total}}</span>
+            {{!-- <span class="text-[10px] font-bold px-2 py-0.5 bg-[#fbd9c4] text-[#775d4d] rounded-full uppercase tracking-wider">-11% OFF</span> --}}
           </div>
         </div>
         <!-- Quantity Selector & Actions -->
-        <div class="flex items-center justify-between pt-2">
-          <div class="flex items-center border border-outline-variant/40 rounded-lg overflow-hidden bg-surface-gray/50">
-            <button type="button" class="w-7 h-7 flex items-center justify-center hover:bg-surface-variant text-ink-black transition-colors text-sm font-semibold">-</button>
-            <span class="w-8 text-center text-xs font-semibold text-ink-black">2</span>
-            <button type="button" class="w-7 h-7 flex items-center justify-center hover:bg-surface-variant text-ink-black transition-colors text-sm font-semibold">+</button>
-          </div>
-          <button type="button" class="flex items-center gap-1 text-xs text-on-surface-variant hover:text-[#ba1a1a] transition-colors py-1 px-2">
-            <span class="material-symbols-outlined text-[16px]">delete</span>
-            <span class="">Remove</span>
-          </button>
-        </div>
-        <!-- Delivery Info -->
-        <div class="flex items-center gap-1.5 text-[11px] text-[#0071E3] font-medium pt-1 border-t border-outline-variant/10 mt-1">
-          <span class="material-symbols-outlined text-[14px]">bolt</span>
-          <span class="">Standard Delivery: Arrives in 2-4 business days | Free Shipping eligible</span>
-        </div>
-      </div>
-    </div>
+          <div class="flex items-center justify-between pt-2">
 
-    <!-- Product 2 -->
-    <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 pb-2">
-      <!-- Product Image -->
-      <div class="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-outline-variant/20 flex-shrink-0 relative">
-        <img class="w-full h-full object-cover" data-alt="Saffron Almond Elegance Burfi" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArYMI0U5PoilRR0XJh0U4Y6fVwOonWYHJEjBw6qGA4sWFeVK09PshO5mjAMyNBv3vH6xYe4zayxbr4rAtdmpQs8GAo4wkDEqoFus556ff7kt1vR-AQOf-NpRx4LQ6qtlyya77YVSv1eey3ecyw0zageWb78zFgazKSyZ54hTdRUaPvXjd5Zei5ypioyf9hW6tTmly5JGjTkVx_qihjSVIliraerHjLutLE482_-HXxlx1HWCHKVrk1tXLTsRay7ukcLeT917SzuIM" alt="Saffron Almond Elegance">
-      </div>
-      <!-- Product Details & Controls -->
-      <div class="flex-1 flex flex-col justify-between min-w-0 gap-2">
-        <div>
-          <div class="flex items-start justify-between gap-2">
-            <h3 class="font-headline-lg text-[16px] font-semibold text-ink-black leading-snug">Saffron Almond Elegance Pure Silver Foil</h3>
-            <span class="font-headline-lg text-[16px] font-bold text-ink-black whitespace-nowrap">$28.00</span>
-          </div>
-          <p class="font-body-md text-[12px] text-on-surface-variant mt-0.5">Box of 6 (250g) • Kashmir Lacha Saffron</p>
-          <!-- Rating Row -->
-          <div class="flex items-center gap-1.5 mt-1.5">
-            <div class="flex items-center text-[#c89b3c] text-[13px]">
-              <span class="material-symbols-outlined text-[15px] leading-none" style="font-variation-settings: 'FILL' 1;">star</span>
-              <span class="font-label-md text-[12px] font-bold ml-1">5.0</span>
+            <div class="flex items-center border border-outline-variant/40 rounded-lg overflow-hidden bg-surface-gray/50">
+
+              <button type="button" data-cart-action="decrease" aria-label="Decrease quantity" class="w-7 h-7 flex items-center justify-center hover:bg-surface-variant text-ink-black transition-colors text-sm font-semibold">-</button>
+
+              <span data-cart-quantity class="w-8 text-center text-xs font-semibold text-ink-black">
+                {{this.quantity}}
+              </span>
+
+              <button type="button" data-cart-action="increase" aria-label="Increase quantity" class="w-7 h-7 flex items-center justify-center hover:bg-surface-variant text-ink-black transition-colors text-sm font-semibold">+</button>
+
             </div>
-            <span class="text-[11px] text-on-surface-variant">(94 reviews)</span>
+
+            <button type="button" data-cart-action="remove" class="flex items-center gap-1 text-xs text-on-surface-variant hover:text-[#ba1a1a] transition-colors py-1 px-2">
+
+              <span class="material-symbols-outlined text-[16px]">delete</span>
+
+              <span class="">Remove</span>
+
+            </button>
+
           </div>
-          <!-- Price & Discount -->
-          <div class="flex items-center gap-2 mt-1.5">
-            <span class="text-xs text-on-surface-variant">$32.00</span>
-            
-          </div>
-        </div>
-        <!-- Quantity Selector & Actions -->
-        <div class="flex items-center justify-between pt-2">
-          <div class="flex items-center border border-outline-variant/40 rounded-lg overflow-hidden bg-surface-gray/50">
-            <button type="button" class="w-7 h-7 flex items-center justify-center hover:bg-surface-variant text-ink-black transition-colors text-sm font-semibold">-</button>
-            <span class="w-8 text-center text-xs font-semibold text-ink-black">1</span>
-            <button type="button" class="w-7 h-7 flex items-center justify-center hover:bg-surface-variant text-ink-black transition-colors text-sm font-semibold">+</button>
-          </div>
-          <button type="button" class="flex items-center gap-1 text-xs text-on-surface-variant hover:text-[#ba1a1a] transition-colors py-1 px-2">
-            <span class="material-symbols-outlined text-[16px]">delete</span>
-            <span class="">Remove</span>
-          </button>
-        </div>
         <!-- Delivery Info -->
         <div class="flex items-center gap-1.5 text-[11px] text-[#0071E3] font-medium pt-1 border-t border-outline-variant/10 mt-1">
           <span class="material-symbols-outlined text-[14px]">bolt</span>
@@ -166,9 +131,9 @@
         </div>
       </div>
     </div>
+    {{/each}}
   </div>
 </section>
-<!-- Delivery Options -->
 
 <!-- Payment -->
 <section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative">
@@ -230,7 +195,12 @@
 </div>
 <!-- Right Column: Order Summary (Sticky) -->
 <div class="w-full lg:w-1/3">
-<div class="sticky bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow flex flex-col gap-8 top-24 top-20"><div class="flex items-center justify-between border-b border-outline-variant/20 pb-4"><h2 class="font-headline-lg text-[20px] font-bold text-ink-black tracking-tight">Order Summary</h2><span class="px-2.5 py-0.5 rounded-full bg-surface-gray border border-outline-variant/30 text-on-surface-variant font-label-md text-[11px] font-semibold tracking-wide">2 Items</span></div><div class="flex flex-col gap-3 py-2 border-b border-outline-variant/20"><button type="button" class="inline-flex items-center gap-2 text-accent-blue hover:opacity-80 transition-opacity text-left group"><span class="material-symbols-outlined text-[18px]">sell</span><span class="font-label-md text-xs font-semibold tracking-wide">View Available Offers</span></button><div class="flex gap-2 items-center w-full mt-1"><input class="form-input-premium flex-1 rounded-lg px-3.5 py-2 font-body-md text-sm text-on-surface" placeholder="Gift card or discount code" type="text"><button type="button" class="bg-surface-gray text-ink-black border border-outline-variant/40 px-4 py-2 rounded-lg font-label-md text-xs font-semibold hover:bg-surface-variant transition-colors flex-shrink-0">Apply</button></div></div><div class="flex flex-col gap-2 py-1"><div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Subtotal</span><span class="font-medium text-ink-black">$76.00</span></div><div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Shipping</span><span class="font-medium text-ink-black">$10.00</span></div><div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Estimated Taxes</span><span class="font-medium text-ink-black">$6.08</span></div><div class="flex justify-between items-baseline pt-4 mt-2 border-t border-outline-variant/20"><span class="font-headline-lg text-[18px] font-bold text-ink-black">Total</span><span class="font-headline-lg text-[24px] font-bold text-ink-black">$82.08</span></div></div><div class="flex flex-col gap-2 mt-1"><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() =&gt; { window.location.href='{{DATA:SCREEN:SCREEN_65}}' }, 1500)" class="w-full bg-ink-black text-white font-label-md text-[15px] font-semibold py-3.5 px-6 rounded-xl hover:bg-ink-black/90 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm">Place Order <span class="material-symbols-outlined text-[18px]">arrow_forward</span></button><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() =&gt; { window.location.href='{{DATA:SCREEN:SCREEN_63}}' }, 1500)" class="w-full text-center text-xs text-on-surface-variant hover:text-ink-black hover:underline py-1.5 transition-colors">Simulate Payment Failure</button></div></div>
+<div class="sticky bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow flex flex-col gap-8 top-24 top-20"><div class="flex items-center justify-between border-b border-outline-variant/20 pb-4"><h2 class="font-headline-lg text-[20px] font-bold text-ink-black tracking-tight">Order Summary</h2><span class="px-2.5 py-0.5 rounded-full bg-surface-gray border border-outline-variant/30 text-on-surface-variant font-label-md text-[11px] font-semibold tracking-wide">{{checkoutItems.length}} Items</span></div>
+<div class="flex flex-col gap-3 py-2 border-b border-outline-variant/20"><button type="button" class="inline-flex items-center gap-2 text-accent-blue hover:opacity-80 transition-opacity text-left group"><span class="material-symbols-outlined text-[18px]">sell</span><span class="font-label-md text-xs font-semibold tracking-wide">View Available Offers</span></button><div class="flex gap-2 items-center w-full mt-1"><input class="form-input-premium flex-1 rounded-lg px-3.5 py-2 font-body-md text-sm text-on-surface" placeholder="Gift card or discount code" type="text"><button type="button" class="bg-surface-gray text-ink-black border border-outline-variant/40 px-4 py-2 rounded-lg font-label-md text-xs font-semibold hover:bg-surface-variant transition-colors flex-shrink-0">Apply</button></div></div><div class="flex flex-col gap-2 py-1"><div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Subtotal</span><span class="font-medium text-ink-black">₹{{totals.subtotal}}</span></div>
+<div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Shipping</span><span class="font-medium text-ink-black">₹{{totals.shipping}}</span></div>
+<div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Estimated Taxes</span><span class="font-medium text-ink-black">₹{{totals.tax}}</span></div>
+<div class="flex justify-between items-baseline pt-4 mt-2 border-t border-outline-variant/20"><span class="font-headline-lg text-[18px] font-bold text-ink-black">Total</span><span class="font-headline-lg text-[24px] font-bold text-ink-black">₹{{totals.finalAmount}}</span></div></div><div class="flex flex-col gap-2 mt-1">
+<a href="/order/place" onclick="if (!document.querySelector('input[name=payment]:checked')) { showNotification('error', 'Please select payment option'); return; } this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() =&gt; { window.location.href='{{DATA:SCREEN:SCREEN_65}}' }, 1500)" class="w-full bg-ink-black text-white font-label-md text-[15px] font-semibold py-3.5 px-6 rounded-xl hover:bg-ink-black/90 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm">Place Order <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() =&gt; { window.location.href='{{DATA:SCREEN:SCREEN_63}}' }, 1500)" class="w-full text-center text-xs text-on-surface-variant hover:text-ink-black hover:underline py-1.5 transition-colors">Simulate Payment Failure</button></div></div>
 </div>
 </div>
 </main>
@@ -363,6 +333,53 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('click', async (event) => {
+    const button = event.target.closest('[data-cart-action]');
+
+    if (!button || button.disabled) return;
+
+    const cartItem = button.closest('[data-cart-item]');
+    const variantId = cartItem?.dataset.variantId;
+    const action = button.dataset.cartAction;
+
+    if (!variantId) {
+      showNotification('error', 'Unable to identify this cart item.');
+      return;
+    }
+
+    if (action === 'decrease' && Number(cartItem.querySelector('[data-cart-quantity]').textContent) <= 1) {
+      showNotification('error', 'Minimum quantity is 1');
+      return;
+    }
+
+    const method = action === 'remove' ? 'DELETE' : 'PATCH';
+    const endpoint = action === 'remove'
+      ? `/cart/${encodeURIComponent(variantId)}`
+      : `/cart/${encodeURIComponent(variantId)}/${action}`;
+
+    button.disabled = true;
+
+    try {
+      const response = await fetch(endpoint, {
+        method,
+        headers: { Accept: 'application/json' },
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        showNotification('error', data.message || 'Unable to update cart.');
+        return;
+      }
+
+      window.location.reload();
+    } catch (error) {
+      console.error('Checkout cart update error:', error);
+      showNotification('error', 'Unable to update cart.');
+    } finally {
+      if (button.isConnected) button.disabled = false;
+    }
+  });
+
   const addressModal = document.getElementById('addressModal');
   const addressModalContent = document.getElementById('addressModalContent');
   const openAddressModalBtn = document.getElementById('openAddressModalBtn');

@@ -85,7 +85,7 @@
             <h3 class="font-headline-lg text-[16px] font-semibold text-ink-black leading-snug">{{this.product_name}}</h3>
             <span class="font-headline-lg text-[16px] font-bold text-ink-black whitespace-nowrap">₹{{this.price}}</span>
           </div>
-          <p class="font-body-md text-[12px] text-on-surface-variant mt-0.5">{{this.weight}}g • SKU: {{this.sku}}</p>
+          <p class="font-body-md text-[12px] text-on-surface-variant mt-0.5">{{this.weight}} • SKU: {{this.sku}}</p>
           <!-- Rating Row -->
           <div class="flex items-center gap-1.5 mt-1.5">
             <div class="flex items-center text-[#c89b3c] text-[13px]">
@@ -169,7 +169,7 @@
 {{!-- COD --}}
 <label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors mt-4">
 <div class="flex items-center gap-4">
-<input class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="payment" type="radio" value="paypal">
+<input class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="payment" type="radio" value="cod">
 <span class="font-label-md text-[16px] text-ink-black">COD</span>
 </div>
 <div class="flex gap-2">
@@ -200,7 +200,7 @@
 <div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Shipping</span><span class="font-medium text-ink-black">₹{{totals.shipping}}</span></div>
 <div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Estimated Taxes</span><span class="font-medium text-ink-black">₹{{totals.tax}}</span></div>
 <div class="flex justify-between items-baseline pt-4 mt-2 border-t border-outline-variant/20"><span class="font-headline-lg text-[18px] font-bold text-ink-black">Total</span><span class="font-headline-lg text-[24px] font-bold text-ink-black">₹{{totals.finalAmount}}</span></div></div><div class="flex flex-col gap-2 mt-1">
-<a href="/order/place" onclick="if (!document.querySelector('input[name=payment]:checked')) { showNotification('error', 'Please select payment option'); return; } this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() =&gt; { window.location.href='{{DATA:SCREEN:SCREEN_65}}' }, 1500)" class="w-full bg-ink-black text-white font-label-md text-[15px] font-semibold py-3.5 px-6 rounded-xl hover:bg-ink-black/90 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm">Place Order <span class="material-symbols-outlined text-[18px]">arrow_forward</span></a><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() =&gt; { window.location.href='{{DATA:SCREEN:SCREEN_63}}' }, 1500)" class="w-full text-center text-xs text-on-surface-variant hover:text-ink-black hover:underline py-1.5 transition-colors">Simulate Payment Failure</button></div></div>
+<button type="button" id="placeOrderBtn" class="w-full bg-ink-black text-white font-label-md text-[15px] font-semibold py-3.5 px-6 rounded-xl hover:bg-ink-black/90 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm">Place Order <span class="material-symbols-outlined text-[18px]">arrow_forward</span></button><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() =&gt; { window.location.href='{{DATA:SCREEN:SCREEN_63}}' }, 1500)" class="w-full text-center text-xs text-on-surface-variant hover:text-ink-black hover:underline py-1.5 transition-colors">Simulate Payment Failure</button></div></div>
 </div>
 </div>
 </main>
@@ -333,6 +333,54 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  const placeOrderButton = document.getElementById('placeOrderBtn');
+
+  placeOrderButton?.addEventListener('click', async () => {
+    const addressId = document.getElementById('selectedAddressId')?.value;
+    const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value;
+
+    if (!addressId) {
+      showNotification('error', 'Please select a delivery address.');
+      return;
+    }
+
+    if (!paymentMethod) {
+      showNotification('error', 'Please select payment option');
+      return;
+    }
+
+    const originalContent = placeOrderButton.innerHTML;
+    placeOrderButton.disabled = true;
+    placeOrderButton.textContent = 'Processing...';
+
+    try {
+      const response = await fetch('/order/place', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ addressId, paymentMethod }),
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success || !data.orderId) {
+        showNotification('error', data.message || 'Unable to place order.');
+        return;
+      }
+
+      window.location.href = `/order/order-success/${encodeURIComponent(data.orderId)}`;
+    } catch (error) {
+      console.error('Place order request failed:', error);
+      showNotification('error', 'Unable to place order. Please try again.');
+    } finally {
+      if (placeOrderButton.isConnected) {
+        placeOrderButton.disabled = false;
+        placeOrderButton.innerHTML = originalContent;
+      }
+    }
+  });
+
   document.addEventListener('click', async (event) => {
     const button = event.target.closest('[data-cart-action]');
 

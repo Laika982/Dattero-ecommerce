@@ -30,8 +30,8 @@ const orderItemSchema = new mongoose.Schema(
     },
 
     weight: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: "",
     },
 
     quantity: {

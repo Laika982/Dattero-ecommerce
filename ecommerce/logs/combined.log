@@ -12630,3 +12630,124 @@
 {"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:04:58"}
 {"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:05:12"}
 {"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:05:57"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:07:35"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:10:15"}
+{"level":"info","message":"GET /checkout 200 58980 - 93.572 ms","timestamp":"2026-10-06 14:16:51"}
+{"level":"info","message":"POST /order/place 400 100 - 30.419 ms","timestamp":"2026-10-06 14:16:58"}
+{"level":"info","message":"POST /order/place 400 100 - 12.896 ms","timestamp":"2026-10-06 14:17:00"}
+{"level":"info","message":"POST /order/place 400 100 - 9.226 ms","timestamp":"2026-10-06 14:17:03"}
+{"level":"info","message":"POST /order/place 400 100 - 9.312 ms","timestamp":"2026-10-06 14:17:06"}
+{"level":"info","message":"POST /order/place 400 100 - 9.278 ms","timestamp":"2026-10-06 14:17:10"}
+{"level":"info","message":"POST /order/place 400 100 - 8.378 ms","timestamp":"2026-10-06 14:17:14"}
+{"level":"info","message":"POST /order/place 400 100 - 9.355 ms","timestamp":"2026-10-06 14:17:16"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:18:23"}
+{"level":"info","message":"GET /checkout 200 58980 - 79.294 ms","timestamp":"2026-10-06 14:19:00"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 9.803 ms","timestamp":"2026-10-06 14:19:00"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.929 ms","timestamp":"2026-10-06 14:19:00"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 6.299 ms","timestamp":"2026-10-06 14:19:00"}
+{"level":"info","message":"POST /order/place 400 100 - 24.069 ms","timestamp":"2026-10-06 14:19:05"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:19:17"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:20:54"}
+{"level":"info","message":"GET /checkout 200 58980 - 83.174 ms","timestamp":"2026-10-06 14:22:03"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 13.348 ms","timestamp":"2026-10-06 14:22:03"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 9.971 ms","timestamp":"2026-10-06 14:22:03"}
+{"level":"info","message":"POST /order/place 503 138 - 24.773 ms","timestamp":"2026-10-06 14:22:08"}
+{"level":"info","message":"POST /order/place 503 138 - 9.414 ms","timestamp":"2026-10-06 14:22:11"}
+{"level":"info","message":"POST /order/place 503 138 - 10.986 ms","timestamp":"2026-10-06 14:22:29"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:24:47"}
+{"level":"info","message":"GET /checkout 200 58980 - 70.985 ms","timestamp":"2026-10-06 14:24:51"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 12.171 ms","timestamp":"2026-10-06 14:24:51"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 10.524 ms","timestamp":"2026-10-06 14:24:51"}
+{"level":"info","message":"POST /order/place 503 138 - 24.585 ms","timestamp":"2026-10-06 14:24:54"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:27:04"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:27:09"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:28:05"}
+{"level":"info","message":"GET /checkout 200 58980 - 72.400 ms","timestamp":"2026-10-06 14:28:15"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 11.110 ms","timestamp":"2026-10-06 14:28:15"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 7.981 ms","timestamp":"2026-10-06 14:28:15"}
+{"level":"info","message":"POST /order/place 500 144 - 47.479 ms","timestamp":"2026-10-06 14:28:19"}
+{"level":"info","message":"POST /order/place 500 144 - 20.052 ms","timestamp":"2026-10-06 14:28:24"}
+{"level":"info","message":"POST /order/place 400 69 - 11.274 ms","timestamp":"2026-10-06 14:28:26"}
+{"level":"info","message":"DELETE /cart/6ab10ae782900730623a535a 200 52 - 14.758 ms","timestamp":"2026-10-06 14:28:35"}
+{"level":"info","message":"GET /checkout 302 34 - 12.058 ms","timestamp":"2026-10-06 14:28:35"}
+{"level":"info","message":"GET /cart 200 31049 - 24.211 ms","timestamp":"2026-10-06 14:28:35"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 5.218 ms","timestamp":"2026-10-06 14:28:35"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 7.855 ms","timestamp":"2026-10-06 14:28:35"}
+{"level":"info","message":"GET /products 304 - - 37.586 ms","timestamp":"2026-10-06 14:28:37"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.911 ms","timestamp":"2026-10-06 14:28:37"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.859 ms","timestamp":"2026-10-06 14:28:37"}
+{"level":"info","message":"GET /products/6ab111d3e98be643dcf02a2c 304 - - 28.704 ms","timestamp":"2026-10-06 14:28:39"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 9.276 ms","timestamp":"2026-10-06 14:28:39"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.534 ms","timestamp":"2026-10-06 14:28:39"}
+{"level":"info","message":"GET /products 304 - - 35.965 ms","timestamp":"2026-10-06 14:28:45"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.596 ms","timestamp":"2026-10-06 14:28:45"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.981 ms","timestamp":"2026-10-06 14:28:45"}
+{"level":"info","message":"GET /products/6ab10b5682900730623a535f 200 60741 - 28.048 ms","timestamp":"2026-10-06 14:28:47"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.368 ms","timestamp":"2026-10-06 14:28:47"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.618 ms","timestamp":"2026-10-06 14:28:47"}
+{"level":"info","message":"POST /cart/add?productId=6ab10b5682900730623a535f&variantId=6ab10b5682900730623a5363&quantity=1 200 354 - 18.351 ms","timestamp":"2026-10-06 14:28:50"}
+{"level":"info","message":"GET /cart 200 40781 - 24.021 ms","timestamp":"2026-10-06 14:28:52"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 3.320 ms","timestamp":"2026-10-06 14:28:52"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 4.547 ms","timestamp":"2026-10-06 14:28:52"}
+{"level":"info","message":"GET /checkout 200 58979 - 21.423 ms","timestamp":"2026-10-06 14:28:53"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 4.086 ms","timestamp":"2026-10-06 14:28:53"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 3.458 ms","timestamp":"2026-10-06 14:28:53"}
+{"level":"info","message":"POST /order/place 500 144 - 18.749 ms","timestamp":"2026-10-06 14:28:58"}
+{"level":"info","message":"POST /order/place 500 144 - 21.194 ms","timestamp":"2026-10-06 14:29:15"}
+{"level":"info","message":"POST /order/place 500 144 - 18.398 ms","timestamp":"2026-10-06 14:29:22"}
+{"level":"info","message":"Server is running in development mode on port 3000","timestamp":"2026-10-06 14:30:06"}
+{"level":"info","message":"GET /checkout 200 58978 - 83.228 ms","timestamp":"2026-10-06 14:32:11"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 13.090 ms","timestamp":"2026-10-06 14:32:11"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 10.443 ms","timestamp":"2026-10-06 14:32:11"}
+{"level":"info","message":"POST /order/place 201 89 - 61.946 ms","timestamp":"2026-10-06 14:32:15"}
+{"level":"info","message":"GET /order/order-success/ORD-1791277335919-3647 200 31469 - 38.976 ms","timestamp":"2026-10-06 14:32:15"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 4.138 ms","timestamp":"2026-10-06 14:32:16"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 3.624 ms","timestamp":"2026-10-06 14:32:16"}
+{"level":"info","message":"GET /products 304 - - 41.842 ms","timestamp":"2026-10-06 14:32:32"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.568 ms","timestamp":"2026-10-06 14:32:32"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 7.283 ms","timestamp":"2026-10-06 14:32:32"}
+{"level":"info","message":"GET /products/6ab10b5682900730623a535f 200 60741 - 29.331 ms","timestamp":"2026-10-06 14:32:36"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.562 ms","timestamp":"2026-10-06 14:32:36"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.190 ms","timestamp":"2026-10-06 14:32:36"}
+{"level":"info","message":"POST /cart/add?productId=6ab10b5682900730623a535f&variantId=6ab10b5682900730623a5363&quantity=1 200 354 - 14.884 ms","timestamp":"2026-10-06 14:32:40"}
+{"level":"info","message":"GET /cart 200 40781 - 26.700 ms","timestamp":"2026-10-06 14:32:41"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.692 ms","timestamp":"2026-10-06 14:32:41"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.611 ms","timestamp":"2026-10-06 14:32:41"}
+{"level":"info","message":"GET /checkout 200 58978 - 21.386 ms","timestamp":"2026-10-06 14:32:43"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 3.838 ms","timestamp":"2026-10-06 14:32:43"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 4.429 ms","timestamp":"2026-10-06 14:32:43"}
+{"level":"info","message":"POST /order/place 201 89 - 19.856 ms","timestamp":"2026-10-06 14:32:48"}
+{"level":"info","message":"GET /order/order-success/ORD-1791277368405-8475 200 31469 - 18.572 ms","timestamp":"2026-10-06 14:32:48"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 4.475 ms","timestamp":"2026-10-06 14:32:48"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 4.351 ms","timestamp":"2026-10-06 14:32:48"}
+{"level":"info","message":"GET /products 304 - - 31.390 ms","timestamp":"2026-10-06 14:32:51"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.827 ms","timestamp":"2026-10-06 14:32:51"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.757 ms","timestamp":"2026-10-06 14:32:51"}
+{"level":"info","message":"GET /products/6ab10b5682900730623a535f 200 60741 - 24.139 ms","timestamp":"2026-10-06 14:32:52"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 6.689 ms","timestamp":"2026-10-06 14:32:52"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.069 ms","timestamp":"2026-10-06 14:32:52"}
+{"level":"info","message":"POST /cart/add?productId=6ab10b5682900730623a535f&variantId=6ab10b5682900730623a5363&quantity=1 200 354 - 12.141 ms","timestamp":"2026-10-06 14:32:56"}
+{"level":"info","message":"POST /cart/add?productId=6ab10b5682900730623a535f&variantId=6ab10b5682900730623a5363&quantity=4 200 354 - 13.272 ms","timestamp":"2026-10-06 14:33:01"}
+{"level":"info","message":"GET /cart 200 40783 - 24.922 ms","timestamp":"2026-10-06 14:33:03"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 8.486 ms","timestamp":"2026-10-06 14:33:03"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 7.520 ms","timestamp":"2026-10-06 14:33:03"}
+{"level":"info","message":"GET /checkout 200 58980 - 27.537 ms","timestamp":"2026-10-06 14:33:05"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 9.776 ms","timestamp":"2026-10-06 14:33:05"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.532 ms","timestamp":"2026-10-06 14:33:05"}
+{"level":"info","message":"POST /order/place 201 89 - 21.450 ms","timestamp":"2026-10-06 14:33:11"}
+{"level":"info","message":"GET /order/order-success/ORD-1791277391063-4894 200 31471 - 14.498 ms","timestamp":"2026-10-06 14:33:11"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.781 ms","timestamp":"2026-10-06 14:33:11"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.182 ms","timestamp":"2026-10-06 14:33:11"}
+{"level":"info","message":"GET /profile 200 46539 - 19.839 ms","timestamp":"2026-10-06 14:33:12"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 4.226 ms","timestamp":"2026-10-06 14:33:12"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 4.690 ms","timestamp":"2026-10-06 14:33:12"}
+{"level":"info","message":"GET /orders 404 145 - 7.234 ms","timestamp":"2026-10-06 14:33:17"}
+{"level":"info","message":"GET /products 304 - - 32.808 ms","timestamp":"2026-10-06 14:33:22"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 4.247 ms","timestamp":"2026-10-06 14:33:22"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 4.551 ms","timestamp":"2026-10-06 14:33:22"}
+{"level":"info","message":"GET /products/6ab10b5682900730623a535f 200 60741 - 28.181 ms","timestamp":"2026-10-06 14:33:23"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.447 ms","timestamp":"2026-10-06 14:33:23"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 5.742 ms","timestamp":"2026-10-06 14:33:23"}
+{"level":"info","message":"GET /profile 200 46539 - 19.062 ms","timestamp":"2026-10-06 14:33:28"}
+{"level":"info","message":"GET /public/css/style.css 404 159 - 7.927 ms","timestamp":"2026-10-06 14:33:28"}
+{"level":"info","message":"GET /public/js/main.js 404 156 - 6.114 ms","timestamp":"2026-10-06 14:33:28"}

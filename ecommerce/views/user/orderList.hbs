@@ -1,0 +1,234 @@
+{{>user/header}}
+
+<!-- Main Content Area -->
+<main class="flex-1 p-container-padding bg-surface-container-low min-h-[calc(100vh-72px)]">
+
+    <div class="max-w-max-width mx-auto px-container-padding mt-6">
+    {{> user/notification}}
+</div>
+
+<div class="max-w-4xl mx-auto">
+<nav class="fixed top-0 w-full z-50 bg-surface/95 dark:bg-surface/90 backdrop-blur-md border-b border-secondary/10 dark:border-secondary-fixed-dim/10 shadow-sm transition-all duration-300 shadow-md" id="main-nav">
+
+</nav><div class="fixed inset-0 bg-surface z-40 hidden flex-col pt-24 px-container-padding" id="mobile-menu">
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface" href="#">Home</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Products</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">About Us</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Contact</a>
+<a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between" href="#">Account <span class="material-symbols-outlined">person</span></a>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-3 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-6 py-2 rounded-full bg-on-surface text-surface text-label-md">All Orders</button>
+<button class="px-6 py-2 rounded-full border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high transition-colors">In Transit</button>
+<button class="px-6 py-2 rounded-full border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high transition-colors">Delivered</button>
+<button class="px-6 py-2 rounded-full border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high transition-colors">Processing</button>
+</div>
+<!-- Orders List -->
+<div class="space-y-6">
+<!-- Order Item 1 -->
+<div class="bg-surface rounded-xl p-6 order-card-shadow border border-on-surface/5 group hover:border-primary/20 transition-all duration-300">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A macro studio photograph of a premium Nutri Luxe burfi, elegantly presented on a white marble slab with soft, high-key natural lighting. The burfi has a smooth, artisanal texture with visible flecks of premium nuts and silver leaf. The background is a minimalist, airy white space that emphasizes luxury and clean aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAi8eowNg1Ex1uePi-UsaolG-JFMwrhZA2wNpqxoddYz3Ilc-h2NQJHFABizThDeDxdaYL7mWWKVZjczcGegBurv2e1EcWWH03ZpGAjC-OsUSWtuGT9jwMJrhN1IIkV8NbShQmXugGYxYX6GE_8ZPuZK87Dc9nYZtoAS9Y1TeH-tfaMtfxc6SXectEuvHpJuqSoQWxTa7d5aLbnISrH-YVrTXf41CP9t2bf779PFXwEqHmALd4lhJbtR1c25PzRvUOr3B2JoWmeZ_k">
+</div>
+<div>
+<h3 class="font-label-md text-on-surface text-lg">Nutri Luxe Burfi - Classic Gold Edition</h3>
+<p class="text-sm text-on-surface-variant font-medium">Order #NL-982341 • May 24, 2024</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-surface text-[11px] font-bold tracking-widest uppercase mb-2">In Transit</span>
+<span class="font-headline-lg text-on-surface text-2xl">$124.00</span>
+</div>
+</div>
+<div class="h-px bg-on-surface/5 w-full mb-6"></div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-primary scale-90">local_shipping</span>
+<span class="">Estimated arrival: May 28, 2024</span>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2 rounded-lg border border-outline text-label-md hover:bg-surface-container-high transition-colors">View Details</button>
+<button class="px-5 py-2 rounded-lg bg-on-surface text-surface text-label-md hover:bg-primary transition-colors">Track Order</button>
+</div>
+</div>
+</div>
+<!-- Order Item-->
+<div class="bg-surface rounded-xl p-6 order-card-shadow border border-on-surface/5 group hover:border-primary/20 transition-all duration-300" style="transform: translateY(0px);">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A minimalist overhead view of a set of premium organic snack bars in luxury packaging. The scene features a clean, high-end kitchen counter with light gray tones and soft ambient shadows. The packaging has elegant typography and muted slate gray colors, reflecting an Apple-inspired minimalist aesthetic for wellness products." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-qyJ4Hes-96jH3rPzs3xnAOFApuCVSoYeVI7vjjsZSYUy9yE9LP55nGpVXAYbEGTwR_kGAHj0urfiKlobdb31tjiBKsTbB76QZWeZfD0zr9bChLd_6maG5jG988MqtZWTU5SM0T2pfMAljVYbGj4ho7rl9nG79akKFdgTbxSqsAHNvPUckJogtJ4KymYSRDJVrcYXg1AgK1ZVAX6a6lR3ut6mZhJHJUds98nOR_lNHy9cac3UUJEFDl8Yqrc3fD2prcJsAgmIhGU">
+</div>
+<div>
+<h3 class="font-label-md text-on-surface text-lg">Signature Wellness Collection</h3>
+<p class="text-sm text-on-surface-variant font-medium">Order #NL-982105 • May 12, 2024</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant text-[11px] font-bold tracking-widest uppercase mb-2">Delivered</span>
+<span class="font-headline-lg text-on-surface text-2xl">$210.50</span>
+</div>
+</div>
+<div class="h-px bg-on-surface/5 w-full mb-6"></div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-green-600 scale-90" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="">Delivered on May 15, 2024</span>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2 rounded-lg border border-outline text-label-md hover:bg-surface-container-high transition-colors">Buy Again</button>
+<button class="px-5 py-2 rounded-lg border border-outline text-label-md hover:bg-surface-container-high transition-colors">View Details</button>
+</div>
+</div>
+</div>
+<!-- Order Item 3 -->
+<div class="bg-surface rounded-xl p-6 order-card-shadow border border-on-surface/5 group hover:border-primary/20 transition-all duration-300" style="transform: translateY(0px);">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A premium assortment of artisanal health candies arranged in a geometric pattern on a light slate gray surface. The lighting is soft and diffused, creating a serene and indulgent mood. The candies are small, perfectly square, with a sophisticated matte finish, embodying a modern luxury wellness brand's visual identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAd5Ph2BlFO9lSNd75J6Kq50ZQsSfXBu8U74gZhHCXLm2rKZoVVKsTnHgC6w1nWA1F1cUmcziZZUOLKKR23mBRjOIyQ-1mwnxeoABw8TrfyHrALi6Iu14XfM2p9LR6IfMD-QTJBKJXXrXDOaVFkAinRa1IvypH5rInOHc0PVGBWell7Bgo_VzrDl-VKdRqHcBHDwoEtAC6qYap2SikEsbOTlyEkigHEyH2QXoGGZvIcRo7N1voJBkPbixldWlByrpVf4BTwz0ISM_c">
+</div>
+<div>
+<h3 class="font-label-md text-on-surface text-lg">Artisanal Praline Set</h3>
+<p class="text-sm text-on-surface-variant font-medium">Order #NL-982042 • April 28, 2024</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant text-[11px] font-bold tracking-widest uppercase mb-2">Delivered</span>
+<span class="font-headline-lg text-on-surface text-2xl">$85.00</span>
+</div>
+</div>
+<div class="h-px bg-on-surface/5 w-full mb-6"></div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-green-600 scale-90" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="">Delivered on May 02, 2024</span>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2 rounded-lg border border-outline text-label-md hover:bg-surface-container-high transition-colors">Buy Again</button>
+<button class="px-5 py-2 rounded-lg border border-outline text-label-md hover:bg-surface-container-high transition-colors">View Details</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination/Load More -->
+<div class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-on-surface/5">
+  <p class="text-xs text-on-surface-variant font-medium order-2 sm:order-1">Showing <span class="text-on-surface font-semibold">1–3</span> of <span class="text-on-surface font-semibold">12</span> orders</p>
+  <nav class="flex items-center gap-1.5 order-1 sm:order-2" aria-label="Orders pagination">
+    <button class="px-3 py-1.5 rounded-lg border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors flex items-center gap-1 opacity-50 cursor-not-allowed" disabled="" aria-label="Previous page">
+      <span class="material-symbols-outlined text-sm">chevron_left</span>
+      <span class="hidden sm:inline">Prev</span>
+    </button>
+    <button class="w-8 h-8 rounded-lg bg-on-surface text-surface text-label-md font-semibold flex items-center justify-center shadow-sm" aria-current="page">1</button>
+    <button class="w-8 h-8 rounded-lg border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors flex items-center justify-center">2</button>
+    <button class="w-8 h-8 rounded-lg border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors flex items-center justify-center">3</button>
+    <button class="w-8 h-8 rounded-lg border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors flex items-center justify-center">4</button>
+    <button class="px-3 py-1.5 rounded-lg border border-outline/20 text-on-surface text-label-md hover:bg-surface-container-high transition-colors flex items-center gap-1" aria-label="Next page">
+      <span class="hidden sm:inline">Next</span>
+      <span class="material-symbols-outlined text-sm">chevron_right</span>
+    </button>
+  </nav>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Bottom Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-lg border-t border-on-surface/5 px-6 py-3 z-50">
+<div class="flex justify-between items-center">
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Explore</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Orders</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Cart</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Account</span>
+</a>
+</div>
+</nav>
+<script>
+        // Micro-interaction: Smooth hover effect for cards
+        document.querySelectorAll('.order-card-shadow').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add active: scale effect to buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.97)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+
+<footer class="bg-surface-container-high w-full pt-section-gap pb-stack-lg border-t border-secondary/10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter px-container-padding max-w-max-width mx-auto">
+<div class="flex flex-col gap-6 col-span-1 md:col-span-1">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Nutri Burfi</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">
+                    Elevating functional nutrition through the art of traditional craftsmanship. Premium protein sweets for the modern lifestyle.
+                </p>
+<div class="flex gap-4 mt-2">
+<a class="text-on-surface-variant hover:text-accent-blue transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</a>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">Shop</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Shop All</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Protein Burfi</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Performance Bars</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Wholesale</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">About</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Our Story</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Ingredients</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Nutritional Science</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Contact Us</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">Support</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">FAQ</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Shipping Info</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Returns</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Privacy Policy</a>
+</div>
+<div class="col-span-1 md:col-span-4 mt-12 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-label-md text-[10px] text-on-surface-variant font-normal">© 2024 Nutri Burfi. Handcrafted Protein Excellence.</p>
+<div class="flex gap-4 p-8 min-h-[300px]">
+<span class="font-label-md text-[10px] text-on-surface-variant font-normal">Secure Checkout</span>
+</div>
+</div>
+</div>
+</footer>
+
+
+
+
+
+
+
+</body></html>

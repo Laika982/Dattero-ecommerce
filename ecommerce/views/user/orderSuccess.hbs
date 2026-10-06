@@ -23,19 +23,19 @@
 <div class="grid grid-cols-2 md:grid-cols-4 gap-stack-lg">
 <div>
 <p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Order Number</p>
-<p class="font-body-lg text-body-lg font-semibold text-primary"><a href="#" class="hover:underline">#NL-8293410</a></p>
+<p class="font-body-lg text-body-lg font-semibold text-primary">#{{order.order_id}}</p>
 </div>
 <div>
 <p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Date</p>
-<p class="font-body-lg text-body-lg text-on-surface">Oct 24, 2023</p>
+<p class="font-body-lg text-body-lg text-on-surface">{{orderDate}}</p>
 </div>
 <div>
 <p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Delivery Estimate</p>
-<p class="font-body-lg text-body-lg text-on-surface">Oct 27 - 29</p>
+<p class="font-body-lg text-body-lg text-on-surface">Pending</p>
 </div>
 <div>
 <p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Method</p>
-<p class="font-body-lg text-body-lg text-on-surface">Express Courier</p>
+<p class="font-body-lg text-body-lg text-on-surface">{{paymentMethodLabel}}</p>
 </div>
 </div>
 </div>
@@ -43,42 +43,23 @@
 <div class="bg-surface-container-lowest p-stack-lg rounded-xl shadow-[0_40px_40px_-15px_rgba(45,27,14,0.04)] border border-on-surface/5">
 <h2 class="font-headline-lg text-headline-lg mb-stack-lg border-b border-surface-variant pb-stack-md">Order Summary</h2>
 <div class="space-y-stack-lg">
-<!-- Item 1 -->
+{{#each order.items}}
 <div class="flex items-center gap-stack-lg group">
-<div class="w-24 h-24 rounded-lg bg-surface-gray overflow-hidden flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
-<img class="w-full h-full object-cover" data-alt="A macro photography shot of premium handcrafted Nutri Burfi dates, topped with gold leaf and crushed pistachios, presented on a minimalist white ceramic plate with soft warm morning light highlighting its organic texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCP0DoH5wSEFxpiXTaHHjkQ4nVkxD53vINVh7pmOGPxDpNkQ6zwkY7l0V9yVCAGA-nNSY4RSMfaiYlpL1UComGiuXLJzWuwbdatAWE1O5sia122wxWaX9Nelq2eOKRJU8SiRklMpafzVX7tpclZKG95cat6wS_YRI_DCJRwvPNXtA4LU1f_oiDU05EtWu3Gckh2Ui08m5uzUeNZTRcNXxDst3xAVr6FRx8oxfAJjSUtX7cGyrT1ZJXEjpsmV2JKGXwrC1vN7NIZVWk">
+<div class="w-24 h-24 rounded-lg bg-surface-gray overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" src="{{this.product_image}}" alt="{{this.product_name}}">
 </div>
-<div class="flex-grow">
-<div class="flex justify-between items-start">
+<div class="flex-grow min-w-0">
+<div class="flex justify-between items-start gap-4">
 <div>
-<h3 class="font-body-xl text-body-xl font-semibold text-on-surface">Signature Dates Burfi</h3>
-<p class="font-body-md text-body-md text-on-surface-variant">Box of 12 | Artisanal Selection</p>
+<h3 class="font-body-xl text-body-xl font-semibold text-on-surface">{{this.product_name}}</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">{{this.weight}} | SKU: {{this.sku}}</p>
 </div>
-<p class="font-body-lg text-body-lg font-bold">$48.00</p>
+<p class="font-body-lg text-body-lg font-bold whitespace-nowrap">₹{{this.item_total}}</p>
 </div>
-<div class="mt-2 inline-flex items-center px-3 py-1 bg-surface-gray rounded-full text-[12px] font-semibold text-on-surface-variant tracking-wider uppercase">
-                                    High Protein
-                                </div>
+<p class="mt-2 text-sm text-on-surface-variant">Quantity: {{this.quantity}}</p>
 </div>
 </div>
-<!-- Item 2 -->
-<div class="flex items-center gap-stack-lg group">
-<div class="w-24 h-24 rounded-lg bg-surface-gray overflow-hidden flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
-<img class="w-full h-full object-cover" data-alt="Close-up of a luxury botanical wellness tea tin with minimalist gold typography, surrounded by dried rose petals and cinnamon sticks on a neutral, soft-beige textured surface under studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVyGxg8vm3ViVt_vQmpUjpqHL32cAeJUBU2c0gWCpj0m-Qlb1RASkjjSLsByH5LUst82OAy7baTFngLkVvvMrIM2aDQ7SbvbRsIsON_IXJE-T0iRVks0h6OJiG5ZubaRWscyosnrJofpqQar3vBAeDWTK7DQIXd1pFqa0rSJhOO8CGIU28I7XsVVXR6y4SPvhOr6yinade6A1OzrEwnwj9m6fhAkursXgAnAzoLmCen53EwDdpQEP70n3H5bVC-8KSVma34jhj7oY">
-</div>
-<div class="flex-grow">
-<div class="flex justify-between items-start">
-<div>
-<h3 class="font-body-xl text-body-xl font-semibold text-on-surface">Midnight Bloom Wellness Tea</h3>
-<p class="font-body-md text-body-md text-on-surface-variant">100g Loose Leaf | Rare Blend</p>
-</div>
-<p class="font-body-lg text-body-lg font-bold">$32.00</p>
-</div>
-<div class="mt-2 inline-flex items-center px-3 py-1 bg-surface-gray rounded-full text-[12px] font-semibold text-on-surface-variant tracking-wider uppercase">
-                                    Antioxidant
-                                </div>
-</div>
-</div>
+{{/each}}
 </div>
 </div>
 </div>
@@ -90,25 +71,25 @@
 <div class="space-y-stack-md">
 <div class="flex justify-between items-center pb-2 mb-2 border-b border-on-surface/5"></div><div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
 <span class="">Subtotal</span>
-<span class="">$80.00</span>
+<span class="">₹{{order.subtotal}}</span>
 </div>
 <div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
 <span class="">Shipping</span>
-<span class="text-primary font-semibold">Complimentary</span>
+<span class="text-primary font-semibold">₹{{order.shipping_charge}}</span>
 </div>
 <div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
 <span class="">Tax</span>
-<span class="">$6.40</span>
+<span class="">₹{{order.tax}}</span>
 </div>
 <div class="pt-stack-md border-t border-on-surface/10 flex justify-between font-body-xl text-body-xl font-bold text-on-surface">
 <span class="">Total</span>
-<span class="">$86.40</span>
+<span class="">₹{{order.final_amount}}</span>
 </div>
 </div>
 <!-- Action Buttons -->
 <div class="mt-stack-lg space-y-stack-md">
-<a href="#" class="w-full py-4 px-6 font-semibold rounded-lg shadow-sm hover:opacity-90 transition-all active:scale-[0.98] cursor-pointer bg-ink-black text-on-primary inline-flex items-center justify-center">Continue Shopping</a>
-<a href="#" class="w-full py-4 px-6 border border-primary text-primary font-semibold rounded-lg hover:bg-primary/5 transition-all active:scale-[0.98] cursor-pointer inline-flex items-center justify-center">View Order History</a>
+<a href="/products" class="w-full py-4 px-6 font-semibold rounded-lg shadow-sm hover:opacity-90 transition-all active:scale-[0.98] cursor-pointer bg-ink-black text-on-primary inline-flex items-center justify-center">Continue Shopping</a>
+<a href="/order-list" class="w-full py-4 px-6 border border-primary text-primary font-semibold rounded-lg hover:bg-primary/5 transition-all active:scale-[0.98] cursor-pointer inline-flex items-center justify-center">View Orders</a>
 </div>
 <div class="mt-stack-lg p-stack-md bg-white/40 rounded-lg border border-on-surface/5">
 <div class="flex gap-stack-md items-start">

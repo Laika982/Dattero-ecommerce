@@ -16,253 +16,429 @@ import { decreaseStock } from "../../services/inventoryService.js";
 import { generateOrderId } from "../../utils/generateOrderId.js";
 
 const placeOrder = async (req, res) => {
-  const session = await mongoose.startSession();
-
   try {
     const userId = req.user._id;
 
-    const { addressId, paymentMethod } = req.body;
+    const {
+      addressId,
+      paymentMethod,
+    } = req.body;
 
-    if (!addressId) {
+    // ------------------------------------------------
+    // 1. VALIDATE ADDRESS ID
+    // ------------------------------------------------
+
+    if (!mongoose.isValidObjectId(addressId)) {
       return res.status(400).json({
         success: false,
         message: "Please select an address",
       });
     }
 
+    // ------------------------------------------------
+    // 2. VALIDATE PAYMENT METHOD
+    // ------------------------------------------------
+
     if (paymentMethod !== "cod") {
       return res.status(400).json({
         success: false,
-        message: "Only Cash on Delivery is available",
+        message:
+          "Only Cash on Delivery is available",
       });
     }
 
-    session.startTransaction();
-
     // ------------------------------------------------
-    // 1. ADDRESS
+    // 3. ADDRESS
     // ------------------------------------------------
 
     const address = await Address.findOne({
       _id: addressId,
       user_id: userId,
-    }).session(session);
+    });
 
     if (!address) {
-      throw new Error("Invalid delivery address");
+      return res.status(400).json({
+        success: false,
+        message: "Invalid delivery address",
+      });
     }
 
     // ------------------------------------------------
-    // 2. CART
+    // 4. CART
     // ------------------------------------------------
 
     const cart = await Cart.findOne({
       user_id: userId,
-    }).session(session);
+    });
 
-    if (!cart || !cart.items || cart.items.length === 0) {
-      throw new Error("Your cart is empty");
+    if (
+      !cart ||
+      !cart.items ||
+      cart.items.length === 0
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Your cart is empty",
+      });
     }
 
-    const productIds = cart.items.map((item) => item.product_id);
-
-    const variantIds = cart.items.map((item) => item.variant_id);
-
     // ------------------------------------------------
-    // 3. PRODUCTS
+    // 5. GET PRODUCT & VARIANT IDS
     // ------------------------------------------------
 
-    const products = await Product.find({
-      _id: {
-        $in: productIds,
-      },
-    }).session(session);
+    const productIds = cart.items.map(
+      (item) => item.product_id
+    );
 
-    const variants = await Variant.find({
-      _id: {
-        $in: variantIds,
-      },
-    }).session(session);
+    const variantIds = cart.items.map(
+      (item) => item.variant_id
+    );
+
+    // ------------------------------------------------
+    // 6. LOAD PRODUCTS & VARIANTS
+    // ------------------------------------------------
+
+    const [products, variants] =
+      await Promise.all([
+        Product.find({
+          _id: {
+            $in: productIds,
+          },
+        }).lean(),
+
+        Variant.find({
+          _id: {
+            $in: variantIds,
+          },
+        }).lean(),
+      ]);
+
+    // ------------------------------------------------
+    // 7. CREATE MAPS
+    // ------------------------------------------------
 
     const productMap = new Map(
-      products.map((product) => [product._id.toString(), product]),
+      products.map((product) => [
+        product._id.toString(),
+        product,
+      ])
     );
 
     const variantMap = new Map(
-      variants.map((variant) => [variant._id.toString(), variant]),
+      variants.map((variant) => [
+        variant._id.toString(),
+        variant,
+      ])
     );
 
     const orderItems = [];
 
     // ------------------------------------------------
-    // 4. VALIDATE EVERY CART ITEM
+    // 8. VALIDATE EVERY CART ITEM
     // ------------------------------------------------
 
     for (const cartItem of cart.items) {
-      const product = productMap.get(cartItem.product_id.toString());
+      const product =
+        productMap.get(
+          cartItem.product_id.toString()
+        );
 
-      const variant = variantMap.get(cartItem.variant_id.toString());
+      const variant =
+        variantMap.get(
+          cartItem.variant_id.toString()
+        );
 
+      // Product exists
       if (!product) {
-        throw new Error("Product no longer exists");
+        return res.status(400).json({
+          success: false,
+          message:
+            "Product no longer exists",
+        });
       }
 
+      // Variant exists
       if (!variant) {
-        throw new Error("Product variant no longer exists");
+        return res.status(400).json({
+          success: false,
+          message:
+            "Product variant no longer exists",
+        });
       }
 
-      // Product validation
+      // ------------------------------------------------
+      // PRODUCT VALIDATION
+      // ------------------------------------------------
 
       if (product.is_blocked) {
-        throw new Error(`${product.productName} is unavailable`);
+        return res.status(400).json({
+          success: false,
+          message:
+            `${product.productName} is unavailable`,
+        });
       }
 
       if (!product.is_listed) {
-        throw new Error(`${product.productName} is no longer available`);
+        return res.status(400).json({
+          success: false,
+          message:
+            `${product.productName} is no longer available`,
+        });
       }
 
-      // Stock validation
+      // ------------------------------------------------
+      // QUANTITY VALIDATION
+      // ------------------------------------------------
 
-      if (variant.stock_quantity < cartItem.quantity) {
-        throw new Error(
-          `Only ${variant.stock_quantity} ${product.productName} available`,
-        );
+      if (
+        !Number.isInteger(
+          cartItem.quantity
+        ) ||
+        cartItem.quantity < 1
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Cart contains an invalid quantity",
+        });
       }
 
-      // Price
+      // ------------------------------------------------
+      // VARIANT-PRODUCT VALIDATION
+      // ------------------------------------------------
 
-      const price = calculateItemPrice(variant);
+      if (
+        variant.product_id.toString() !==
+        product._id.toString()
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Invalid product variant in cart",
+        });
+      }
 
-      const itemTotal = price * cartItem.quantity;
+      // ------------------------------------------------
+      // STOCK VALIDATION
+      // ------------------------------------------------
+
+      if (
+        variant.stock_quantity <
+        cartItem.quantity
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            `Only ${variant.stock_quantity} ${product.productName} available`,
+        });
+      }
+
+      // ------------------------------------------------
+      // PRICE
+      // ------------------------------------------------
+
+      const price =
+        calculateItemPrice(variant);
+
+      if (
+        price === null ||
+        price === undefined ||
+        !Number.isFinite(price) ||
+        price <= 0
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            `${product.productName} has an invalid price`,
+        });
+      }
+
+      // ------------------------------------------------
+      // ITEM TOTAL
+      // ------------------------------------------------
+
+      const itemTotal =
+        price * cartItem.quantity;
+
+      // ------------------------------------------------
+      // ADD TO ORDER ITEMS
+      // ------------------------------------------------
 
       orderItems.push({
-        product_id: product._id,
+        product_id:
+          product._id,
 
-        variant_id: variant._id,
+        variant_id:
+          variant._id,
 
-        product_name: product.productName,
+        product_name:
+          product.productName,
 
-        product_image: product.images?.[0]?.url || "",
+        product_image:
+          product.images?.[0]?.url || "",
 
-        sku: variant.sku,
+        sku:
+          variant.sku,
 
-        weight: variant.weight,
+        weight:
+          variant.weight,
 
-        quantity: cartItem.quantity,
+        quantity:
+          cartItem.quantity,
 
         price,
 
         discount: 0,
 
-        item_total: itemTotal,
+        item_total:
+          itemTotal,
 
-        status: "pending",
+        status:
+          "pending",
       });
     }
 
     // ------------------------------------------------
-    // 5. CALCULATE TOTAL
+    // 9. CALCULATE TOTAL
     // ------------------------------------------------
 
-    const totals = calculateCartTotals(orderItems);
+    const totals =
+      calculateCartTotals(
+        orderItems
+      );
 
     // ------------------------------------------------
-    // 6. REDUCE STOCK
+    // 10. REDUCE STOCK
     // ------------------------------------------------
 
     for (const item of orderItems) {
-      await decreaseStock(item.variant_id, item.quantity, session);
+      await decreaseStock(
+        item.variant_id,
+        item.quantity
+      );
     }
 
     // ------------------------------------------------
-    // 7. CREATE ORDER
+    // 11. GENERATE ORDER ID
     // ------------------------------------------------
 
-    const orderId = generateOrderId();
+    const orderId =
+      generateOrderId();
+
+    // ------------------------------------------------
+    // 12. CREATE ORDER
+    // ------------------------------------------------
 
     const orderData = {
-      order_id: orderId,
+      order_id:
+        orderId,
 
-      user_id: userId,
+      user_id:
+        userId,
 
-      items: orderItems,
+      items:
+        orderItems,
 
       shipping_address: {
-        full_name: address.full_name,
+        full_name:
+          address.fullName,
 
-        phone_number: address.phone_number,
+        phone_number:
+          address.phone,
 
-        address: address.address,
+        address:
+          [
+            address.street,
+            address.suite,
+          ]
+            .filter(Boolean)
+            .join(", "),
 
-        company_name: address.company_name || "",
+        company_name:
+          "",
 
-        city: address.city,
+        city:
+          address.city,
 
-        state: address.state,
+        state:
+          address.state,
 
-        zip_code: address.zip_code,
+        zip_code:
+          address.zip,
 
-        country: address.country,
+        country:
+          address.country,
       },
 
-      subtotal: totals.subtotal,
+      subtotal:
+        totals.subtotal,
 
-      discount: totals.discount,
+      discount:
+        totals.discount,
 
-      tax: totals.tax,
+      tax:
+        totals.tax,
 
-      shipping_charge: totals.shipping,
+      shipping_charge:
+        totals.shipping,
 
-      final_amount: totals.finalAmount,
+      final_amount:
+        totals.finalAmount,
 
-      payment_method: "cod",
+      payment_method:
+        "cod",
 
-      payment_status: "pending",
+      payment_status:
+        "pending",
 
-      order_status: "pending",
+      order_status:
+        "pending",
     };
 
-    const [order] = await Order.create([orderData], {
-      session,
-    });
+    const order =
+      await Order.create(
+        orderData
+      );
 
     // ------------------------------------------------
-    // 8. CLEAR CART
+    // 13. CLEAR CART
     // ------------------------------------------------
 
     cart.items = [];
 
-    await cart.save({
-      session,
-    });
+    await cart.save();
 
     // ------------------------------------------------
-    // 9. COMMIT
+    // 14. RESPONSE
     // ------------------------------------------------
-
-    await session.commitTransaction();
 
     return res.status(201).json({
       success: true,
 
-      message: "Order placed successfully",
+      message:
+        "Order placed successfully",
 
-      orderId: order.order_id,
+      orderId:
+        order.order_id,
     });
+
   } catch (error) {
-    await session.abortTransaction();
 
-    console.error("Place order error:", error);
+    console.error(
+      "Place order error:",
+      error
+    );
 
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
 
-      message: error.message || "Unable to place order",
+      message:
+        error.message ||
+        "Unable to place order",
     });
-  } finally {
-    session.endSession();
   }
 };
+
 
 const loadOrderSuccess = async (req, res) => {
   try {
@@ -281,6 +457,12 @@ const loadOrderSuccess = async (req, res) => {
 
     return res.render("user/orderSuccess", {
       order,
+      orderDate: order.createdAt?.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }),
+      paymentMethodLabel: order.payment_method.toUpperCase(),
     });
   } catch (error) {
     console.error("Order success error:", error);
@@ -288,6 +470,7 @@ const loadOrderSuccess = async (req, res) => {
     return res.redirect("/orders");
   }
 };
+
 
 export default {
   placeOrder,

@@ -1,0 +1,359 @@
+<!DOCTYPE html><html class="light" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#e3e2e2",
+                    "background": "#fbf9f9",
+                    "surface-tint": "#5e5e5e",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "secondary": "#5e5e5e",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "on-surface-variant": "#444748",
+                    "inverse-on-surface": "#f2f0f0",
+                    "surface-container-high": "#e9e8e7",
+                    "primary-fixed-dim": "#c7c6c6",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#e2e2e2",
+                    "tertiary": "#5c5c5c",
+                    "inverse-primary": "#c7c6c6",
+                    "surface-container": "#efeded",
+                    "surface-container-low": "#f5f3f3",
+                    "on-secondary-container": "#646464",
+                    "surface-dim": "#dbdad9",
+                    "surface": "#fbf9f9",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "secondary-container": "#e3e2e2",
+                    "outline-variant": "#c4c7c7",
+                    "secondary-fixed": "#e3e2e2",
+                    "outline": "#747878",
+                    "on-background": "#1b1c1c",
+                    "surface-variant": "#e3e2e2",
+                    "on-tertiary-container": "#fcfcfc",
+                    "tertiary-container": "#747474",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "inverse-surface": "#303031",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "on-secondary-fixed-variant": "#464747",
+                    "surface-bright": "#fbf9f9",
+                    "primary-container": "#747474",
+                    "on-primary-fixed-variant": "#464747",
+                    "on-primary-fixed": "#1b1c1c",
+                    "on-primary-container": "#fefcfc",
+                    "primary": "#5c5c5c",
+                    "surface-container-highest": "#e3e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "section-gap-mobile": "64px",
+                    "stack-sm": "8px",
+                    "section-gap": "120px",
+                    "stack-md": "16px",
+                    "grid-gutter": "24px",
+                    "container-padding": "32px",
+                    "max-width": "1280px"
+            },
+            "fontFamily": {
+                    "body-xl": ["Inter"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                    "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed">
+<!-- SideNavBar Shell -->
+ {{> admin/aside}}
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 left-64 right-0 h-16 glass-header bg-surface/80 dark:bg-surface-dim/80 flex justify-between items-center px-container-padding z-40 border-b border-outline-variant/30">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/60 group-focus-within:text-on-surface transition-colors">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-1 focus:ring-on-surface/10 transition-all placeholder:text-on-surface-variant/40" placeholder="Search orders, customers, or products..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant transition-colors group active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface">notifications</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant transition-colors group active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
+<div class="flex items-center gap-3 pl-2">
+<div class="text-right">
+<p class="font-label-md text-on-surface">Alex Rivera</p>
+<p class="text-[11px] text-on-surface-variant/60 uppercase tracking-widest font-semibold">Administrator</p>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a modern administrator with a friendly expression, wearing a minimalist black turtleneck against a soft gray background, high-end photography, clean lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkfGyvPzB5SC901bCBP_UjGIDhr2qFbofA_8sOdlvpdm1NV8Ktmz-CP554WUkxOpEVLO6tTwoBsuGkXUcufyrCHgDwRP-7XlO6x7HcWAHep0un40KBI7rP8P_xSV2adqGsIevo5Rp86eMCCI4onNortWW6dEYjFWoVBTeSqnrYHAZbwXKDwFF0suTJ-DI8r3_LM5cj182IbMHWhvp20mWm_L3DQyeIidYwbVKHu4iJKYC1nKL7v-HL9shlKtfPUqxJp3_697Ba-_U">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-16 min-h-screen">
+<div class="max-w-[1280px] mx-auto px-container-padding py-10">
+<!-- -->
+<div class="mb-10">
+<nav class="flex items-center gap-2 text-label-md text-on-surface-variant/60 mb-4">
+<a class="hover:text-on-surface transition-colors" href="/admin/order/orders">Orders</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-on-surface transition-colors" href="/admin/order/orders/{{order.order_id}}">Order Details</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface font-semibold">Return Order</span>
+</nav>
+<div class="flex items-end justify-between">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Return Order #{{order.order_id}}</h2>
+<p class="text-on-surface-variant mt-1">Initiate a product return and manage refund logistics.</p>
+</div>
+<div class="flex gap-3">
+
+</div>
+</div>
+</div>
+<!-- 1. Order Summary Card -->
+<section class="mb-stack-lg">
+<div class="bg-surface-container-lowest rounded-xl p-8 apple-shadow border border-outline-variant/10 flex items-center justify-between">
+<div class="flex gap-12">
+<div>
+<p class="text-on-surface-variant/60 font-label-md uppercase tracking-wider mb-2">Customer</p>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed-dim flex items-center justify-center text-on-primary-fixed"><span class="material-symbols-outlined">person</span></div>
+<div>
+<p class="font-semibold text-on-surface">{{order.user_id.name}}</p>
+<p class="text-body-md text-on-surface-variant/80">{{order.user_id.email}}</p>
+</div>
+</div>
+</div>
+<div class="w-[1px] bg-outline-variant/20"></div>
+<div>
+<p class="text-on-surface-variant/60 font-label-md uppercase tracking-wider mb-2">Order Date</p>
+<p class="font-semibold text-on-surface">{{formatDate order.createdAt}}</p>
+<p class="text-body-md text-on-surface-variant/80">{{formatStatus order.order_status}}</p>
+</div>
+<div class="w-[1px] bg-outline-variant/20"></div>
+<div>
+<p class="text-on-surface-variant/60 font-label-md uppercase tracking-wider mb-2">Total Amount</p>
+<p class="font-headline-lg text-on-surface">₹{{order.final_amount}}</p>
+<span class="text-[12px] bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded-full font-bold uppercase tracking-tight">{{formatStatus order.payment_status}}</span>
+</div>
+</div>
+<div class="text-right">
+<span class="material-symbols-outlined text-on-surface-variant/30 text-[48px]">receipt_long</span>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-12 gap-grid-gutter items-start">
+<!-- 2. Item Selection (Table) -->
+<div class="col-span-12 lg:col-span-8 space-y-stack-lg">
+<div class="bg-surface-container-lowest rounded-xl apple-shadow border border-outline-variant/10 overflow-hidden">
+<div class="px-8 py-6 border-b border-outline-variant/10 flex items-center justify-between">
+<h3 class="font-headline-lg text-[22px] text-on-surface">Select Items for Return</h3>
+<span class="text-label-md text-on-surface-variant/60">{{order.items.length}} items in order</span>
+</div>
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-8 py-4 font-label-md text-on-surface-variant/60 uppercase tracking-wider w-12">
+<input data-select-all-returns class="rounded border-outline-variant/50 text-on-surface focus:ring-on-surface/20" type="checkbox" aria-label="Select all returnable items">
+</th>
+<th class="px-4 py-4 font-label-md text-on-surface-variant/60 uppercase tracking-wider">Product</th>
+<th class="px-4 py-4 font-label-md text-on-surface-variant/60 uppercase tracking-wider">Price</th>
+<th class="px-4 py-4 font-label-md text-on-surface-variant/60 uppercase tracking-wider">Qty to Return</th>
+<th class="px-8 py-4 font-label-md text-on-surface-variant/60 uppercase tracking-wider">Reason for Return</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+{{#each order.items}}
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="px-8 py-6"><input data-return-item data-unit-price="{{this.price}}" class="rounded border-outline-variant/50 text-on-surface focus:ring-on-surface/20" type="checkbox" value="{{this._id}}" {{#unless this.is_returnable}}disabled{{/unless}}></td>
+<td class="px-4 py-6"><div class="flex items-center gap-4"><div class="w-16 h-16 rounded-lg overflow-hidden bg-surface-container border border-outline-variant/10 shrink-0">{{#if this.product_image}}<img class="w-full h-full object-cover" src="{{this.product_image}}" alt="{{this.product_name}}">{{/if}}</div><div><p class="font-semibold text-on-surface leading-tight">{{this.product_name}}</p><p class="text-body-md text-on-surface-variant/60">{{this.weight}} · {{this.sku}}</p><p class="text-xs text-on-surface-variant">{{#if this.is_returnable}}Delivered{{else}}{{formatStatus this.status}}{{/if}}</p></div></div></td>
+<td class="px-4 py-6 font-semibold text-on-surface">₹{{this.price}}</td>
+<td class="px-4 py-6"><select data-return-quantity class="bg-surface-container-low border-none rounded-lg text-body-md py-1.5 focus:ring-1 focus:ring-on-surface/10" {{#unless this.is_returnable}}disabled{{/unless}}>{{#each (range 1 this.returnable_quantity)}}<option value="{{this}}">{{this}}</option>{{/each}}</select></td>
+<td class="px-8 py-6"><select data-return-reason class="w-full bg-surface-container-low border-none rounded-lg text-body-md py-1.5 focus:ring-1 focus:ring-on-surface/10" {{#unless this.is_returnable}}disabled{{/unless}}><option>Damaged on arrival</option><option>Wrong item sent</option><option>Quality not as expected</option><option>Changed mind</option></select></td>
+</tr>
+{{else}}
+<tr><td colspan="5" class="px-8 py-8 text-center text-on-surface-variant">This order has no items.</td></tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+</div>
+<!-- 3. Return Details (Form) -->
+<div class="col-span-12 lg:col-span-4 space-y-stack-lg">
+<div class="bg-surface-container-lowest rounded-xl p-8 apple-shadow border border-outline-variant/10">
+<h3 class="font-headline-lg text-[22px] text-on-surface mb-6">Return Processing</h3>
+<div class="space-y-6">
+<div>
+<label class="block font-label-md text-on-surface-variant mb-2">Refund Method</label>
+<div class="space-y-3">
+
+<label class="flex items-center gap-3 p-4 rounded-lg border border-primary bg-surface-variant/30 cursor-pointer"><input checked="" class="text-on-surface focus:ring-on-surface/20" name="refund" type="radio"><div><p class="font-semibold text-on-surface">Credit to Wallet</p><p class="text-[12px] text-on-surface-variant/60">Instant credit to customer account</p></div></label>
+</div><div class="mt-6"><label class="block font-label-md text-on-surface-variant mb-2">Return Address</label><div class="p-4 rounded-lg bg-surface-container-low/50 border border-outline-variant/10"><p class="font-semibold text-on-surface">{{order.shipping_address.full_name}}</p><p class="text-body-md text-on-surface-variant/80">{{order.shipping_address.address}}</p><p class="text-body-md text-on-surface-variant/80">{{order.shipping_address.city}}, {{order.shipping_address.state}} {{order.shipping_address.zip_code}}, {{order.shipping_address.country}}</p></div></div>
+</div>
+<div class="pt-6 border-t border-outline-variant/10">
+{{#unless hasReturnableItems}}
+<div class="mb-5 p-4 rounded-lg bg-surface-container-low border border-outline-variant/20" role="status">
+    <p class="font-semibold text-on-surface">No products are currently eligible for return.</p>
+    <p class="mt-1 text-sm text-on-surface-variant">Current order status: {{formatStatus order.order_status}}. Returns can be processed after delivery.</p>
+    <a href="/admin/order/orders/{{order.order_id}}/edit" class="mt-3 inline-flex text-sm font-semibold text-primary hover:underline">Review fulfillment status</a>
+</div>
+{{/unless}}
+<p id="returnFeedback" class="text-sm text-on-surface-variant mb-4" role="status" aria-live="polite"></p>
+<div class="flex justify-between mb-2">
+<span class="text-on-surface-variant">Items to Return</span>
+<span id="selectedReturnCount" class="font-semibold text-on-surface">0</span>
+</div>
+<div class="flex justify-between mb-6">
+<span class="text-on-surface-variant">Estimated Refund</span>
+<span id="estimatedReturnRefund" class="font-headline-lg text-on-surface">₹0</span>
+</div>
+<button id="processReturnButton" data-order-id="{{order.order_id}}" type="button" class="w-full bg-on-surface text-surface py-4 rounded-lg font-bold hover:opacity-90 active:scale-[0.98] transition-all mb-3" {{#unless hasReturnableItems}}disabled{{/unless}}>Process Return</button>
+<p class="text-[12px] text-center text-on-surface-variant/60">A return shipping label will be generated automatically.</p>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+</main>
+<!-- Contextual micro-interaction script -->
+<script>
+        const returnItems = [...document.querySelectorAll('[data-return-item]')];
+        const returnFeedback = document.getElementById('returnFeedback');
+        const selectedReturnCount = document.getElementById('selectedReturnCount');
+        const estimatedReturnRefund = document.getElementById('estimatedReturnRefund');
+        const processReturnButton = document.getElementById('processReturnButton');
+
+        function getSelectedReturnItems() {
+            return returnItems.filter((checkbox) => checkbox.checked).map((checkbox) => {
+                const row = checkbox.closest('tr');
+                return {
+                    itemId: checkbox.value,
+                    quantity: Number(row.querySelector('[data-return-quantity]').value),
+                    reason: row.querySelector('[data-return-reason]').value,
+                    unitPrice: Number(checkbox.dataset.unitPrice),
+                };
+            });
+        }
+
+        function updateReturnEstimate() {
+            const selectedItems = getSelectedReturnItems();
+            const quantity = selectedItems.reduce((sum, item) => sum + item.quantity, 0);
+            const amount = selectedItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+            selectedReturnCount.textContent = String(quantity);
+            estimatedReturnRefund.textContent = `₹${amount.toFixed(2)}`;
+        }
+
+        returnItems.forEach((checkbox) => {
+            checkbox.addEventListener('change', () => {
+                checkbox.closest('tr').classList.toggle('bg-surface-container-low/50', checkbox.checked);
+                updateReturnEstimate();
+            });
+        });
+
+        document.querySelectorAll('[data-return-quantity], [data-return-reason]').forEach((control) => {
+            control.addEventListener('change', updateReturnEstimate);
+        });
+
+        document.querySelector('[data-select-all-returns]').addEventListener('change', (event) => {
+            returnItems.filter((checkbox) => !checkbox.disabled).forEach((checkbox) => {
+                checkbox.checked = event.target.checked;
+                checkbox.closest('tr').classList.toggle('bg-surface-container-low/50', checkbox.checked);
+            });
+            updateReturnEstimate();
+        });
+
+        processReturnButton.addEventListener('click', async () => {
+            const selectedItems = getSelectedReturnItems();
+            if (!selectedItems.length) {
+                returnFeedback.textContent = 'Select at least one delivered item to return.';
+                returnFeedback.classList.add('text-error');
+                return;
+            }
+
+            processReturnButton.disabled = true;
+            returnFeedback.textContent = 'Processing return...';
+            returnFeedback.classList.remove('text-error');
+
+            try {
+                const response = await fetch(`/admin/order/orders/${encodeURIComponent(processReturnButton.dataset.orderId)}/return`, {
+                    method: 'PATCH',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        items: selectedItems.map(({ itemId, quantity, reason }) => ({ itemId, quantity, reason })),
+                    }),
+                });
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    returnFeedback.textContent = data.message || 'Unable to process return.';
+                    returnFeedback.classList.add('text-error');
+                    return;
+                }
+
+                returnFeedback.textContent = data.message;
+                setTimeout(() => {
+                    window.location.href = `/admin/order/orders/${encodeURIComponent(processReturnButton.dataset.orderId)}`;
+                }, 700);
+            } catch (error) {
+                console.error('Process return error:', error);
+                returnFeedback.textContent = 'Unable to process return. Please try again.';
+                returnFeedback.classList.add('text-error');
+            } finally {
+                processReturnButton.disabled = false;
+            }
+        });
+
+        // Hover effect for navigation
+        const navItems = document.querySelectorAll('nav a');
+        navItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                if (!item.classList.contains('font-bold')) {
+                    item.style.transform = 'translateX(4px)';
+                }
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateX(0px)';
+            });
+        });
+    </script>
+
+
+
+
+</body></html>

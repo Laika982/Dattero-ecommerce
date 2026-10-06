@@ -34,3 +34,27 @@ export const decreaseStock = async (
 
   return variant;
 };
+
+
+export const increaseStock = async (
+  variantId,
+  quantity
+) => {
+  const variant = await Variant.findByIdAndUpdate(
+    variantId,
+    {
+      $inc: {
+        stock_quantity: quantity,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  if (!variant) {
+    throw new Error("Variant not found");
+  }
+
+  return variant;
+};

@@ -1,0 +1,473 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Nutri Luxe Admin - Orders</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e3e2e2",
+                    "surface": "#fbf9f9",
+                    "outline": "#747878",
+                    "background": "#fbf9f9",
+                    "on-primary-fixed-variant": "#464747",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#c7c6c6",
+                    "inverse-primary": "#c7c6c6",
+                    "surface-container-highest": "#e3e2e2",
+                    "on-secondary-container": "#646464",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#747474",
+                    "surface-bright": "#fbf9f9",
+                    "secondary": "#5e5e5e",
+                    "secondary-container": "#e3e2e2",
+                    "on-primary-container": "#fefcfc",
+                    "on-surface-variant": "#444748",
+                    "outline-variant": "#c4c7c7",
+                    "surface-tint": "#5e5e5e",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-primary": "#ffffff",
+                    "primary": "#5c5c5c",
+                    "on-primary-fixed": "#1b1c1c",
+                    "inverse-on-surface": "#f2f0f0",
+                    "secondary-fixed": "#e3e2e2",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "surface-dim": "#dbdad9",
+                    "primary-fixed": "#e3e2e2",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "inverse-surface": "#303031",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#efeded",
+                    "surface-container-high": "#e9e8e7",
+                    "tertiary": "#5c5c5c",
+                    "surface-container-low": "#f5f3f3",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#1b1c1c",
+                    "primary-container": "#747474",
+                    "on-tertiary-container": "#fcfcfc",
+                    "on-secondary-fixed-variant": "#464747",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "grid-gutter": "24px",
+                    "container-padding": "32px",
+                    "stack-sm": "8px",
+                    "max-width": "1280px",
+                    "section-gap-mobile": "64px",
+                    "stack-md": "16px",
+                    "section-gap": "120px"
+            },
+            "fontFamily": {
+                    "body-xl": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .order-row:hover {
+            box-shadow: 0 40px 40px -20px rgba(0, 0, 0, 0.04);
+            z-index: 10;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e3e2e2;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed overflow-hidden">
+<!-- SideNavBar Anchor -->
+ {{> admin/aside}}
+<!-- TopNavBar Anchor -->
+<header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 ml-64 flex justify-between items-center h-16 px-container-padding">
+<div class="flex items-center flex-1 max-w-xl">
+    <div class="flex items-center flex-1">
+
+        <div class="relative w-full max-w-md">
+
+            <form
+                action="/admin/order/orders"
+                method="GET"
+                class="relative"
+            >
+
+                <!-- Search Icon -->
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant"
+                >
+                    search
+                </span>
+
+                <!-- Search Input -->
+                <input
+                    class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-24 py-2 text-body-md focus:ring-1 focus:ring-primary transition-all"
+                    placeholder="Search categories..."
+                    type="text"
+                    name="search"
+                    value="{{search}}"
+                >
+
+                <input type="hidden" name="status" value="{{status}}">
+                <input type="hidden" name="sort" value="{{sort}}">
+
+                {{#if search}}
+
+                    <!-- X Clear Button -->
+                    <a
+                        href="/admin/order/orders"
+                        class="absolute right-20 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-error transition-colors"
+                        title="Clear search"
+                    >
+                        <span class="material-symbols-outlined text-[18px]">
+                            close
+                        </span>
+                    </a>
+
+                {{/if}}
+
+                <!-- Search Button -->
+                <button
+                    type="submit"
+                    class="absolute right-1 top-1/2 -translate-y-1/2 px-4 py-1.5 rounded-full bg-primary text-on-primary text-sm font-semibold hover:opacity-90 transition"
+                >
+                    Search
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="p-2 hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
+<div class="flex items-center gap-3 group cursor-pointer">
+<div class="text-right">
+<p class="font-label-md text-on-surface">Admin</p>
+<p class="text-[10px] text-outline">Nutri Luxe Luxe</p>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-highest border border-outline-variant/30 transition-transform group-hover:scale-105">
+<img class="w-full h-full object-cover" data-alt="A clean professional headshot of a luxury wellness brand administrator with a soft-focus minimalist office background in light mode. The style is sharp, bright, and expensive-looking with neutral gray and white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXiGZynC3HlG8VjEYsmSW-30b7vGAN4dLM3ZYsWo93vwyH5F4n0mHngoHWaLtGw95LfLmDJhMzCPAWCUaZemelnP57yMq60qvHege3hYGi8lc7QEb2EgRlAD4djY0m4zGSug_LaE6b5DUd7Shb_8aQssMCPefjq1IUCKSuYUIPQ8x5QQgCOE-tchSZwfHjF-EeRHyc7PqInl_cLt5Kb9r1QBtSmX6BeKFJ5-1hC6p9zR2rfAV35Tt76TNhviJh6_OXKR_WCE8YGjQ">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-container-padding h-[calc(100vh-64px)] overflow-y-auto">
+<div class="max-w-max-width mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-lg mb-10">
+<div>
+<nav class="flex items-center gap-2 text-outline font-label-md mb-2">
+<span class="">Admin</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary">Orders</span>
+</nav>
+<h2 class="font-headline-xl text-on-surface">Order Management</h2>
+<p class="text-on-surface-variant font-body-md mt-1">Oversee and fulfill luxury wellness deliveries.</p>
+</div>
+<!-- Filters -->
+<div class="flex items-center gap-stack-sm overflow-x-auto pb-2 md:pb-0"><button id="openOrdersFilter" type="button" class="flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant/30 text-on-surface hover:bg-surface-container-low rounded-xl font-label-md transition-colors"><span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span><span>Filter</span></button><button id="openOrdersSort" type="button" class="flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant/30 text-on-surface hover:bg-surface-container-low rounded-xl font-label-md transition-colors"><span class="material-symbols-outlined text-[18px]" data-icon="swap_vert">swap_vert</span><span>Sort</span></button></div>
+</div>
+<!-- Bento Layout Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter mb-10">
+{{!-- <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<p class="text-outline font-label-md mb-1">Delivered Revenue</p>
+<h3 class="font-headline-lg text-on-surface">₹{{stats.deliveredRevenue}}</h3>
+<p class="text-on-surface-variant text-[12px] mt-2">Revenue from delivered orders</p>
+</div> --}}
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<p class="text-outline font-label-md mb-1">Total Orders</p>
+<h3 class="font-headline-lg text-on-surface">{{totalOrders}}</h3>
+<p class="text-on-surface-variant text-[12px] mt-2">All customer orders</p>
+</div>
+{{!-- <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<p class="text-outline font-label-md mb-1">Pending Orders</p>
+<h3 class="font-headline-lg text-on-surface">{{stats.pendingOrders}}</h3>
+<p class="text-on-surface-variant text-[12px] mt-2">Awaiting fulfillment</p>
+</div> --}}
+{{!-- <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<p class="text-outline font-label-md mb-1">Cancelled Orders</p>
+<h3 class="font-headline-lg text-on-surface">{{stats.cancelledOrders}}</h3>
+<p class="text-on-surface-variant text-[12px] mt-2">{{stats.cancelledRate}}% of all orders</p>
+</div> --}}
+</div>
+<!-- Order Table Container -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/20 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant/30">
+<th class="px-6 py-4 font-label-md text-on-surface uppercase tracking-wider text-[11px]">Order ID</th>
+<th class="px-6 py-4 font-label-md text-on-surface uppercase tracking-wider text-[11px]">Date</th>
+<th class="px-6 py-4 font-label-md text-on-surface uppercase tracking-wider text-[11px]">Customer</th>
+<th class="px-6 py-4 font-label-md text-on-surface uppercase tracking-wider text-[11px]">Status</th>
+<th class="px-6 py-4 font-label-md text-on-surface uppercase tracking-wider text-[11px] text-right">Total Amount</th>
+<th class="px-6 py-4 font-label-md text-on-surface uppercase tracking-wider text-[11px] text-right">Items</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+{{#each orders}}
+<tr class="transition-colors hover:bg-surface-container-low cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" data-order-url="/admin/order/orders/{{this.order_id}}" tabindex="0" role="link" aria-label="View order {{this.order_id}}">
+<td class="px-6 py-5 font-bold text-primary">#{{this.order_id}}</td>
+<td class="px-6 py-5 text-on-surface-variant font-body-md">{{formatDate this.createdAt}}</td>
+<td class="px-6 py-5">
+    <div>
+        {{#if this.user_id}}
+            <p class="font-label-md text-on-surface">{{this.user_id.name}}</p>
+            <p class="text-[12px] text-outline">{{this.user_id.email}}</p>
+        {{else}}
+            <p class="font-label-md text-on-surface">Customer unavailable</p>
+        {{/if}}
+    </div>
+</td>
+<td class="px-6 py-5">
+    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-bold {{#if (eq this.order_status "delivered")}}bg-green-100 text-green-700{{else}}{{#if (eq this.order_status "cancelled")}}bg-red-100 text-red-700{{else}}{{#if (eq this.order_status "pending")}}bg-orange-100 text-orange-700{{else}}bg-blue-100 text-blue-700{{/if}}{{/if}}{{/if}}">
+        <span class="w-1.5 h-1.5 rounded-full bg-current mr-1.5"></span>
+        {{formatStatus this.order_status}}
+    </span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-on-surface">₹{{this.final_amount}}</td>
+<td class="px-6 py-5 text-right text-on-surface-variant">{{this.items.length}}</td>
+</tr>
+{{else}}
+<tr>
+    <td colspan="6" class="px-6 py-12 text-center text-on-surface-variant">No orders match this search or filter.</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-surface-container-low flex items-center justify-between border-t border-outline-variant/30">
+<p class="text-[13px] text-outline font-body-md">Showing {{startIndex}} to {{endIndex}} of {{totalOrders}} orders</p>
+<div class="flex items-center gap-2">
+{{#if (gt currentPage 1)}}
+<a href="/admin/order/orders?page={{subtract currentPage 1}}&amp;search={{search}}&amp;status={{status}}&amp;sort={{sort}}" class="p-2 border border-outline-variant/30 rounded-lg hover:bg-surface-container transition-colors" aria-label="Previous page">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span>
+</a>
+{{else}}
+<button class="p-2 border border-outline-variant/30 rounded-lg opacity-30" disabled aria-label="Previous page">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+{{/if}}
+<span class="px-3 text-sm text-on-surface-variant">Page {{currentPage}} of {{totalPages}}</span>
+{{#if (lt currentPage totalPages)}}
+<a href="/admin/order/orders?page={{add currentPage 1}}&amp;search={{search}}&amp;status={{status}}&amp;sort={{sort}}" class="p-2 border border-outline-variant/30 rounded-lg hover:bg-surface-container transition-colors" aria-label="Next page">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
+</a>
+{{else}}
+<button class="p-2 border border-outline-variant/30 rounded-lg opacity-30" disabled aria-label="Next page">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+{{/if}}
+</div>
+</div>
+</div>
+<!-- Contextual Export Action -->
+<div class="mt-10 flex justify-end">
+
+</div>
+</div>
+</main>
+
+<div id="ordersFilterModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/30 backdrop-blur-sm px-4" role="presentation">
+    <section class="w-full max-w-md bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/20 overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="ordersFilterTitle">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-outline-variant/20">
+            <div>
+                <h2 id="ordersFilterTitle" class="text-lg font-bold text-on-surface">Filter Orders</h2>
+                <p class="text-sm text-on-surface-variant mt-1">Choose which order statuses to show</p>
+            </div>
+            <button type="button" data-close-modal="ordersFilterModal" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition" aria-label="Close filter">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="p-6 space-y-3">
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition">
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-primary">receipt_long</span></div><div><p class="font-semibold text-on-surface">All Orders</p><p class="text-xs text-on-surface-variant">Show every order</p></div></div>
+                <input type="radio" name="orderStatusFilter" value="" class="w-4 h-4 accent-primary" {{#unless status}}checked{{/unless}}>
+            </label>
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-orange-50 cursor-pointer transition">
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center"><span class="material-symbols-outlined text-orange-600">schedule</span></div><div><p class="font-semibold text-on-surface">Pending</p><p class="text-xs text-on-surface-variant">Orders awaiting fulfillment</p></div></div>
+                <input type="radio" name="orderStatusFilter" value="pending" class="w-4 h-4 accent-primary" {{#if (eq status "pending")}}checked{{/if}}>
+            </label>
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-blue-50 cursor-pointer transition">
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center"><span class="material-symbols-outlined text-blue-600">local_shipping</span></div><div><p class="font-semibold text-on-surface">Shipped</p><p class="text-xs text-on-surface-variant">Orders in transit</p></div></div>
+                <input type="radio" name="orderStatusFilter" value="shipped" class="w-4 h-4 accent-primary" {{#if (eq status "shipped")}}checked{{/if}}>
+            </label>
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-blue-50 cursor-pointer transition">
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center"><span class="material-symbols-outlined text-blue-600">local_shipping</span></div><div><p class="font-semibold text-on-surface">Out for Delivery</p><p class="text-xs text-on-surface-variant">Orders with the courier</p></div></div>
+                <input type="radio" name="orderStatusFilter" value="out_for_delivery" class="w-4 h-4 accent-primary" {{#if (eq status "out_for_delivery")}}checked{{/if}}>
+            </label>
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-green-50 cursor-pointer transition">
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center"><span class="material-symbols-outlined text-green-600">check_circle</span></div><div><p class="font-semibold text-on-surface">Delivered</p><p class="text-xs text-on-surface-variant">Successfully delivered orders</p></div></div>
+                <input type="radio" name="orderStatusFilter" value="delivered" class="w-4 h-4 accent-primary" {{#if (eq status "delivered")}}checked{{/if}}>
+            </label>
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-red-50 cursor-pointer transition">
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center"><span class="material-symbols-outlined text-red-600">cancel</span></div><div><p class="font-semibold text-on-surface">Cancelled</p><p class="text-xs text-on-surface-variant">Cancelled orders</p></div></div>
+                <input type="radio" name="orderStatusFilter" value="cancelled" class="w-4 h-4 accent-primary" {{#if (eq status "cancelled")}}checked{{/if}}>
+            </label>
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-red-50 cursor-pointer transition">
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center"><span class="material-symbols-outlined text-red-600">assignment_return</span></div><div><p class="font-semibold text-on-surface">Returned</p><p class="text-xs text-on-surface-variant">Returned orders</p></div></div>
+                <input type="radio" name="orderStatusFilter" value="returned" class="w-4 h-4 accent-primary" {{#if (eq status "returned")}}checked{{/if}}>
+            </label>
+        </div>
+        <div class="flex items-center justify-between px-6 py-4 bg-surface-container-low border-t border-outline-variant/20">
+            <button id="clearOrdersFilter" type="button" class="text-sm font-semibold text-on-surface-variant hover:text-on-surface">Clear filter</button>
+            <button id="applyOrdersFilter" type="button" class="px-5 py-2.5 rounded-lg bg-primary text-on-primary font-semibold hover:opacity-90 transition">Apply Filter</button>
+        </div>
+    </section>
+</div>
+
+<div id="ordersSortModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/30 backdrop-blur-sm px-4" role="presentation">
+    <section class="w-full max-w-md bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/20 overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="ordersSortTitle">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-outline-variant/20">
+            <div>
+                <h2 id="ordersSortTitle" class="text-lg font-bold text-on-surface">Sort Orders</h2>
+                <p class="text-sm text-on-surface-variant mt-1">Choose how orders are arranged</p>
+            </div>
+            <button type="button" data-close-modal="ordersSortModal" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition" aria-label="Close sort">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="p-6 space-y-3">
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-primary">calendar_today</span></div><div><p class="font-semibold text-on-surface">Newest first</p><p class="text-xs text-on-surface-variant">Most recent orders first</p></div></div><input type="radio" name="orderSort" value="newest" class="w-4 h-4 accent-primary" {{#if (eq sort "newest")}}checked{{/if}}></label>
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-primary">history</span></div><div><p class="font-semibold text-on-surface">Oldest first</p><p class="text-xs text-on-surface-variant">Earliest orders first</p></div></div><input type="radio" name="orderSort" value="oldest" class="w-4 h-4 accent-primary" {{#if (eq sort "oldest")}}checked{{/if}}></label>
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-primary">trending_up</span></div><div><p class="font-semibold text-on-surface">Highest amount</p><p class="text-xs text-on-surface-variant">Largest order total first</p></div></div><input type="radio" name="orderSort" value="highest" class="w-4 h-4 accent-primary" {{#if (eq sort "highest")}}checked{{/if}}></label>
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-primary">trending_down</span></div><div><p class="font-semibold text-on-surface">Lowest amount</p><p class="text-xs text-on-surface-variant">Smallest order total first</p></div></div><input type="radio" name="orderSort" value="lowest" class="w-4 h-4 accent-primary" {{#if (eq sort "lowest")}}checked{{/if}}></label>
+        </div>
+        <div class="flex items-center justify-end px-6 py-4 bg-surface-container-low border-t border-outline-variant/20">
+            <button id="applyOrdersSort" type="button" class="px-5 py-2.5 rounded-lg bg-primary text-on-primary font-semibold hover:opacity-90 transition">Apply Sort</button>
+        </div>
+    </section>
+</div>
+
+<script>
+    document.querySelectorAll('[data-order-url]').forEach((row) => {
+        row.addEventListener('click', () => {
+            window.location.href = row.dataset.orderUrl;
+        });
+
+        row.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                window.location.href = row.dataset.orderUrl;
+            }
+        });
+    });
+
+    const filterModal = document.getElementById('ordersFilterModal');
+    const sortModal = document.getElementById('ordersSortModal');
+    function openModal(modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeModal(modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    document.getElementById('openOrdersFilter').addEventListener('click', () => openModal(filterModal));
+    document.getElementById('openOrdersSort').addEventListener('click', () => openModal(sortModal));
+
+    document.querySelectorAll('[data-close-modal]').forEach((button) => {
+        button.addEventListener('click', () => closeModal(document.getElementById(button.dataset.closeModal)));
+    });
+
+    [filterModal, sortModal].forEach((modal) => {
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) closeModal(modal);
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeModal(filterModal);
+            closeModal(sortModal);
+        }
+    });
+
+    function navigateWithQuery(name, value) {
+        const url = new URL(window.location.href);
+        if (value) {
+            url.searchParams.set(name, value);
+        } else {
+            url.searchParams.delete(name);
+        }
+        url.searchParams.delete('page');
+        window.location.href = url.toString();
+    }
+
+    document.getElementById('applyOrdersFilter').addEventListener('click', () => {
+        const status = document.querySelector('input[name="orderStatusFilter"]:checked').value;
+        navigateWithQuery('status', status);
+    });
+
+    document.getElementById('clearOrdersFilter').addEventListener('click', () => {
+        navigateWithQuery('status', '');
+    });
+
+    document.getElementById('applyOrdersSort').addEventListener('click', () => {
+        const sort = document.querySelector('input[name="orderSort"]:checked').value;
+        navigateWithQuery('sort', sort);
+    });
+</script>
+
+
+
+
+
+
+</body></html>

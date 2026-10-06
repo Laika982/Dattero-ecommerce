@@ -1,9 +1,9 @@
 export const generateOrderId = () => {
   const timestamp = Date.now();
 
-  const random = Math.floor(
-    1000 + Math.random() * 9000
-  );
+  const uniqueNumber = timestamp
+    .toString()
+    .slice(-6);
 
-  return `ORD-${timestamp}-${random}`;
+  return `NL-${uniqueNumber}`;
 };

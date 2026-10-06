@@ -19,6 +19,8 @@ import adminRouter from "./routes/admin/authRouter.js";
 import categoryRouter from "./routes/admin/categoryRouter.js";
 import productRouter from "./routes/admin/productRouter.js";
 import customerRouter from "./routes/admin/customerRouter.js";
+import adminOrderRouter from "./routes/admin/orderRouter.js"
+
 
 import session from "express-session";
 import jwt from "jsonwebtoken";
@@ -158,6 +160,7 @@ app.use("/admin", adminRouter);
 app.use("/admin/category", categoryRouter);
 app.use("/admin/customer", customerRouter);
 app.use("/admin/product", productRouter);
+app.use("/admin/order", adminOrderRouter)
 
 // Start server
 app.listen(PORT, () => {

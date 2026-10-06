@@ -1,0 +1,437 @@
+{{>user/header}}
+
+<!-- Main Content -->
+<main class="flex-1 mt-16 px-container-padding py-12 bg-background mx-auto">
+        <div class="max-w-max-width mx-auto px-container-padding mt-6">
+    {{> user/notification}}
+</div>
+<!-- Header Section -->
+<header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6"><div class="">
+<nav class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md mb-4">
+  <a
+    class="hover:text-primary transition-colors"
+    href="order/orders"
+  >
+    Orders
+  </a>
+
+  <span class="material-symbols-outlined text-[16px]">
+    chevron_right
+  </span>
+
+  <span class="text-primary">
+    #{{order.order_id}}
+  </span>
+</nav>
+
+<h1 class="font-headline-xl text-headline-xl text-on-background mb-2">
+  Order Details
+</h1>
+
+<div class="flex items-center gap-4">
+
+  <p class="font-body-md text-on-surface-variant">
+    Placed on {{formatDate order.createdAt}}
+  </p>
+
+  <span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full font-label-md text-[12px] uppercase tracking-wider">
+    {{formatStatus order.order_status}}
+  </span>
+
+</div>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+{{#if hasInvoiceItems}}
+<button type="button" data-invoice-download data-order-id="{{order.order_id}}" class="flex items-center gap-2 px-6 py-3 border border-outline/20 text-on-surface hover:bg-surface-container transition-all active:scale-95 rounded font-label-md text-label-md">
+  <span class="material-symbols-outlined">download</span>
+  Download Invoice
+</button>
+{{/if}}
+{{#if (eq order.order_status "pending")}}
+<button type="button" data-cancel-order data-order-id="{{order.order_id}}" class="flex items-center gap-2 px-6 py-3 border border-error/30 text-error hover:bg-error-container/20 transition-all active:scale-95 rounded font-label-md text-label-md">
+  <span class="material-symbols-outlined">cancel</span>
+  Cancel Entire Order
+</button>
+{{/if}}
+{{#if (eq order.order_status "cancelled")}}
+<span class="inline-flex items-center gap-2 px-6 py-3 bg-red-50 text-red-700 rounded font-label-md text-label-md" role="status">
+  <span class="material-symbols-outlined">cancel</span>
+  Order Cancelled
+</span>
+{{/if}}
+</div>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-grid-gutter items-start">
+<!-- Order Items List -->
+<div class="lg:col-span-2 space-y-6">
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-6">Order Items ({{order.items.length}})</h2>
+<!-- Item Card -->
+{{#each order.items}}
+
+  <div class="bg-surface-container-low rounded-lg p-6 flex flex-col sm:flex-row gap-8 tonal-shadow border border-on-surface/5">
+
+    <div class="w-full sm:w-32 h-32 rounded bg-surface-container-highest overflow-hidden flex-shrink-0">
+      <img
+        class="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
+        src="{{this.product_image}}"
+        alt="{{this.product_name}}"
+      >
+    </div>
+
+    <div class="flex-1 flex flex-col justify-between">
+
+      <div class="flex justify-between items-start mb-4">
+
+        <div>
+          <h3 class="font-headline-lg text-body-xl text-on-background">
+            {{this.product_name}}
+          </h3>
+
+          <p class="text-on-surface-variant font-body-md">
+            Weight: {{this.weight}} |
+            Quantity: {{this.quantity}}
+          </p>
+        </div>
+
+        <p class="font-headline-lg text-body-xl text-on-background">
+          ₹{{this.item_total}}
+        </p>
+
+      </div>
+
+      <div class="flex flex-wrap gap-4 pt-4 border-t border-on-surface/5">
+
+        {{#if (eq this.status "delivered")}}
+          <button
+            class="px-6 py-2.5 bg-black text-white font-label-md text-label-md rounded hover:bg-zinc-800 transition-all active:scale-95"
+          >
+            Write a Review
+          </button>
+        {{/if}}
+
+        {{#if (eq this.status "pending")}}
+          <button
+            type="button"
+            data-cancel-item
+            data-order-id="{{../order.order_id}}"
+            data-item-id="{{this._id}}"
+            class="px-6 py-2.5 border border-outline/20 text-on-surface font-label-md text-label-md rounded hover:bg-surface-container transition-all active:scale-95"
+          >
+            Cancel Item
+          </button>
+        {{/if}}
+
+        {{#if (eq this.status "cancelled")}}
+          <span class="inline-flex items-center gap-1.5 px-3 py-2 bg-red-50 text-red-700 font-label-md text-sm font-semibold rounded" role="status">
+            <span class="material-symbols-outlined text-[18px]">cancel</span>
+            Cancelled
+          </span>
+        {{/if}}
+
+      </div>
+
+    </div>
+
+  </div>
+
+{{/each}}
+</div>
+<!-- Summary & Details Cards -->
+<div class="space-y-grid-gutter">
+<!-- Order Summary -->
+<div class="bg-surface-container-highest rounded-lg p-8 tonal-shadow">
+
+  <h2 class="font-headline-lg text-body-xl text-on-background mb-6">
+    Order Summary
+  </h2>
+
+  <div class="space-y-4 font-body-md">
+
+    <div class="flex justify-between text-on-surface-variant">
+      <span>Subtotal</span>
+      <span>₹{{order.subtotal}}</span>
+    </div>
+
+    <div class="flex justify-between text-on-surface-variant">
+      <span>Shipping</span>
+      <span>
+        {{#if (eq order.shipping_charge 0)}}
+          Free
+        {{else}}
+          ₹{{order.shipping_charge}}
+        {{/if}}
+      </span>
+    </div>
+
+    <div class="flex justify-between text-on-surface-variant">
+      <span>Estimated Tax</span>
+      <span>₹{{order.tax}}</span>
+    </div>
+
+    {{#if order.discount}}
+      <div class="flex justify-between text-on-surface-variant">
+        <span>Discount</span>
+        <span>-₹{{order.discount}}</span>
+      </div>
+    {{/if}}
+
+    <div class="pt-4 mt-4 border-t border-on-surface/10 flex justify-between font-headline-lg text-body-xl text-on-background">
+      <span>Total</span>
+      <span>₹{{order.final_amount}}</span>
+    </div>
+
+  </div>
+
+
+</div>
+
+<!-- Shipping & Payment Info -->
+<div class="bg-surface-container-low rounded-lg p-8 border border-on-surface/5">
+
+  <div class="mb-8">
+
+    <h3 class="font-label-md text-label-md text-primary uppercase tracking-widest mb-4">
+      Shipping Address
+    </h3>
+
+    <p class="font-body-md text-on-surface leading-relaxed">
+      {{order.shipping_address.full_name}}<br>
+
+      {{order.shipping_address.address}}<br>
+
+      {{order.shipping_address.city}},
+      {{order.shipping_address.state}}
+      {{order.shipping_address.zip_code}}<br>
+
+      {{order.shipping_address.country}}
+    </p>
+
+    {{#if order.shipping_address.phone_number}}
+      <p class="font-body-md text-on-surface mt-3">
+        Phone: {{order.shipping_address.phone_number}}
+      </p>
+    {{/if}}
+
+  </div>
+
+  <div class="pt-8 border-t border-on-surface/5">
+
+    <h3 class="font-label-md text-label-md text-primary uppercase tracking-widest mb-4">
+      Payment Method
+    </h3>
+
+    <div class="flex items-center gap-3">
+
+      <span class="material-symbols-outlined text-on-surface-variant">
+        payments
+      </span>
+
+      <p class="font-body-md text-on-surface">
+        {{#if (eq order.payment_method "cod")}}
+          Cash on Delivery
+        {{else}}
+          {{order.payment_method}}
+        {{/if}}
+      </p>
+
+    </div>
+
+    <div class="flex items-center gap-3 mt-3">
+
+      <span class="material-symbols-outlined text-on-surface-variant">
+        receipt_long
+      </span>
+
+      <p class="font-body-md text-on-surface">
+        Payment Status: {{ formatStatus order.payment_status}}
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+
+<script>
+    document.addEventListener('click', async (event) => {
+      const button = event.target.closest('[data-invoice-download]');
+
+      if (!button || button.disabled) return;
+
+      button.disabled = true;
+
+      try {
+        const response = await fetch(
+          `/order/orders/${encodeURIComponent(button.dataset.orderId)}/invoice`,
+          { headers: { Accept: 'application/pdf, application/json' } },
+        );
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          showNotification('error', data.message || 'Unable to download invoice.');
+          return;
+        }
+
+        const invoice = await response.blob();
+        const invoiceUrl = URL.createObjectURL(invoice);
+        const downloadLink = document.createElement('a');
+        downloadLink.href = invoiceUrl;
+        downloadLink.download = `${button.dataset.orderId}-invoice.pdf`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        downloadLink.remove();
+        setTimeout(() => URL.revokeObjectURL(invoiceUrl), 1000);
+      } catch (error) {
+        console.error('Invoice download error:', error);
+        showNotification('error', 'Unable to download invoice. Please try again.');
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    function showCancelConfirmation(entireOrder = false) {
+      return new Promise((resolve) => {
+        const overlay = document.createElement('div');
+        overlay.className = 'fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-on-surface/40 backdrop-blur-md';
+        overlay.setAttribute('role', 'presentation');
+
+        const dialog = document.createElement('div');
+        dialog.className = 'w-full max-w-md p-8 bg-surface-container-lowest rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-outline-variant/20';
+        dialog.setAttribute('role', 'alertdialog');
+        dialog.setAttribute('aria-modal', 'true');
+        dialog.setAttribute('aria-labelledby', 'cancel-dialog-title');
+        dialog.setAttribute('aria-describedby', 'cancel-dialog-message');
+
+        const content = document.createElement('div');
+        content.className = 'flex flex-col items-center text-center';
+
+        const iconContainer = document.createElement('div');
+        iconContainer.className = 'w-16 h-16 bg-error-container/30 rounded-full flex items-center justify-center mb-6';
+        const icon = document.createElement('span');
+        icon.className = 'material-symbols-outlined text-error text-[32px]';
+        icon.textContent = 'inventory_2';
+        iconContainer.appendChild(icon);
+
+        const title = document.createElement('h2');
+        title.id = 'cancel-dialog-title';
+        title.className = 'font-headline-xl text-headline-xl text-on-surface mb-3';
+        title.textContent = entireOrder ? 'Cancel entire order?' : 'Cancel this item?';
+
+        const message = document.createElement('p');
+        message.id = 'cancel-dialog-message';
+        message.className = 'font-body-md text-on-surface-variant mb-8';
+        message.textContent = entireOrder
+          ? 'All pending items in this order will be cancelled. You cannot undo this action.'
+          : 'This item will be removed from your order. You cannot undo this action.';
+
+        const actions = document.createElement('div');
+        actions.className = 'flex flex-col w-full gap-3';
+
+        const confirmButton = document.createElement('button');
+        confirmButton.type = 'button';
+        confirmButton.className = 'w-full py-3.5 bg-error text-white rounded-xl font-label-md font-semibold hover:opacity-90 transition-opacity';
+        confirmButton.textContent = entireOrder ? 'Yes, cancel order' : 'Yes, cancel item';
+
+        const cancelButton = document.createElement('button');
+        cancelButton.type = 'button';
+        cancelButton.className = 'w-full py-3.5 text-on-surface-variant font-label-md font-semibold hover:text-on-surface transition-colors';
+        cancelButton.textContent = 'Keep item';
+
+        actions.append(confirmButton, cancelButton);
+        content.append(iconContainer, title, message, actions);
+        dialog.appendChild(content);
+        overlay.appendChild(dialog);
+        document.body.appendChild(overlay);
+
+        const close = (confirmed) => {
+          document.removeEventListener('keydown', handleKeydown);
+          overlay.remove();
+          resolve(confirmed);
+        };
+
+        const handleKeydown = (event) => {
+          if (event.key === 'Escape') close(false);
+        };
+
+        confirmButton.addEventListener('click', () => close(true));
+        cancelButton.addEventListener('click', () => close(false));
+        overlay.addEventListener('click', (event) => {
+          if (event.target === overlay) close(false);
+        });
+        document.addEventListener('keydown', handleKeydown);
+        cancelButton.focus();
+      });
+    }
+
+    document.addEventListener('click', async (event) => {
+      const button = event.target.closest('[data-cancel-item], [data-cancel-order]');
+
+      if (!button || button.disabled) return;
+
+      const entireOrder = button.matches('[data-cancel-order]');
+
+      if (!(await showCancelConfirmation(entireOrder))) return;
+
+      button.disabled = true;
+
+      try {
+        const endpoint = entireOrder
+          ? `/order/orders/${encodeURIComponent(button.dataset.orderId)}/cancel`
+          : `/order/orders/${encodeURIComponent(button.dataset.orderId)}/items/${encodeURIComponent(button.dataset.itemId)}/cancel`;
+        const response = await fetch(endpoint, {
+          method: 'PATCH',
+          headers: { Accept: 'application/json' },
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          showNotification('error', data.message || 'Unable to cancel item.');
+          return;
+        }
+
+        showNotification('success', data.message || (entireOrder ? 'Order cancelled successfully.' : 'Product cancelled successfully.'));
+        setTimeout(() => window.location.reload(), 700);
+      } catch (error) {
+        console.error('Cancel order item error:', error);
+        showNotification('error', 'Unable to cancel item. Please try again.');
+      } finally {
+        if (button.isConnected) button.disabled = false;
+      }
+    });
+
+        // Micro-interactions
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+
+        // Sticky header transition
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-md');
+                nav.classList.remove('shadow-sm');
+            } else {
+                nav.classList.add('shadow-sm');
+                nav.classList.remove('shadow-md');
+            }
+        });
+    </script>
+
+
+
+
+</body></html>

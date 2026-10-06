@@ -48,4 +48,25 @@ const registerHbsHelpers = () => {
   });
 };
 
+hbs.registerHelper("formatDate", (date) => {
+  if (!date) return "";
+
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+});
+
+hbs.registerHelper("formatStatus", (status) => {
+  if (!status) return "";
+
+  return status
+    .split("_")
+    .map((word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+});
+
 export default registerHbsHelpers;

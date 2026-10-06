@@ -1,0 +1,383 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Edit Order | Nutri Luxe Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e3e2e2",
+                    "surface": "#fbf9f9",
+                    "outline": "#747878",
+                    "background": "#fbf9f9",
+                    "on-primary-fixed-variant": "#464747",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#c7c6c6",
+                    "inverse-primary": "#c7c6c6",
+                    "surface-container-highest": "#e3e2e2",
+                    "on-secondary-container": "#646464",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#747474",
+                    "surface-bright": "#fbf9f9",
+                    "secondary": "#5e5e5e",
+                    "secondary-container": "#e3e2e2",
+                    "on-primary-container": "#fefcfc",
+                    "on-surface-variant": "#444748",
+                    "outline-variant": "#c4c7c7",
+                    "surface-tint": "#5e5e5e",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-primary": "#ffffff",
+                    "primary": "#5c5c5c",
+                    "on-primary-fixed": "#1b1c1c",
+                    "inverse-on-surface": "#f2f0f0",
+                    "secondary-fixed": "#e3e2e2",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "surface-dim": "#dbdad9",
+                    "primary-fixed": "#e3e2e2",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "inverse-surface": "#303031",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#efeded",
+                    "surface-container-high": "#e9e8e7",
+                    "tertiary": "#5c5c5c",
+                    "surface-container-low": "#f5f3f3",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#1b1c1c",
+                    "primary-container": "#747474",
+                    "on-tertiary-container": "#fcfcfc",
+                    "on-secondary-fixed-variant": "#464747",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "grid-gutter": "24px",
+                    "container-padding": "32px",
+                    "stack-sm": "8px",
+                    "max-width": "1280px",
+                    "section-gap-mobile": "64px",
+                    "stack-md": "16px",
+                    "section-gap": "120px"
+            },
+            "fontFamily": {
+                    "body-xl": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fbf9f9;
+            color: #1b1c1c;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c4c7c7;
+            border-radius: 10px;
+        }
+        .apple-shadow {
+            box-shadow: 0 40px 40px -40px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<!-- SideNavBar -->
+ {{> admin/aside}}
+<!-- Main Wrapper -->
+<div class="ml-64 min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center h-16 px-container-padding">
+<div class="flex items-center gap-4 flex-grow max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 focus:ring-1 focus:ring-primary text-body-md" placeholder="Search orders, customers..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-6"><button class="flex items-center gap-2 px-4 py-2 border border-outline-variant/30 rounded-full hover:bg-surface-variant transition-colors active:scale-95 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+<span class="font-label-md">View Store</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a luxury brand administrator, wearing a minimalist black turtleneck, set against a clean, softly lit architectural background with neutral gray tones and high-key lighting. The style is modern, sophisticated, and evokes a high-end wellness brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQY1tMGFrB3Dkjjuy7twwv1Dch1KXLjVuplOs3NSfbyu1n5-hbqwfPSve-VvcVcFqv5kyjbcaeqiEB6wBwe7G5t2SUyPmDZ7RukcZjWjS5qf4dhI0Zxo7jTAZFdfQZzg2s0BqDgcZTF7YRFwDO9NEkaPmXl3qbZN2QIT2DKf8smmELKsg4KBvAJlFX5dwJ1qROsr7AlYQLCPEgYpGHTR6PQWB_pOjEjIFtDm3GTMIfy81QpZTbfcZSmq5Ns3gfhQAEoAHwF3-yrms">
+</div>
+<span class="font-label-md text-on-surface group-hover:text-primary transition-colors">Profile</span>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<main class="flex-grow p-container-padding max-w-max-width mx-auto w-full">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-8 text-on-surface-variant opacity-60">
+<a class="hover:underline" href="/admin/order/orders">Orders</a>
+<span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface font-medium">Order #{{order.order_id}}</span>
+</nav>
+<div class="flex flex-col lg:flex-row gap-grid-gutter items-start">
+<!-- Main Form Section -->
+<div class="w-full lg:w-2/3 space-y-8">
+<div class="bg-surface-container-lowest rounded-xl p-8 apple-shadow border border-outline-variant/10">
+<div class="flex justify-between items-center mb-10">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-1">Edit Order Details</h2>
+<p class="text-on-surface-variant opacity-70">Update the fulfillment and delivery information for this transaction.</p>
+</div>
+<span class="px-4 py-1.5 bg-surface-container-high text-on-surface-variant font-label-md rounded-full">Status: {{formatStatus order.order_status}}</span>
+</div>
+<form id="editOrderForm" data-order-id="{{order.order_id}}" class="space-y-10">
+<!-- Fulfillment Section -->
+<section>
+<h3 class="font-label-md text-label-md text-outline mb-6 uppercase tracking-widest">Fulfillment Information</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-md text-on-surface">Order Status</label>
+<select id="orderStatus" name="status" class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary text-body-md appearance-none">
+<option value="pending" {{#if (eq order.order_status "pending")}}selected{{/if}}>Pending</option>
+<option value="shipped" {{#if (eq order.order_status "shipped")}}selected{{/if}}>Shipped</option>
+<option value="out_for_delivery" {{#if (eq order.order_status "out_for_delivery")}}selected{{/if}}>Out for delivery</option>
+<option value="delivered" {{#if (eq order.order_status "delivered")}}selected{{/if}}>Delivered</option>
+<option value="cancelled" {{#if (eq order.order_status "cancelled")}}selected{{/if}}>Cancelled</option>
+<option value="returned" {{#if (eq order.order_status "returned")}}selected{{/if}} disabled>Returned</option>
+</select>
+</div>
+{{!-- <div class="space-y-2">
+<label class="font-label-md text-on-surface">Tracking Number</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary text-body-md" type="text" value="FEDEX-9023-8812-772">
+</div> --}}
+{{!-- <div class="space-y-2">
+<label class="font-label-md text-on-surface">Shipping Carrier</label>
+<select class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary text-body-md appearance-none">
+<option>FedEx Priority</option>
+<option>DHL Express</option>
+<option>UPS Ground</option>
+<option>Return Pending</option><option class="">Returned</option></select>
+</div> --}}
+<div class="space-y-2">
+<label class="font-label-md text-on-surface">Order Date</label>
+<input readonly class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 text-body-md" type="text" value="{{formatDate order.createdAt}}">
+</div>
+</div>
+</section>
+<!-- Shipping Address Section -->
+<section>
+<h3 class="font-label-md text-label-md text-outline mb-6 uppercase tracking-widest">Shipping Address</h3>
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="font-label-md text-on-surface">Recipient Name</label>
+<input readonly class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 text-body-md" type="text" value="{{order.shipping_address.full_name}}">
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-on-surface">Street Address</label>
+<input readonly class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 text-body-md" type="text" value="{{order.shipping_address.address}}">
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+<div class="space-y-2">
+<label class="font-label-md text-on-surface">City</label>
+<input readonly class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 text-body-md" type="text" value="{{order.shipping_address.city}}">
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-on-surface">State/Region</label>
+<input readonly class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 text-body-md" type="text" value="{{order.shipping_address.state}}">
+</div>
+<div class="space-y-2 col-span-2 md:col-span-1">
+<label class="font-label-md text-on-surface">Postal Code</label>
+<input readonly class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 text-body-md" type="text" value="{{order.shipping_address.zip_code}}">
+</div>
+</div>
+</div>
+</section>
+<p id="orderUpdateFeedback" class="text-sm text-on-surface-variant" role="status" aria-live="polite"></p>
+<div class="pt-6 border-t border-outline-variant/30 flex justify-end gap-4">
+<a href="/admin/order/orders/{{order.order_id}}/return" class="px-8 py-3 rounded-full font-label-md text-on-surface border border-outline-variant/30 hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[20px]">keyboard_return</span>
+                                    Manage Return
+                                </a><a href="/admin/order/orders/{{order.order_id}}" class="px-8 py-3 rounded-full font-label-md text-on-surface hover:bg-surface-container-high transition-colors">Cancel</a>
+<button class="px-10 py-3 bg-black text-white rounded-full font-label-md hover:opacity-90 transition-opacity flex items-center gap-2" type="submit">
+                                    Update Order
+                                    <span class="material-symbols-outlined text-[20px]" data-icon="check_circle">check_circle</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Sidebar Summary -->
+<div class="w-full lg:w-1/3 space-y-grid-gutter">
+<!-- Order Items -->
+<div class="bg-surface-container-lowest rounded-xl p-6 apple-shadow border border-outline-variant/10">
+<h3 class="font-label-md text-label-md text-outline mb-6 uppercase tracking-widest">Order Summary</h3>
+<div class="space-y-4">
+{{#each order.items}}
+<div class="flex gap-4">
+<div class="w-16 h-16 rounded-lg bg-surface-container-low overflow-hidden flex-shrink-0">
+{{#if this.product_image}}<img class="w-full h-full object-cover" src="{{this.product_image}}" alt="{{this.product_name}}">{{/if}}
+</div>
+<div class="flex-grow">
+<p class="font-label-md text-on-surface">{{this.product_name}}</p>
+<p class="text-body-md text-on-surface-variant opacity-60">Qty: {{this.quantity}} × ₹{{this.price}}</p>
+</div>
+<p class="font-label-md text-on-surface">₹{{this.item_total}}</p>
+</div>
+{{else}}
+<p class="text-sm text-on-surface-variant">No items in this order.</p>
+{{/each}}
+</div>
+<div class="mt-6 pt-6 border-t border-outline-variant/30 space-y-3">
+<div class="flex justify-between text-body-md text-on-surface-variant">
+<span class="">Subtotal</span>
+<span class="">₹{{order.subtotal}}</span>
+</div>
+<div class="flex justify-between text-body-md text-on-surface-variant">
+<span class="">Shipping</span>
+<span class="">₹{{order.shipping_charge}}</span>
+</div>
+<div class="flex justify-between font-label-md text-on-surface text-lg pt-2">
+<span class="">Total</span>
+<span class="">₹{{order.final_amount}}</span>
+</div>
+</div>
+</div>
+<!-- Customer Contact -->
+<div class="bg-surface-container-lowest rounded-xl p-6 apple-shadow border border-outline-variant/10">
+<h3 class="font-label-md text-label-md text-outline mb-6 uppercase tracking-widest">Customer Details</h3>
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="font-bold text-primary">{{order.user_id.name}}</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface">{{order.user_id.name}}</p>
+<p class="text-body-md text-on-surface-variant opacity-60">Order #{{order.order_id}}</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
+<span class="text-body-md">{{order.user_id.email}}</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="call">call</span>
+<span class="text-body-md">{{order.user_id.phone}}</span>
+</div>
+</div>
+</div>
+<!-- Delivery Map Hint -->
+
+</div>
+</div>
+</main>
+<!-- Subtle Footer -->
+
+</div>
+<!-- Micro-interaction for inputs -->
+<script>
+        const editOrderForm = document.getElementById('editOrderForm');
+        const orderUpdateFeedback = document.getElementById('orderUpdateFeedback');
+
+        editOrderForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const submitButton = editOrderForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            orderUpdateFeedback.textContent = 'Saving order status...';
+
+            try {
+                const response = await fetch(`/admin/order/orders/${encodeURIComponent(editOrderForm.dataset.orderId)}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status: document.getElementById('orderStatus').value }),
+                });
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    orderUpdateFeedback.textContent = data.message || 'Unable to update order status.';
+                    orderUpdateFeedback.classList.add('text-error');
+                    return;
+                }
+
+                window.location.href = `/admin/order/orders/${encodeURIComponent(editOrderForm.dataset.orderId)}`;
+            } catch (error) {
+                console.error('Update order status error:', error);
+                orderUpdateFeedback.textContent = 'Unable to update order status. Please try again.';
+                orderUpdateFeedback.classList.add('text-error');
+            } finally {
+                submitButton.disabled = false;
+            }
+        });
+
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('focus', () => {
+                el.parentElement.querySelector('label')?.classList.add('text-primary');
+            });
+            el.addEventListener('blur', () => {
+                el.parentElement.querySelector('label')?.classList.remove('text-primary');
+            });
+        });
+        
+        // Simple scale effect on CTA
+        const btn = document.querySelector('button[type="submit"]');
+        btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+        btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+        btn.addEventListener('mouseleave', () => btn.classList.remove('scale-95'));
+    </script>
+
+
+
+
+
+
+
+
+</body></html>

@@ -1,148 +1,462 @@
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={theme:{extend:{"colors":{"on-primary":"#ffffff","primary-fixed-dim":"#59de9b","on-secondary-container":"#5f6176","secondary":"#5a5d72","on-secondary-fixed":"#171a2c","background-primary":"#FFFFFF","on-primary-fixed":"#002111","outline":"#6d7a70","tertiary-fixed-dim":"#ffb3b1","on-tertiary-fixed":"#410008","on-secondary-fixed-variant":"#43465a","warning":"#F59E0B","surface-container-high":"#eae7ea","on-background":"#1b1b1d","surface-dim":"#dcd9dc","on-primary-container":"#00331d","surface-variant":"#e4e2e4","secondary-fixed":"#dfe1fa","surface-container-low":"#f6f3f5","on-secondary":"#ffffff","background-secondary":"#F7F7F8","on-surface":"#1b1b1d","tertiary-container":"#e86c6e","secondary-fixed-dim":"#c3c5dd","success":"#16A34A","surface-container":"#f0edef","tertiary":"#a5393e","on-error-container":"#93000a","on-tertiary-fixed-variant":"#852229","surface-tint":"#006d43","outline-variant":"#bccabe","surface-container-lowest":"#ffffff","primary-fixed":"#78fbb6","on-tertiary":"#ffffff","inverse-primary":"#59de9b","surface":"#fcf8fb","on-tertiary-container":"#5e0211","background":"#fcf8fb","error":"#ba1a1a","secondary-container":"#dcdef7","danger":"#DC2626","border-subtle":"#E5E7EB","primary":"#006d43","on-error":"#ffffff","surface-container-highest":"#e4e2e4","text-muted":"#6B7280","on-surface-variant":"#3d4a41","inverse-on-surface":"#f3f0f2","tertiary-fixed":"#ffdad8","primary-container":"#00a86b","on-primary-fixed-variant":"#005232","inverse-surface":"#303032","surface-bright":"#fcf8fb","error-container":"#ffdad6"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"xl":"64px","base":"8px","container-max":"1280px","lg":"40px","sm":"12px","md":"24px","gutter":"24px","xs":"4px"},"fontFamily":{"headline-lg-mobile":["Hanken Grotesk"],"headline-md":["Hanken Grotesk"],"body-sm":["Inter"],"body-lg":["Inter"],"label-md":["Inter"],"headline-lg":["Hanken Grotesk"],"display-lg":["Hanken Grotesk"],"data-mono":["JetBrains Mono"],"body-md":["Inter"]},"fontSize":{"headline-lg-mobile":["24px",{"lineHeight":"32px","fontWeight":"600"}],"headline-md":["24px",{"lineHeight":"32px","fontWeight":"600"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"600"}],"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"700"}],"data-mono":["14px",{"lineHeight":"20px","fontWeight":"500"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface"><header class="fixed top-0 left-0 right-0 h-16 bg-surface-container-lowest border-b border-border-subtle z-50"><div class="max-w-container-max mx-auto h-full flex items-center justify-between px-gutter"><div class="flex items-center gap-sm"><img alt="Nexora Logo" class="h-8 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZTdxP601LDP5BjmfkYPnnvkZAoHOni3ne8C8gjZVLbQAQtgyoDNpvS7E__9zdbQ5ymaPIKcZiNlxwSElO2KbRx2W17ISMVWoang64OKPpNxCfv8WMdcwUnpp9OL_DpgmpFOufRAPLPQ1JkTVbxrk5C2H8SrvsxzpDt-3j1Jmeqf-RBr7qeukgd7sb_uob625nITrdPkoWV8yLnDsEpZ191W0MTXl5TzJayB-HknowVB_AWxqSW1ppbA"/><span class="font-headline-md text-headline-md text-primary">Nexora</span></div><nav class="hidden md:flex items-center gap-lg" data-active-classes="text-primary font-semibold"><a aria-current="page" class="transition-colors text-primary font-semibold" data-path="guest-landing" href="#">Overview</a><a class="text-on-surface-variant hover:text-primary transition-colors" data-path="pricing" href="#">Pricing</a><a class="text-on-surface-variant hover:text-primary transition-colors" data-path="security" href="#">Security</a></nav><div class="flex items-center gap-md"><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Log In</a><button class="bg-primary text-on-primary px-md py-2 rounded-lg font-semibold">Get Started</button></div></div></header><main class="pt-16 min-h-screen"><div class="flex flex-col w-full">
-<!-- Hero Section -->
-<section class="relative min-h-[600px] flex items-center justify-center pt-24 pb-16 px-gutter bg-surface-container-lowest overflow-hidden">
-<!-- Abstract Animated Background -->
-<div class="absolute inset-0 pointer-events-none opacity-30">
-<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Nutri Luxe Admin - Orders</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e3e2e2",
+                    "surface": "#fbf9f9",
+                    "outline": "#747878",
+                    "background": "#fbf9f9",
+                    "on-primary-fixed-variant": "#464747",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#c7c6c6",
+                    "inverse-primary": "#c7c6c6",
+                    "surface-container-highest": "#e3e2e2",
+                    "on-secondary-container": "#646464",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#747474",
+                    "surface-bright": "#fbf9f9",
+                    "secondary": "#5e5e5e",
+                    "secondary-container": "#e3e2e2",
+                    "on-primary-container": "#fefcfc",
+                    "on-surface-variant": "#444748",
+                    "outline-variant": "#c4c7c7",
+                    "surface-tint": "#5e5e5e",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-primary": "#ffffff",
+                    "primary": "#5c5c5c",
+                    "on-primary-fixed": "#1b1c1c",
+                    "inverse-on-surface": "#f2f0f0",
+                    "secondary-fixed": "#e3e2e2",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "surface-dim": "#dbdad9",
+                    "primary-fixed": "#e3e2e2",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "inverse-surface": "#303031",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#efeded",
+                    "surface-container-high": "#e9e8e7",
+                    "tertiary": "#5c5c5c",
+                    "surface-container-low": "#f5f3f3",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#1b1c1c",
+                    "primary-container": "#747474",
+                    "on-tertiary-container": "#fcfcfc",
+                    "on-secondary-fixed-variant": "#464747",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "grid-gutter": "24px",
+                    "container-padding": "32px",
+                    "stack-sm": "8px",
+                    "max-width": "1280px",
+                    "section-gap-mobile": "64px",
+                    "stack-md": "16px",
+                    "section-gap": "120px"
+            },
+            "fontFamily": {
+                    "body-xl": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-xl": ["20px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["17px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.25", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
 <style>
-                    @keyframes float {
-                        0%, 100% { transform: translateY(0) scale(1); }
-                        50% { transform: translateY(-20px) scale(1.05); }
-                    }
-                    .blob { animation: float 15s ease-in-out infinite; transform-origin: center; }
-                    .blob-2 { animation: float 20s ease-in-out infinite reverse; animation-delay: -5s; }
-                </style>
-<circle class="text-primary-fixed opacity-20 blob blur-3xl" cx="200" cy="150" fill="currentColor" r="150"></circle>
-<circle class="text-secondary-fixed opacity-20 blob-2 blur-3xl" cx="800" cy="450" fill="currentColor" r="200"></circle>
-</svg>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .order-row:hover {
+            box-shadow: 0 40px 40px -20px rgba(0, 0, 0, 0.04);
+            z-index: 10;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e3e2e2;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed overflow-hidden">
+<!-- SideNavBar Anchor -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col h-screen py-container-padding px-stack-md z-50">
+<div class="mb-10 px-2">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface dark:text-on-primary-fixed">Nutri Luxe</h1>
+<p class="font-label-md text-label-md text-on-surface-variant/70">Luxury Wellness Admin</p>
 </div>
-<div class="max-w-container-max mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-xl items-center relative z-10">
-<!-- Text Content -->
-<div class="flex flex-col space-y-md">
-<div class="inline-flex items-center space-x-sm px-sm py-1 bg-surface-container rounded-full w-max shadow-sm">
-<span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Platform Update v2.4</span>
+<nav class="flex-1 space-y-1"><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span><span class="font-label-md text-label-md">Dashboard</span></a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Products</span>
+</a>
+<!-- Active Tab: Orders -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary dark:text-primary-fixed font-bold border-r-2 border-primary dark:border-primary-fixed bg-surface-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-label-md text-label-md">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+<span class="font-label-md text-label-md">Coupons</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="branding_watermark">branding_watermark</span>
+<span class="font-label-md text-label-md">Banners</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="local_offer">local_offer</span>
+<span class="font-label-md text-label-md">Offers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span><span class="font-label-md text-label-md">Sales Report</span></a><a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group" href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span><span class="font-label-md text-label-md">Logout</span></a></nav>
+<div class="mt-auto border-t border-outline-variant/30 pt-6 px-2">
+<button class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-primary text-on-primary font-label-md transition-all active:scale-95 hover:bg-opacity-90">
+<span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
+                View Store
+            </button>
 </div>
-<h1 class="font-display-lg text-display-lg text-on-surface leading-tight">
-                    The Future of <span class="text-primary relative inline-block">Investing<svg class="absolute -bottom-2 left-0 w-full h-3 text-primary-fixed-dim opacity-50" preserveaspectratio="none" viewbox="0 0 100 10"><path d="M0,5 Q50,15 100,5" fill="none" stroke="currentColor" stroke-width="4" vector-effect="non-scaling-stroke"></path></svg></span> is Here.
-                </h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
-                    Premium trading experience with lightning-fast execution and institutional-grade tools built for the modern investor.
-                </p>
-<div class="flex flex-col sm:flex-row items-center gap-md pt-sm">
-<button class="w-full sm:w-auto px-xl py-sm bg-primary text-on-primary font-label-md text-label-md rounded-lg shadow-md hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center space-x-sm group">
-<span>Get Started Now</span>
-<span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</aside>
+<!-- TopNavBar Anchor -->
+<header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 ml-64 flex justify-between items-center h-16 px-container-padding">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-1 focus:ring-primary transition-all" placeholder="Search orders, customers, or SKUs..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="p-2 hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
 </button>
-<button class="w-full sm:w-auto px-xl py-sm bg-transparent border border-outline-variant text-on-surface font-label-md text-label-md rounded-lg hover:bg-surface-container transition-colors">
-                        Explore Platform
-                    </button>
+<button class="p-2 hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
+<div class="flex items-center gap-3 group cursor-pointer">
+<div class="text-right">
+<p class="font-label-md text-on-surface">Admin</p>
+<p class="text-[10px] text-outline">Nutri Luxe Luxe</p>
 </div>
-<div class="flex items-center space-x-md pt-lg mt-md border-t border-border-subtle">
-<div class="flex -space-x-3">
-<img class="w-10 h-10 rounded-full object-cover shadow-sm border-2 border-surface-container-lowest" data-alt="A small circular profile picture of a professional woman in a grey blazer looking confident." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3yOZTlSQXbD_RTg6c_PQUBd7B7L2_3kQ95UWT-QZ1OoXkiP4FHNCB2MZAGvo5FiKwqo-rdGzso3bOsNtpVseuV9XaExmXFP_REhBBJEtx7yWGCI8Y4IFdSk1OnBxynnohbiUjZ3ORd5pBVcQ6Z-DYHa0JIQrHulPvc2tcbwjaLifC0RpjTDaztLkgIqfdxaV2tWwwM3Rwi12uzVxLLJa2GwrkxhQ-jrAgRPp_9KX38pY7bsCIXw8g9Q"/>
-<img class="w-10 h-10 rounded-full object-cover shadow-sm border-2 border-surface-container-lowest" data-alt="A small circular profile picture of a young man smiling casually in a bright outdoor setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0DO9MldlI7Yl87vqaLbaFaaKZ-EU2QIBEws_O0B-IRcxZQtl7Yn1PM66GpqOcZGUuR18XaOGSNwsobAigF8jab7N7anRPaZB1BsBDyUKIwsPgN5GUgIS3yFByukdagoJj2MsbgCwDwd9i_Up-7OqZB3kpCrNYjZk5XVkijcwU4UwJihcu89Zr7Zp25Y5tHziXj4too7EkSUHVyACY6JApM0IpOZ-YmpuwN4wbXg8uo91yCuMyrtxkpg"/>
-<img class="w-10 h-10 rounded-full object-cover shadow-sm border-2 border-surface-container-lowest" data-alt="A small circular profile picture of an older gentleman with glasses looking thoughtful." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdB8MlSTMpqJrGX-W82MjgxMkqQJtOMfBGTI1e_yRY_DxskX-BnD7w77Sb_fmj8hkB7n1xFBuX5UzjJTpxAy5EKIgSfnIqlSGIz4qjM-duMJK0nTWzA2uU4h7RunbI_doYjvWdSs7TDKM0DxNRQEvWi6eciembuMRxr4f_martim5lKHgOccdNE5ovDKE5fWkpeC-fuT5wQYzSZAt8vjj3pYHS40KFrxf1MkLc1hiDbuam0BXfrpEW7g"/>
-<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center shadow-sm border-2 border-surface-container-lowest">
-<span class="font-label-md text-[10px] text-on-surface-variant">+1M</span>
-</div>
-</div>
-<div class="flex flex-col">
-<div class="flex text-warning text-[14px]">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star_half</span>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">Trusted by 1M+ Investors</span>
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-highest border border-outline-variant/30 transition-transform group-hover:scale-105">
+<img class="w-full h-full object-cover" data-alt="A clean professional headshot of a luxury wellness brand administrator with a soft-focus minimalist office background in light mode. The style is sharp, bright, and expensive-looking with neutral gray and white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXiGZynC3HlG8VjEYsmSW-30b7vGAN4dLM3ZYsWo93vwyH5F4n0mHngoHWaLtGw95LfLmDJhMzCPAWCUaZemelnP57yMq60qvHege3hYGi8lc7QEb2EgRlAD4djY0m4zGSug_LaE6b5DUd7Shb_8aQssMCPefjq1IUCKSuYUIPQ8x5QQgCOE-tchSZwfHjF-EeRHyc7PqInl_cLt5Kb9r1QBtSmX6BeKFJ5-1hC6p9zR2rfAV35Tt76TNhviJh6_OXKR_WCE8YGjQ">
 </div>
 </div>
 </div>
-<!-- Hero Visual -->
-<div class="relative w-full h-[500px] flex items-center justify-center">
-<!-- Abstract 3D shape placeholder -->
-<div class="absolute inset-0 bg-gradient-to-tr from-primary-fixed-dim/20 to-transparent rounded-full blur-3xl"></div>
-<div class="relative w-full h-full max-w-md rounded-2xl shadow-xl overflow-hidden bg-surface-container transform hover:scale-[1.02] transition-transform duration-500 ease-out" data-alt="A sleek, high-fidelity 3D rendering of an abstract financial chart curving upwards, stylized with soft neon green and white materials against a pale grey background, exuding a sense of premium fintech sophistication." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCmmlhKeW5FfUJwtP_Cl25ORRIIEWik19h5H8NNmMYMsj0udhD7Rmu6ZgU_8p1dJou8E4GoeuYldWyEgPMjyeoVgmvRZyNA8f64F231fkHC828RGntuThu8oZKuRXATpPX3_bKRC7UOeUpmcduh1mVDn6T-Fb_H4aLZgkerYJWXypK7EqzBndR9gFqRrRZomBX_xlvWse2NcuMQJ5175nva61jl4XepFdrDv30jSg-5zPoXJsiBxhxW5A');">
-<!-- Overlay UI Elements -->
-<div class="absolute bottom-6 left-6 right-6 p-md bg-surface-container-lowest/90 backdrop-blur-md rounded-xl shadow-lg">
-<div class="flex justify-between items-center mb-sm">
-<span class="font-body-md text-body-md text-on-surface-variant">NIFTY 50</span>
-<span class="font-data-mono text-data-mono text-success flex items-center">
-<span class="material-symbols-outlined text-[16px]">arrow_upward</span>
-                                +1.24%
-                            </span>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-container-padding h-[calc(100vh-64px)] overflow-y-auto">
+<div class="max-w-max-width mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-lg mb-10">
+<div>
+<nav class="flex items-center gap-2 text-outline font-label-md mb-2">
+<span class="">Admin</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary">Orders</span>
+</nav>
+<h2 class="font-headline-xl text-on-surface">Order Management</h2>
+<p class="text-on-surface-variant font-body-md mt-1">Oversee and fulfill luxury wellness deliveries.</p>
 </div>
-<div class="h-16 w-full">
-<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 200 50">
-<defs>
-<lineargradient id="chartGrad" x1="0" x2="0" y1="0" y2="1">
-<stop offset="0%" stop-color="#006d43" stop-opacity="0.3"></stop>
-<stop offset="100%" stop-color="#006d43" stop-opacity="0"></stop>
-</lineargradient>
-</defs>
-<path d="M0,50 L0,30 Q20,40 40,25 T80,35 T120,15 T160,20 T200,5 L200,50 Z" fill="url(#chartGrad)"></path>
-<path d="M0,30 Q20,40 40,25 T80,35 T120,15 T160,20 T200,5" fill="none" stroke="#006d43" stroke-width="2"></path>
-</svg>
+<!-- Filters -->
+<div class="flex items-center gap-stack-sm overflow-x-auto pb-2 md:pb-0">
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-full font-label-md whitespace-nowrap">
+                        All Orders <span class="bg-on-primary/20 px-2 py-0.5 rounded text-[10px]">124</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-high text-on-surface-variant rounded-full font-label-md hover:bg-surface-variant transition-colors whitespace-nowrap">
+                        Pending <span class="bg-surface-variant px-2 py-0.5 rounded text-[10px]">12</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-high text-on-surface-variant rounded-full font-label-md hover:bg-surface-variant transition-colors whitespace-nowrap">
+                        Shipped <span class="bg-surface-variant px-2 py-0.5 rounded text-[10px]">48</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-high text-on-surface-variant rounded-full font-label-md hover:bg-surface-variant transition-colors whitespace-nowrap">
+                        Delivered <span class="bg-surface-variant px-2 py-0.5 rounded text-[10px]">64</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant/50 mx-2"></div>
+<button class="p-2 border border-outline-variant/30 rounded-lg hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
 </div>
 </div>
-</div>
-</div>
-</div>
-</section>
-<!-- Why Nexora / Features Section -->
-<section class="py-xl px-gutter bg-background-primary relative">
-<div class="max-w-container-max mx-auto">
-<div class="text-center mb-xl">
-<h2 class="font-headline-lg text-headline-lg text-on-surface mb-sm">Why choose Nexora?</h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
-                    Built on modern infrastructure to give you the edge in today's fast-moving markets.
-                </p>
-</div>
-<!-- Features Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
-<!-- Feature 1 -->
-<div class="p-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant hover:shadow-md transition-shadow group flex flex-col h-full">
-<div class="w-12 h-12 bg-primary-container/20 rounded-lg flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-primary">percent</span>
-</div>
-<h3 class="font-headline-md text-[20px] leading-[28px] text-on-surface mb-xs">Zero Brokerage</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant flex-grow">
-                        Pay zero brokerage on equity delivery trades and mutual funds. Transparent pricing, no hidden fees.
+<!-- Bento Layout Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter mb-10">
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<p class="text-outline font-label-md mb-1">Total Revenue</p>
+<h3 class="font-headline-lg text-on-surface">₹12,48,200</h3>
+<p class="text-green-600 text-[12px] font-bold mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                        +14% from last month
                     </p>
 </div>
-<!-- Feature 2 -->
-<div class="p-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant hover:shadow-md transition-shadow group flex flex-col h-full">
-<div class="w-12 h-12 bg-secondary-container/30 rounded-lg flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-secondary">monitoring</span>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<p class="text-outline font-label-md mb-1">Avg. Order Value</p>
+<h3 class="font-headline-lg text-on-surface">₹4,250</h3>
+<p class="text-on-surface-variant text-[12px] mt-2">Consistent with luxury tier</p>
 </div>
-<h3 class="font-headline-md text-[20px] leading-[28px] text-on-surface mb-xs">Advanced Charts</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant flex-grow">
-                        Analyze trends with 100+ indicators, drawing tools, and real-time tick data directly on our platform.
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<p class="text-outline font-label-md mb-1">Pending Orders</p>
+<h3 class="font-headline-lg text-on-surface">12</h3>
+<p class="text-error text-[12px] font-bold mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="priority_high">priority_high</span>
+                        3 Require immediate action
                     </p>
 </div>
-<!-- Feature 3 -->
-<div class="p-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant hover:shadow-md transition-shadow group flex flex-col h-full">
-<div class="w-12 h-12 bg-tertiary-container/20 rounded-lg flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-tertiary">shield_lock</span>
-</div>
-<h3 class="font-headline-md text-[20px] leading-[28px] text-on-surface mb-xs">Bank-Grade Security</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant flex-grow">
-                        Your assets are protected with AES-256 encryption, biometrics, and multi-factor authentication.
-                    </p>
-</div>
-<!-- Feature 4 -->
-<div class="p-md bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant hover:shadow-md transition-shadow group flex flex-col h-full">
-<div class="w-12 h-12 bg-primary-fixed-dim/30 rounded-lg flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-primary-fixed">speed</span>
-</div>
-<h3 class="font-headline-md text-[20px] leading-[28px] text-on-surface mb-xs">Real-Time Data</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant flex-grow">
-                        Experience ultra-low latency feeds ensuring you get the best price execution every single time.
-                    </p>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<p class="text-outline font-label-md mb-1">Cancelled Orders</p>
+<h3 class="font-headline-lg text-on-surface">3.4%</h3>
+<p class="text-on-surface-variant text-[12px] mt-2">Within acceptable threshold</p>
 </div>
 </div>
+<!-- Order Table Container -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/20 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant/30">
+<th class="px-6 py-4 font-label-md text-on-surface uppercase tracking-wider text-[11px]">Order ID</th>
+<th class="px-6 py-4 font-label-md text-on-surface uppercase tracking-wider text-[11px]">Date</th>
+<th class="px-6 py-4 font-label-md text-on-surface uppercase tracking-wider text-[11px]">Customer</th>
+<th class="px-6 py-4 font-label-md text-on-surface uppercase tracking-wider text-[11px]">Status</th>
+<th class="px-6 py-4 font-label-md text-on-surface uppercase tracking-wider text-[11px] text-right">Total Amount</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Order 1 -->
+<tr class="order-row transition-all hover:bg-surface-container-low cursor-pointer">
+<td class="px-6 py-5 font-bold text-primary">#NL-84920</td>
+<td class="px-6 py-5 text-on-surface-variant font-body-md">Oct 24, 2023</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-[12px] text-on-primary-fixed">VS</div>
+<div>
+<p class="font-label-md text-on-surface">Vikram Sethi</p>
+<p class="text-[12px] text-outline">vikram@example.com</p>
 </div>
-</section>
-</div></main><footer class="bg-surface-container-low py-xl border-t border-border-subtle"><div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-xl"><div class="col-span-1 md:col-span-2"><div class="flex items-center gap-sm mb-md"><img alt="Nexora Logo" class="h-6 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZTdxP601LDP5BjmfkYPnnvkZAoHOni3ne8C8gjZVLbQAQtgyoDNpvS7E__9zdbQ5ymaPIKcZiNlxwSElO2KbRx2W17ISMVWoang64OKPpNxCfv8WMdcwUnpp9OL_DpgmpFOufRAPLPQ1JkTVbxrk5C2H8SrvsxzpDt-3j1Jmeqf-RBr7qeukgd7sb_uob625nITrdPkoWV8yLnDsEpZ191W0MTXl5TzJayB-HknowVB_AWxqSW1ppbA"/><span class="font-headline-md text-primary">Nexora</span></div><p class="text-on-surface-variant max-w-sm">India's fastest growing investment platform trusted by over 10 million users.</p></div><div><h4 class="font-semibold mb-md">Company</h4><ul class="space-y-sm text-on-surface-variant text-body-sm"><li>About Us</li><li>Careers</li><li>Contact</li></ul></div><div><h4 class="font-semibold mb-md">Support</h4><ul class="space-y-sm text-on-surface-variant text-body-sm"><li>Help Center</li><li>Community</li><li>System Status</li></ul></div></div><div class="max-w-container-max mx-auto px-gutter mt-xl pt-md border-t border-border-subtle text-center text-label-md text-on-surface-variant">© 2024 Nexora Securities Ltd. SEBI Reg No: INZ000000000</div></footer></body></html>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-bold bg-green-100 text-green-700">
+<span class="w-1.5 h-1.5 rounded-full bg-green-600 mr-1.5"></span>
+                                        Delivered
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-on-surface">₹12,400.00</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- Order 2 -->
+<tr class="order-row transition-all hover:bg-surface-container-low cursor-pointer">
+<td class="px-6 py-5 font-bold text-primary">#NL-84921</td>
+<td class="px-6 py-5 text-on-surface-variant font-body-md">Oct 25, 2023</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center font-bold text-[12px] text-on-secondary-fixed">AK</div>
+<div>
+<p class="font-label-md text-on-surface">Ananya Kapoor</p>
+<p class="text-[12px] text-outline">ananya.k@luxury.in</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-bold bg-blue-100 text-blue-700">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-600 mr-1.5"></span>
+                                        Shipped
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-on-surface">₹5,250.00</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- Order 3 -->
+<tr class="order-row transition-all hover:bg-surface-container-low cursor-pointer">
+<td class="px-6 py-5 font-bold text-primary">#NL-84922</td>
+<td class="px-6 py-5 text-on-surface-variant font-body-md">Oct 25, 2023</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center font-bold text-[12px] text-on-surface">RJ</div>
+<div>
+<p class="font-label-md text-on-surface">Rohan Joshi</p>
+<p class="text-[12px] text-outline">rohan.j@wellness.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-bold bg-orange-100 text-orange-700 animate-pulse">
+<span class="w-1.5 h-1.5 rounded-full bg-orange-600 mr-1.5"></span>
+                                        Pending
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-on-surface">₹8,900.00</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- Order 4 -->
+<tr class="order-row transition-all hover:bg-surface-container-low cursor-pointer">
+<td class="px-6 py-5 font-bold text-primary">#NL-84923</td>
+<td class="px-6 py-5 text-on-surface-variant font-body-md">Oct 26, 2023</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center font-bold text-[12px] text-on-tertiary-fixed">PD</div>
+<div>
+<p class="font-label-md text-on-surface">Priya Desai</p>
+<p class="text-[12px] text-outline">priya@desai.me</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-bold bg-green-100 text-green-700">
+<span class="w-1.5 h-1.5 rounded-full bg-green-600 mr-1.5"></span>
+                                        Delivered
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-on-surface">₹15,000.00</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- Order 5 -->
+<tr class="order-row transition-all hover:bg-surface-container-low cursor-pointer">
+<td class="px-6 py-5 font-bold text-primary">#NL-84924</td>
+<td class="px-6 py-5 text-on-surface-variant font-body-md">Oct 26, 2023</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-[12px] text-on-surface-variant">SM</div>
+<div>
+<p class="font-label-md text-on-surface">Sanjay Malhotra</p>
+<p class="text-[12px] text-outline">sanjay@corporateluxe.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-bold bg-blue-100 text-blue-700">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-600 mr-1.5"></span>
+                                        Shipped
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right font-bold text-on-surface">₹24,800.00</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">chevron_right</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-surface-container-low flex items-center justify-between border-t border-outline-variant/30">
+<p class="text-[13px] text-outline font-body-md">Showing 1 to 5 of 124 orders</p>
+<div class="flex items-center gap-2">
+<button class="p-2 border border-outline-variant/30 rounded-lg hover:bg-surface-container transition-colors disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-on-primary rounded-lg font-label-md">1</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-variant rounded-lg font-label-md">2</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-variant rounded-lg font-label-md">3</button>
+<span class="px-1 text-outline">...</span>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-variant rounded-lg font-label-md">25</button>
+<button class="p-2 border border-outline-variant/30 rounded-lg hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Contextual Export Action -->
+<div class="mt-10 flex justify-end">
+<button class="flex items-center gap-3 px-8 py-4 bg-surface-container-highest text-on-surface font-bold rounded-xl hover:bg-surface-variant transition-all scale-100 active:scale-95 shadow-sm border border-outline-variant/10">
+<span class="material-symbols-outlined" data-icon="file_download">file_download</span>
+                    Export Order Report (.CSV)
+                </button>
+</div>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for status filter buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if(this.textContent.trim().includes('Orders') || this.textContent.trim().includes('Pending') || this.textContent.trim().includes('Shipped') || this.textContent.trim().includes('Delivered')) {
+                    document.querySelectorAll('.flex.items-center.gap-stack-sm button').forEach(b => {
+                        b.classList.remove('bg-primary', 'text-on-primary');
+                        b.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+                        const span = b.querySelector('span');
+                        if(span) {
+                            span.classList.remove('bg-on-primary/20');
+                            span.classList.add('bg-surface-variant');
+                        }
+                    });
+                    this.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+                    this.classList.add('bg-primary', 'text-on-primary');
+                    const span = this.querySelector('span');
+                    if(span) {
+                        span.classList.remove('bg-surface-variant');
+                        span.classList.add('bg-on-primary/20');
+                    }
+                }
+            });
+        });
+    </script>
+
+
+
+
+</body></html>

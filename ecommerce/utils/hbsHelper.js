@@ -36,12 +36,12 @@ const registerHbsHelpers = () => {
   });
 
   hbs.registerHelper("includes", function (array, value) {
-  if (!Array.isArray(array)) {
-    return false;
-  }
+    if (!Array.isArray(array)) {
+      return false;
+    }
 
-  return array.map(String).includes(String(value));
-});
+    return array.map(String).includes(String(value));
+  });
 
   hbs.registerHelper("json", function (context) {
     return JSON.stringify(context);

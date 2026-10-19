@@ -1,7 +1,7 @@
 {{>user/header}}
-<main class="max-w-max-width mx-auto px-container-padding py-section-gap-mobile md:py-[80px]">
+<main class="max-w-max-width mx-auto px-3 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16 safe-bottom-padding">
 
-        <div class="max-w-max-width mx-auto px-container-padding mt-6">
+        <div class="max-w-max-width mx-auto px-2 sm:px-4 mt-2 sm:mt-4">
         {{> user/notification}}
     </div>
 <div class="flex flex-col lg:flex-row gap-8 relative items-start">
@@ -51,6 +51,7 @@
         </div>
         <div>
           <p class="text-sm font-bold text-ink-black">No Delivery Address</p>
+
           <p class="text-xs text-on-surface-variant">Please choose or add an address to continue checkout.</p>
         </div>
       </div>
@@ -73,7 +74,7 @@
   <div class="flex flex-col gap-6">
     {{#each checkoutItems}}
     <!-- Product  -->
-    <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 pb-6 border-b border-outline-variant/20" data-cart-item data-variant-id="{{this.variantId}}">
+    <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 pb-6 border-b border-outline-variant/20" data-cart-item data-variant-id="{{this.variantId}}" data-product-id="{{this.productId}}" data-category-id="{{this.categoryId}}" data-price="{{this.price}}">
       <!-- Product Image -->
       <div class="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-outline-variant/20 flex-shrink-0 relative">
         <img class="w-full h-full object-cover" data-alt="{{this.product_name}}" src="{{this.image}}" alt="{{this.product_name}}">
@@ -136,74 +137,187 @@
 </section>
 
 <!-- Payment -->
-<section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative">
-<h2 class="font-headline-lg text-[24px] text-ink-black mb-6">Payment</h2>
-<div class="flex flex-col gap-2 mb-4">
-{{!-- <label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-t-xl cursor-pointer bg-surface-gray/50">
-<div class="flex items-center gap-4">
-<input checked="" class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="payment" type="radio" value="credit_card">
-<span class="font-label-md text-[16px] text-ink-black">Credit Card</span>
-</div>
-<div class="flex gap-2">
-<span class="material-symbols-outlined text-outline">credit_card</span>
-</div>
-</label> --}}
-<!-- Credit Card Form -->
-{{!-- <div class="p-6 border-x border-b border-outline-variant/40 rounded-b-xl bg-surface-container-lowest">
-<div class="grid grid-cols-2 gap-4">
-<div class="col-span-2 flex flex-col gap-2">
-<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="Card Number" type="text">
-</div>
-<div class="flex flex-col gap-2">
-<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="MM / YY" type="text">
-</div>
-<div class="flex flex-col gap-2">
-<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="CVC" type="text">
-</div>
-<div class="col-span-2 flex flex-col gap-2">
-<input class="form-input-premium w-full rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface" placeholder="Name on Card" type="text">
-</div>
-</div>
-</div> --}}
+<section class="bg-surface-container-lowest p-6 sm:p-8 rounded-2xl border border-outline-variant/30 apple-shadow relative">
+  <div class="flex items-center justify-between mb-5">
+    <div>
+      <h2 class="font-headline-lg text-[22px] sm:text-[24px] font-bold text-ink-black tracking-tight">Payment Method</h2>
+      <p class="text-xs text-on-surface-variant mt-0.5">Select how you want to pay for this order</p>
+    </div>
+    <div class="flex items-center gap-1.5 text-xs text-on-surface-variant bg-surface-gray/80 px-3 py-1.5 rounded-full border border-outline-variant/20 shadow-xs">
+      <span class="material-symbols-outlined text-[16px] text-primary">verified_user</span>
+      <span class="font-medium">100% Secure</span>
+    </div>
+  </div>
 
-{{!-- COD --}}
-<label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors mt-4">
-<div class="flex items-center gap-4">
-<input class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="payment" type="radio" value="cod">
-<span class="font-label-md text-[16px] text-ink-black">COD</span>
-</div>
-<div class="flex gap-2">
-<span class="material-symbols-outlined text-outline">account_balance_wallet</span>
-</div>
-</label>
-{{!-- UPI --}}
-{{!-- <label class="flex items-center justify-between p-4 border border-outline-variant/40 rounded-xl cursor-pointer hover:border-accent-blue transition-colors mt-2">
-<div class="flex items-center gap-4">
-<input class="w-5 h-5 appearance-none border border-outline-variant rounded-full relative" name="payment" type="radio" value="upi">
-<span class="font-label-md text-[16px] text-ink-black">UPI</span>
-</div>
-<div class="flex gap-2">
-<span class="material-symbols-outlined text-outline">qr_code_scanner</span>
-</div>
-</label> --}}
-</div>
+  <div class="flex flex-col gap-3">
+    <!-- Wallet Option -->
+    <label id="paymentCardWallet" class="payment-option-card flex flex-col p-4 sm:p-5 border-2 border-outline-variant/40 rounded-2xl cursor-pointer hover:border-primary/60 transition-all relative group bg-surface-container-lowest">
+      <div class="flex items-start sm:items-center justify-between gap-3">
+        <div class="flex items-start sm:items-center gap-3.5">
+          <div class="mt-0.5 sm:mt-0 flex items-center justify-center">
+            <input class="w-5 h-5 text-primary focus:ring-primary border-outline-variant/60 cursor-pointer" name="payment" type="radio" value="wallet" id="payment-wallet">
+          </div>
+          <div class="flex flex-col">
+            <div class="flex items-center flex-wrap gap-2">
+              <span class="font-headline-lg text-[16px] font-bold text-ink-black">Wallet</span>
+              <span id="walletBadge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                ₹{{wallet.balance}} available
+              </span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-0.5">Instant checkout using your Dattero wallet balance</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2.5 shrink-0">
+          <a href="/wallet" target="_blank" onclick="event.stopPropagation();" class="text-xs font-semibold text-accent-blue hover:underline hidden sm:inline-flex items-center gap-0.5 py-1 px-2 rounded-md hover:bg-surface-gray transition-colors">
+            <span class="material-symbols-outlined text-[15px]">add_circle</span> Add Funds
+          </a>
+          <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Wallet Breakdown / Warning -->
+      <div id="walletDetailsBox" class="mt-3.5 pt-3.5 border-t border-outline-variant/20 hidden">
+        <div id="walletSufficientMsg" class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs text-on-surface-variant bg-surface-gray/60 p-3 rounded-xl border border-outline-variant/20">
+          <span class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+            Sufficient balance to complete this order
+          </span>
+          <span class="font-medium text-ink-black">Remaining balance: <strong class="text-emerald-700 font-bold" id="walletRemainingBalance">₹0.00</strong></span>
+        </div>
+        <div id="walletInsufficientMsg" class="hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs">
+          <div class="flex items-start sm:items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-amber-600 shrink-0 mt-0.5 sm:mt-0">warning</span>
+            <span>Insufficient balance. You need <strong id="walletDeficitAmount" class="font-bold">₹0.00</strong> more to pay using wallet.</span>
+          </div>
+          <a href="/wallet" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-ink-black text-white font-semibold hover:bg-ink-black/90 transition-all shrink-0">
+            <span class="material-symbols-outlined text-[14px]">payments</span> Top up Wallet
+          </a>
+        </div>
+      </div>
+    </label>
+
+    <!-- UPI Option -->
+    <label id="paymentCardUpi" class="payment-option-card flex items-center justify-between p-4 sm:p-5 border-2 border-outline-variant/40 rounded-2xl cursor-pointer hover:border-primary/60 transition-all relative group bg-surface-container-lowest">
+      <div class="flex items-center gap-3.5">
+        <div class="flex items-center justify-center">
+          <input class="w-5 h-5 text-primary focus:ring-primary border-outline-variant/60 cursor-pointer" name="payment" type="radio" value="upi" id="payment-upi">
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-headline-lg text-[16px] font-bold text-ink-black">UPI / Cards / Net Banking</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#EBF3FE] text-accent-blue border border-accent-blue/20">Popular</span>
+          </div>
+          <p class="text-xs text-on-surface-variant mt-0.5">Pay via Razorpay, Google Pay, PhonePe, Paytm, or Credit/Debit Cards</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <div class="w-10 h-10 rounded-xl bg-surface-gray flex items-center justify-center text-on-surface-variant">
+          <span class="material-symbols-outlined text-[22px]">qr_code_scanner</span>
+        </div>
+      </div>
+    </label>
+
+    <!-- COD Option -->
+    <label id="paymentCardCod" class="payment-option-card flex items-center justify-between p-4 sm:p-5 border-2 border-outline-variant/40 rounded-2xl cursor-pointer hover:border-primary/60 transition-all relative group bg-surface-container-lowest">
+      <div class="flex items-center gap-3.5">
+        <div class="flex items-center justify-center">
+          <input class="w-5 h-5 text-primary focus:ring-primary border-outline-variant/60 cursor-pointer" name="payment" type="radio" value="cod" id="payment-cod">
+        </div>
+        <div class="flex flex-col">
+          <span class="font-headline-lg text-[16px] font-bold text-ink-black">Cash on Delivery (COD)</span>
+          <p class="text-xs text-on-surface-variant mt-0.5">Pay with cash upon delivery of your order</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <div class="w-10 h-10 rounded-xl bg-surface-gray flex items-center justify-center text-on-surface-variant">
+          <span class="material-symbols-outlined text-[22px]">payments</span>
+        </div>
+      </div>
+    </label>
+  </div>
 </section>
 <div class="flex items-center justify-center gap-2 text-on-surface-variant font-body-md text-body-md mt-6 mb-8">
 <span class="material-symbols-outlined" style="font-size: 18px;">lock</span>
                     All transactions are secure and encrypted.
                 </div>
 </div>
-<!-- Right Column: Order Summary (Sticky) -->
+<!-- Right Column: Order Summary (Sticky on Desktop) -->
 <div class="w-full lg:w-1/3">
-<div class="sticky bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 apple-shadow flex flex-col gap-8 top-24 top-20"><div class="flex items-center justify-between border-b border-outline-variant/20 pb-4"><h2 class="font-headline-lg text-[20px] font-bold text-ink-black tracking-tight">Order Summary</h2><span class="px-2.5 py-0.5 rounded-full bg-surface-gray border border-outline-variant/30 text-on-surface-variant font-label-md text-[11px] font-semibold tracking-wide">{{checkoutItems.length}} Items</span></div>
-<div class="flex flex-col gap-3 py-2 border-b border-outline-variant/20"><button type="button" class="inline-flex items-center gap-2 text-accent-blue hover:opacity-80 transition-opacity text-left group"><span class="material-symbols-outlined text-[18px]">sell</span><span class="font-label-md text-xs font-semibold tracking-wide">View Available Offers</span></button><div class="flex gap-2 items-center w-full mt-1"><input class="form-input-premium flex-1 rounded-lg px-3.5 py-2 font-body-md text-sm text-on-surface" placeholder="Gift card or discount code" type="text"><button type="button" class="bg-surface-gray text-ink-black border border-outline-variant/40 px-4 py-2 rounded-lg font-label-md text-xs font-semibold hover:bg-surface-variant transition-colors flex-shrink-0">Apply</button></div></div><div class="flex flex-col gap-2 py-1"><div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Subtotal</span><span class="font-medium text-ink-black">₹{{totals.subtotal}}</span></div>
+<div class="bg-surface-container-lowest p-5 sm:p-7 rounded-2xl border border-outline-variant/30 apple-shadow flex flex-col gap-5 sm:gap-6 lg:sticky lg:top-24"><div class="flex items-center justify-between border-b border-outline-variant/20 pb-4"><h2 class="font-headline-lg text-[18px] sm:text-[20px] font-bold text-ink-black tracking-tight">Order Summary</h2><span class="px-2.5 py-0.5 rounded-full bg-surface-gray border border-outline-variant/30 text-on-surface-variant font-label-md text-[11px] font-semibold tracking-wide">{{checkoutItems.length}} Items</span></div>
+<div class="flex flex-col gap-3 py-2 border-b border-outline-variant/20"><button type="button" class="inline-flex items-center gap-2 text-accent-blue hover:opacity-80 transition-opacity text-left group"><span class="material-symbols-outlined text-[18px]">sell</span><span class="font-label-md text-xs font-semibold tracking-wide">View Available Offers</span></button><div class="flex gap-2 items-center w-full mt-1"><input class="form-input-premium flex-1 rounded-lg px-3.5 py-2 font-body-md text-sm text-on-surface min-w-0" placeholder="Gift card or discount code" type="text"><button type="button" class="bg-surface-gray text-ink-black border border-outline-variant/40 px-3 sm:px-4 py-2 rounded-lg font-label-md text-xs font-semibold hover:bg-surface-variant transition-colors flex-shrink-0 touch-target">Apply</button></div></div><div class="flex flex-col gap-2 py-1"><div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Subtotal</span><span class="font-medium text-ink-black">₹{{totals.subtotal}}</span></div>
 <div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Shipping</span><span class="font-medium text-ink-black">₹{{totals.shipping}}</span></div>
 <div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Estimated Taxes</span><span class="font-medium text-ink-black">₹{{totals.tax}}</span></div>
-<div class="flex justify-between items-baseline pt-4 mt-2 border-t border-outline-variant/20"><span class="font-headline-lg text-[18px] font-bold text-ink-black">Total</span><span class="font-headline-lg text-[24px] font-bold text-ink-black">₹{{totals.finalAmount}}</span></div></div><div class="flex flex-col gap-2 mt-1">
-<button type="button" id="placeOrderBtn" class="w-full bg-ink-black text-white font-label-md text-[15px] font-semibold py-3.5 px-6 rounded-xl hover:bg-ink-black/90 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm">Place Order <span class="material-symbols-outlined text-[18px]">arrow_forward</span></button><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() =&gt; { window.location.href='{{DATA:SCREEN:SCREEN_63}}' }, 1500)" class="w-full text-center text-xs text-on-surface-variant hover:text-ink-black hover:underline py-1.5 transition-colors">Simulate Payment Failure</button></div></div>
+<div class="flex justify-between items-baseline pt-4 mt-2 border-t border-outline-variant/20"><span class="font-headline-lg text-[18px] font-bold text-ink-black">Total</span><span class="font-headline-lg text-[22px] sm:text-[24px] font-bold text-ink-black">₹{{totals.finalAmount}}</span></div></div><div class="flex flex-col gap-2 mt-1">
+<button type="button" id="placeOrderBtn" class="w-full bg-ink-black text-white font-label-md text-[15px] font-semibold py-3.5 px-6 rounded-xl hover:bg-ink-black/90 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm touch-target">Place Order <span class="material-symbols-outlined text-[18px]">arrow_forward</span></button><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() => { window.location.href='{{DATA:SCREEN:SCREEN_63}}' }, 1500)" class="w-full text-center text-xs text-on-surface-variant hover:text-ink-black hover:underline py-1.5 transition-colors">Simulate Payment Failure</button></div></div>
 </div>
 </div>
 </main>
+
+<dialog id="couponOffersDialog" class="w-[calc(100%-2rem)] max-w-xl rounded-2xl border-0 p-0 shadow-2xl backdrop:bg-black/50 m-auto">
+  <div class="bg-surface-container-lowest rounded-2xl overflow-hidden">
+    <div class="flex items-center justify-between gap-4 p-5 sm:p-6 border-b border-outline-variant/20">
+      <div>
+        <h2 class="font-headline-lg text-xl font-bold text-ink-black">Available offers</h2>
+        <p class="text-sm text-on-surface-variant mt-1">Coupons available for your account.</p>
+      </div>
+      <button type="button" id="closeCouponOffers" class="w-9 h-9 rounded-full hover:bg-surface-gray text-on-surface-variant flex items-center justify-center transition-colors" aria-label="Close offers">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="max-h-[65vh] overflow-y-auto p-4 sm:p-6 space-y-3" id="couponOffersList">
+      {{#each availableCoupons}}
+      <article class="border border-outline-variant/30 rounded-xl p-4 flex gap-3 items-start transition-all {{#unless this.eligible}}opacity-75 bg-surface-gray/30{{/unless}}" data-coupon-card data-code="{{this.code}}">
+        <span class="material-symbols-outlined text-primary mt-0.5">sell</span>
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="font-bold text-ink-black">{{this.code}}</span>
+              <span class="text-sm font-semibold text-green-700">{{this.discountLabel}}</span>
+            </div>
+            {{#if this.eligible}}
+            <button type="button" data-apply-coupon="{{this.code}}" class="bg-ink-black text-white hover:bg-ink-black/90 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow-xs active:scale-95 touch-target">Apply</button>
+            {{else}}
+            <button type="button" disabled class="bg-surface-gray text-on-surface-variant/50 border border-outline-variant/30 px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-not-allowed">Apply</button>
+            {{/if}}
+          </div>
+          {{#if this.restrictionLabel}}
+          <p class="text-xs text-accent-blue font-medium mt-1">{{this.restrictionLabel}}</p>
+          {{/if}}
+          <p class="text-sm text-on-surface-variant mt-1">Minimum purchase: ₹{{this.minimumPurchase}}</p>
+          <p class="text-xs text-on-surface-variant mt-1">Expires {{this.expiryLabel}}</p>
+          {{#if this.eligible}}
+          <div class="flex items-center gap-1.5 mt-2 text-xs font-semibold text-green-700">
+            <span class="material-symbols-outlined text-[15px]">check_circle</span>
+            <span>Available for this order</span>
+          </div>
+          {{else}}
+          <div class="flex items-center gap-1.5 mt-2 text-xs font-medium text-amber-700">
+            <span class="material-symbols-outlined text-[15px]">info</span>
+            <span>{{this.reason}}</span>
+          </div>
+          {{/if}}
+        </div>
+      </article>
+      {{else}}
+      <div class="py-10 text-center">
+        <span class="material-symbols-outlined text-3xl text-on-surface-variant">confirmation_number</span>
+        <p class="font-semibold text-ink-black mt-2">No available coupons</p>
+        <p class="text-sm text-on-surface-variant mt-1">Check back later for new offers.</p>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</dialog>
+
+<script id="couponsData" type="application/json">
+  {{{json availableCoupons}}}
+</script>
+<script id="checkoutItemsData" type="application/json">
+  {{{json checkoutItems}}}
+</script>
 
 <!-- Address Selection Modal Popup -->
 <div id="addressModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
@@ -331,9 +445,312 @@
   </div>
 </div>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const placeOrderButton = document.getElementById('placeOrderBtn');
+  const couponOffersDialog = document.getElementById('couponOffersDialog');
+  const viewOffersButton = [...document.querySelectorAll('button')]
+    .find((button) => button.textContent.includes('View Available Offers'));
+  const couponInput = document.querySelector('input[placeholder="Gift card or discount code"]');
+  const couponApplyButton = couponInput?.parentElement.querySelector('button');
+  const totalLabel = [...document.querySelectorAll('span')]
+    .find((element) => element.textContent.trim() === 'Total');
+  const totalValue = totalLabel?.nextElementSibling;
+  const totalRow = totalLabel?.parentElement;
+  const couponRow = couponInput?.parentElement;
+  const baseFinalAmount = Number((totalValue?.textContent || '').replace(/[^\d.]/g, ''));
+  let appliedCouponCode = '';
+
+  const rawWalletBalance = Number('{{wallet.rawBalance}}' || '{{wallet.balance}}' || 0);
+  const walletBadge = document.getElementById('walletBadge');
+  const walletDetailsBox = document.getElementById('walletDetailsBox');
+  const walletSufficientMsg = document.getElementById('walletSufficientMsg');
+  const walletInsufficientMsg = document.getElementById('walletInsufficientMsg');
+  const walletRemainingBalance = document.getElementById('walletRemainingBalance');
+  const walletDeficitAmount = document.getElementById('walletDeficitAmount');
+  const paymentCards = document.querySelectorAll('.payment-option-card');
+  const paymentRadios = document.querySelectorAll('input[name="payment"]');
+
+  const getCurrentFinalAmount = () => {
+    return Number((totalValue?.textContent || '').replace(/[^\d.]/g, '')) || 0;
+  };
+
+  const updatePaymentUI = () => {
+    const currentTotal = getCurrentFinalAmount();
+    const hasEnoughBalance = rawWalletBalance >= currentTotal;
+
+    if (walletBadge) {
+      if (hasEnoughBalance) {
+        walletBadge.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200';
+        walletBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>₹${rawWalletBalance.toFixed(2)} available`;
+        walletSufficientMsg?.classList.remove('hidden');
+        walletInsufficientMsg?.classList.add('hidden');
+        if (walletRemainingBalance) {
+          walletRemainingBalance.textContent = `₹${Math.max(0, rawWalletBalance - currentTotal).toFixed(2)}`;
+        }
+      } else {
+        const deficit = currentTotal - rawWalletBalance;
+        walletBadge.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200';
+        walletBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>₹${rawWalletBalance.toFixed(2)} available`;
+        walletSufficientMsg?.classList.add('hidden');
+        walletInsufficientMsg?.classList.remove('hidden');
+        if (walletDeficitAmount) {
+          walletDeficitAmount.textContent = `₹${deficit.toFixed(2)}`;
+        }
+      }
+    }
+
+    paymentCards.forEach((card) => {
+      const radio = card.querySelector('input[name="payment"]');
+      if (radio && radio.checked) {
+        card.classList.add('border-primary', 'bg-primary-fixed/15', 'ring-2', 'ring-primary/20');
+        card.classList.remove('border-outline-variant/40');
+      } else {
+        card.classList.remove('border-primary', 'bg-primary-fixed/15', 'ring-2', 'ring-primary/20');
+        card.classList.add('border-outline-variant/40');
+      }
+    });
+
+    const selectedPayment = document.querySelector('input[name="payment"]:checked')?.value;
+    if (selectedPayment === 'wallet') {
+      walletDetailsBox?.classList.remove('hidden');
+    } else {
+      walletDetailsBox?.classList.add('hidden');
+    }
+  };
+
+  paymentRadios.forEach((radio) => {
+    radio.addEventListener('change', updatePaymentUI);
+  });
+
+  paymentCards.forEach((card) => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
+      const radio = card.querySelector('input[name="payment"]');
+      if (radio && !radio.checked) {
+        radio.checked = true;
+        updatePaymentUI();
+      }
+    });
+  });
+
+  updatePaymentUI();
+
+  const couponStatus = document.createElement('p');
+  couponStatus.className = 'mt-2 min-h-4 text-xs';
+  couponRow?.after(couponStatus);
+
+  const discountRow = document.createElement('div');
+  discountRow.className = 'hidden flex justify-between items-center py-1 text-sm text-green-700';
+  const discountLabel = document.createElement('span');
+  discountLabel.textContent = 'Coupon discount';
+  const discountValue = document.createElement('span');
+  discountValue.className = 'font-medium';
+  discountRow.append(discountLabel, discountValue);
+  totalRow?.before(discountRow);
+
+  const setCouponStatus = (message, isError = false, allowRemove = false) => {
+    couponStatus.replaceChildren();
+    couponStatus.className = `mt-2 min-h-4 text-xs ${isError ? 'text-error' : 'text-green-700'}`;
+    couponStatus.append(document.createTextNode(message));
+
+    if (allowRemove) {
+      const removeButton = document.createElement('button');
+      removeButton.type = 'button';
+      removeButton.className = 'ml-2 font-semibold underline';
+      removeButton.textContent = 'Remove';
+      removeButton.addEventListener('click', () => {
+        appliedCouponCode = '';
+        couponInput.value = '';
+        totalValue.textContent = `₹${baseFinalAmount.toFixed(2)}`;
+        discountRow.classList.add('hidden');
+        setCouponStatus('Coupon removed.');
+        updatePaymentUI();
+      });
+      couponStatus.append(removeButton);
+    }
+  };
+
+  const applyCoupon = async (code) => {
+    const normalizedCode = String(code || '').trim();
+    if (!normalizedCode) {
+      setCouponStatus('Enter a coupon code.', true);
+      return;
+    }
+
+    couponApplyButton.disabled = true;
+    try {
+      const response = await fetch('/coupon/apply', {
+        method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: normalizedCode }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.message || 'Unable to apply coupon.');
+
+      const discount = Math.min(baseFinalAmount, Number(data.discount));
+      if (!Number.isFinite(discount) || discount <= 0) throw new Error('This coupon has no applicable discount.');
+
+      appliedCouponCode = data.coupon.code;
+      couponInput.value = appliedCouponCode;
+      discountValue.textContent = `-₹${discount.toFixed(2)}`;
+      discountRow.classList.remove('hidden');
+      totalValue.textContent = `₹${Math.max(0, baseFinalAmount - discount).toFixed(2)}`;
+      setCouponStatus(`${appliedCouponCode} applied. You save ₹${discount.toFixed(2)}.`, false, true);
+      couponOffersDialog.close();
+      updatePaymentUI();
+    } catch (error) {
+      setCouponStatus(error.message, true);
+    } finally {
+      couponApplyButton.disabled = false;
+    }
+  };
+
+  let initialCoupons = [];
+  try {
+    initialCoupons = JSON.parse(document.getElementById('couponsData')?.textContent || '[]');
+  } catch (err) {
+    initialCoupons = [];
+  }
+
+  const getDOMCartItems = () => {
+    const itemElements = document.querySelectorAll('[data-cart-item]');
+    const items = [];
+    itemElements.forEach((el) => {
+      const productId = el.dataset.productId;
+      const categoryId = el.dataset.categoryId;
+      const price = Number(el.dataset.price || 0);
+      const qty = Number(el.querySelector('[data-cart-quantity]')?.textContent || 1);
+      if (qty > 0) {
+        items.push({
+          productId,
+          categoryId,
+          price,
+          quantity: qty,
+          itemTotal: price * qty,
+        });
+      }
+    });
+    return items;
+  };
+
+  const getDOMSubtotal = () => {
+    const subtotalLabel = [...document.querySelectorAll('span')]
+      .find((el) => el.textContent.trim() === 'Subtotal');
+    if (subtotalLabel && subtotalLabel.nextElementSibling) {
+      return Number(subtotalLabel.nextElementSibling.textContent.replace(/[^\d.]/g, '')) || 0;
+    }
+    return getDOMCartItems().reduce((sum, item) => sum + item.itemTotal, 0);
+  };
+
+  const recalculateCouponsEligibility = () => {
+    const listContainer = document.getElementById('couponOffersList');
+    if (!listContainer || !initialCoupons.length) return;
+
+    const currentSubtotal = getDOMSubtotal();
+    const currentCartItems = getDOMCartItems();
+
+    initialCoupons.forEach((coupon) => {
+      let eligible = true;
+      let reason = null;
+
+      if (coupon.applies_to === 'PRODUCT' && coupon.target_product_id) {
+        const hasProduct = currentCartItems.some(
+          (item) => String(item.productId) === String(coupon.target_product_id)
+        );
+        if (!hasProduct) {
+          eligible = false;
+          reason = 'Add an eligible product to your cart.';
+        }
+      } else if (coupon.applies_to === 'CATEGORY' && coupon.target_category_id) {
+        const hasCategory = currentCartItems.some(
+          (item) => String(item.categoryId) === String(coupon.target_category_id)
+        );
+        if (!hasCategory) {
+          eligible = false;
+          reason = 'Add products from the selected category to use this coupon.';
+        }
+      }
+
+      if (eligible && currentSubtotal < Number(coupon.rawMinimumPurchase || 0)) {
+        eligible = false;
+        reason = 'Minimum purchase amount not reached.';
+      }
+
+      coupon.eligible = eligible;
+      coupon.reason = reason;
+      coupon.amountNeeded = Math.max(0, Number(coupon.rawMinimumPurchase || 0) - currentSubtotal).toFixed(2);
+    });
+
+    initialCoupons.sort((a, b) => {
+      if (a.eligible && !b.eligible) return -1;
+      if (!a.eligible && b.eligible) return 1;
+      if (b.discount_value !== a.discount_value) {
+        return b.discount_value - a.discount_value;
+      }
+      return (a.rawMinimumPurchase || 0) - (b.rawMinimumPurchase || 0);
+    });
+
+    if (appliedCouponCode) {
+      const activeCoupon = initialCoupons.find((c) => c.code === appliedCouponCode);
+      if (activeCoupon && !activeCoupon.eligible) {
+        appliedCouponCode = '';
+        couponInput.value = '';
+        discountRow.classList.add('hidden');
+        setCouponStatus(`${activeCoupon.code} is no longer eligible: ${activeCoupon.reason}`, true);
+        totalValue.textContent = `₹${baseFinalAmount.toFixed(2)}`;
+        updatePaymentUI();
+      }
+    }
+
+    listContainer.innerHTML = initialCoupons.map((coupon) => `
+      <article class="border border-outline-variant/30 rounded-xl p-4 flex gap-3 items-start transition-all ${!coupon.eligible ? 'opacity-75 bg-surface-gray/30' : ''}" data-coupon-card data-code="${coupon.code}">
+        <span class="material-symbols-outlined text-primary mt-0.5">sell</span>
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="font-bold text-ink-black">${coupon.code}</span>
+              <span class="text-sm font-semibold text-green-700">${coupon.discountLabel}</span>
+            </div>
+            ${coupon.eligible
+              ? `<button type="button" data-apply-coupon="${coupon.code}" class="bg-ink-black text-white hover:bg-ink-black/90 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow-xs active:scale-95 touch-target">Apply</button>`
+              : `<button type="button" disabled class="bg-surface-gray text-on-surface-variant/50 border border-outline-variant/30 px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-not-allowed">Apply</button>`
+            }
+          </div>
+          ${coupon.restrictionLabel ? `<p class="text-xs text-accent-blue font-medium mt-1">${coupon.restrictionLabel}</p>` : ''}
+          <p class="text-sm text-on-surface-variant mt-1">Minimum purchase: ₹${coupon.minimumPurchase}</p>
+          <p class="text-xs text-on-surface-variant mt-1">Expires ${coupon.expiryLabel}</p>
+          ${coupon.eligible
+            ? `<div class="flex items-center gap-1.5 mt-2 text-xs font-semibold text-green-700">
+                <span class="material-symbols-outlined text-[15px]">check_circle</span>
+                <span>Available for this order</span>
+              </div>`
+            : `<div class="flex items-center gap-1.5 mt-2 text-xs font-medium text-amber-700">
+                <span class="material-symbols-outlined text-[15px]">info</span>
+                <span>${coupon.reason}</span>
+              </div>`
+          }
+        </div>
+      </article>
+    `).join('');
+  };
+
+  window.recalculateCouponsEligibility = recalculateCouponsEligibility;
+
+  viewOffersButton?.addEventListener('click', () => {
+    recalculateCouponsEligibility();
+    couponOffersDialog?.showModal();
+  });
+  document.getElementById('closeCouponOffers')?.addEventListener('click', () => couponOffersDialog?.close());
+  couponApplyButton?.addEventListener('click', () => applyCoupon(couponInput.value));
+  couponOffersDialog?.addEventListener('click', (event) => {
+    const offerButton = event.target.closest('[data-apply-coupon]');
+    if (offerButton) applyCoupon(offerButton.dataset.applyCoupon);
+  });
+  couponOffersDialog?.addEventListener('click', (event) => {
+    if (event.target === couponOffersDialog) couponOffersDialog.close();
+  });
 
   placeOrderButton?.addEventListener('click', async () => {
     const addressId = document.getElementById('selectedAddressId')?.value;
@@ -345,7 +762,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (!paymentMethod) {
-      showNotification('error', 'Please select payment option');
+      showNotification('error', 'Please select a payment option.');
       return;
     }
 
@@ -353,14 +770,112 @@ document.addEventListener('DOMContentLoaded', () => {
     placeOrderButton.disabled = true;
     placeOrderButton.textContent = 'Processing...';
 
+    if (paymentMethod === 'wallet') {
+      const currentFinalAmt = getCurrentFinalAmount();
+      if (rawWalletBalance < currentFinalAmt) {
+        showNotification('error', `Insufficient wallet balance. You have ₹${rawWalletBalance.toFixed(2)}, but order total is ₹${currentFinalAmt.toFixed(2)}. Please choose another payment method or add funds.`);
+        placeOrderButton.disabled = false;
+        placeOrderButton.innerHTML = originalContent;
+        return;
+      }
+    }
+
     try {
+      if (paymentMethod === 'upi') {
+        if (!window.Razorpay) throw new Error('Payment checkout did not load. Please try again.');
+
+        const orderResponse = await fetch('/payment/checkout/create-order', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ addressId, couponCode: appliedCouponCode }),
+        });
+        const paymentOrder = await orderResponse.json();
+
+        if (!orderResponse.ok || !paymentOrder.success) {
+          throw new Error(paymentOrder.message || 'Unable to start UPI payment.');
+        }
+
+        const checkout = new Razorpay({
+          key: paymentOrder.key,
+          amount: paymentOrder.order.amount,
+          currency: paymentOrder.order.currency,
+          name: 'Nutri Burfi',
+          description: 'Order payment',
+          order_id: paymentOrder.order.id,
+          method: 'upi',
+          prefill: paymentOrder.prefill,
+          config: {
+            display: {
+              blocks: {
+                upi: {
+                  name: 'Pay using UPI',
+                  instruments: [{ method: 'upi' }],
+                },
+              },
+              sequence: ['block.upi'],
+              preferences: { show_default_blocks: true },
+            },
+          },
+          handler: async (payment) => {
+            try {
+              const response = await fetch('/order/place', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  addressId,
+                  paymentMethod: 'upi',
+                  couponCode: appliedCouponCode,
+                  ...payment,
+                }),
+              });
+              const data = await response.json();
+
+              if (!response.ok || !data.success || !data.orderId) {
+                throw new Error(data.message || 'Payment completed, but the order could not be placed.');
+              }
+
+              window.location.href = `/order/order-success/${encodeURIComponent(data.orderId)}`;
+            } catch (error) {
+              showNotification('error', error.message);
+            }
+          },
+        });
+
+        checkout.on('payment.failed', async (paymentEvent) => {
+          try {
+            await fetch('/payment/failed', {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                razorpay_order_id: paymentEvent.error?.metadata?.order_id || paymentOrder.order.id,
+                reason: paymentEvent.error?.description || 'UPI payment failed',
+              }),
+            });
+          } finally {
+            window.location.href = '/payment/failed';
+          }
+        });
+
+        checkout.open();
+        return;
+      }
+
       const response = await fetch('/order/place', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ addressId, paymentMethod }),
+        body: JSON.stringify({ addressId, paymentMethod, couponCode: appliedCouponCode }),
       });
       const data = await response.json();
 

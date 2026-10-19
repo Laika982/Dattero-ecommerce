@@ -1,20 +1,20 @@
 {{>user/header}}
 
 <!-- Main Content -->
-<main class="flex-grow w-full max-w-max-width mx-auto px-8 py-section-gap">
+<main class="flex-grow w-full max-w-max-width mx-auto px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16 safe-bottom-padding">
 
     <!-- Notification -->
-    <div class="max-w-max-width mx-auto px-container-padding mt-6">
+    <div class="max-w-max-width mx-auto px-2 sm:px-4 mt-2 mb-4">
         {{> user/notification}}
     </div>
 
     <!-- Page Header -->
-    <header class="mb-stack-lg text-center md:text-left">
-        <h1 class="font-display-lg-mobile md:font-display-lg text-ink-black mb-4">
+    <header class="mb-6 sm:mb-stack-lg text-left">
+        <h1 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-ink-black mb-1 sm:mb-3 font-bold">
             Your Cart
         </h1>
 
-        <p class="font-body-lg text-ink-black/60">
+        <p class="font-body-lg text-xs sm:text-sm md:text-base text-ink-black/60">
             Review your premium selections before checkout.
         </p>
     </header>
@@ -22,13 +22,13 @@
 
     {{#if cartItems.length}}
 
-    <div class="flex flex-col lg:flex-row gap-8">
+    <div class="flex flex-col lg:flex-row gap-6 md:gap-8 items-start">
 
         <!-- ===================================================== -->
         <!-- CART ITEMS -->
         <!-- ===================================================== -->
 
-        <div class="w-full lg:w-2/3 flex flex-col gap-6">
+        <div class="w-full lg:w-2/3 flex flex-col gap-4 sm:gap-6">
 
             {{#each cartItems}}
 
@@ -36,7 +36,7 @@
             <div
                 data-cart-item
                 data-variant-id="{{variantId}}"
-                class="bg-surface-container-lowest rounded-[24px] p-8 flex flex-col sm:flex-row items-start sm:items-center gap-8 relative
+                class="bg-surface-container-lowest rounded-2xl sm:rounded-[24px] p-3.5 sm:p-6 md:p-8 flex flex-row items-center gap-3.5 sm:gap-6 md:gap-8 relative border border-outline-variant/20 shadow-sm
                 {{#unless canCheckout}}
                     opacity-80
                 {{/unless}}"
@@ -44,7 +44,7 @@
 
                 <!-- Product Image -->
                 <div
-                    class="w-full sm:w-32 h-32 bg-surface-gray rounded-[16px] overflow-hidden relative shrink-0"
+                    class="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-surface-gray rounded-xl sm:rounded-[16px] overflow-hidden relative shrink-0"
                 >
                     {{#if image}}
 
@@ -57,7 +57,7 @@
                     {{else}}
 
                         <div class="w-full h-full flex items-center justify-center text-ink-black/40">
-                            <span class="material-symbols-outlined text-[40px]">
+                            <span class="material-symbols-outlined text-[32px] sm:text-[40px]">
                                 image
                             </span>
                         </div>
@@ -67,15 +67,15 @@
 
 
                 <!-- Product Information -->
-                <div class="flex-grow flex flex-col justify-between h-full w-full">
+                <div class="flex-grow flex flex-col justify-between min-w-0 w-full">
 
                     <!-- Top Information -->
                     <div>
 
-                        <div class="flex justify-between items-start mb-2">
+                        <div class="flex justify-between items-start gap-2 mb-1">
 
                             <h3
-                                class="font-headline-lg text-[24px] text-ink-black leading-tight"
+                                class="font-headline-lg text-sm sm:text-lg md:text-[22px] text-ink-black leading-snug line-clamp-1 font-semibold"
                             >
                                 {{productName}}
                             </h3>
@@ -85,10 +85,10 @@
                                 type="button"
                                 data-cart-action="remove"
                                 aria-label="Remove item"
-                                class="text-ink-black/40 hover:text-ink-black transition-colors p-1"
+                                class="text-ink-black/40 hover:text-ink-black transition-colors p-1 shrink-0"
                             >
                                 <span
-                                    class="material-symbols-outlined"
+                                    class="material-symbols-outlined text-[18px] sm:text-[20px]"
                                     data-icon="close"
                                 >
                                     close
@@ -100,7 +100,7 @@
 
                         <!-- Variant Information -->
                         <span
-                            class="font-label-md text-ink-black/60 inline-block mb-3"
+                            class="font-label-md text-[11px] sm:text-xs text-ink-black/60 inline-block mb-1 sm:mb-2 truncate max-w-full"
                         >
                             {{#if weight}}
                                 {{weight}}
@@ -291,11 +291,11 @@
         <div class="w-full lg:w-1/3">
 
             <div
-                class="bg-surface-container-lowest rounded-[24px] p-8 sticky top-32"
+                class="bg-surface-container-lowest rounded-2xl sm:rounded-[24px] p-5 sm:p-8 border border-outline-variant/20 shadow-sm lg:sticky lg:top-28"
             >
 
                 <h2
-                    class="font-headline-lg text-[24px] text-ink-black mb-8"
+                    class="font-headline-lg text-xl sm:text-[24px] text-ink-black mb-6 font-bold"
                 >
                     Order Summary
                 </h2>

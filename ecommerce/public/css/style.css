@@ -1,5 +1,5 @@
 /* =========================================
-   TOAST PROGRESS BAR
+   TOAST PROGRESS BAR & NOTIFICATIONS
 ========================================= */
 
 .toast-progress {
@@ -17,31 +17,11 @@
     }
 }
 
-/* ==========================================
-   TOAST NOTIFICATION
-========================================== */
-
-.toast-progress {
-    width: 100%;
-    transition: width 5s linear;
-}
-
 .toast-notification {
     animation: toastHide 5s forwards;
 }
 
-.toast-progress {
-    width: 100%;
-    animation: toastProgress 5s linear forwards;
-}
-
-
-/* ==========================================
-   HIDE TOAST AFTER 5 SECONDS
-========================================== */
-
 @keyframes toastHide {
-
     0% {
         opacity: 1;
     }
@@ -55,39 +35,219 @@
         visibility: hidden;
         pointer-events: none;
     }
-
 }
 
-
 /* ==========================================
-   PROGRESS BAR
+   MOBILE & RESPONSIVE NATIVE APP ESSENTIALS
 ========================================== */
 
-@keyframes toastProgress {
-
-    from {
-        width: 100%;
-    }
-
-    to {
-        width: 0%;
-    }
-
+/* Prevent horizontal overflow globally */
+html,
+body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
 }
 
+/* Smooth mobile touch scrolling */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
 
-/* ==========================================
-   MOBILE
-========================================== */
+/* Safe-area insets for modern mobile displays (iPhone notch, dynamic island, home bar) */
+:root {
+    --sat: env(safe-area-inset-top, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+}
 
+.safe-bottom-padding {
+    padding-bottom: calc(4.5rem + var(--sab));
+}
+
+@media (min-width: 768px) {
+    .safe-bottom-padding {
+        padding-bottom: 0px;
+    }
+}
+
+/* Touch friendly minimum tap targets for interactive buttons */
+.touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Controlled horizontal scrolling containers */
+.table-responsive-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+/* Hide scrollbars on modern browsers */
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar,
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Custom sleek horizontal nav scrollbar */
+.custom-nav-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(128, 118, 101, 0.45) transparent;
+    -webkit-overflow-scrolling: touch;
+}
+.custom-nav-scrollbar::-webkit-scrollbar {
+    height: 4px;
+}
+.custom-nav-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-nav-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(128, 118, 101, 0.45);
+    border-radius: 9999px;
+}
+.custom-nav-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(128, 118, 101, 0.7);
+}
+
+/* Text balance and truncation */
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Mobile Toast adjustments */
 @media (max-width: 640px) {
-
     .toast-notification {
-        top: 80px;
-        left: 16px;
-        right: 16px;
+        top: 72px;
+        left: 12px;
+        right: 12px;
         width: auto;
         max-width: none;
     }
+}
 
+/* ==========================================
+   ADMIN SIDEBAR REDUCED / ICON-ONLY MODE
+   ========================================== */
+
+#adminSidebar {
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s ease;
+}
+
+main.lg\:ml-64,
+div.lg\:ml-64,
+header.lg\:ml-64,
+header.lg\:left-64 {
+    transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1), left 0.25s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* When collapsed */
+body.sidebar-collapsed #adminSidebar {
+    width: 5rem !important;
+    /* 80px */
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
+
+body.sidebar-collapsed #adminSidebar .sidebar-text {
+    display: none !important;
+}
+
+body.sidebar-collapsed #adminSidebar .sidebar-logo-text {
+    display: none !important;
+}
+
+body.sidebar-collapsed #adminSidebar .sidebar-logo-compact {
+    display: flex !important;
+}
+
+body.sidebar-collapsed #adminSidebar .sidebar-nav-item {
+    justify-content: center !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    position: relative;
+}
+
+body.sidebar-collapsed #adminSidebar .sidebar-footer-btn {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    justify-content: center !important;
+}
+
+/* Tooltip on hover when collapsed on desktop */
+@media (min-width: 1024px) {
+    body.sidebar-collapsed #adminSidebar .sidebar-nav-item:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        left: calc(100% + 12px);
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #111827;
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 8px;
+        white-space: nowrap;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        z-index: 60;
+        pointer-events: none;
+        animation: tooltipFadeIn 0.15s ease-out;
+    }
+
+    body.sidebar-collapsed main.lg\:ml-64,
+    body.sidebar-collapsed div.lg\:ml-64,
+    body.sidebar-collapsed header.lg\:ml-64,
+    body.sidebar-collapsed main.md\:ml-64 {
+        margin-left: 5rem !important;
+    }
+
+    body.sidebar-collapsed header.lg\:left-64 {
+        left: 5rem !important;
+    }
+
+    body.sidebar-collapsed header.lg\:max-w-\[calc\(100\%-16rem\)\] {
+        max-width: calc(100% - 5rem) !important;
+    }
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
 }

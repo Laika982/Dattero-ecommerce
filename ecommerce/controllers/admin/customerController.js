@@ -184,7 +184,6 @@ const editCustomer = async (req, res) => {
       updateData.profileImage = image.path;
     }
 
-    console.log("Update Data:", updateData);
 
     await User.findByIdAndUpdate(userId, updateData, {
       new: true,

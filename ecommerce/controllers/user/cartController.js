@@ -5,6 +5,8 @@ import Wishlist from "../../models/wishlistSchema.js";
 import {
   calculateCartTotals,
   calculateItemPrice,
+  getOfferedUnitPrice,
+  loadOfferPricingMap,
 } from "../../services/pricingService.js";
 
 const MAX_CART_QUANTITY = 5;
@@ -54,6 +56,7 @@ const loadCart = async (req, res) => {
       variants.map((item) => [item._id.toString(), item]),
     );
 
+    const offerPricing = await loadOfferPricingMap(products, variants);
     const cartItems = [];
 
     for (const item of cart.items) {
@@ -65,7 +68,8 @@ const loadCart = async (req, res) => {
         continue;
       }
 
-      const price = calculateItemPrice(variant);
+      const offer = offerPricing.get(variant._id.toString());
+      const price = getOfferedUnitPrice(variant, offer);
 
       const itemTotal = price * item.quantity;
 
@@ -106,6 +110,8 @@ const loadCart = async (req, res) => {
 
         price,
 
+        offerName: offer?.offerName || null,
+
         itemTotal,
 
         item_total: itemTotal,
@@ -137,7 +143,7 @@ const loadCart = async (req, res) => {
   }
 };
 
-//  Add to cart
+// add to cart
 const addToCart = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -243,7 +249,7 @@ const addToCart = async (req, res) => {
         },
         {
           $pull: {
-            products: productId,
+            products: { product_id: productId },
           },
         },
       );
@@ -295,7 +301,7 @@ const addToCart = async (req, res) => {
       },
       {
         $pull: {
-          products: productId,
+          products: { product_id: productId },
         },
       },
     );
@@ -317,7 +323,6 @@ const addToCart = async (req, res) => {
 };
 
 //  Increase quantity
-
 const increaseQuantity = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -394,8 +399,8 @@ const increaseQuantity = async (req, res) => {
     });
   }
 };
-//  Decrease quantity
 
+//  Decrease quantity
 const decreaseQuantity = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -454,8 +459,8 @@ const decreaseQuantity = async (req, res) => {
     });
   }
 };
-//  Remove item
 
+//  Remove item
 const removeFromCart = async (req, res) => {
   try {
     const userId = req.user._id;

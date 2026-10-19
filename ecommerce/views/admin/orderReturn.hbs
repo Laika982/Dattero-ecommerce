@@ -95,8 +95,12 @@
 <!-- SideNavBar Shell -->
  {{> admin/aside}}
 <!-- TopNavBar Shell -->
-<header class="fixed top-0 left-64 right-0 h-16 glass-header bg-surface/80 dark:bg-surface-dim/80 flex justify-between items-center px-container-padding z-40 border-b border-outline-variant/30">
-<div class="flex items-center gap-4 flex-1">
+<header class="fixed top-0 lg:left-64 left-0 right-0 h-16 glass-header bg-surface/80 dark:bg-surface-dim/80 flex justify-between items-center px-4 sm:px-6 md:px-container-padding z-40 border-b border-outline-variant/30">
+<div class="flex items-center gap-3 sm:gap-4 flex-1">
+    <!-- Mobile Sidebar Toggle -->
+    <button type="button" class="lg:hidden p-2 rounded-lg text-on-surface-variant hover:text-ink-black hover:bg-surface-variant/50 transition-colors touch-target" onclick="toggleAdminSidebar()" aria-label="Toggle Navigation">
+        <span class="material-symbols-outlined text-[22px]">menu</span>
+    </button>
 <div class="relative w-full max-w-md group">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/60 group-focus-within:text-on-surface transition-colors">search</span>
 <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-1 focus:ring-on-surface/10 transition-all placeholder:text-on-surface-variant/40" placeholder="Search orders, customers, or products..." type="text">
@@ -122,8 +126,8 @@
 </div>
 </header>
 <!-- Main Content Canvas -->
-<main class="ml-64 pt-16 min-h-screen">
-<div class="max-w-[1280px] mx-auto px-container-padding py-10">
+<main class="lg:ml-64 ml-0 pt-16 min-h-screen">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-container-padding py-6 sm:py-10">
 <!-- -->
 <div class="mb-10">
 <nav class="flex items-center gap-2 text-label-md text-on-surface-variant/60 mb-4">
@@ -175,6 +179,18 @@
 </div>
 </div>
 </section>
+{{#if order.return_request.status}}
+<section class="mb-stack-lg rounded-xl border border-primary/20 bg-primary/5 p-6" aria-label="Customer return request">
+    <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+            <h3 class="font-headline-lg text-xl text-on-surface">Customer return request</h3>
+            <p class="mt-2 text-on-surface-variant">{{order.return_request.reason}}</p>
+            <p class="mt-2 text-xs text-on-surface-variant">Submitted {{formatDate order.return_request.requested_at}}</p>
+        </div>
+        <span class="rounded-full bg-surface-container-high px-3 py-1 text-xs font-bold uppercase text-on-surface-variant">{{formatStatus order.return_request.status}}</span>
+    </div>
+</section>
+{{/if}}
 <div class="grid grid-cols-12 gap-grid-gutter items-start">
 <!-- 2. Item Selection (Table) -->
 <div class="col-span-12 lg:col-span-8 space-y-stack-lg">

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { randomBytes } from "node:crypto";
 
 const userSchema = new mongoose.Schema(
     {
@@ -28,7 +29,34 @@ const userSchema = new mongoose.Schema(
         referalCode: {
             type: String,
             required: false,
+            unique: true,
+            sparse: true,
+            default: () => `NB-${randomBytes(5).toString("hex").toUpperCase()}`
+        },
+
+        referralToken: {
+            type: String,
+            required: false,
+            unique: true,
+            sparse: true,
+            default: () => randomBytes(18).toString("hex")
+        },
+
+        referredBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
             default: null
+        },
+
+        referralOfferId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Offer",
+            default: null
+        },
+
+        referralOfferUsed: {
+            type: Boolean,
+            default: false
         },
 
         profileImage: {
@@ -59,20 +87,6 @@ const userSchema = new mongoose.Schema(
             required: false,
             default: false
         },
-
-
-        addresses: [{
-            fullName: { type: String, required: true },
-            phone: { type: String, required: true },
-            street: { type: String, required: true },
-            suite: { type: String },
-            city: { type: String, required: true },
-            state: { type: String, required: true },
-            zip: { type: String, required: true },
-            country: { type: String, required: true },
-            addressLabel: { type: String },
-            isDefault: { type: Boolean, default: false }
-        }]
     },
     {
         timestamps: true

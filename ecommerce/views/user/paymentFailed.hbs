@@ -1,0 +1,66 @@
+{{> user/header}}
+<div class="max-w-max-width mx-auto px-4 sm:px-container-padding mt-4">
+    {{> user/notification}}
+</div>
+
+<!-- Main Content -->
+<main class="flex-grow flex items-center justify-center pt-20 sm:pt-28 pb-12 sm:pb-20 px-4 sm:px-6 safe-bottom-padding">
+        <div class="max-w-2xl w-full text-center">
+            
+            <!-- Animated Hero Icon -->
+            <div class="mb-10 flex justify-center">
+                <div class="relative w-32 h-32 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-error/5 rounded-full scale-150 animate-pulse"></div>
+                    <div class="relative bg-error text-white w-20 h-20 rounded-full flex items-center justify-center shadow-lg error-shake">
+                        <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'opsz' 48;">priority_high</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Messaging -->
+            <div class="space-y-stack-md mb-stack-lg">
+                <h1 class="font-headline-xl text-headline-xl text-ink-black tracking-tight">Payment Unsuccessful</h1>
+                <p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mx-auto">
+                    We couldn't process your payment. Please check your card details, ensure sufficient funds are available, and try again.
+                </p>
+            </div>
+
+            <!-- Action Area: Bento Style -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12">
+                <a href="/checkout" class="group relative flex flex-col items-center justify-center p-8 bg-ink-black rounded-xl overflow-hidden transition-all hover:shadow-xl active:scale-95 duration-200 border border-outline-variant/30">
+<div class="relative z-10 flex flex-col items-center">
+<span class="material-symbols-outlined text-white mb-2 text-3xl">refresh</span>
+<span class="font-label-md text-label-md text-white uppercase tracking-widest">Retry Payment</span>
+</div>
+</a>
+
+                <a href="/cart" class="flex flex-col items-center justify-center p-8 bg-surface-container rounded-xl transition-all hover:bg-surface-container-high active:scale-95 duration-200 border border-outline/5">
+                    <span class="material-symbols-outlined text-on-surface-variant mb-2 text-3xl">shopping_cart</span>
+                    <span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Return to Cart</span>
+                </a>
+            </div>
+
+            <!-- Contextual Help -->
+            <div class="mt-16 p-8 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex flex-col md:flex-row items-center justify-between text-left gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center">
+                        <span class="material-symbols-outlined text-tertiary">support_agent</span>
+                    </div>
+                    <div>
+                        <h4 class="font-label-md text-label-md text-on-surface">Need immediate assistance?</h4>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Our concierge team is available 24/7.</p>
+                    </div>
+                </div>
+                <a href="#" class="font-label-md text-label-md text-primary hover:underline transition-all flex items-center gap-1 group">
+                    Contact Support
+                    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+
+            <!-- Decorative Subtle Graphic -->
+            <div class="mt-section-gap opacity-30 flex justify-center">
+                <div class="w-48 h-px bg-gradient-to-r from-transparent via-outline to-transparent"></div>
+            </div>
+        </div>
+    </main>
+{{> user/footer}}

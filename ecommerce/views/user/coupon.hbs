@@ -1,0 +1,152 @@
+{{> user/header}}
+<div class="fixed inset-0 z-0 flex flex-col">
+    {{> user/notification}}
+    <!-- Main Page Content Content (Blurred Background) -->
+    <main
+        class="mt-20 px-container-padding max-w-max-width mx-auto py-stack-lg grid grid-cols-1 md:grid-cols-2 gap-grid-gutter opacity-40 grayscale pointer-events-none">
+        <div class="aspect-square bg-surface-container-high rounded-xl overflow-hidden">
+            <div class="w-full h-full bg-cover bg-center"
+                data-alt="A high-end, editorial-style photograph of premium artisan burfi arranged on a matte black ceramic plate. The lighting is soft and dramatic, creating subtle shadows that emphasize the texture and gold leaf garnish on the sweets. The background is a clean, minimalist off-white marble surface, reflecting a sense of luxury and traditional wellness in a modern context."
+                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCp5zEoli0LcvDbmCvskfSJLc0G0GvGVVJ4S6Dj1oaN3Ls_9nMEZlnhqDfsbVrYfaw4Ykf6e9VuTfTPFZOtoD2DO4OJNyKrS5FWdIAHnQ8i7VleLd_phMS4jMUTEnQWE5-JmIWZeY7y6hXt5w_fNlmuVkcroSEoja4CRzzvDmJb13aXP4DeM7t4UcYceGNFZ7SEeVVqF4ch3Y61vluesNxBjT2Gm0LsuDimMCPCzs47ILg1IScR4C_sTzpFK3it4mXQEz9IzPrmYsI')">
+            </div>
+        </div>
+        <div class="flex flex-col justify-center space-y-stack-md">
+            <div class="font-headline-xl text-headline-xl">Nutri Burfi Collection</div>
+            <div class="font-body-xl text-body-xl text-on-surface-variant">Handcrafted wellness in every bite. Our
+                signature blend of superfoods and traditional flavors.</div>
+            <div class="h-12 w-48 bg-primary rounded-lg"></div>
+        </div>
+    </main>
+</div>
+<!-- Modal Backdrop -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-on-background/20 backdrop-blur-md transition-opacity duration-300"
+    id="coupon-modal">
+    <!-- Modal Card -->
+    <div
+        class="relative w-full max-w-lg bg-surface-container-lowest rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.08)] border border-on-surface/5 overflow-hidden flex flex-col max-h-[870px]">
+        <!-- Close Button -->
+        <button aria-label="Close modal"
+            class="absolute top-6 right-6 z-10 p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-full transition-all duration-200 active:scale-90">
+            <span class="material-symbols-outlined text-[24px]">close</span>
+        </button>
+        <!-- Header Section -->
+        <div class="px-8 pt-10 pb-6">
+            <h2 class="font-headline-lg text-headline-lg plus-jakarta text-on-surface mb-2">Available Offers</h2>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Apply these codes at checkout
+                for exclusive wellness rewards.</p>
+        </div>
+        <!-- Content Area (Scrollable) -->
+        <div class="px-8 pb-10 overflow-y-auto custom-scrollbar space-y-4">
+            <!-- Coupon Card 1 -->
+            <div
+                class="group relative flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 bg-surface-bright border border-outline-variant rounded-2xl transition-all duration-300 hover:shadow-lg hover:border-outline/30">
+                <div class="flex flex-col mb-4 sm:mb-0">
+                    <span
+                        class="font-display-lg text-[20px] plus-jakarta font-extrabold tracking-widest text-on-background mb-1">LUXE20</span>
+                    <span class="font-body-md text-body-md text-on-surface-variant">20% off on all Burfi
+                        collections</span>
+                </div>
+                <button
+                    class="w-full sm:w-auto px-6 py-3 bg-on-surface text-surface-container-lowest rounded-xl font-label-md text-label-md hover:bg-on-surface-variant transition-colors duration-200 flex items-center justify-center gap-2 active:scale-95"
+                    onclick="copyCode(this, 'LUXE20')">
+                    <span>Copy Code</span>
+                </button>
+            </div>
+            <!-- Coupon Card 2 -->
+            <div
+                class="group relative flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 bg-surface-bright border border-outline-variant rounded-2xl transition-all duration-300 hover:shadow-lg hover:border-outline/30">
+                <div class="flex flex-col mb-4 sm:mb-0">
+                    <span
+                        class="font-display-lg text-[20px] plus-jakarta font-extrabold tracking-widest text-on-background mb-1">WELCOME10</span>
+                    <span class="font-body-md text-body-md text-on-surface-variant">First time wellness gift: 10%
+                        off</span>
+                </div>
+                <button
+                    class="w-full sm:w-auto px-6 py-3 bg-on-surface text-surface-container-lowest rounded-xl font-label-md text-label-md hover:bg-on-surface-variant transition-colors duration-200 flex items-center justify-center gap-2 active:scale-95"
+                    onclick="copyCode(this, 'WELCOME10')">
+                    <span>Copy Code</span>
+                </button>
+            </div>
+            <!-- Coupon Card 3 -->
+            <div
+                class="group relative flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 bg-surface-bright border border-outline-variant rounded-2xl transition-all duration-300 hover:shadow-lg hover:border-outline/30">
+                <div class="flex flex-col mb-4 sm:mb-0">
+                    <span
+                        class="font-display-lg text-[20px] plus-jakarta font-extrabold tracking-widest text-on-background mb-1">FREESHIP</span>
+                    <span class="font-body-md text-body-md text-on-surface-variant">Free shipping on orders over
+                        $100</span>
+                </div>
+                <button
+                    class="w-full sm:w-auto px-6 py-3 bg-on-surface text-surface-container-lowest rounded-xl font-label-md text-label-md hover:bg-on-surface-variant transition-colors duration-200 flex items-center justify-center gap-2 active:scale-95"
+                    onclick="copyCode(this, 'FREESHIP')">
+                    <span>Copy Code</span>
+                </button>
+            </div>
+            <!-- Coupon Card 4 -->
+            <div
+                class="group relative flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 bg-surface-bright border border-outline-variant rounded-2xl transition-all duration-300 hover:shadow-lg hover:border-outline/30">
+                <div class="flex flex-col mb-4 sm:mb-0">
+                    <span
+                        class="font-display-lg text-[20px] plus-jakarta font-extrabold tracking-widest text-on-background mb-1">SWEETHEALTH</span>
+                    <span class="font-body-md text-body-md text-on-surface-variant">Buy 2 boxes, get 1 curated gift
+                        set</span>
+                </div>
+                <button
+                    class="w-full sm:w-auto px-6 py-3 bg-on-surface text-surface-container-lowest rounded-xl font-label-md text-label-md hover:bg-on-surface-variant transition-colors duration-200 flex items-center justify-center gap-2 active:scale-95"
+                    onclick="copyCode(this, 'SWEETHEALTH')">
+                    <span>Copy Code</span>
+                </button>
+            </div>
+        </div>
+        <!-- Sticky Footer for Modal (Optional visual weight) -->
+        <div
+            class="h-6 bg-gradient-to-t from-surface-container-lowest to-transparent pointer-events-none absolute bottom-0 left-0 w-full">
+        </div>
+    </div>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+    function copyCode(btn, code) {
+        // Visual feedback for copy action
+        const originalText = btn.innerHTML;
+
+        // Interaction: Change text and background color
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px]">check</span> Copied`;
+        btn.classList.remove('bg-on-surface');
+        btn.classList.add('bg-secondary');
+
+        // Simulate clipboard copy (Actual clipboard API requires secure context/user action)
+        console.log(`Copied: ${code}`);
+
+        // Revert after delay
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('bg-secondary');
+            btn.classList.add('bg-on-surface');
+        }, 2000);
+    }
+
+    // Close Modal Logic
+    const modal = document.getElementById('coupon-modal');
+    const closeBtn = modal.querySelector('button[aria-label="Close modal"]');
+
+    const closeModal = () => {
+        modal.style.opacity = '0';
+        modal.style.pointerEvents = 'none';
+        // In a real app, this might navigate away or remove the DOM element
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+</script>
+
+{{> user/footer}}

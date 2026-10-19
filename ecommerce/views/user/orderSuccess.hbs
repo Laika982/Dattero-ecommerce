@@ -1,25 +1,25 @@
 {{>user/header}}
 <!-- Main Content Canvas -->
-<main class="pt-32 pb-section-gap px-container-padding max-w-max-width mx-auto">
-    <div class="max-w-max-width mx-auto px-container-padding mt-6">
+<main class="pt-20 sm:pt-28 pb-12 sm:pb-20 px-4 sm:px-6 max-w-max-width mx-auto safe-bottom-padding">
+    <div class="max-w-max-width mx-auto px-2 sm:px-4 mt-2 sm:mt-4">
     {{> user/notification}}
 </div>
 <!-- Hero Success Header -->
-<section class="flex flex-col items-center text-center mb-section-gap fade-in-up" style="animation-delay: 0s;">
-<div class="w-20 h-20 mb-stack-lg rounded-full bg-primary-container flex items-center justify-center text-on-primary-container shadow-lg">
-<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<section class="flex flex-col items-center text-center mb-8 sm:mb-12 fade-in-up" style="animation-delay: 0s;">
+<div class="w-16 h-16 sm:w-20 sm:h-20 mb-4 sm:mb-6 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container shadow-lg">
+<svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 <path class="success-checkmark" d="M5 13l4 4L19 7" stroke-dasharray="100" stroke-dashoffset="100" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
 </svg>
 </div>
-<h1 class="font-display-lg text-display-lg md:text-display-lg text-on-surface mb-stack-sm fade-in-up" style="animation-delay: 0.15s;">Thank You for Your Order.</h1>
-<p class="font-body-xl text-body-xl text-on-surface-variant max-w-2xl">Your journey to handcrafted luxury wellness begins now. We've received your order and our artisans are preparing your selection.</p>
+<h1 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg font-bold text-on-surface mb-2 sm:mb-3 fade-in-up" style="animation-delay: 0.15s;">Thank You for Your Order.</h1>
+<p class="font-body-xl text-sm sm:text-base md:text-body-xl text-on-surface-variant max-w-2xl">Your journey to handcrafted luxury wellness begins now. We've received your order and our artisans are preparing your selection.</p>
 </section>
 <!-- Order Summary Grid -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-grid-gutter fade-in-up" style="animation-delay: 0.3s;">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-grid-gutter fade-in-up" style="animation-delay: 0.3s;">
 <!-- Details Column -->
-<div class="lg:col-span-8 space-y-stack-lg">
+<div class="lg:col-span-8 space-y-4 sm:space-y-6">
 <!-- Confirmation Details Card -->
-<div class="bg-surface-container-lowest p-stack-lg rounded-xl shadow-[0_40px_40px_-15px_rgba(45,27,14,0.04)] border border-on-surface/5">
+<div class="bg-surface-container-lowest p-5 sm:p-8 rounded-2xl shadow-sm border border-on-surface/5">
 <div class="grid grid-cols-2 md:grid-cols-4 gap-stack-lg">
 <div>
 <p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Order Number</p>
@@ -125,56 +125,6 @@
 </div>
 </section>
 </main>
-<!-- Footer -->
-<footer class="bg-surface-container-high w-full pt-section-gap pb-stack-lg border-t border-secondary/10">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter px-container-padding max-w-max-width mx-auto">
-<!-- Brand Column -->
-<div class="flex flex-col gap-6 col-span-1 md:col-span-1">
-<span class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Nutri Burfi</span>
-<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">
-                    Elevating functional nutrition through the art of traditional craftsmanship. Premium protein sweets for the modern lifestyle.
-                </p>
-<div class="flex gap-4 mt-2">
-<!-- Social Icons placeholders -->
-<a class="text-on-surface-variant hover:text-accent-blue transition-colors" href="#">
-<span class="material-symbols-outlined" data-icon="share">share</span>
-</a>
-</div>
-</div>
-<!-- Links Column 1 -->
-<div class="flex flex-col gap-4">
-<h4 class="font-label-md text-label-md text-on-surface mb-2">Shop</h4>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Shop All</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Protein Burfi</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Performance Bars</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Wholesale</a>
-</div>
-<!-- Links Column 2 -->
-<div class="flex flex-col gap-4">
-<h4 class="font-label-md text-label-md text-on-surface mb-2">About</h4>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Our Story</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Ingredients</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Nutritional Science</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Contact Us</a>
-</div>
-<!-- Links Column 3 -->
-<div class="flex flex-col gap-4">
-<h4 class="font-label-md text-label-md text-on-surface mb-2">Support</h4>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">FAQ</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Shipping Info</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Returns</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Privacy Policy</a>
-</div>
-<!-- Bottom Copyright -->
-<div class="col-span-1 md:col-span-4 mt-12 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
-<p class="font-label-md text-[10px] text-on-surface-variant font-normal">© 2024 Nutri Burfi. Handcrafted Protein Excellence.</p>
-<div class="flex gap-4 p-8 min-h-[300px]">
-<!-- Payment icons placeholder -->
-<span class="font-label-md text-[10px] text-on-surface-variant font-normal">Secure Checkout</span>
-</div>
-</div>
-</div>
-</footer>
 <script>
         // Simple entrance animations handler
         document.addEventListener('DOMContentLoaded', () => {
@@ -196,12 +146,5 @@
             });
         }
     </script>
-<div id="snapdom-sandbox" data-snapdom-sandbox="true" aria-hidden="true" style="position: absolute; left: -9999px; top: -9999px; width: 0px; height: 0px; overflow: hidden;"></div>
 
-
-
-
-
-
-
-</body></html>
+{{> user/footer}}

@@ -1,20 +1,22 @@
 {{>user/header}}
 
-<main class="flex-grow pt-section-gap pb-section-gap px-container-padding max-w-max-width mx-auto w-full">
+<main
+    class="flex-grow pt-20 sm:pt-24 md:pt-28 pb-12 md:pb-section-gap px-3 sm:px-6 md:px-container-padding max-w-max-width mx-auto w-full">
 
     <!-- ========================= -->
     <!-- PAGE HEADER -->
     <!-- ========================= -->
-        {{> user/notification}}
+    {{> user/notification}}
 
-    <div class="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-surface-variant pb-stack-lg">
+    <div
+        class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-12 border-b border-surface-variant pb-4 sm:pb-stack-lg gap-4">
 
         <div>
-            <h1 class="font-headline-xl text-4xl md:text-5xl text-ink-black">
+            <h1 class="font-headline-xl text-3xl sm:text-4xl md:text-5xl text-ink-black font-bold">
                 Shop All
             </h1>
 
-            <p class="font-body-md text-on-surface-variant mt-3">
+            <p class="font-body-md text-sm sm:text-base text-on-surface-variant mt-1 sm:mt-2">
                 Handcrafted protein excellence, made for your lifestyle.
             </p>
         </div>
@@ -24,25 +26,20 @@
         <!-- SEARCH -->
         <!-- ========================= -->
 
-        <div class="mt-stack-lg md:mt-0 flex items-center bg-surface-gray pl-4 pr-1.5 h-[48px] rounded-full relative group transition-all duration-300 gap-2">
+        <div
+            class="w-full md:w-auto mt-2 md:mt-0 flex items-center bg-surface-gray pl-4 pr-1.5 h-[44px] sm:h-[48px] rounded-full relative group transition-all duration-300 gap-2">
 
-            <span class="material-symbols-outlined text-on-surface-variant font-light text-[20px] group-focus-within:text-ink-black transition-colors shrink-0">
+            <span
+                class="material-symbols-outlined text-on-surface-variant font-light text-[20px] group-focus-within:text-ink-black transition-colors shrink-0">
                 search
             </span>
 
-            <input
-                id="searchInput"
-                class="w-full bg-transparent border-none py-2 px-1 font-body-md text-body-md text-ink-black placeholder:text-on-surface-variant/60 focus:ring-0 transition-all duration-300 outline-none"
-                placeholder="Search our collections..."
-                type="text"
-                value="{{search}}"
-            >
+            <input id="searchInput"
+                class="w-full bg-transparent border-none py-2 px-1 font-body-md text-sm sm:text-body-md text-ink-black placeholder:text-on-surface-variant/60 focus:ring-0 transition-all duration-300 outline-none"
+                placeholder="Search our collections..." type="text" value="{{search}}">
 
-            <button
-                type="button"
-                onclick="applySearch()"
-                class="px-5 py-2 bg-on-surface text-surface rounded-full font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all duration-150 flex items-center shrink-0 shadow-sm"
-            >
+            <button type="button" onclick="applySearch()"
+                class="px-4 sm:px-5 py-2 bg-on-surface text-surface rounded-full font-label-md text-xs sm:text-label-md hover:opacity-90 active:scale-95 transition-all duration-150 flex items-center shrink-0 shadow-sm">
                 Search
             </button>
 
@@ -55,51 +52,30 @@
 
         <div class="hidden md:flex items-center gap-3 mt-6 md:mt-0">
 
-            <label
-                for="sort"
-                class="font-body-md text-sm text-on-surface-variant"
-            >
+            <label for="sort" class="font-body-md text-sm text-on-surface-variant">
                 Sort By:
             </label>
 
-            <select
-                id="sort"
-                onchange="changeSort(this.value)"
-                class="border border-surface-variant rounded-lg px-4 py-2 bg-white focus:outline-none"
-            >
+            <select id="sort" onchange="changeSort(this.value)"
+                class="border border-surface-variant rounded-lg px-4 py-2 bg-white focus:outline-none">
 
-                <option
-                    value=""
-                    {{#if (eq sort "")}}selected{{/if}}
-                >
+                <option value="" {{#if (eq sort "" )}}selected{{/if}}>
                     Featured
                 </option>
 
-                <option
-                    value="priceAcc"
-                    {{#if (eq sort "priceAcc")}}selected{{/if}}
-                >
+                <option value="priceAcc" {{#if (eq sort "priceAcc" )}}selected{{/if}}>
                     Price: Low to High
                 </option>
 
-                <option
-                    value="priceDesc"
-                    {{#if (eq sort "priceDesc")}}selected{{/if}}
-                >
+                <option value="priceDesc" {{#if (eq sort "priceDesc" )}}selected{{/if}}>
                     Price: High to Low
                 </option>
 
-                <option
-                    value="az"
-                    {{#if (eq sort "az")}}selected{{/if}}
-                >
+                <option value="az" {{#if (eq sort "az" )}}selected{{/if}}>
                     A-Z
                 </option>
 
-                <option
-                    value="za"
-                    {{#if (eq sort "za")}}selected{{/if}}
-                >
+                <option value="za" {{#if (eq sort "za" )}}selected{{/if}}>
                     Z-A
                 </option>
 
@@ -114,21 +90,18 @@
     <!-- MOBILE FILTER + SORT -->
     <!-- ========================= -->
 
-    <div class="md:hidden flex gap-3 mb-8">
+    <div class="md:hidden flex gap-3 mb-6">
 
         <!-- FILTER BUTTON -->
 
-        <button
-            type="button"
-            onclick="openFilters()"
-            class="flex-1 h-11 flex items-center justify-center gap-2 border border-surface-variant rounded-lg bg-white text-ink-black"
-        >
+        <button type="button" onclick="openFilters()"
+            class="flex-1 h-11 flex items-center justify-center gap-2 border border-surface-variant rounded-xl bg-white text-ink-black shadow-sm active:scale-95 transition-all">
 
             <span class="material-symbols-outlined text-[18px]">
                 tune
             </span>
 
-            <span class="font-body-md text-sm">
+            <span class="font-body-md text-sm font-semibold">
                 Filter
             </span>
 
@@ -137,17 +110,14 @@
 
         <!-- SORT BUTTON -->
 
-        <button
-            type="button"
-            onclick="toggleMobileSort()"
-            class="flex-1 h-11 flex items-center justify-center gap-2 border border-surface-variant rounded-lg bg-white text-ink-black"
-        >
+        <button type="button" onclick="toggleMobileSort()"
+            class="flex-1 h-11 flex items-center justify-center gap-2 border border-surface-variant rounded-xl bg-white text-ink-black shadow-sm active:scale-95 transition-all">
 
             <span class="material-symbols-outlined text-[18px]">
                 swap_vert
             </span>
 
-            <span class="font-body-md text-sm">
+            <span class="font-body-md text-sm font-semibold">
                 Sort
             </span>
 
@@ -160,54 +130,37 @@
     <!-- MOBILE SORT OPTIONS -->
     <!-- ========================= -->
 
-    <div
-        id="mobileSort"
-        class="hidden md:hidden mb-8 border border-surface-variant rounded-xl bg-white p-4"
-    >
+    <div id="mobileSort"
+        class="hidden md:hidden mb-6 border border-surface-variant rounded-2xl bg-white p-4 shadow-md transition-all">
 
-        <p class="font-body-md text-sm text-on-surface-variant mb-3">
+        <p class="font-body-md text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-3">
             Sort By
         </p>
 
-        <div class="space-y-2">
+        <div class="space-y-1">
 
-            <button
-                type="button"
-                onclick="changeSort('')"
-                class="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-gray text-sm"
-            >
+            <button type="button" onclick="changeSort('')"
+                class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-gray text-sm font-medium">
                 Featured
             </button>
 
-            <button
-                type="button"
-                onclick="changeSort('priceAcc')"
-                class="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-gray text-sm"
-            >
+            <button type="button" onclick="changeSort('priceAcc')"
+                class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-gray text-sm font-medium">
                 Price: Low to High
             </button>
 
-            <button
-                type="button"
-                onclick="changeSort('priceDesc')"
-                class="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-gray text-sm"
-            >
+            <button type="button" onclick="changeSort('priceDesc')"
+                class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-gray text-sm font-medium">
                 Price: High to Low
             </button>
 
-            <button
-                type="button"
-                onclick="changeSort('az')"
-                class="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-gray text-sm"
-            >
+            <button type="button" onclick="changeSort('az')"
+                class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-gray text-sm font-medium">
                 A-Z
             </button>
 
-            <button
-                type="button"
-                onclick="changeSort('za')"
-                class="w-full text-left px-3 py-2 rounded-lg hover:bg-surface-gray text-sm"
-            >
+            <button type="button" onclick="changeSort('za')"
+                class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-gray text-sm font-medium">
                 Z-A
             </button>
 
@@ -220,31 +173,29 @@
     <!-- MAIN CONTENT -->
     <!-- ========================= -->
 
-    <div class="flex flex-col md:flex-row gap-12">
+    <div class="flex flex-col md:flex-row gap-8 lg:gap-12">
 
+        <!-- Mobile Filter Backdrop -->
+        <div id="filterBackdrop"
+            class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 md:hidden"
+            onclick="closeFilters()"></div>
 
         <!-- ========================= -->
         <!-- FILTER SIDEBAR -->
         <!-- ========================= -->
 
-        <aside
-            id="filterSidebar"
-            class="hidden md:block md:w-64 flex-shrink-0"
-        >
+        <aside id="filterSidebar"
+            class="fixed top-0 right-0 bottom-0 w-[85%] max-w-xs bg-white z-50 p-6 overflow-y-auto shadow-2xl translate-x-full transition-transform duration-300 md:static md:translate-x-0 md:w-64 md:p-0 md:shadow-none md:bg-transparent md:block flex-shrink-0">
 
             <!-- MOBILE HEADER -->
 
-            <div class="md:hidden flex items-center justify-between mb-8">
+            <div class="md:hidden flex items-center justify-between mb-6 pb-4 border-b border-surface-variant">
 
-                <h2 class="font-headline-lg text-xl text-ink-black">
-                    Filters
+                <h2 class="font-headline-lg text-lg font-bold text-ink-black">
+                    Filter Products
                 </h2>
 
-                <button
-                    type="button"
-                    onclick="closeFilters()"
-                    class="text-on-surface-variant"
-                >
+                <button type="button" onclick="closeFilters()" class="p-1 text-on-surface-variant hover:text-ink-black">
 
                     <span class="material-symbols-outlined">
                         close
@@ -272,13 +223,10 @@
 
                     {{#if category}}
 
-                        <button
-                            type="button"
-                            onclick="clearCategory()"
-                            class="text-sm text-on-surface-variant hover:text-ink-black underline transition"
-                        >
-                            Clear
-                        </button>
+                    <button type="button" onclick="clearCategory()"
+                        class="text-sm text-on-surface-variant hover:text-ink-black underline transition">
+                        Clear
+                    </button>
 
                     {{/if}}
 
@@ -291,31 +239,26 @@
 
                     {{#if categories.length}}
 
-                        {{#each categories}}
+                    {{#each categories}}
 
-                            <label class="flex items-center gap-3 cursor-pointer">
+                    <label class="flex items-center gap-3 cursor-pointer">
 
-                                <input
-                                    type="checkbox"
-                                    name="category"
-                                    value="{{_id}}"
-                                    class="categoryFilter w-4 h-4"
-                                    {{#if (includes ../category _id)}}checked{{/if}}
-                                >
+                        <input type="checkbox" name="category" value="{{_id}}" class="categoryFilter w-4 h-4" {{#if
+                            (includes ../category _id)}}checked{{/if}}>
 
-                                <span class="font-body-md text-sm text-on-surface-variant">
-                                    {{category_name}}
-                                </span>
+                        <span class="font-body-md text-sm text-on-surface-variant">
+                            {{category_name}}
+                        </span>
 
-                            </label>
+                    </label>
 
-                        {{/each}}
+                    {{/each}}
 
                     {{else}}
 
-                        <p class="text-sm text-on-surface-variant">
-                            No categories available.
-                        </p>
+                    <p class="text-sm text-on-surface-variant">
+                        No categories available.
+                    </p>
 
                     {{/if}}
 
@@ -338,15 +281,8 @@
 
                     <!-- MIN PRICE -->
 
-                    <input
-                        type="number"
-                        id="minPrice"
-                        name="minPrice"
-                        min="0"
-                        placeholder="Min"
-                        value="{{minPrice}}"
-                        class="w-full border border-surface-variant rounded-lg px-3 py-2 text-sm bg-white focus:outline-none"
-                    >
+                    <input type="number" id="minPrice" name="minPrice" min="0" placeholder="Min" value="{{minPrice}}"
+                        class="w-full border border-surface-variant rounded-lg px-3 py-2 text-sm bg-white focus:outline-none">
 
                     <span class="text-on-surface-variant flex-shrink-0">
                         —
@@ -355,15 +291,8 @@
 
                     <!-- MAX PRICE -->
 
-                    <input
-                        type="number"
-                        id="maxPrice"
-                        name="maxPrice"
-                        min="0"
-                        placeholder="Max"
-                        value="{{maxPrice}}"
-                        class="w-full border border-surface-variant rounded-lg px-3 py-2 text-sm bg-white focus:outline-none"
-                    >
+                    <input type="number" id="maxPrice" name="maxPrice" min="0" placeholder="Max" value="{{maxPrice}}"
+                        class="w-full border border-surface-variant rounded-lg px-3 py-2 text-sm bg-white focus:outline-none">
 
                 </div>
 
@@ -374,12 +303,9 @@
             <!-- APPLY FILTER -->
             <!-- ========================= -->
 
-            <button
-                type="button"
-                onclick="applyFilters()"
-                class="w-full border border-ink-black rounded-lg px-4 py-3 text-sm text-ink-black hover:bg-ink-black hover:text-white transition"
-            >
-                Apply Filter
+            <button type="button" onclick="applyFilters(); closeFilters();"
+                class="w-full bg-ink-black text-white rounded-xl px-4 py-3 text-sm font-semibold hover:opacity-90 active:scale-95 transition shadow-sm">
+                Apply Filters
             </button>
 
         </aside>
@@ -389,228 +315,210 @@
         <!-- PRODUCTS -->
         <!-- ========================= -->
 
-        <div class="flex-grow grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="flex-grow grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 items-start">
 
             {{#if products.length}}
 
-                {{#each products}}
+            {{#each products}}
+
+
+            <!-- ========================= -->
+            <!-- PRODUCT CARD -->
+            <!-- ========================= -->
+
+            <a href="/products/{{_id}}"
+                class="group flex flex-col cursor-pointer bg-white rounded-2xl border border-surface-variant/60 p-2 sm:p-3 hover:shadow-lg transition-all duration-300">
+
+
+                <!-- ========================= -->
+                <!-- PRODUCT IMAGE -->
+                <!-- ========================= -->
+
+                <div class="relative w-full aspect-square overflow-hidden rounded-xl bg-surface-gray mb-2.5 sm:mb-3">
+
+
+                    <!-- WISHLIST -->
+
+                    <div class="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-10">
+
+                        <button type="button" data-product-id="{{_id}}"
+                            data-wishlisted="{{#if isWishlisted}}true{{else}}false{{/if}}"
+                            aria-pressed="{{#if isWishlisted}}true{{else}}false{{/if}}"
+                            onclick="toggleProductWishlist(this, event)"
+                            class="w-7 h-7 sm:w-9 sm:h-9 rounded-full {{#if isWishlisted}}bg-red-500 shadow-sm{{else}}bg-white/90 hover:bg-white shadow-sm{{/if}} flex items-center justify-center transition-transform active:scale-90">
+
+                            <span
+                                class="material-symbols-outlined text-[15px] sm:text-[18px] {{#if isWishlisted}}text-white{{else}}text-ink-black{{/if}}">
+                                favorite
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- IMAGE -->
+
+                    {{#if images.length}}
+
+                    <img src="{{images.[0].url}}" alt="{{productName}}"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+
+                    {{else}}
+
+                    <div class="w-full h-full flex items-center justify-center text-xs text-on-surface-variant">
+                        No Image
+                    </div>
+
+                    {{/if}}
+
+                </div>
+
+
+                <!-- ========================= -->
+                <!-- PRODUCT INFO -->
+                <!-- ========================= -->
+
+                <div class="flex flex-col flex-grow px-1 pb-1">
+
+
+                    <!-- PRODUCT NAME -->
+
+                    <div class="mb-1">
+
+                        <h3
+                            class="font-headline-md text-xs sm:text-base font-semibold text-ink-black line-clamp-1 leading-snug">
+                            {{productName}}
+                        </h3>
+
+                    </div>
+
+
+                    <!-- PRODUCT DESCRIPTION -->
+
+                    <div class="mb-1.5 hidden sm:block">
+
+                        <p class="text-xs text-on-surface-variant line-clamp-2">
+                            {{productDescription}}
+                        </p>
+
+                    </div>
 
 
                     <!-- ========================= -->
-                    <!-- PRODUCT CARD -->
+                    <!-- CATEGORY NAME -->
                     <!-- ========================= -->
 
-                    <a
-                        href="/products/{{_id}}"
-                        class="group flex flex-col cursor-pointer"
-                    >
+                    {{#if category_id}}
+
+                    <p class="text-[11px] sm:text-xs text-on-surface-variant/80 mb-1 truncate">
+                        {{category_id.category_name}}
+                    </p>
+
+                    {{/if}}
 
 
-                        <!-- ========================= -->
-                        <!-- PRODUCT IMAGE -->
-                        <!-- ========================= -->
+                    <!-- ========================= -->
+                    <!-- RATING -->
+                    <!-- ========================= -->
 
-                        <div class="relative">
+                    <div class="flex items-center mb-2 sm:mb-3 text-ink-black">
 
+                        <span class="material-symbols-outlined text-[14px] sm:text-[16px] text-amber-500"
+                            style="font-variation-settings: 'FILL' 1;">
+                            star
+                        </span>
 
-                            <!-- WISHLIST -->
+                        <span class="font-body-md text-[11px] sm:text-xs ml-1 text-on-surface-variant">
 
-                            <div class="absolute top-6 right-6 z-10">
+                            {{#if average_rating}}
 
-                                <button
-                                    type="button"
-                                    onclick="event.preventDefault(); event.stopPropagation();"
-                                    class="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center"
-                                >
+                            {{average_rating}}
 
-                                    <span class="material-symbols-outlined text-[18px]">
-                                        favorite
-                                    </span>
+                            {{else}}
 
-                                </button>
-
-                            </div>
-
-
-                            <!-- IMAGE -->
-
-                            <div class="h-64 overflow-hidden rounded-xl bg-surface-gray mb-4">
-
-                                {{#if images.length}}
-
-                                    <img
-                                        src="{{images.[0].url}}"
-                                        alt="{{productName}}"
-                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                    >
-
-                                {{else}}
-
-                                    <div class="w-full h-full flex items-center justify-center text-on-surface-variant">
-                                        No Image
-                                    </div>
-
-                                {{/if}}
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- ========================= -->
-                        <!-- PRODUCT INFO -->
-                        <!-- ========================= -->
-
-                        <div class="flex flex-col flex-grow px-2 pb-2">
-
-
-                            <!-- PRODUCT NAME -->
-
-                            <div class="flex justify-between items-start mb-2">
-
-                                <h3 class="font-headline-md text-lg text-ink-black">
-                                    {{productName}}
-                                </h3>
-
-                            </div>
-
-
-                            <!-- PRODUCT DESCRIPTION -->
-
-                            <div class="flex justify-between items-start mb-2">
-
-                                <p class="font-headline-md text-s text-ink-black">
-                                    {{productDescription}}
-                                </p>
-
-                            </div>
-
-
-                            <!-- ========================= -->
-                            <!-- CATEGORY NAME -->
-                            <!-- ========================= -->
-
-                            {{#if category_id}}
-
-                                <p class="text-sm text-on-surface-variant mb-2">
-                                    {{category_id.category_name}}
-                                </p>
+                            4.5
 
                             {{/if}}
 
 
-                            <!-- ========================= -->
-                            <!-- RATING -->
-                            <!-- ========================= -->
+                            {{#if review_count}}
 
-                            <div class="flex items-center mb-4 text-ink-black">
+                            ({{review_count}})
 
-                                <span
-                                    class="material-symbols-outlined text-[16px]"
-                                    style="font-variation-settings: 'FILL' 1;"
-                                >
-                                    star
-                                </span>
+                            {{/if}}
 
-                                <span class="font-body-md text-sm ml-2 text-on-surface-variant">
+                        </span>
 
-                                    {{#if average_rating}}
-
-                                        {{average_rating}}
-
-                                    {{else}}
-
-                                        No rating
-
-                                    {{/if}}
+                    </div>
 
 
-                                    {{#if review_count}}
+                    <!-- ========================= -->
+                    <!-- PRICE -->
+                    <!-- ========================= -->
 
-                                        ({{review_count}})
+                    <div
+                        class="mt-auto pt-2 sm:pt-3 border-t border-surface-variant/40 flex items-center justify-between gap-1">
 
-                                    {{/if}}
-
-                                </span>
-
-                            </div>
-
-
-                            <!-- ========================= -->
-                            <!-- PRICE -->
-                            <!-- ========================= -->
-
-                            <div class="mt-auto pt-4 border-t border-surface-variant/50 flex items-center justify-between">
-
-                                <p class="font-headline-lg text-xl text-ink-black">
-                                    ₹{{listPrice}}
-                                </p>
+                        <p class="font-headline-lg text-sm sm:text-lg font-bold text-ink-black">
+                            ₹{{listPrice}}
+                        </p>
 
 
-                                <!-- ADD BUTTON -->
+                        <!-- ADD BUTTON -->
+{{!-- 
+                        <button type="button" data-product-id="{{_id}}" data-variant-id="{{defaultVariantId}}"
+                            data-stock="{{defaultVariantStock}}" onclick="addListingProductToCart(this, event)" class="group inline-flex items-center gap-1
+                                           px-2.5 sm:px-3.5 py-1 sm:py-1.5
+                                           rounded-full
+                                           bg-surface-gray hover:bg-ink-black
+                                           text-ink-black hover:text-white
+                                           border border-ink-black/15
+                                           text-[11px] sm:text-xs font-semibold
+                                           transition-all duration-200
+                                           active:scale-95 shrink-0">
+                            <span class="listing-add-text">
+                                Add
+                            </span>
 
-<button
-    type="button"
-    data-product-id="{{_id}}"
-    data-variant-id="{{defaultVariantId}}"
-    data-stock="{{defaultVariantStock}}"
-    onclick="addListingProductToCart(this, event)"
-    class="group inline-flex items-center gap-1.5
-           px-4 py-2
-           rounded-full
-           border border-ink-black/20
-           text-sm font-medium text-ink-black
-           transition-all duration-300 ease-out
-           hover:bg-ink-black
-           hover:text-white
-           hover:border-ink-black
-           hover:shadow-md
-           active:scale-95"
->
-    <span class="listing-add-text">
-        Add
-    </span>
+                            <span class="material-symbols-outlined text-[14px] sm:text-[16px]
+                                               transition-transform duration-300
+                                               group-hover:rotate-90 listing-add-icon">
+                                add
+                            </span>
+                        </button> --}}
 
-    <span
-        class="material-symbols-outlined text-[18px]
-               transition-transform duration-300
-               group-hover:rotate-90 listing-add-icon"
-    >
-        add
-    </span>
-</button>
+                    </div>
 
-                            </div>
+                </div>
 
-                        </div>
+            </a>
 
-                    </a>
-
-                {{/each}}
+            {{/each}}
 
 
             {{else}}
 
 
-                <!-- ========================= -->
-                <!-- NO PRODUCTS -->
-                <!-- ========================= -->
+            <!-- ========================= -->
+            <!-- NO PRODUCTS -->
+            <!-- ========================= -->
 
-                <div class="col-span-full flex flex-col items-center justify-center py-20">
+            <div class="col-span-full flex flex-col items-center justify-center py-20">
 
-                    <span class="material-symbols-outlined text-5xl text-on-surface-variant">
-                        inventory_2
-                    </span>
+                <span class="material-symbols-outlined text-5xl text-on-surface-variant">
+                    inventory_2
+                </span>
 
-                    <h2 class="font-headline-lg text-2xl text-ink-black mt-4">
-                        No products found
-                    </h2>
+                <h2 class="font-headline-lg text-2xl text-ink-black mt-4">
+                    No products found
+                </h2>
 
-                    <p class="font-body-md text-on-surface-variant mt-2">
-                        Try changing your search or filters.
-                    </p>
+                <p class="font-body-md text-on-surface-variant mt-2">
+                    Try changing your search or filters.
+                </p>
 
-                </div>
+            </div>
 
             {{/if}}
 
@@ -625,90 +533,82 @@
 
     {{#if totalPage}}
 
-        {{#if (gt totalPage 1)}}
+    {{#if (gt totalPage 1)}}
 
-            <div class="mt-16 mb-12 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-surface-variant/50 pt-8 w-full">
-
-
-                <!-- SHOWING -->
-
-                <p class="font-body-md text-sm text-on-surface-variant">
-
-                    Showing
-
-                    {{#if totalProduct}}
-
-                        {{add (multiply (subtract page 1) 10) 1}}
-
-                    {{else}}
-
-                        0
-
-                    {{/if}}
-
-                    -
-
-                    {{#if (lt (multiply page 10) totalProduct)}}
-
-                        {{multiply page 10}}
-
-                    {{else}}
-
-                        {{totalProduct}}
-
-                    {{/if}}
-
-                    of {{totalProduct}} products
-
-                </p>
+    <div
+        class="mt-16 mb-12 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-surface-variant/50 pt-8 w-full">
 
 
-                <!-- PAGINATION -->
+        <!-- SHOWING -->
 
-                <div class="flex items-center gap-2">
+        <p class="font-body-md text-sm text-on-surface-variant">
 
+            Showing
 
-                    <!-- PREVIOUS -->
+            {{#if totalProduct}}
 
-                    {{#if (gt page 1)}}
+            {{add (multiply (subtract page 1) 10) 1}}
 
-                        <button
-                            type="button"
-                            onclick="goToPage({{subtract page 1}})"
-                            class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg hover:bg-surface-gray transition"
-                        >
+            {{else}}
 
-                            <span class="material-symbols-outlined text-[18px]">
-                                chevron_left
-                            </span>
+            0
 
-                        </button>
+            {{/if}}
 
-                    {{else}}
+            -
 
-                        <button
-                            type="button"
-                            disabled
-                            class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg opacity-40 cursor-not-allowed"
-                        >
+            {{#if (lt (multiply page 10) totalProduct)}}
 
-                            <span class="material-symbols-outlined text-[18px]">
-                                chevron_left
-                            </span>
+            {{multiply page 10}}
 
-                        </button>
+            {{else}}
 
-                    {{/if}}
+            {{totalProduct}}
+
+            {{/if}}
+
+            of {{totalProduct}} products
+
+        </p>
 
 
-                    <!-- PAGE NUMBERS -->
+        <!-- PAGINATION -->
 
-                    {{#each (range 1 totalPage)}}
+        <div class="flex items-center gap-2">
 
-                        <button
-                            type="button"
-                            onclick="goToPage({{this}})"
-                            class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg text-sm
+
+            <!-- PREVIOUS -->
+
+            {{#if (gt page 1)}}
+
+            <button type="button" onclick="goToPage({{subtract page 1}})"
+                class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg hover:bg-surface-gray transition">
+
+                <span class="material-symbols-outlined text-[18px]">
+                    chevron_left
+                </span>
+
+            </button>
+
+            {{else}}
+
+            <button type="button" disabled
+                class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg opacity-40 cursor-not-allowed">
+
+                <span class="material-symbols-outlined text-[18px]">
+                    chevron_left
+                </span>
+
+            </button>
+
+            {{/if}}
+
+
+            <!-- PAGE NUMBERS -->
+
+            {{#each (range 1 totalPage)}}
+
+            <button type="button" onclick="goToPage({{this}})" class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg text-sm
 
                             {{#if (eq this ../page)}}
                                 bg-ink-black text-white
@@ -716,51 +616,44 @@
                                 hover:bg-surface-gray text-ink-black
                             {{/if}}
 
-                            transition"
-                        >
-                            {{this}}
-                        </button>
+                            transition">
+                {{this}}
+            </button>
 
-                    {{/each}}
+            {{/each}}
 
 
-                    <!-- NEXT -->
+            <!-- NEXT -->
 
-                    {{#if (lt page totalPage)}}
+            {{#if (lt page totalPage)}}
 
-                        <button
-                            type="button"
-                            onclick="goToPage({{add page 1}})"
-                            class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg hover:bg-surface-gray transition"
-                        >
+            <button type="button" onclick="goToPage({{add page 1}})"
+                class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg hover:bg-surface-gray transition">
 
-                            <span class="material-symbols-outlined text-[18px]">
-                                chevron_right
-                            </span>
+                <span class="material-symbols-outlined text-[18px]">
+                    chevron_right
+                </span>
 
-                        </button>
+            </button>
 
-                    {{else}}
+            {{else}}
 
-                        <button
-                            type="button"
-                            disabled
-                            class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg opacity-40 cursor-not-allowed"
-                        >
+            <button type="button" disabled
+                class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg opacity-40 cursor-not-allowed">
 
-                            <span class="material-symbols-outlined text-[18px]">
-                                chevron_right
-                            </span>
+                <span class="material-symbols-outlined text-[18px]">
+                    chevron_right
+                </span>
 
-                        </button>
+            </button>
 
-                    {{/if}}
+            {{/if}}
 
-                </div>
+        </div>
 
-            </div>
+    </div>
 
-        {{/if}}
+    {{/if}}
 
     {{/if}}
 
@@ -1129,6 +1022,40 @@
 
 <script>
 
+    async function toggleProductWishlist(button, event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (button.disabled) return;
+
+        const wasWishlisted = button.dataset.wishlisted === "true";
+        button.disabled = true;
+        try {
+            const response = await fetch(`/wishlist/${wasWishlisted ? "remove" : "add"}/${button.dataset.productId}`, {
+                method: wasWishlisted ? "DELETE" : "POST",
+                headers: { "Accept": "application/json" }
+            });
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || "Unable to update your wishlist.");
+            }
+
+            const isWishlisted = !wasWishlisted;
+            button.dataset.wishlisted = String(isWishlisted);
+            button.setAttribute("aria-pressed", String(isWishlisted));
+            button.classList.toggle("bg-red-500", isWishlisted);
+            button.classList.toggle("bg-white/90", !isWishlisted);
+            button.classList.toggle("hover:bg-red-600", isWishlisted);
+            button.classList.toggle("hover:bg-white", !isWishlisted);
+            button.querySelector(".material-symbols-outlined").classList.toggle("text-white", isWishlisted);
+            button.querySelector(".material-symbols-outlined").classList.toggle("text-ink-black", !isWishlisted);
+        } catch (error) {
+            window.alert(error.message);
+        } finally {
+            button.disabled = false;
+        }
+    }
+
     // =====================================================
     // ADD PRODUCT FROM LISTING PAGE
     // =====================================================
@@ -1276,6 +1203,41 @@
 
             button.dataset.loading =
                 "false";
+        }
+    }
+
+    // =========================================
+    // MOBILE FILTER DRAWER & SORT CONTROLS
+    // =========================================
+
+    function openFilters() {
+        const sidebar = document.getElementById("filterSidebar");
+        const backdrop = document.getElementById("filterBackdrop");
+        if (!sidebar || !backdrop) return;
+        backdrop.classList.remove("hidden");
+        requestAnimationFrame(() => {
+            backdrop.classList.remove("opacity-0");
+            sidebar.classList.remove("translate-x-full");
+        });
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeFilters() {
+        const sidebar = document.getElementById("filterSidebar");
+        const backdrop = document.getElementById("filterBackdrop");
+        if (!sidebar || !backdrop) return;
+        sidebar.classList.add("translate-x-full");
+        backdrop.classList.add("opacity-0");
+        setTimeout(() => {
+            backdrop.classList.add("hidden");
+            document.body.style.overflow = "";
+        }, 300);
+    }
+
+    function toggleMobileSort() {
+        const mobileSort = document.getElementById("mobileSort");
+        if (mobileSort) {
+            mobileSort.classList.toggle("hidden");
         }
     }
 

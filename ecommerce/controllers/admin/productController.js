@@ -149,6 +149,11 @@ const loadAddProduct = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
+  const redirectWithError = (message) => {
+    req.session.error = message;
+    return res.redirect("/admin/product/addProduct");
+  };
+
   try {
     let { product_name, description, category_id, variants } = req.body;
 
@@ -157,64 +162,30 @@ const addProduct = async (req, res) => {
     }
 
     if (!product_name || !description || !category_id) {
-      const categories = await Category.find({
-        isListed: true,
-      }).lean();
-
-      return res.status(400).render("admin/addProduct", {
-        categories,
-        error: "Product name, description and category are required.",
-      });
+      return redirectWithError(
+        "Product name, description and category are required.",
+      );
     }
 
     if (!req.files || req.files.length < 3) {
-      console.log("VALIDATION ERROR: Not enough images");
-      const categories = await Category.find({
-        isListed: true,
-      }).lean();
-
-      return res.status(400).render("admin/addProduct", {
-        categories,
-        error: "Please upload at least 3 product images.",
-      });
+      return redirectWithError("Please upload at least 3 product images.");
     }
 
     if (req.files.length > 5) {
-      console.log("VALIDATION ERROR: Too many images");
-      const categories = await Category.find({
-        isListed: true,
-      }).lean();
 
-      return res.status(400).render("admin/addProduct", {
-        categories,
-        error: "Maximum 5 images are allowed.",
-      });
+      return redirectWithError("Maximum 5 images are allowed.");
     }
 
     const category = await Category.findById(category_id);
 
     if (!category) {
-      console.log("VALIDATION ERROR: Category not found");
-      const categories = await Category.find({
-        isListed: true,
-      }).lean();
 
-      return res.status(400).render("admin/addProduct", {
-        categories,
-        error: "Selected category does not exist.",
-      });
+      return redirectWithError("Selected category does not exist.");
     }
 
     if (!variants || !Array.isArray(variants) || variants.length === 0) {
-      console.log("VALIDATION ERROR: No variants");
-      const categories = await Category.find({
-        isListed: true,
-      }).lean();
 
-      return res.status(400).render("admin/addProduct", {
-        categories,
-        error: "Please add at least one variant.",
-      });
+      return redirectWithError("Please add at least one variant.");
     }
 
     for (let i = 0; i < variants.length; i++) {
@@ -226,60 +197,39 @@ const addProduct = async (req, res) => {
         variant.price === undefined ||
         variant.stock_quantity === undefined
       ) {
-        console.log(`VALIDATION ERROR: Missing fields in variant ${i}`);
-        const categories = await Category.find({
-          isListed: true,
-        }).lean();
 
-        return res.status(400).render("admin/addProduct", {
-          categories,
-          error: "All variant fields are required.",
-        });
+        return redirectWithError("All variant fields are required.");
       }
 
       if (Number.isNaN(Number(variant.price)) || Number(variant.price) < 0) {
-        console.log(`VALIDATION ERROR: Invalid price in variant ${i}`);
-        const categories = await Category.find({
-          isListed: true,
-        }).lean();
 
-        return res.status(400).render("admin/addProduct", {
-          categories,
-          error: "Price must be a valid positive number.",
-        });
+        return redirectWithError("Price must be a valid positive number.");
       }
 
       if (
         Number.isNaN(Number(variant.stock_quantity)) ||
         Number(variant.stock_quantity) < 0
       ) {
-        console.log(`VALIDATION ERROR: Invalid stock in variant ${i}`);
-        const categories = await Category.find({
-          isListed: true,
-        }).lean();
-
-        return res.status(400).render("admin/addProduct", {
-          categories,
-          error: "Stock must be a valid positive number.",
-        });
+  
+        return redirectWithError("Stock must be a valid positive number.");
       }
+    }
+
+    const weightList = variants.map((variant) =>
+      variant.weight.trim().replace(/\s+/g, "").toLowerCase(),
+    );
+
+    if (new Set(weightList).size !== weightList.length) {
+      return redirectWithError("Each product variant must have a unique weight.");
     }
 
     const skuList = variants.map((variant) => variant.sku.trim().toUpperCase());
 
     if (new Set(skuList).size !== skuList.length) {
-      console.log("VALIDATION ERROR: Duplicate SKU in form");
-      const categories = await Category.find({
-        isListed: true,
-      }).lean();
-
-      return res.status(400).render("admin/addProduct", {
-        categories,
-        error: "Duplicate SKU found.",
-      });
+      return redirectWithError("Duplicate SKU found.");
     }
 
-    console.log("Checking for existing SKU in database...");
+
     const existingSku = await Variant.findOne({
       sku: {
         $in: skuList,
@@ -287,32 +237,15 @@ const addProduct = async (req, res) => {
     });
 
     if (existingSku) {
-      console.log(
-        "VALIDATION ERROR: SKU already exists in DB:",
-        existingSku.sku,
-      );
-      const categories = await Category.find({
-        isListed: true,
-      }).lean();
 
-      return res.status(400).render("admin/addProduct", {
-        categories,
-        error: `SKU ${existingSku.sku} already exists.`,
-      });
+      return redirectWithError(`SKU ${existingSku.sku} already exists.`);
     }
 
-    console.log("Processing images...");
+
     const images = req.files.map((file) => ({
       url: file.path,
       public_id: file.filename,
     }));
-
-    console.log("Creating product with data:", {
-      productName: product_name.trim(),
-      productDescription: description.trim(),
-      category_id,
-      images_count: images.length,
-    });
 
     const product = await Product.create({
       category_id,
@@ -346,14 +279,9 @@ const addProduct = async (req, res) => {
     console.error("Error Stack:", error.stack);
     console.error("Full Error:", error);
 
-    const categories = await Category.find({
-      isListed: true,
-    }).lean();
-
-    return res.status(500).render("admin/addProduct", {
-      categories,
-      error: `Something went wrong while adding the product. Error: ${error.message}`,
-    });
+    return redirectWithError(
+      "Something went wrong while adding the product. Please try again.",
+    );
   }
 };
 
@@ -393,6 +321,12 @@ const loadEditProduct = async (req, res) => {
 };
 
 const editProduct = async (req, res) => {
+  const editPath = `/admin/product/editProduct/${req.params.id}`;
+  const redirectWithError = (message, path = editPath) => {
+    req.session.error = message;
+    return res.redirect(path);
+  };
+
   try {
     const { id } = req.params;
 
@@ -406,25 +340,28 @@ const editProduct = async (req, res) => {
     } = req.body;
 
     if (!id) {
-      return res.status(400).send("Product ID is required");
+      return redirectWithError(
+        "Product ID is required.",
+        "/admin/product/products",
+      );
     }
 
     const product = await Product.findById(id);
 
     if (!product) {
-      return res.status(404).send("Product not found");
+      return redirectWithError("Product not found.", "/admin/product/products");
     }
 
     if (!product_name || !description || !category_id) {
-      return res
-        .status(400)
-        .send("Product name, description and category are required.");
+      return redirectWithError(
+        "Product name, description and category are required.",
+      );
     }
 
     const category = await Category.findById(category_id);
 
     if (!category) {
-      return res.status(400).send("Selected category does not exist.");
+      return redirectWithError("Selected category does not exist.");
     }
 
     const duplicateProduct = await Product.findOne({
@@ -436,7 +373,7 @@ const editProduct = async (req, res) => {
     });
 
     if (duplicateProduct) {
-      return res.status(409).send("Product name already exists");
+      return redirectWithError("Product name already exists.");
     }
 
     product.category_id = category_id;
@@ -453,7 +390,7 @@ const editProduct = async (req, res) => {
       try {
         deletedImageIds = JSON.parse(deletedImages);
       } catch (error) {
-        console.log("Invalid deletedImages JSON");
+
         deletedImageIds = [];
       }
     }
@@ -483,11 +420,11 @@ const editProduct = async (req, res) => {
     }
 
     if (product.images.length < 3) {
-      return res.status(400).send("Product must have at least 3 images.");
+      return redirectWithError("Product must have at least 3 images.");
     }
 
     if (product.images.length > 5) {
-      return res.status(400).send("Maximum 5 images are allowed.");
+      return redirectWithError("Maximum 5 images are allowed.");
     }
 
     let variantData = [];
@@ -507,13 +444,13 @@ const editProduct = async (req, res) => {
           variant.price === undefined ||
           variant.stock_quantity === undefined
         ) {
-          return res.status(400).send("All variant fields are required.");
+          return redirectWithError("All variant fields are required.");
         }
 
         // PRICE
 
         if (Number.isNaN(Number(variant.price)) || Number(variant.price) < 0) {
-          return res.status(400).send("Price must be a valid positive number.");
+          return redirectWithError("Price must be a valid positive number.");
         }
 
         // STOCK
@@ -522,7 +459,7 @@ const editProduct = async (req, res) => {
           Number.isNaN(Number(variant.stock_quantity)) ||
           Number(variant.stock_quantity) < 0
         ) {
-          return res.status(400).send("Stock must be a valid positive number.");
+          return redirectWithError("Stock must be a valid positive number.");
         }
       }
 
@@ -531,7 +468,7 @@ const editProduct = async (req, res) => {
       );
 
       if (new Set(skuList).size !== skuList.length) {
-        return res.status(400).send("Duplicate SKU found.");
+        return redirectWithError("Duplicate SKU found.");
       }
 
       for (const variant of variantData) {
@@ -547,7 +484,7 @@ const editProduct = async (req, res) => {
           });
 
           if (duplicateSku) {
-            return res.status(409).send(`SKU ${sku} already exists.`);
+            return redirectWithError(`SKU ${sku} already exists.`);
           }
 
           await Variant.findByIdAndUpdate(
@@ -573,7 +510,7 @@ const editProduct = async (req, res) => {
           });
 
           if (existingSku) {
-            return res.status(409).send(`SKU ${sku} already exists.`);
+            return redirectWithError(`SKU ${sku} already exists.`);
           }
 
           await Variant.create({
@@ -599,7 +536,7 @@ const editProduct = async (req, res) => {
   } catch (error) {
     console.error("EDIT PRODUCT ERROR:", error);
 
-    return res.status(500).send("Unable to update product");
+    return redirectWithError("Unable to update product. Please try again.");
   }
 };
 
@@ -624,14 +561,6 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-export {
-  productInfo,
-  loadAddProduct,
-  addProduct,
-  loadEditProduct,
-  editProduct,
-  deleteProduct,
-};
 
 export default {
   productInfo,

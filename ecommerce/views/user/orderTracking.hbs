@@ -1,0 +1,107 @@
+{{>user/header}}
+
+<main class="min-h-screen bg-background px-container-padding pb-section-gap pt-28 text-on-surface">
+  <div class="mx-auto max-w-5xl">
+    <div class="mb-8">
+      <a href="/order/orders/{{order.order_id}}" class="inline-flex items-center gap-2 text-sm font-semibold text-on-surface-variant hover:text-primary">
+        <span class="material-symbols-outlined text-lg">arrow_back</span>
+        Back to order details
+      </a>
+    </div>
+
+    <header class="mb-8 flex flex-col gap-5 border-b border-outline-variant/30 pb-8 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="mb-2 text-sm font-semibold uppercase text-on-surface-variant">Order #{{order.order_id}}</p>
+        <h1 class="font-headline-xl text-headline-xl">Track your order</h1>
+        <p class="mt-2 text-on-surface-variant">Placed {{formatDate order.createdAt}}</p>
+      </div>
+      <span class="inline-flex w-fit items-center gap-2 rounded-full bg-surface-container-high px-4 py-2 text-sm font-semibold">
+        <span class="material-symbols-outlined text-lg">{{#if isCancelled}}cancel{{else}}{{#if isReturned}}assignment_return{{else}}{{#if isReturnRequested}}assignment_return{{else}}local_shipping{{/if}}{{/if}}{{/if}}</span>
+        {{formatStatus order.order_status}}
+      </span>
+    </header>
+
+    {{#if isCancelled}}
+      <section class="mb-8 border-l-4 border-error bg-error-container/40 p-5" role="status">
+        <h2 class="font-semibold text-on-error-container">This order was cancelled</h2>
+        <p class="mt-1 text-sm text-on-error-container">Status updated {{formatDate lastUpdatedAt}}.</p>
+      </section>
+    {{else}}
+      <section class="mb-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <div class="border border-outline-variant/30 bg-surface-container-lowest p-6 sm:p-8">
+          <div class="mb-8 flex items-center justify-between gap-4">
+            <h2 class="font-headline-lg text-2xl">Delivery progress</h2>
+            <p class="text-right text-xs text-on-surface-variant">Last updated<br>{{formatDate lastUpdatedAt}}</p>
+          </div>
+
+          <ol aria-label="Order delivery progress">
+            {{#each trackingSteps}}
+              <li class="relative flex gap-4 pb-8 last:pb-0">
+                {{#unless @last}}
+                  <span class="absolute bottom-0 left-[15px] top-8 w-px bg-outline-variant/50" aria-hidden="true"></span>
+                {{/unless}}
+                <span class="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full {{#if (eq this.state "complete")}}bg-green-100 text-green-700{{else}}{{#if (eq this.state "current")}}bg-on-surface text-surface{{else}}bg-surface-container text-on-surface-variant{{/if}}{{/if}}">
+                  <span class="material-symbols-outlined text-lg">{{#if (eq this.state "complete")}}check{{else}}{{#if (eq this.state "current")}}local_shipping{{else}}radio_button_unchecked{{/if}}{{/if}}</span>
+                </span>
+                <div class="pt-1">
+                  <h3 class="font-semibold {{#if (eq this.state "upcoming")}}text-on-surface-variant{{/if}}">{{this.title}}</h3>
+                  <p class="mt-1 text-sm text-on-surface-variant">{{this.description}}</p>
+                  {{#if (eq this.status "pending")}}
+                    <p class="mt-2 text-xs text-on-surface-variant">{{formatDate ../order.createdAt}}</p>
+                  {{/if}}
+                </div>
+              </li>
+            {{/each}}
+          </ol>
+
+          {{#if isReturned}}
+            <div class="mt-8 border-l-4 border-primary bg-surface-container-low p-5" role="status">
+              <h3 class="font-semibold">Return processed</h3>
+              <p class="mt-1 text-sm text-on-surface-variant">Return status updated {{formatDate lastUpdatedAt}}.</p>
+            </div>
+          {{else}}
+            {{#if isReturnRequested}}
+              <div class="mt-8 border-l-4 border-amber-600 bg-amber-50 p-5 text-amber-900" role="status">
+                <h3 class="font-semibold">Return request under review</h3>
+                <p class="mt-1 text-sm text-amber-800">Your return request was submitted on {{formatDate order.return_request.requested_at}} and is currently under review.</p>
+              </div>
+            {{/if}}
+          {{/if}}
+        </div>
+
+        <aside class="border border-outline-variant/30 bg-surface-container-low p-6">
+          <h2 class="font-headline-lg text-xl">Delivery address</h2>
+          <address class="mt-4 not-italic leading-relaxed text-on-surface-variant">
+            <span class="font-semibold text-on-surface">{{order.shipping_address.full_name}}</span><br>
+            {{order.shipping_address.address}}<br>
+            {{order.shipping_address.city}}, {{order.shipping_address.state}} {{order.shipping_address.zip_code}}<br>
+            {{order.shipping_address.country}}
+          </address>
+          {{#if order.shipping_address.phone_number}}
+            <p class="mt-4 border-t border-outline-variant/30 pt-4 text-sm text-on-surface-variant">{{order.shipping_address.phone_number}}</p>
+          {{/if}}
+        </aside>
+      </section>
+    {{/if}}
+
+    <section class="border-t border-outline-variant/30 pt-8">
+      <h2 class="mb-4 font-headline-lg text-2xl">Items in this order</h2>
+      <ul class="divide-y divide-outline-variant/30">
+        {{#each order.items}}
+          <li class="flex items-center gap-4 py-4">
+            {{#if this.product_image}}
+              <img src="{{this.product_image}}" alt="{{this.product_name}}" class="h-14 w-14 rounded object-cover">
+            {{/if}}
+            <div class="min-w-0 flex-1">
+              <p class="truncate font-semibold">{{this.product_name}}</p>
+              <p class="text-sm text-on-surface-variant">{{this.weight}} · Qty {{this.quantity}}</p>
+            </div>
+            <span class="text-sm text-on-surface-variant">{{formatStatus this.status}}</span>
+          </li>
+        {{/each}}
+      </ul>
+    </section>
+  </div>
+</main>
+
+{{> user/footer}}

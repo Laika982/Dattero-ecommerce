@@ -1,601 +1,771 @@
 {{>user/header}}
 <div class="flex min-h-screen">
-<!-- Main Canvas Area -->
-<aside class="hidden md:flex flex-col w-64 border-r border-outline/10 bg-surface fixed top-20 bottom-0 left-0 z-40 overflow-y-auto custom-scrollbar p-6 justify-between"><div class="space-y-6"><div class="flex items-center gap-3 pb-6 border-b border-outline/10"><div class="w-12 h-12 rounded-full overflow-hidden border border-outline/20 flex-shrink-0">
-<img src="{{#if userData.profileImage}}{{userData.profileImage}}{{else}}https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E{{/if}}" alt="Eleanor St. James" class="w-full h-full object-cover"></div>
-<div><h4 class="font-label-md text-label-md text-on-surface font-bold leading-tight">{{userData.name}}</h4>
-</div></div>
-<nav class="space-y-1">
-  <a href="/profile" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-on-surface text-surface font-label-md text-label-md shadow-sm font-semibold"><span class="material-symbols-outlined text-[20px]">person</span>Profile</a>
-  <a href="/order/orders" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">shopping_bag</span>My Orders</a>
-  <a href="/wishlist" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">favorite</span>My Favorites</a>
-  <a href="/profile/address" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">location_on</span>Address Book</a>
-</nav></div></aside>
-              <main class="flex-1 p-container-padding pt-24 md:ml-64">
-  <div class="max-w-max-width mx-auto px-container-padding mt-2">
-    {{> user/notification}}
-  </div>
-<!-- Top Bar Branding -->
-<header class="flex items-center mb-16">
-<div class="space-y-1">
-<h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Personal Information</h2>
-<p class="text-on-surface-variant font-body-md">Update your details and how we contact you.</p>
-</div>
-</header>
-<div class="max-w-4xl space-y-12 mx-auto"><section class="grid-cols-1 gap-8 border-b border-outline/5 pb-12 flex flex-col items-center text-center">
-<div class="md:col-span-1">
-<h3 class="font-label-md text-label-md text-on-surface mb-2 uppercase tracking-widest">Avatar</h3>
-<p class="text-sm text-on-surface-variant">Your profile picture will be visible on your dashboard and communications.</p>
-</div>
-<div class="md:col-span-2 flex items-center gap-8 justify-center">
-<div class="relative group">
-<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-surface-container-highest shadow-xl bg-surface-container-low transition-transform group-hover:scale-[1.02] duration-300">
-<img class="w-full h-full object-cover"
-       alt="Profile Avatar"
-       id="avatar-preview"
-       src="{{#if userData.profileImage}}{{userData.profileImage}}{{else}}https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E{{/if}}">
-</div>
-<label class="absolute bottom-0 right-0 p-2 bg-on-surface text-surface-container-lowest rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform" for="avatar-upload">
-<span class="material-symbols-outlined text-sm">photo_camera</span>
-<input accept="image/*" class="hidden" id="avatar-upload" type="file">
-</label>
-</div>
-<div class="space-y-3">
-
-<p class="font-label-md text-label-md text-on-surface mb-2 uppercase tracking-widest">{{userData.name}}</p>
-</div>
-</div>
-</section>
-<!-- Profile Picture Section -->
-<!-- Main Form Grid -->
-<section class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-<div class="md:col-span-1">
-<h3 class="font-label-md text-label-md text-on-surface mb-2 uppercase tracking-widest">General Info</h3>
-<p class="text-sm text-on-surface-variant">Essential information to manage your premium account access.</p>
-</div>
-<div class="md:col-span-2 space-y-8">
-<!-- Full Name -->
-<div class="space-y-2 group">
-<label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1" for="full_name">Full Name</label>
-<div class="relative">
-<input class="w-full bg-surface-container-low border-transparent focus:border-primary/30 py-4 px-5 rounded-xl text-on-surface font-body-md transition-all duration-200" id="full_name" readonly="true" type="text" value="{{userData.name}}">
-<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline/30 group-focus-within:text-primary transition-colors">edit</span>
-</div>
-</div>
-<!-- Email Address -->
-<div class="space-y-2 group">
-<label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1" for="email">Email Address</label>
-<div class="relative">
-<input class="w-full bg-surface-container-low border-transparent focus:border-primary/30 py-4 px-5 rounded-xl text-on-surface font-body-md transition-all duration-200" id="email" type="email" value="{{userData.email}}">
-<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline/30 group-focus-within:text-primary transition-colors">mail</span>
-</div>
-<p class="text-xs text-on-surface-variant flex items-center gap-1 pl-1">
-<span class="material-symbols-outlined text-[14px]">verified</span>
-                Verified primary email
-              </p>
-</div>
-<!-- Phone Number -->
-<div class="space-y-2 group">
-<label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1" for="phone">Phone Number</label>
-<div class="relative">
-<input class="w-full bg-surface-container-low border-transparent focus:border-primary/30 py-4 px-5 rounded-xl text-on-surface font-body-md transition-all duration-200" id="phone" type="tel" value="{{userData.phone}}">
-<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline/30 group-focus-within:text-primary transition-colors">call</span>
-</div>
-</div>
-<!-- Location / Address (-->
-<div class="pt-4"><a href="/profile/edit" class="px-8 py-2.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md hover:opacity-90 transition-opacity active:scale-95 shadow-sm inline-block text-center">Edit Profile</a></div></div>
-</section>
-<!-- Subscription Status (Bonus Visual) -->
-<section class="mt-12 bg-surface-container-high/50 p-8 rounded-3xl border border-outline/5 relative overflow-hidden">
-<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-<h3 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Saved Addresses</h3>
-<a href="/profile/address" class="px-6 py-2.5 rounded-full border border-outline/20 text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors inline-block text-center">View All Addresses</a><a href="/profile/address/add" class="px-6 py-2.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md hover:opacity-90 transition-opacity active:scale-95 shadow-sm inline-block text-center">Add New Address</a>
-</div>
-<div class="grid grid-cols-1 gap-4">
-  {{#if defaultAddress}}
-  <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline/10 flex justify-between items-start">
-    <div class="space-y-4 flex-1">
-      <div class="flex items-center gap-2">
-        <span class="font-bold text-on-surface text-base">{{defaultAddress.fullName}}</span>
-        <span class="px-2 py-0.5 bg-primary/5 text-[10px] font-bold uppercase tracking-widest rounded-full border border-outline/10">
-          {{#if defaultAddress.isDefault}}Primary{{else}}{{defaultAddress.addressLabel}}{{/if}}
-        </span>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 pt-1 text-sm">
-        <div class="sm:col-span-2">
-          <span class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Street Address</span>
-          <span class="text-on-surface font-medium">
-            {{defaultAddress.street}}
-            {{#if defaultAddress.suite}}, {{defaultAddress.suite}}{{/if}}
-          </span>
+  <!-- Desktop / Tablet Sidebar Navigation Area -->
+  <aside class="hidden md:flex flex-col w-64 border-r border-outline/10 bg-surface fixed top-20 bottom-0 left-0 z-40 overflow-y-auto custom-scrollbar p-6 justify-between">
+    <div class="space-y-6">
+      <div class="flex items-center gap-3 pb-6 border-b border-outline/10">
+        <div class="w-12 h-12 rounded-full overflow-hidden border border-outline/20 flex-shrink-0">
+          <img src="{{#if userData.profileImage}}{{userData.profileImage}}{{else}}https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E{{/if}}" alt="Profile Avatar" class="w-full h-full object-cover">
         </div>
-
-        <div>
-          <span class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">City</span>
-          <span class="text-on-surface font-medium">{{defaultAddress.city}}</span>
-        </div>
-
-        <div>
-          <span class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">State</span>
-          <span class="text-on-surface font-medium">{{defaultAddress.state}}</span>
-        </div>
-
-        <div>
-          <span class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Postal Code / PIN</span>
-          <span class="text-on-surface font-medium">{{defaultAddress.zip}}</span>
-        </div>
-
-        <div>
-          <span class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Country</span>
-          <span class="text-on-surface font-medium">{{defaultAddress.country}}</span>
+        <div class="min-w-0 flex-1">
+          <h4 class="font-label-md text-label-md text-on-surface font-bold leading-tight truncate">{{userData.name}}</h4>
         </div>
       </div>
+      <nav class="space-y-1">
+        <a href="/profile" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-on-surface text-surface font-label-md text-label-md shadow-sm font-semibold">
+          <span class="material-symbols-outlined text-[20px]">person</span>Profile
+        </a>
+        <a href="/order/orders" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors">
+          <span class="material-symbols-outlined text-[20px]">shopping_bag</span>My Orders
+        </a>
+        <a href="/wallet" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors">
+          <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>Wallet
+        </a>
+        <a href="/wishlist" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors">
+          <span class="material-symbols-outlined text-[20px]">favorite</span>My Favorites
+        </a>
+        <a href="/profile/address" class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors">
+          <span class="material-symbols-outlined text-[20px]">location_on</span>Address Book
+        </a>
+      </nav>
     </div>
+  </aside>
 
-    <div class="flex gap-4 ml-4 flex-shrink-0">
-      <a href="/profile/address" class="text-xs font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-colors">Manage</a>
-    </div>
-  </div>
-  {{else}}
-  <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline/10 text-center py-8">
-    <p class="text-on-surface-variant text-sm mb-4">No saved addresses found.</p>
-    <a href="/profile/address/add" class="px-6 py-2.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md hover:opacity-90 transition-opacity">
-      Add Address
-    </a>
-  </div>
-  {{/if}}
-</div>
-</section>
-<!-- Danger Zone / Delete Account -->
-<section class="mt-12 bg-surface-container-low p-8 rounded-3xl border border-outline/5 relative overflow-hidden">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-<div class="md:col-span-1">
-<h3 class="font-label-md text-label-md text-on-surface mb-2 uppercase tracking-widest">Referral Program</h3>
-<p class="text-sm text-on-surface-variant">Share your love for Nutri Luxe with friends and earn rewards.</p>
-</div>
-<div class="md:col-span-2 space-y-6">
-<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-surface-container-lowest p-6 rounded-2xl border border-outline/10">
-<div class="space-y-1">
-<p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Your Referral Code</p>
-<p class="font-headline-lg text-headline-lg text-on-surface tracking-tight">{{#if userData.referalCode}}{{userData.referalCode}}{{else}}N/A{{/if}}</p>
-</div>
-<button class="px-6 py-2.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md hover:opacity-90 transition-opacity active:scale-95 shadow-sm flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">content_copy</span>
-          Copy Code
-        </button>
-</div>
-<div class="flex items-center gap-4 pl-1">
-<div class="flex flex-col">
-<span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Total Earnings</span>
-<span class="text-xl font-semibold text-on-surface">$120.00</span>
-</div>
-<div class="h-8 w-px bg-outline/10 mx-2"></div>
-<div class="flex flex-col">
-<span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Successful Referrals</span>
-<span class="text-xl font-semibold text-on-surface">12</span>
-</div>
-</div>
-</div>
-</div>
-</section>
+  <!-- Main Content Area -->
+  <main class="flex-1 w-full min-w-0 px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 md:ml-64 safe-bottom-padding">
+    <div class="max-w-4xl mx-auto">
+      <div class="px-2 sm:px-container-padding mt-2 sm:mt-6">
+        {{> user/notification}}
+      </div>
 
+      <!-- Mobile Account Navigation Tabs with Scroll Option -->
+      <div class="md:hidden mb-6">
+        <!-- Scrollable Tabs Container with sleek scrollbar & drag support -->
+        <div id="account-nav-tabs"
+          class="flex items-center gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-6 sm:px-6 scroll-smooth select-none cursor-grab active:cursor-grabbing custom-nav-scrollbar">
+          <a href="/profile" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-on-surface text-surface text-xs font-semibold whitespace-nowrap shadow-sm touch-target flex-shrink-0">
+            <span class="material-symbols-outlined text-[16px]">person</span>
+            Profile
+          </a>
+          <a href="/order/orders" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+            <span class="material-symbols-outlined text-[16px]">shopping_bag</span>
+            My Orders
+          </a>
+          <a href="/wallet" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+            <span class="material-symbols-outlined text-[16px]">account_balance_wallet</span>
+            Wallet
+          </a>
+          <a href="/wishlist" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+            <span class="material-symbols-outlined text-[16px]">favorite</span>
+            Wishlist
+          </a>
+          <a href="/profile/address" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+            <span class="material-symbols-outlined text-[16px]">location_on</span>
+            Address Book
+          </a>
+        </div>
+      </div>
 
+      <div class="space-y-8 sm:space-y-12">
+        <!-- Page Header -->
+        <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 sm:mb-10">
+        <div class="space-y-1">
+          <h1 class="font-headline-xl text-2xl sm:text-3xl md:text-headline-xl text-on-surface tracking-tight font-bold">Personal Information</h1>
+          <p class="text-on-surface-variant font-body-md text-xs sm:text-sm">Update your details and how we contact you.</p>
+        </div>
+      </header>
 
-{{#if isGoogleUser}}
+      <!-- Avatar Section -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-start border-b border-outline/10 pb-8 sm:pb-12">
+        <div class="lg:col-span-1">
+          <h2 class="font-label-md text-xs sm:text-label-md text-on-surface mb-1 uppercase tracking-widest font-semibold">Avatar</h2>
+          <p class="text-xs sm:text-sm text-on-surface-variant">Your profile picture will be visible on your dashboard and communications.</p>
+        </div>
+        <div class="lg:col-span-2 flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-8 text-center sm:text-left">
+          <div class="relative group flex-shrink-0">
+            <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-surface-container-highest shadow-xl bg-surface-container-low transition-transform group-hover:scale-[1.02] duration-300">
+              <img class="w-full h-full object-cover"
+                   alt="Profile Avatar"
+                   id="avatar-preview"
+                   src="{{#if userData.profileImage}}{{userData.profileImage}}{{else}}https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E{{/if}}">
+            </div>
+            <label class="absolute bottom-0 right-0 p-2 sm:p-2.5 bg-on-surface text-surface-container-lowest rounded-full cursor-pointer shadow-lg hover:scale-110 active:scale-95 transition-transform touch-target" for="avatar-upload" title="Change photo">
+              <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+              <input accept="image/*" class="hidden" id="avatar-upload" type="file">
+            </label>
+          </div>
+          <div class="space-y-1">
+            <p class="font-headline-lg text-lg sm:text-xl font-bold text-on-surface leading-snug">{{userData.name}}</p>
+            <p class="text-xs text-on-surface-variant font-medium">Click camera icon to change avatar</p>
+          </div>
+        </div>
+      </section>
 
-  {{!-- Google user: don't show Change Password --}}
+      <!-- General Info Section -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
+        <div class="lg:col-span-1">
+          <h2 class="font-label-md text-xs sm:text-label-md text-on-surface mb-1 uppercase tracking-widest font-semibold">General Info</h2>
+          <p class="text-xs sm:text-sm text-on-surface-variant">Essential information to manage your premium account access.</p>
+        </div>
+        <div class="lg:col-span-2 space-y-5 sm:space-y-6">
+          <!-- Full Name -->
+          <div class="space-y-1.5 group">
+            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1" for="full_name">Full Name</label>
+            <div class="relative">
+              <input class="w-full bg-surface-container-low border border-transparent focus:border-primary/30 py-3 sm:py-3.5 px-4 sm:px-5 rounded-xl text-on-surface font-body-md text-sm sm:text-base transition-all duration-200" id="full_name" readonly="true" type="text" value="{{userData.name}}">
+              <span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline/30 group-focus-within:text-primary transition-colors text-[20px]">badge</span>
+            </div>
+          </div>
+          <!-- Email Address -->
+          <div class="space-y-1.5 group">
+            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1" for="email">Email Address</label>
+            <div class="relative">
+              <input class="w-full bg-surface-container-low border border-transparent focus:border-primary/30 py-3 sm:py-3.5 px-4 sm:px-5 rounded-xl text-on-surface font-body-md text-sm sm:text-base transition-all duration-200" id="email" readonly="true" type="email" value="{{userData.email}}">
+              <span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline/30 group-focus-within:text-primary transition-colors text-[20px]">mail</span>
+            </div>
+            <p class="text-xs text-on-surface-variant flex items-center gap-1 pl-1">
+              <span class="material-symbols-outlined text-[14px] text-emerald-600">verified</span>
+              Verified primary email
+            </p>
+          </div>
+          <!-- Phone Number -->
+          <div class="space-y-1.5 group">
+            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1" for="phone">Phone Number</label>
+            <div class="relative">
+              <input class="w-full bg-surface-container-low border border-transparent focus:border-primary/30 py-3 sm:py-3.5 px-4 sm:px-5 rounded-xl text-on-surface font-body-md text-sm sm:text-base transition-all duration-200" id="phone" readonly="true" type="tel" value="{{userData.phone}}">
+              <span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline/30 group-focus-within:text-primary transition-colors text-[20px]">call</span>
+            </div>
+          </div>
+          <!-- Edit Profile Action Button -->
+          <div class="pt-2">
+            <a href="/profile/edit" class="w-full sm:w-auto px-8 py-3 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md hover:opacity-90 transition-opacity active:scale-95 shadow-sm inline-flex items-center justify-center gap-2 text-center touch-target">
+              <span class="material-symbols-outlined text-[18px]">edit</span>
+              Edit Profile
+            </a>
+          </div>
+        </div>
+      </section>
 
-{{else}}
+      <!-- Saved Addresses Section -->
+      <section class="mt-10 sm:mt-12 bg-surface-container-high/50 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-outline/5 relative overflow-hidden">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
+          <div>
+            <h2 class="font-headline-lg text-xl sm:text-2xl md:text-headline-lg text-on-surface tracking-tight font-bold">Saved Addresses</h2>
+            <p class="text-xs sm:text-sm text-on-surface-variant mt-0.5">Manage your primary delivery address</p>
+          </div>
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
+            <a href="/profile/address" class="px-5 py-2.5 rounded-full border border-outline/20 text-on-surface font-label-md text-xs sm:text-label-md hover:bg-surface-container transition-colors inline-flex items-center justify-center text-center touch-target">View All Addresses</a>
+            <a href="/profile/address/add" class="px-5 py-2.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-xs sm:text-label-md hover:opacity-90 transition-opacity active:scale-95 shadow-sm inline-flex items-center justify-center gap-1.5 text-center touch-target">
+              <span class="material-symbols-outlined text-[16px]">add</span>
+              Add New Address
+            </a>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-4">
+          {{#if defaultAddress}}
+          <div class="bg-surface-container-lowest p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-outline/10 flex flex-col sm:flex-row justify-between items-start gap-4">
+            <div class="space-y-3 sm:space-y-4 flex-1 w-full">
+              <div class="flex flex-wrap items-center justify-between sm:justify-start gap-2">
+                <span class="font-bold text-on-surface text-base sm:text-lg">{{defaultAddress.fullName}}</span>
+                <span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest rounded-full border border-primary/20">
+                  {{#if defaultAddress.isDefault}}Primary{{else}}{{defaultAddress.addressLabel}}{{/if}}
+                </span>
+                <a href="/profile/address" class="sm:hidden text-xs font-bold uppercase tracking-wider text-primary hover:underline ml-auto">Manage</a>
+              </div>
 
-<section class="mt-12 pt-12 border-t border-outline/5">
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 pt-1 text-xs sm:text-sm">
+                <div class="sm:col-span-2">
+                  <span class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Street Address</span>
+                  <span class="text-on-surface font-medium break-words">
+                    {{defaultAddress.street}}
+                    {{#if defaultAddress.suite}}, {{defaultAddress.suite}}{{/if}}
+                  </span>
+                </div>
 
-    <div class="md:col-span-1">
-      <h3 class="font-label-md text-label-md text-on-surface mb-2 uppercase tracking-widest">
-        Change Password
-      </h3>
+                <div>
+                  <span class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">City</span>
+                  <span class="text-on-surface font-medium">{{defaultAddress.city}}</span>
+                </div>
 
-      <p class="text-sm text-on-surface-variant">
-        Update your password to keep your account secure.
-      </p>
-    </div>
+                <div>
+                  <span class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">State</span>
+                  <span class="text-on-surface font-medium">{{defaultAddress.state}}</span>
+                </div>
 
-    <div class="md:col-span-2">
-      <form
-        action="/profile/change-password?_method=PATCH"
-        method="POST"
-        class="space-y-6"
-        id="change-password-form"
-      >
+                <div>
+                  <span class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Postal Code / PIN</span>
+                  <span class="text-on-surface font-medium">{{defaultAddress.zip}}</span>
+                </div>
 
-        <!-- Current Password -->
-        <div class="space-y-2 group">
-          <label
-            class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1"
-            for="currentPassword"
-          >
-            Current Password
-          </label>
+                <div>
+                  <span class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Country</span>
+                  <span class="text-on-surface font-medium">{{defaultAddress.country}}</span>
+                </div>
+              </div>
+            </div>
 
-          <div class="relative">
-            <input
-              class="w-full bg-surface-container-lowest border border-outline/10 focus:border-primary/30 py-4 px-5 pr-12 rounded-xl text-on-surface font-body-md transition-all duration-200"
-              id="currentPassword"
-              name="currentPassword"
-              type="password"
-              required
-              placeholder="Enter current password"
-            >
+            <div class="hidden sm:flex gap-4 flex-shrink-0 self-start">
+              <a href="/profile/address" class="text-xs font-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface transition-colors py-1 px-2 rounded hover:bg-surface-container">Manage</a>
+            </div>
+          </div>
+          {{else}}
+          <div class="bg-surface-container-lowest p-6 rounded-xl sm:rounded-2xl border border-outline/10 text-center py-8">
+            <p class="text-on-surface-variant text-sm mb-4">No saved addresses found.</p>
+            <a href="/profile/address/add" class="px-6 py-2.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md hover:opacity-90 transition-opacity inline-flex items-center gap-1.5 touch-target">
+              <span class="material-symbols-outlined text-[16px]">add</span>
+              Add Address
+            </a>
+          </div>
+          {{/if}}
+        </div>
+      </section>
 
-            <button
-              type="button"
-              onclick="togglePasswordVisibility('currentPassword')"
-              class="absolute right-4 top-1/2 -translate-y-1/2 text-outline/45 hover:text-on-surface transition-colors"
-            >
-              <span class="material-symbols-outlined text-xl">
-                visibility
-              </span>
+      <!-- Referral Program Section -->
+      <section class="mt-10 sm:mt-12 bg-surface-container-low p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-outline/5 relative overflow-hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
+          <div class="lg:col-span-1">
+            <h2 class="font-label-md text-xs sm:text-label-md text-on-surface mb-1 uppercase tracking-widest font-semibold">Referral Program</h2>
+            <p class="text-xs sm:text-sm text-on-surface-variant">Share your invite code or link with friends and earn rewards credited directly to your wallet.</p>
+          </div>
+          <div class="lg:col-span-2 space-y-5 sm:space-y-6">
+            <div class="bg-surface-container-lowest p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-outline/10 shadow-sm space-y-3">
+              <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Your Referral Code</p>
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface-container-high/70 border border-outline/15 w-fit">
+                  <span class="font-headline-lg text-xl sm:text-2xl font-bold font-mono tracking-wider text-on-surface whitespace-nowrap select-all" id="referral-code-display">{{#if userData.referalCode}}{{userData.referalCode}}{{else}}N/A{{/if}}</span>
+                </div>
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 shrink-0">
+                  <button type="button" id="copy-referral-btn" data-code="{{userData.referalCode}}" class="px-5 py-2.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-xs sm:text-sm hover:opacity-90 transition-all active:scale-95 shadow-sm inline-flex items-center justify-center gap-2 whitespace-nowrap border border-transparent touch-target">
+                    <span class="material-symbols-outlined text-[18px] leading-none shrink-0" id="copy-referral-icon">content_copy</span>
+                    <span id="copy-referral-text">Copy Code</span>
+                  </button>
+                  {{#if referralShareUrl}}
+                  <button type="button" id="copy-referral-link-btn" data-url="{{referralShareUrl}}" class="px-5 py-2.5 rounded-full bg-surface-container-high border border-outline/15 text-on-surface font-label-md text-xs sm:text-sm hover:bg-surface-container-highest transition-all active:scale-95 shadow-sm inline-flex items-center justify-center gap-2 whitespace-nowrap touch-target">
+                    <span class="material-symbols-outlined text-[18px] leading-none shrink-0" id="copy-referral-link-icon">link</span>
+                    <span id="copy-referral-link-text">Copy Link</span>
+                  </button>
+                  {{/if}}
+                </div>
+              </div>
+            </div>
+
+            <!-- Referral Stats -->
+            <div class="flex flex-wrap items-center gap-6 pl-1">
+              <div class="flex flex-col min-w-[120px]">
+                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Total Earnings</span>
+                <span class="text-lg sm:text-xl font-semibold text-green-700">₹{{referralStats.totalEarnings}}</span>
+              </div>
+              <div class="h-8 w-px bg-outline/10 hidden sm:block"></div>
+              <div class="flex flex-col min-w-[120px]">
+                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Successful Referrals</span>
+                <span class="text-lg sm:text-xl font-semibold text-on-surface">{{referralStats.successfulReferrals}}</span>
+              </div>
+              <div class="h-8 w-px bg-outline/10 hidden sm:block"></div>
+              <div class="flex flex-col min-w-[120px]">
+                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Friends Joined</span>
+                <span class="text-lg sm:text-xl font-semibold text-on-surface">{{referralStats.totalInvited}}</span>
+              </div>
+            </div>
+
+            <!-- Referral Notice -->
+            <div class="pt-2">
+              <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline/10 text-center text-xs text-on-surface-variant">
+                Share your referral link or code. Rewards are credited to your wallet after your friend's first eligible paid order!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {{#if isGoogleUser}}
+        {{!-- Google user: don't show Change Password --}}
+      {{else}}
+      <!-- Change Password Section -->
+      <section class="mt-10 sm:mt-12 pt-8 sm:pt-12 border-t border-outline/10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
+          <div class="lg:col-span-1">
+            <h2 class="font-label-md text-xs sm:text-label-md text-on-surface mb-1 uppercase tracking-widest font-semibold">Change Password</h2>
+            <p class="text-xs sm:text-sm text-on-surface-variant">Update your password to keep your account secure.</p>
+          </div>
+
+          <div class="lg:col-span-2">
+            <form action="/profile/change-password?_method=PATCH" method="POST" class="space-y-5 sm:space-y-6" id="change-password-form">
+              <!-- Current Password -->
+              <div class="space-y-1.5 group">
+                <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1" for="currentPassword">Current Password</label>
+                <div class="relative">
+                  <input class="w-full bg-surface-container-lowest border border-outline/10 focus:border-primary/30 py-3 sm:py-3.5 px-4 sm:px-5 pr-12 rounded-xl text-on-surface font-body-md text-sm sm:text-base transition-all duration-200"
+                    id="currentPassword" name="currentPassword" type="password" required placeholder="Enter current password">
+                  <button type="button" onclick="togglePasswordVisibility('currentPassword')" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-outline/45 hover:text-on-surface transition-colors touch-target" aria-label="Toggle password visibility">
+                    <span class="material-symbols-outlined text-xl">visibility</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- New Password -->
+              <div class="space-y-1.5 group">
+                <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1" for="newPassword">New Password</label>
+                <div class="relative">
+                  <input class="w-full bg-surface-container-lowest border border-outline/10 focus:border-primary/30 py-3 sm:py-3.5 px-4 sm:px-5 pr-12 rounded-xl text-on-surface font-body-md text-sm sm:text-base transition-all duration-200"
+                    id="newPassword" name="newPassword" type="password" required placeholder="Min. 8 characters">
+                  <button type="button" onclick="togglePasswordVisibility('newPassword')" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-outline/45 hover:text-on-surface transition-colors touch-target" aria-label="Toggle password visibility">
+                    <span class="material-symbols-outlined text-xl">visibility</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Confirm Password -->
+              <div class="space-y-1.5 group">
+                <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1" for="confirmPassword">Confirm New Password</label>
+                <div class="relative">
+                  <input class="w-full bg-surface-container-lowest border border-outline/10 focus:border-primary/30 py-3 sm:py-3.5 px-4 sm:px-5 pr-12 rounded-xl text-on-surface font-body-md text-sm sm:text-base transition-all duration-200"
+                    id="confirmPassword" name="confirmPassword" type="password" required placeholder="Re-enter new password">
+                  <button type="button" onclick="togglePasswordVisibility('confirmPassword')" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-outline/45 hover:text-on-surface transition-colors touch-target" aria-label="Toggle password visibility">
+                    <span class="material-symbols-outlined text-xl">visibility</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <div class="pt-2">
+                <button type="submit" class="w-full sm:w-auto px-8 py-3 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md hover:opacity-90 transition-opacity active:scale-95 shadow-sm inline-flex items-center justify-center text-center touch-target">
+                  Update Password
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+      {{/if}}
+
+      <!-- Account Session Section -->
+      <section class="mt-10 sm:mt-12 pt-8 sm:pt-12 border-t border-outline/10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
+          <div class="lg:col-span-1">
+            <h2 class="font-label-md text-xs sm:text-label-md text-on-surface mb-1 uppercase tracking-widest font-semibold">Account Session</h2>
+            <p class="text-xs sm:text-sm text-on-surface-variant">Sign out of your account on this device.</p>
+          </div>
+          <div class="lg:col-span-2 flex items-center">
+            <a href="/logout" id="logout-btn" class="w-full sm:w-auto px-8 py-3 rounded-full border border-outline/20 text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors inline-flex items-center justify-center gap-2 touch-target">
+              <span class="material-symbols-outlined text-sm">logout</span>
+              Logout
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Danger Zone Section -->
+      <section class="pt-8 sm:pt-12 border-t border-error/15">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
+          <div class="lg:col-span-1">
+            <h2 class="font-label-md text-xs sm:text-label-md text-error mb-1 uppercase tracking-widest font-semibold">Danger Zone</h2>
+            <p class="text-xs sm:text-sm text-on-surface-variant">Permanently remove your account and all associated data. This action cannot be undone.</p>
+          </div>
+          <div class="lg:col-span-2 flex items-center">
+            <button id="delete-account-btn" type="button" class="w-full sm:w-auto px-6 py-3 rounded-full border border-error/20 text-error font-label-md text-label-md hover:bg-error/5 transition-colors inline-flex items-center justify-center gap-1.5 touch-target">
+              <span class="material-symbols-outlined text-sm">delete_forever</span>
+              Delete Account
             </button>
           </div>
         </div>
-
-        <!-- New Password -->
-        <div class="space-y-2 group">
-          <label
-            class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1"
-            for="newPassword"
-          >
-            New Password
-          </label>
-
-          <div class="relative">
-            <input
-              class="w-full bg-surface-container-lowest border border-outline/10 focus:border-primary/30 py-4 px-5 pr-12 rounded-xl text-on-surface font-body-md transition-all duration-200"
-              id="newPassword"
-              name="newPassword"
-              type="password"
-              required
-              placeholder="Min. 8 characters"
-            >
-
-            <button
-              type="button"
-              onclick="togglePasswordVisibility('newPassword')"
-              class="absolute right-4 top-1/2 -translate-y-1/2 text-outline/45 hover:text-on-surface transition-colors"
-            >
-              <span class="material-symbols-outlined text-xl">
-                visibility
-              </span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="space-y-2 group">
-          <label
-            class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider pl-1"
-            for="confirmPassword"
-          >
-            Confirm New Password
-          </label>
-
-          <div class="relative">
-            <input
-              class="w-full bg-surface-container-lowest border border-outline/10 focus:border-primary/30 py-4 px-5 pr-12 rounded-xl text-on-surface font-body-md transition-all duration-200"
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              required
-              placeholder="Re-enter new password"
-            >
-
-            <button
-              type="button"
-              onclick="togglePasswordVisibility('confirmPassword')"
-              class="absolute right-4 top-1/2 -translate-y-1/2 text-outline/45 hover:text-on-surface transition-colors"
-            >
-              <span class="material-symbols-outlined text-xl">
-                visibility
-              </span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Submit -->
-        <div class="pt-2">
-          <button
-            type="submit"
-            class="px-8 py-2.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md hover:opacity-90 transition-opacity active:scale-95 shadow-sm inline-block text-center"
-          >
-            Update Password
-          </button>
-        </div>
-
-      </form>
+      </section>
     </div>
-
   </div>
-</section>
-
-{{/if}}
-
-
-<section class="mt-12 pt-12 border-t border-outline/5"><div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start"><div class="md:col-span-1"><h3 class="font-label-md text-label-md text-on-surface mb-2 uppercase tracking-widest">Account Session</h3><p class="text-sm text-on-surface-variant">Sign out of your account on this device.</p></div><div class="md:col-span-2 flex items-center"><a href="/logout" id="logout-btn" class="px-8 py-2.5 rounded-full border border-outline/20 text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-sm">logout</span>Logout</a></div></div></section><section class="pt-12 border-t border-error/10">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-<div class="md:col-span-1">
-<h3 class="font-label-md text-label-md text-error mb-2 uppercase tracking-widest">Danger Zone</h3>
-<p class="text-sm text-on-surface-variant">Permanently remove your account and all associated data. This action cannot be undone.</p>
-</div>
-<div class="md:col-span-2 flex items-center">
-<button id="delete-account-btn" class="px-6 py-2.5 rounded-full border border-error/20 text-error font-label-md text-label-md hover:bg-error/5 transition-colors">Delete Account</button>
-</div>
-</div>
-</section></div>
-<!-- Quick Actions FAB (Mobile Context only, usually suppressed for details as per rules but provided here for complete UI kit perspective) -->
-<!-- <button class="fixed bottom-8 right-8 w-14 h-14 bg-on-surface text-surface rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all md:hidden">
-        <span class="material-->
-
 </main>
 </div>
+
 <script>
-
-    // Micro-interactions for form feedback
-    document.querySelectorAll('input, select').forEach(input => {
-      input.addEventListener('focus', () => {
-        input.parentElement.parentElement.classList.add('scale-[1.01]');
-      });
-      input.addEventListener('blur', () => {
-        input.parentElement.parentElement.classList.remove('scale-[1.01]');
-      });
+  // Micro-interactions for input focus
+  document.querySelectorAll('input, select').forEach(input => {
+    input.addEventListener('focus', () => {
+      if (input.parentElement && input.parentElement.parentElement) {
+        input.parentElement.parentElement.classList.add('scale-[1.005]');
+      }
     });
+    input.addEventListener('blur', () => {
+      if (input.parentElement && input.parentElement.parentElement) {
+        input.parentElement.parentElement.classList.remove('scale-[1.005]');
+      }
+    });
+  });
 
-    // Avatar preview logic (Mock)
-    const avatarUpload = document.getElementById('avatar-upload');
-    const avatarPreview = document.getElementById('avatar-preview');
+  // Avatar preview logic
+  const avatarUpload = document.getElementById('avatar-upload');
+  const avatarPreview = document.getElementById('avatar-preview');
 
+  if (avatarUpload && avatarPreview) {
     avatarUpload.addEventListener('change', function(e) {
       if (this.files && this.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
           avatarPreview.src = e.target.result;
-        }
+        };
         reader.readAsDataURL(this.files[0]);
       }
     });
+  }
 
-    // Save button click effect
-    const saveBtn = document.querySelector('button.bg-on-surface');
-    saveBtn.addEventListener('click', () => {
-      const originalText = saveBtn.innerText;
-      saveBtn.innerText = 'Saving...';
-      saveBtn.classList.add('opacity-50');
-      
-      setTimeout(() => {
-        saveBtn.innerText = 'Updated';
-        saveBtn.classList.remove('opacity-50');
-        saveBtn.classList.add('bg-emerald-600');
-        
+  // Copy Referral Code logic
+  const copyReferralBtn = document.getElementById('copy-referral-btn');
+  if (copyReferralBtn) {
+    copyReferralBtn.addEventListener('click', async () => {
+      const code = copyReferralBtn.getAttribute('data-code');
+      if (!code || code === 'N/A') return;
+      try {
+        await navigator.clipboard.writeText(code);
+        const textSpan = document.getElementById('copy-referral-text');
+        const iconSpan = copyReferralBtn.querySelector('.material-symbols-outlined');
+        const originalText = textSpan ? textSpan.textContent : 'Copy Code';
+
+        if (textSpan) textSpan.textContent = 'Copied!';
+        if (iconSpan) iconSpan.textContent = 'check';
+        copyReferralBtn.classList.add('bg-emerald-700', 'text-white');
+
         setTimeout(() => {
-          saveBtn.innerText = originalText;
-          saveBtn.classList.remove('bg-emerald-600');
+          if (textSpan) textSpan.textContent = originalText;
+          if (iconSpan) iconSpan.textContent = 'content_copy';
+          copyReferralBtn.classList.remove('bg-emerald-700', 'text-white');
         }, 2000);
-      }, 1000);
+      } catch (err) {
+        console.error('Failed to copy referral code', err);
+      }
     });
-  
+  }
 
-
-    function showConfirmModal({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', icon = 'logout', confirmColorClass = 'bg-primary text-on-primary', iconContainerColor = 'bg-error-container/30', iconColor = 'text-error' }) {
-      return new Promise((resolve) => {
-        const container = document.createElement('div');
-        container.className = 'fixed inset-0 z-50 flex items-center justify-center bg-on-surface/40 backdrop-blur-md opacity-0 animate-[fadeIn_0.3s_ease-out_forwards]';
-        
-        if (!document.getElementById('modal-animation-style')) {
-          const style = document.createElement('style');
-          style.id = 'modal-animation-style';
-          style.innerHTML = `
-            @keyframes fadeIn {
-              from { opacity: 0; }
-              to { opacity: 1; }
+  function showConfirmModal({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', icon = 'logout', confirmColorClass = 'bg-primary text-on-primary', iconContainerColor = 'bg-error-container/30', iconColor = 'text-error' }) {
+    return new Promise((resolve) => {
+      const container = document.createElement('div');
+      container.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/40 backdrop-blur-md opacity-0 animate-[fadeIn_0.3s_ease-out_forwards]';
+      
+      if (!document.getElementById('modal-animation-style')) {
+        const style = document.createElement('style');
+        style.id = 'modal-animation-style';
+        style.innerHTML = `
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+          @keyframes modalSlideUp {
+            from {
+              opacity: 0;
+              transform: scale(0.95) translateY(20px);
             }
-            @keyframes modalSlideUp {
-              from {
-                opacity: 0;
-                transform: scale(0.95) translateY(20px);
-              }
-              to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-              }
+            to {
+              opacity: 1;
+              transform: scale(1) translateY(0);
             }
-          `;
-          document.head.appendChild(style);
-        }
+          }
+        `;
+        document.head.appendChild(style);
+      }
 
-        container.innerHTML = `
-          <div class="relative w-full max-w-md mx-auto p-8 bg-surface-container-lowest rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] transform scale-95 opacity-0 animate-[modalSlideUp_0.4s_ease-out_0.1s_forwards] border border-outline-variant/10">
-            <div class="flex flex-col items-center text-center">
-              <div class="w-16 h-16 ${iconContainerColor} rounded-full flex items-center justify-center mb-6">
-                <span class="material-symbols-outlined ${iconColor} text-[32px] font-light">${icon}</span>
-              </div>
-              <h2 class="font-headline-xl text-headline-xl text-on-surface mb-4 tracking-tight">${title}</h2>
-              <p class="font-body-xl text-body-xl text-on-surface-variant mb-10 max-w-[280px]">
-                ${message}
-              </p>
-              <div class="flex flex-col w-full gap-3">
-                <button class="w-full py-4 ${confirmColorClass} rounded-full font-label-md text-label-md hover:-translate-y-[1px] hover:shadow-lg transition-all duration-200 flex items-center justify-center" id="modal-confirm-btn">
-                  ${confirmText}
-                </button>
-                <button class="w-full py-4 text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors duration-200" id="modal-cancel-btn">
-                  ${cancelText}
-                </button>
-              </div>
+      container.innerHTML = `
+        <div class="relative w-full max-w-md mx-4 sm:mx-auto p-6 sm:p-8 bg-surface-container-lowest rounded-2xl sm:rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] transform scale-95 opacity-0 animate-[modalSlideUp_0.4s_ease-out_0.1s_forwards] border border-outline-variant/10">
+          <div class="flex flex-col items-center text-center">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 ${iconContainerColor} rounded-full flex items-center justify-center mb-5 sm:mb-6">
+              <span class="material-symbols-outlined ${iconColor} text-[28px] sm:text-[32px] font-light">${icon}</span>
+            </div>
+            <h2 class="font-headline-xl text-xl sm:text-headline-xl text-on-surface mb-3 sm:mb-4 tracking-tight font-bold">${title}</h2>
+            <p class="font-body-md sm:font-body-xl text-sm sm:text-base text-on-surface-variant mb-8 sm:mb-10 max-w-[280px]">
+              ${message}
+            </p>
+            <div class="flex flex-col w-full gap-3">
+              <button class="w-full py-3.5 sm:py-4 ${confirmColorClass} rounded-full font-label-md text-label-md hover:-translate-y-[1px] hover:shadow-lg active:scale-95 transition-all duration-200 flex items-center justify-center touch-target" id="modal-confirm-btn">
+                ${confirmText}
+              </button>
+              <button class="w-full py-3.5 sm:py-4 text-on-surface-variant font-label-md text-label-md hover:text-on-surface active:scale-95 transition-colors duration-200 touch-target" id="modal-cancel-btn">
+                ${cancelText}
+              </button>
             </div>
           </div>
-        `;
+        </div>
+      `;
 
-        document.body.appendChild(container);
+      document.body.appendChild(container);
 
-        const closeModal = (result) => {
-          container.style.opacity = '0';
-          container.style.transition = 'opacity 0.2s ease-out';
-          setTimeout(() => {
-            container.remove();
-            resolve(result);
-          }, 200);
-        };
+      const closeModal = (result) => {
+        container.style.opacity = '0';
+        container.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => {
+          container.remove();
+          resolve(result);
+        }, 200);
+      };
 
-        container.querySelector('#modal-cancel-btn').addEventListener('click', () => closeModal(false));
-        
-        container.addEventListener('click', (e) => {
-          if (e.target === container) {
-            closeModal(false);
-          }
-        });
-
-        const confirmBtn = container.querySelector('#modal-confirm-btn');
-        confirmBtn.addEventListener('click', () => {
-          confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>';
-          confirmBtn.classList.add('opacity-80', 'cursor-not-allowed');
-          setTimeout(() => {
-            closeModal(true);
-          }, 800);
-        });
-      });
-    }
-
-    // Logout confirmation prompt
-    document.getElementById('logout-btn')?.addEventListener('click', function(e) {
-      e.preventDefault();
-      const url = this.getAttribute('href');
-      showConfirmModal({
-        title: 'Sign Out',
-        message: 'Are you sure you want to sign out of your account?',
-        confirmText: 'Sign Out',
-        cancelText: 'Cancel',
-        icon: 'logout'
-      }).then((confirmed) => {
-        if (confirmed) {
-          const form = document.createElement('form');
-          form.method = 'POST';
-          form.action = '/logout';
-          document.body.appendChild(form);
-          form.submit();
+      container.querySelector('#modal-cancel-btn').addEventListener('click', () => closeModal(false));
+      
+      container.addEventListener('click', (e) => {
+        if (e.target === container) {
+          closeModal(false);
         }
       });
-    });
 
-    // Delete Account confirmation prompt
-    document.getElementById('delete-account-btn')?.addEventListener('click', function(e) {
-      e.preventDefault();
-      showConfirmModal({
-        title: 'Delete Account',
-        message: 'This will permanently delete your account and all associated data. This action cannot be undone!',
-        confirmText: 'Delete Account',
-        cancelText: 'Cancel',
-        icon: 'delete_forever',
-        iconContainerColor: 'bg-error-container/30',
-        iconColor: 'text-error'
-      }).then((confirmed) => {
-        if (confirmed) {
-          showConfirmModal({
-            title: 'Final Confirmation',
-            message: 'Are you absolutely sure you want to permanently delete your account?',
-            confirmText: 'Permanently Delete',
-            cancelText: 'Cancel',
-            icon: 'warning',
-            iconContainerColor: 'bg-error-container/30',
-            iconColor: 'text-error'
-          }).then((secondConfirmed) => {
-            if (secondConfirmed) {
-              fetch('/profile/delete-account', {
-                method: 'DELETE',
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-              })
-              .then(response => {
-                if (response.ok) {
-                  showConfirmModal({
-                    title: 'Deleted!',
-                    message: 'Your account has been successfully deleted.',
-                    confirmText: 'Close',
-                    icon: 'check_circle',
-                    iconContainerColor: 'bg-emerald-100 dark:bg-emerald-900/30',
-                    iconColor: 'text-emerald-600',
-                    confirmColorClass: 'bg-emerald-600 text-white'
-                  }).then(() => {
-                    window.location.href = '/';
-                  });
-                } else {
-                  showConfirmModal({
-                    title: 'Error!',
-                    message: 'Failed to delete account. Please try again later.',
-                    confirmText: 'OK',
-                    icon: 'error'
-                  });
-                }
-              })
-              .catch(err => {
-                console.error(err);
+      const confirmBtn = container.querySelector('#modal-confirm-btn');
+      confirmBtn.addEventListener('click', () => {
+        confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>';
+        confirmBtn.classList.add('opacity-80', 'cursor-not-allowed');
+        setTimeout(() => {
+          closeModal(true);
+        }, 800);
+      });
+    });
+  }
+
+  // Logout confirmation prompt
+  document.getElementById('logout-btn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    showConfirmModal({
+      title: 'Sign Out',
+      message: 'Are you sure you want to sign out of your account?',
+      confirmText: 'Sign Out',
+      cancelText: 'Cancel',
+      icon: 'logout'
+    }).then((confirmed) => {
+      if (confirmed) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/logout';
+        document.body.appendChild(form);
+        form.submit();
+      }
+    });
+  });
+
+  // Delete Account confirmation prompt
+  document.getElementById('delete-account-btn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    showConfirmModal({
+      title: 'Delete Account',
+      message: 'This will permanently delete your account and all associated data. This action cannot be undone!',
+      confirmText: 'Delete Account',
+      cancelText: 'Cancel',
+      icon: 'delete_forever',
+      iconContainerColor: 'bg-error-container/30',
+      iconColor: 'text-error'
+    }).then((confirmed) => {
+      if (confirmed) {
+        showConfirmModal({
+          title: 'Final Confirmation',
+          message: 'Are you absolutely sure you want to permanently delete your account?',
+          confirmText: 'Permanently Delete',
+          cancelText: 'Cancel',
+          icon: 'warning',
+          iconContainerColor: 'bg-error-container/30',
+          iconColor: 'text-error'
+        }).then((secondConfirmed) => {
+          if (secondConfirmed) {
+            fetch('/profile/delete-account', {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(response => {
+              if (response.ok) {
+                showConfirmModal({
+                  title: 'Deleted!',
+                  message: 'Your account has been successfully deleted.',
+                  confirmText: 'Close',
+                  icon: 'check_circle',
+                  iconContainerColor: 'bg-emerald-100 dark:bg-emerald-900/30',
+                  iconColor: 'text-emerald-600',
+                  confirmColorClass: 'bg-emerald-600 text-white'
+                }).then(() => {
+                  window.location.href = '/';
+                });
+              } else {
                 showConfirmModal({
                   title: 'Error!',
-                  message: 'An unexpected error occurred.',
+                  message: 'Failed to delete account. Please try again later.',
                   confirmText: 'OK',
                   icon: 'error'
                 });
+              }
+            })
+            .catch(err => {
+              console.error(err);
+              showConfirmModal({
+                title: 'Error!',
+                message: 'An unexpected error occurred.',
+                confirmText: 'OK',
+                icon: 'error'
               });
-            }
-          });
-        }
-      });
+            });
+          }
+        });
+      }
     });
+  });
 
-    function togglePasswordVisibility(id) {
-      const input = document.getElementById(id);
-      if (!input) return;
-      const icon = input.nextElementSibling ? input.nextElementSibling.querySelector('.material-symbols-outlined') : (input.parentElement ? input.parentElement.querySelector('.material-symbols-outlined') : null);
-      if (input.type === "password") {
-        input.type = "text";
-        if (icon) icon.textContent = "visibility_off";
-      } else {
-        input.type = "password";
-        if (icon) icon.textContent = "visibility";
+  function togglePasswordVisibility(id) {
+    const input = document.getElementById(id);
+    if (!input) return;
+    const container = input.closest('.relative') || input.parentElement;
+    const btn = (input.nextElementSibling && input.nextElementSibling.tagName === 'BUTTON')
+      ? input.nextElementSibling
+      : (container ? container.querySelector('button[type="button"]') : null);
+    const icon = btn
+      ? btn.querySelector('.material-symbols-outlined')
+      : (container ? container.querySelector('.material-symbols-outlined') : null);
+
+    if (input.type === "password") {
+      input.type = "text";
+      if (icon) {
+        icon.textContent = "visibility_off";
+        if (icon.dataset) icon.dataset.icon = "visibility_off";
+      }
+    } else {
+      input.type = "password";
+      if (icon) {
+        icon.textContent = "visibility";
+        if (icon.dataset) icon.dataset.icon = "visibility";
       }
     }
+  }
+  window.togglePasswordVisibility = togglePasswordVisibility;
 
-    // Micro-interactions for form feedback
-    document.querySelectorAll('input, select').forEach(input => {
-      input.addEventListener('focus', () => {
-        input.parentElement.parentElement.classList.add('scale-[1.01]');
-      });
-      input.addEventListener('blur', () => {
-        input.parentElement.parentElement.classList.remove('scale-[1.01]');
-      });
+  // Account navigation tabs scrolling & drag interactions
+  const navTabs = document.getElementById('account-nav-tabs');
+
+  if (navTabs) {
+    // Mouse wheel horizontal scroll support
+    navTabs.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        navTabs.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+
+    // Click and drag to scroll support
+    let isDown = false;
+    let startX;
+    let scrollLeftStart;
+
+    navTabs.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - navTabs.offsetLeft;
+      scrollLeftStart = navTabs.scrollLeft;
     });
 
-    // Profile Page Interactions
+    window.addEventListener('mouseup', () => {
+      isDown = false;
+    });
 
-    // Save button click effect
-    /*
-    const saveBtn = document.querySelector('button.bg-on-surface');
-    saveBtn.addEventListener('click', () => {
-      const originalText = saveBtn.innerText;
-      saveBtn.innerText = 'Saving...';
-      saveBtn.classList.add('opacity-50');
+    navTabs.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - navTabs.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      navTabs.scrollLeft = scrollLeftStart - walk;
+    });
+  }
 
-      setTimeout(() => {
-        saveBtn.innerText = 'Updated';
-        saveBtn.classList.remove('opacity-50');
-        saveBtn.classList.add('bg-emerald-600');
-
+  // Copy referral code to clipboard
+  const copyBtn = document.getElementById('copy-referral-btn');
+  const copyText = document.getElementById('copy-referral-text');
+  const copyIcon = document.getElementById('copy-referral-icon');
+  if (copyBtn && copyText) {
+    copyBtn.addEventListener('click', async () => {
+      const code = copyBtn.getAttribute('data-code');
+      if (!code || code === 'N/A') return;
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(code);
+        } else {
+          const textarea = document.createElement('textarea');
+          textarea.value = code;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+        const originalText = copyText.textContent;
+        const originalIcon = copyIcon ? copyIcon.textContent : 'content_copy';
+        copyText.textContent = 'Copied!';
+        if (copyIcon) copyIcon.textContent = 'check';
+        copyBtn.classList.remove('bg-on-surface');
+        copyBtn.classList.add('bg-green-700', 'text-white');
         setTimeout(() => {
-          saveBtn.innerText = originalText;
-          saveBtn.classList.remove('bg-emerald-600');
+          copyText.textContent = originalText;
+          if (copyIcon) copyIcon.textContent = originalIcon;
+          copyBtn.classList.remove('bg-green-700', 'text-white');
+          copyBtn.classList.add('bg-on-surface');
         }, 2000);
-      }, 1000);
+      } catch (err) {
+        console.error('Failed to copy referral code:', err);
+      }
     });
-    */
-  
+  }
+
+  // Copy referral link to clipboard
+  const copyLinkBtn = document.getElementById('copy-referral-link-btn');
+  const copyLinkText = document.getElementById('copy-referral-link-text');
+  const copyLinkIcon = document.getElementById('copy-referral-link-icon');
+  if (copyLinkBtn && copyLinkText) {
+    copyLinkBtn.addEventListener('click', async () => {
+      const url = copyLinkBtn.getAttribute('data-url');
+      if (!url) return;
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(url);
+        } else {
+          const textarea = document.createElement('textarea');
+          textarea.value = url;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+        const originalText = copyLinkText.textContent;
+        const originalIcon = copyLinkIcon ? copyLinkIcon.textContent : 'link';
+        copyLinkText.textContent = 'Copied Link!';
+        if (copyLinkIcon) copyLinkIcon.textContent = 'check';
+        copyLinkBtn.classList.remove('bg-surface-container-high', 'text-on-surface');
+        copyLinkBtn.classList.add('bg-green-700', 'text-white');
+        setTimeout(() => {
+          copyLinkText.textContent = originalText;
+          if (copyLinkIcon) copyLinkIcon.textContent = originalIcon;
+          copyLinkBtn.classList.remove('bg-green-700', 'text-white');
+          copyLinkBtn.classList.add('bg-surface-container-high', 'text-on-surface');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy referral link:', err);
+      }
+    });
+  }
 </script>
 
+<style>
+  /* Sleek modern scrollbar for account navigation tabs */
+  .custom-nav-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(128, 118, 101, 0.45) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+  .custom-nav-scrollbar::-webkit-scrollbar {
+    height: 4px;
+  }
+  .custom-nav-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-nav-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(128, 118, 101, 0.45);
+    border-radius: 9999px;
+  }
+  .custom-nav-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(128, 118, 101, 0.7);
+  }
+
+  @media (min-width: 768px) {
+    footer {
+      margin-left: 16rem;
+      width: calc(100% - 16rem);
+    }
+  }
+</style>
+
+{{> user/footer}}

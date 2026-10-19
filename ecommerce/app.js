@@ -5,7 +5,7 @@ import { dirname } from "path";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import logger from "./utils/logger.js";
-
+// Reload templates for user orderList footer full-width update
 import connectDB from "./config/db.js";
 import passport from "./config/passport.js";
 import userRouter from "./routes/user/authRouter.js";
@@ -15,11 +15,18 @@ import addressRouter from "./routes/user/addressRouter.js";
 import cartRouter from "./routes/user/cartRouter.js"
 import checkoutRouter from "./routes/user/checkoutRouter.js"
 import orderRouter from "./routes/user/orderRouter.js"
+import paymentRoutes from "./routes/user/paymentRoutes.js"
+import couponRouter from "./routes/user/couponRouter.js"
+import walletRoutes from "./routes/user/walletRoutes.js"
+import wishlistRoutes from "./routes/user/wishlistRoutes.js"
 import adminRouter from "./routes/admin/authRouter.js";
 import categoryRouter from "./routes/admin/categoryRouter.js";
 import productRouter from "./routes/admin/productRouter.js";
 import customerRouter from "./routes/admin/customerRouter.js";
-import adminOrderRouter from "./routes/admin/orderRouter.js"
+import adminOrderRouter from "./routes/admin/orderRouter.js";
+import couponRoutes from "./routes/admin/couponRoutes.js";
+import offerRoutes from "./routes/admin/offerRouter.js";
+import salesReportRouter from "./routes/admin/salesReportRouter.js";
 
 
 import session from "express-session";
@@ -151,16 +158,23 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Routes
 app.use("/", userRouter);
 app.use("/products", userProductRouter);
-app.use("/profile",userProfileRouter);
+app.use("/profile", userProfileRouter);
 app.use("/profile/address", addressRouter);
 app.use("/cart", cartRouter)
 app.use("/checkout", checkoutRouter)
 app.use("/order", orderRouter)
+app.use("/payment", paymentRoutes)
+app.use("/coupon", couponRouter)
+app.use("/wallet", walletRoutes);
+app.use("/wishlist", wishlistRoutes);
 app.use("/admin", adminRouter);
 app.use("/admin/category", categoryRouter);
 app.use("/admin/customer", customerRouter);
 app.use("/admin/product", productRouter);
-app.use("/admin/order", adminOrderRouter)
+app.use("/admin/order", adminOrderRouter);
+app.use("/admin/coupons", couponRoutes);
+app.use("/admin/offers", offerRoutes);
+app.use("/admin/sales-report", salesReportRouter);
 
 // Start server
 app.listen(PORT, () => {
@@ -168,7 +182,3 @@ app.listen(PORT, () => {
     `Server is running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`
   );
 });
-
-
-
-

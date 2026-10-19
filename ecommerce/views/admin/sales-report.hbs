@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sales Report | Admin</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>body{font-family:Manrope,sans-serif}h1,h2,h3{font-family:"Hanken Grotesk",sans-serif}</style>
+</head>
+<body class="min-h-screen bg-stone-50 text-stone-950">
+  {{> admin/aside}}
+  <main class="min-h-screen px-5 py-8 md:ml-64 md:px-8">
+    <div class="mx-auto max-w-7xl">
+      <header class="mb-7 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="mb-2 text-xs font-bold uppercase tracking-widest text-amber-800">Admin analytics</p>
+          <h1 class="text-3xl font-bold">Sales report</h1>
+          <p class="mt-2 text-sm text-stone-600">Sales, discounts, coupon deductions, and net receipts for {{startDate}} to {{endDate}}.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <a href="/admin/sales-report/export/pdf?{{filterQuery}}" class="inline-flex items-center gap-2 rounded-md border border-stone-300 bg-white px-4 py-2.5 text-sm font-semibold hover:bg-stone-100">
+            <span class="material-symbols-outlined text-lg">picture_as_pdf</span>Download PDF
+          </a>
+          <a href="/admin/sales-report/export/excel?{{filterQuery}}" class="inline-flex items-center gap-2 rounded-md bg-emerald-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-900">
+            <span class="material-symbols-outlined text-lg">table_view</span>Download Excel
+          </a>
+        </div>
+      </header>
+
+      {{#if error}}<p role="alert" class="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-red-800">{{error}}</p>{{/if}}
+
+      <form action="/admin/sales-report" method="get" class="mb-7 flex flex-wrap items-end gap-3 rounded-md border border-stone-200 bg-white p-4">
+        <div class="min-w-44">
+          <label for="period" class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-stone-600">Report period</label>
+          <select id="period" name="period" class="w-full rounded-md border-stone-300 text-sm focus:border-emerald-800 focus:ring-emerald-800">
+            <option value="daily" {{#if (eq period "daily")}}selected{{/if}}>Daily</option>
+            <option value="weekly" {{#if (eq period "weekly")}}selected{{/if}}>Weekly</option>
+            <option value="monthly" {{#if (eq period "monthly")}}selected{{/if}}>Monthly</option>
+            <option value="yearly" {{#if (eq period "yearly")}}selected{{/if}}>Yearly</option>
+            <option value="custom" {{#if (eq period "custom")}}selected{{/if}}>Custom range</option>
+          </select>
+        </div>
+        <div id="dailyFields" class="min-w-44">
+          <label for="dailyStartDate" class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-stone-600">Report date</label>
+          <input id="dailyStartDate" name="startDate" type="date" value="{{startDate}}" class="w-full rounded-md border-stone-300 text-sm focus:border-emerald-800 focus:ring-emerald-800">
+        </div>
+        <div id="customFields" class="hidden min-w-44 items-end gap-3">
+          <div>
+            <label for="customStartDate" class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-stone-600">From</label>
+            <input id="customStartDate" name="startDate" type="date" value="{{startDate}}" disabled class="w-full rounded-md border-stone-300 text-sm focus:border-emerald-800 focus:ring-emerald-800">
+          </div>
+          <div>
+            <label for="customEndDate" class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-stone-600">To</label>
+            <input id="customEndDate" name="endDate" type="date" value="{{endDate}}" disabled class="w-full rounded-md border-stone-300 text-sm focus:border-emerald-800 focus:ring-emerald-800">
+          </div>
+        </div>
+        <button type="submit" class="rounded-md bg-stone-950 px-5 py-2.5 text-sm font-semibold text-white hover:bg-stone-800">Apply</button>
+      </form>
+
+      <section class="mb-7 grid gap-3 sm:grid-cols-2 xl:grid-cols-3" aria-label="Sales summary">
+        <article class="rounded-md border border-stone-200 bg-white p-5">
+          <p class="text-xs font-bold uppercase tracking-wide text-stone-500">Overall sales count</p>
+          <p class="mt-3 text-3xl font-bold">{{summary.salesCount}}</p>
+          <p class="mt-1 text-xs text-stone-500">Paid orders and delivered COD orders</p>
+        </article>
+        <article class="rounded-md border border-stone-200 bg-white p-5">
+          <p class="text-xs font-bold uppercase tracking-wide text-stone-500">Gross order amount</p>
+          <p class="mt-3 text-2xl font-bold">{{summary.grossDisplay}}</p>
+          <p class="mt-1 text-xs text-stone-500">Before discounts</p>
+        </article>
+        <article class="rounded-md border border-stone-200 bg-white p-5">
+          <p class="text-xs font-bold uppercase tracking-wide text-stone-500">Total discounts</p>
+          <p class="mt-3 text-2xl font-bold text-rose-700">{{summary.discountDisplay}}</p>
+          <p class="mt-1 text-xs text-stone-500">All recorded order discounts</p>
+        </article>
+        <article class="rounded-md border border-stone-200 bg-white p-5">
+          <p class="text-xs font-bold uppercase tracking-wide text-stone-500">Coupon deductions</p>
+          <p class="mt-3 text-2xl font-bold">{{summary.couponDisplay}}</p>
+          <p class="mt-1 text-xs text-stone-500">{{summary.couponUses}} orders used a coupon</p>
+        </article>
+        <article class="rounded-md border border-stone-200 bg-white p-5">
+          <p class="text-xs font-bold uppercase tracking-wide text-stone-500">Order amount</p>
+          <p class="mt-3 text-2xl font-bold">{{summary.orderDisplay}}</p>
+          <p class="mt-1 text-xs text-stone-500">After discount, including tax and shipping</p>
+        </article>
+        <article class="rounded-md border border-stone-200 bg-white p-5">
+          <p class="text-xs font-bold uppercase tracking-wide text-stone-500">Net receipts</p>
+          <p class="mt-3 text-2xl font-bold text-emerald-800">{{summary.netDisplay}}</p>
+          <p class="mt-1 text-xs text-stone-500">After wallet return refunds ({{summary.refundDisplay}})</p>
+        </article>
+      </section>
+
+      <section class="mb-7 grid gap-4 xl:grid-cols-2" aria-label="Sales performance graphs">
+        <article class="rounded-md border border-stone-200 bg-white p-5">
+          <div class="mb-5 flex items-start justify-between gap-3">
+            <div>
+              <h2 class="text-xl font-bold">Order Fulfillment</h2>
+              <p class="mt-1 text-sm text-stone-500">{{fulfillmentTotal}} orders in this period</p>
+            </div>
+            <span class="material-symbols-outlined text-2xl text-amber-800">donut_large</span>
+          </div>
+          <div class="flex flex-wrap items-center justify-center gap-6 sm:justify-start">
+            <div class="relative h-40 w-40 shrink-0">
+              <svg class="h-full w-full -rotate-90" viewBox="0 0 100 100" role="img" aria-label="Order fulfillment by status">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#e7e5e4" stroke-width="12"></circle>
+                {{#each fulfillmentStats}}
+                {{#if count}}<circle cx="50" cy="50" r="40" fill="none" stroke="{{color}}" stroke-width="12" stroke-dasharray="{{dashArray}}" stroke-dashoffset="{{dashOffset}}"></circle>{{/if}}
+                {{/each}}
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                <span class="text-2xl font-bold">{{fulfillmentTotal}}</span>
+                <span class="text-xs text-stone-500">orders</span>
+              </div>
+            </div>
+            <ul class="grid min-w-48 flex-1 grid-cols-1 gap-2 sm:grid-cols-2">
+              {{#each fulfillmentStats}}
+              <li class="flex items-center gap-2 text-sm">
+                <span class="h-2.5 w-2.5 shrink-0 rounded-full" style="background-color: {{color}}"></span>
+                <span class="min-w-0 flex-1 text-stone-600">{{label}}</span>
+                <span class="font-semibold">{{count}}</span>
+                <span class="w-10 text-right text-xs text-stone-500">{{percent}}%</span>
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+        </article>
+
+        <article class="rounded-md border border-stone-200 bg-white p-5">
+          <div class="mb-5 flex items-start justify-between gap-3">
+            <div>
+              <h2 class="text-xl font-bold">Revenue by Category</h2>
+              <p class="mt-1 text-sm text-stone-500">Merchandise revenue after allocated discounts and refunds</p>
+            </div>
+            <span class="material-symbols-outlined text-2xl text-emerald-800">bar_chart</span>
+          </div>
+          <div class="space-y-4">
+            {{#each categoryRows}}
+            <div>
+              <div class="mb-1.5 flex items-baseline justify-between gap-3 text-sm">
+                <span class="truncate font-semibold" title="{{name}}">{{name}}</span>
+                <span class="shrink-0 font-semibold">{{revenueDisplay}}</span>
+              </div>
+              <div class="h-2 overflow-hidden rounded-full bg-stone-100">
+                <div class="h-full rounded-full bg-emerald-800" style="width: {{barWidth}}%"></div>
+              </div>
+              <p class="mt-1 text-xs text-stone-500">{{unitsDisplay}} · {{orderCount}} orders</p>
+            </div>
+            {{else}}
+            <p class="py-8 text-center text-sm text-stone-500">No product category sales in this period.</p>
+            {{/each}}
+          </div>
+        </article>
+      </section>
+
+      <section class="mb-7 overflow-hidden rounded-md border border-stone-200 bg-white" aria-label="Top performing products">
+        <div class="flex flex-wrap items-start justify-between gap-3 border-b border-stone-200 px-5 py-4">
+          <div>
+            <h2 class="text-xl font-bold">Top Performing Products</h2>
+            <p class="mt-1 text-sm text-stone-500">Ranked by merchandise revenue after allocated discounts and refunds</p>
+          </div>
+          <span class="material-symbols-outlined text-2xl text-amber-800">workspace_premium</span>
+        </div>
+        <div class="space-y-4 p-5">
+          {{#each topProducts}}
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 sm:grid-cols-[minmax(12rem,1fr)_minmax(8rem,2fr)_auto_auto]">
+            <div class="min-w-0">
+              <p class="truncate font-semibold" title="{{name}}">{{name}}</p>
+              <p class="text-xs text-stone-500">{{category}}</p>
+            </div>
+            <div class="col-span-2 h-2 overflow-hidden rounded-full bg-stone-100 sm:col-span-1">
+              <div class="h-full rounded-full bg-amber-700" style="width: {{barWidth}}%"></div>
+            </div>
+            <span class="text-right text-sm text-stone-600">{{unitsDisplay}}</span>
+            <span class="text-right text-sm font-semibold">{{revenueDisplay}}</span>
+          </div>
+          {{else}}
+          <p class="py-8 text-center text-sm text-stone-500">No product sales in this period.</p>
+          {{/each}}
+        </div>
+      </section>
+
+      <section class="overflow-hidden rounded-md border border-stone-200 bg-white">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-stone-200 px-5 py-4">
+          <h2 class="font-bold">Order details</h2>
+          <span class="text-sm text-stone-500">{{rows.length}} orders</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[1050px] text-left text-sm">
+            <thead class="bg-stone-100 text-xs uppercase tracking-wide text-stone-600">
+              <tr>
+                <th class="px-4 py-3">Order</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Status</th><th class="px-4 py-3">Coupon</th>
+                <th class="px-4 py-3 text-right">Gross amount</th><th class="px-4 py-3 text-right">Discount</th><th class="px-4 py-3 text-right">Coupon deduction</th><th class="px-4 py-3 text-right">Order amount</th><th class="px-4 py-3 text-right">Refund</th><th class="px-4 py-3 text-right">Net receipt</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-stone-100">
+              {{#each rows}}
+              <tr>
+                <td class="whitespace-nowrap px-4 py-3 font-semibold">{{orderId}}</td><td class="whitespace-nowrap px-4 py-3">{{dateDisplay}}</td><td class="px-4 py-3">{{status}}</td><td class="px-4 py-3">{{couponCode}}</td>
+                <td class="whitespace-nowrap px-4 py-3 text-right">{{grossDisplay}}</td><td class="whitespace-nowrap px-4 py-3 text-right">{{discountDisplay}}</td><td class="whitespace-nowrap px-4 py-3 text-right">{{couponDisplay}}</td><td class="whitespace-nowrap px-4 py-3 text-right">{{orderDisplay}}</td><td class="whitespace-nowrap px-4 py-3 text-right">{{refundDisplay}}</td><td class="whitespace-nowrap px-4 py-3 text-right font-semibold">{{netDisplay}}</td>
+              </tr>
+              {{else}}
+              <tr><td colspan="10" class="px-4 py-12 text-center text-stone-500">No sales found for this period.</td></tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const periodSelect = document.getElementById('period');
+    const dailyFields = document.getElementById('dailyFields');
+    const customFields = document.getElementById('customFields');
+    const dailyDate = document.getElementById('dailyStartDate');
+    const customStart = document.getElementById('customStartDate');
+    const customEnd = document.getElementById('customEndDate');
+    function updateDateFields() {
+      const isDaily = periodSelect.value === 'daily';
+      const isCustom = periodSelect.value === 'custom';
+      dailyFields.classList.toggle('hidden', !isDaily);
+      dailyDate.disabled = !isDaily;
+      customFields.classList.toggle('hidden', !isCustom);
+      customFields.classList.toggle('flex', isCustom);
+      customStart.disabled = !isCustom;
+      customEnd.disabled = !isCustom;
+    }
+    periodSelect.addEventListener('change', updateDateFields);
+    updateDateFields();
+  </script>
+</body>
+</html>

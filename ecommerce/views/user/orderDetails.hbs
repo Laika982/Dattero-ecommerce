@@ -48,6 +48,14 @@
   Download Invoice
 </button>
 {{/if}}
+{{#if (eq order.order_status "delivered")}}
+{{#unless order.return_request.status}}
+<button id="openReturnReasonDialog" type="button" class="flex items-center gap-2 px-6 py-3 border border-primary/30 text-primary hover:bg-primary/5 transition-all active:scale-95 rounded font-label-md text-label-md">
+  <span class="material-symbols-outlined">assignment_return</span>
+  Request Return
+ </button>
+{{/unless}}
+{{/if}}
 {{#if (eq order.order_status "pending")}}
 <button type="button" data-cancel-order data-order-id="{{order.order_id}}" class="flex items-center gap-2 px-6 py-3 border border-error/30 text-error hover:bg-error-container/20 transition-all active:scale-95 rounded font-label-md text-label-md">
   <span class="material-symbols-outlined">cancel</span>
@@ -62,6 +70,45 @@
 {{/if}}
 </div>
 </header>
+{{#if order.return_request.status}}
+<section id="returnRequest" class="mb-8 border border-outline-variant/30 bg-surface-container-lowest p-6 sm:p-8">
+    <div role="status">
+      <h2 class="font-headline-lg text-xl">Return request {{formatStatus order.return_request.status}}</h2>
+      <p class="mt-2 text-sm text-on-surface-variant">Reason: {{order.return_request.reason}}</p>
+      {{#if order.return_request.requested_at}}
+        <p class="mt-1 text-xs text-on-surface-variant">Submitted {{formatDate order.return_request.requested_at}}</p>
+      {{/if}}
+    </div>
+</section>
+{{else}}
+{{#if (eq order.order_status "delivered")}}
+<dialog id="returnReasonDialog" aria-labelledby="returnReasonTitle" class="w-[calc(100%-2rem)] max-w-lg rounded-xl border border-outline-variant/30 bg-surface-container-lowest p-0 text-on-surface shadow-2xl backdrop:bg-black/50">
+  <form action="/order/orders/{{order.order_id}}/return-request" method="POST" class="space-y-5 p-6 sm:p-8">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <h2 id="returnReasonTitle" class="font-headline-lg text-2xl">Request a return</h2>
+        <p class="mt-2 text-sm text-on-surface-variant">Order #{{order.order_id}}</p>
+      </div>
+      <button id="closeReturnReasonDialog" type="button" class="flex h-9 w-9 shrink-0 items-center justify-center rounded text-on-surface-variant hover:bg-surface-container" aria-label="Close return request">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div>
+      <label for="returnReason" class="mb-2 block text-sm font-semibold">Reason for return</label>
+      <textarea id="returnReason" name="reason" required minlength="10" maxlength="500" rows="5" class="w-full rounded border border-outline/30 bg-surface px-4 py-3 text-body-md focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Describe the issue with your order"></textarea>
+      <p class="mt-2 text-xs text-on-surface-variant">Enter between 10 and 500 characters.</p>
+    </div>
+    <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+      <button id="cancelReturnReasonDialog" type="button" class="rounded border border-outline/30 px-5 py-3 font-label-md hover:bg-surface-container">Cancel</button>
+      <button type="submit" class="inline-flex items-center justify-center gap-2 rounded bg-on-surface px-5 py-3 font-label-md text-surface hover:bg-primary">
+        <span class="material-symbols-outlined">assignment_return</span>
+        Submit Return Request
+      </button>
+    </div>
+  </form>
+</dialog>
+{{/if}}
+{{/if}}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-grid-gutter items-start">
 <!-- Order Items List -->
 <div class="lg:col-span-2 space-y-6">
@@ -230,6 +277,10 @@
       <p class="font-body-md text-on-surface">
         {{#if (eq order.payment_method "cod")}}
           Cash on Delivery
+        {{else if (eq order.payment_method "wallet")}}
+          Wallet
+        {{else if (eq order.payment_method "upi")}}
+          UPI
         {{else}}
           {{order.payment_method}}
         {{/if}}
@@ -294,6 +345,20 @@
         button.disabled = false;
       }
     });
+
+    const returnReasonDialog = document.getElementById('returnReasonDialog');
+    const openReturnReasonDialog = document.getElementById('openReturnReasonDialog');
+    const closeReturnReasonDialog = document.getElementById('closeReturnReasonDialog');
+    const cancelReturnReasonDialog = document.getElementById('cancelReturnReasonDialog');
+
+    if (returnReasonDialog && openReturnReasonDialog) {
+      openReturnReasonDialog.addEventListener('click', () => returnReasonDialog.showModal());
+      closeReturnReasonDialog.addEventListener('click', () => returnReasonDialog.close());
+      cancelReturnReasonDialog.addEventListener('click', () => returnReasonDialog.close());
+      returnReasonDialog.addEventListener('click', (event) => {
+        if (event.target === returnReasonDialog) returnReasonDialog.close();
+      });
+    }
 
     function showCancelConfirmation(entireOrder = false) {
       return new Promise((resolve) => {
@@ -430,8 +495,4 @@
             }
         });
     </script>
-
-
-
-
-</body></html>
+{{> user/footer}}

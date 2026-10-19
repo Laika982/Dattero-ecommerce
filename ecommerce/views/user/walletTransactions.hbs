@@ -1,0 +1,242 @@
+{{> user/header}}
+<main class="w-full pt-20"><div class="flex flex-col w-full h-full lg:flex-row bg-surface">
+<!-- Sidebar (Reused/Adapted pattern) -->
+
+<!-- Main Content -->
+<div class="flex-1 px-container-padding py-section-gap-mobile lg:py-stack-lg max-w-[1024px] mx-auto w-full">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-lg mb-section-gap-mobile">
+<div>
+<h1 class="text-headline-xl font-headline-xl text-on-surface mb-stack-sm tracking-tighter">Transaction History</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-lg">
+                    A comprehensive record of your wallet top-ups, purchases, and refunds.
+                </p>
+</div>
+<div class="flex items-center gap-stack-md">
+<button id="export-csv-btn" type="button" class="flex items-center gap-2 px-stack-lg py-stack-sm bg-surface rounded-full shadow-sm text-label-md font-label-md text-on-surface hover:bg-surface-container transition-colors group">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors">download</span>
+                    Export CSV
+                </button>
+</div>
+</div>
+<!-- Filters & Search -->
+<div class="flex flex-col lg:flex-row justify-between items-center gap-stack-lg mb-stack-lg bg-surface-container-low p-stack-md rounded-xl shadow-sm">
+<div class="flex w-full lg:w-auto overflow-x-auto gap-stack-sm pb-2 lg:pb-0 scrollbar-hide">
+  <a href="/wallet/transactions?filter=all{{#if search}}&search={{search}}{{/if}}" class="px-stack-md py-stack-sm rounded-full {{#if isAll}}bg-primary text-on-primary{{else}}bg-surface text-on-surface hover:bg-surface-container-highest{{/if}} transition-colors text-label-md font-label-md whitespace-nowrap shadow-sm">All Transactions</a>
+  <a href="/wallet/transactions?filter=orders{{#if search}}&search={{search}}{{/if}}" class="px-stack-md py-stack-sm rounded-full {{#if isOrders}}bg-primary text-on-primary{{else}}bg-surface text-on-surface hover:bg-surface-container-highest{{/if}} transition-colors text-label-md font-label-md whitespace-nowrap">Orders</a>
+  <a href="/wallet/transactions?filter=wallet{{#if search}}&search={{search}}{{/if}}" class="px-stack-md py-stack-sm rounded-full {{#if isWallet}}bg-primary text-on-primary{{else}}bg-surface text-on-surface hover:bg-surface-container-highest{{/if}} transition-colors text-label-md font-label-md whitespace-nowrap">Wallet</a>
+  <a href="/wallet/transactions?filter=refunds{{#if search}}&search={{search}}{{/if}}" class="px-stack-md py-stack-sm rounded-full {{#if isRefunds}}bg-primary text-on-primary{{else}}bg-surface text-on-surface hover:bg-surface-container-highest{{/if}} transition-colors text-label-md font-label-md whitespace-nowrap">Refunds</a>
+  <a href="/wallet/transactions?filter=referrals{{#if search}}&search={{search}}{{/if}}" class="px-stack-md py-stack-sm rounded-full {{#if isReferrals}}bg-primary text-on-primary{{else}}bg-surface text-on-surface hover:bg-surface-container-highest{{/if}} transition-colors text-label-md font-label-md whitespace-nowrap">Referrals</a>
+</div>
+<form method="GET" action="/wallet/transactions" class="flex w-full lg:w-auto items-center gap-stack-md">
+  {{#unless isAll}}
+  <input type="hidden" name="filter" value="{{currentFilter}}">
+  {{/unless}}
+  <div class="relative w-full lg:w-64">
+    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+    <input name="search" value="{{search}}" class="w-full bg-surface py-stack-sm pl-10 pr-stack-md rounded-lg text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary/50 shadow-sm transition-all" placeholder="Search ID or description..." type="text">
+  </div>
+  <button type="submit" class="p-stack-sm bg-surface rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors shadow-sm flex-shrink-0" title="Search">
+    <span class="material-symbols-outlined text-[20px]">search</span>
+  </button>
+  {{#if search}}
+  <a href="/wallet/transactions{{#unless isAll}}?filter={{currentFilter}}{{/unless}}" class="p-stack-sm bg-surface rounded-lg text-on-surface-variant hover:text-error hover:bg-surface-container-highest transition-colors shadow-sm flex-shrink-0" title="Clear Search">
+    <span class="material-symbols-outlined text-[20px]">close</span>
+  </a>
+  {{/if}}
+</form>
+</div>
+<!-- Data Table (Desktop) / Cards (Mobile) -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-xl overflow-hidden mb-section-gap-mobile">
+<!-- Table Header (Hidden on Mobile) -->
+<div class="hidden md:grid grid-cols-12 gap-stack-sm p-stack-lg bg-surface-container-low border-b border-outline-variant/20 text-label-md font-label-md text-on-surface-variant uppercase tracking-widest">
+<div class="col-span-3">Transaction</div>
+<div class="col-span-3">Date &amp; Time</div>
+<div class="col-span-2">Payment Method</div>
+<div class="col-span-2 text-right">Amount</div>
+<div class="col-span-2 text-center">Status</div>
+</div>
+<div class="flex flex-col">
+{{#each transactions}}
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-md md:gap-stack-sm p-stack-lg border-b border-outline-variant/10 hover:bg-surface-container-low/50 transition-colors items-center group relative">
+<div class="col-span-1 md:col-span-3 flex flex-col gap-1"><span class="text-body-md font-body-md font-semibold text-on-surface line-clamp-1">{{this.description}}</span><span class="text-label-md font-label-md text-on-surface-variant font-mono">#{{this._id}}</span></div>
+<div class="col-span-1 md:col-span-3 flex flex-col gap-1"><span class="text-body-md font-body-md text-on-surface">{{this.displayDate}}</span></div>
+<div class="col-span-1 md:col-span-2 flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-on-surface-variant">{{#if (eq this.reason "WALLET_TOP_UP")}}credit_card{{else if (eq this.reason "REFERRAL_REWARD")}}redeem{{else}}account_balance_wallet{{/if}}</span><span class="text-body-md font-body-md text-on-surface text-sm">{{#if (eq this.reason "WALLET_TOP_UP")}}Razorpay{{else if (eq this.reason "REFERRAL_REWARD")}}Referral Reward{{else}}Wallet Balance{{/if}}</span></div>
+<div class="col-span-1 md:col-span-2 md:text-right flex items-center md:justify-end gap-2"><span class="material-symbols-outlined text-[16px] {{#if (eq this.type "CREDIT")}}text-primary{{else}}text-on-surface-variant{{/if}}">{{#if (eq this.type "CREDIT")}}arrow_upward{{else}}arrow_downward{{/if}}</span><span class="text-body-lg font-body-lg font-semibold {{#if (eq this.type "CREDIT")}}text-green-700{{else}}text-on-surface{{/if}}">{{this.displayAmount}}</span></div>
+<div class="col-span-1 md:col-span-2 flex justify-between md:justify-center items-center"><span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-[12px] font-label-md tracking-wider uppercase">Completed</span></div>
+</div>
+{{else}}
+<div class="p-10 text-center text-on-surface-variant">No transactions found for this filter.</div>
+{{/each}}
+</div>
+<div class="hidden">
+<div class="flex flex-col">
+<!-- Row 1 -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-md md:gap-stack-sm p-stack-lg border-b border-outline-variant/10 hover:bg-surface-container-low/50 transition-colors items-center group relative">
+<div class="col-span-1 md:col-span-3 flex flex-col gap-1">
+<span class="text-body-md font-body-md font-semibold text-on-surface line-clamp-1">Wallet Top-up</span>
+<span class="text-label-md font-label-md text-on-surface-variant font-mono">#TXN-49201</span>
+</div>
+<div class="col-span-1 md:col-span-3 flex flex-col gap-1">
+<span class="text-body-md font-body-md text-on-surface">Oct 24, 2023</span>
+<span class="text-label-md font-label-md text-on-surface-variant">14:30 EST</span>
+</div>
+<div class="col-span-1 md:col-span-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">credit_card</span>
+<span class="text-body-md font-body-md text-on-surface text-sm">**** 8820</span>
+</div>
+<div class="col-span-1 md:col-span-2 md:text-right flex items-center md:justify-end gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">arrow_upward</span>
+<span class="text-body-lg font-body-lg font-semibold text-on-surface">+$500.00</span>
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-between md:justify-center items-center">
+<span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-[12px] font-label-md tracking-wider uppercase">Completed</span>
+<!-- Mobile action toggle -->
+<button class="md:hidden p-2 text-on-surface-variant"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+<!-- Desktop Hover Action -->
+<div class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container-lowest shadow-sm rounded-full p-1">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container" title="Download Receipt">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+</button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-md md:gap-stack-sm p-stack-lg border-b border-outline-variant/10 hover:bg-surface-container-low/50 transition-colors items-center group relative">
+<div class="col-span-1 md:col-span-3 flex flex-col gap-1">
+<span class="text-body-md font-body-md font-semibold text-on-surface line-clamp-1">Order #NL-88421</span>
+<span class="text-label-md font-label-md text-on-surface-variant font-mono">#TXN-49198</span>
+</div>
+<div class="col-span-1 md:col-span-3 flex flex-col gap-1">
+<span class="text-body-md font-body-md text-on-surface">Oct 22, 2023</span>
+<span class="text-label-md font-label-md text-on-surface-variant">09:15 EST</span>
+</div>
+<div class="col-span-1 md:col-span-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">account_balance_wallet</span>
+<span class="text-body-md font-body-md text-on-surface text-sm">Wallet Balance</span>
+</div>
+<div class="col-span-1 md:col-span-2 md:text-right flex items-center md:justify-end gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_downward</span>
+<span class="text-body-lg font-body-lg font-semibold text-on-surface">-$125.50</span>
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-between md:justify-center items-center">
+<span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-[12px] font-label-md tracking-wider uppercase">Completed</span>
+<button class="md:hidden p-2 text-on-surface-variant"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+<div class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container-lowest shadow-sm rounded-full p-1">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container" title="Download Receipt">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+</button>
+</div>
+</div>
+<!-- Row 3 (Pending) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-md md:gap-stack-sm p-stack-lg border-b border-outline-variant/10 hover:bg-surface-container-low/50 transition-colors items-center group relative bg-surface-container-low/30">
+<div class="col-span-1 md:col-span-3 flex flex-col gap-1">
+<span class="text-body-md font-body-md font-semibold text-on-surface line-clamp-1 opacity-70">Order #NL-88425</span>
+<span class="text-label-md font-label-md text-on-surface-variant font-mono">#TXN-49210</span>
+</div>
+<div class="col-span-1 md:col-span-3 flex flex-col gap-1 opacity-70">
+<span class="text-body-md font-body-md text-on-surface">Oct 24, 2023</span>
+<span class="text-label-md font-label-md text-on-surface-variant">16:45 EST</span>
+</div>
+<div class="col-span-1 md:col-span-2 flex items-center gap-2 opacity-70">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">credit_card</span>
+<span class="text-body-md font-body-md text-on-surface text-sm">**** 8820</span>
+</div>
+<div class="col-span-1 md:col-span-2 md:text-right flex items-center md:justify-end gap-2 opacity-70">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">schedule</span>
+<span class="text-body-lg font-body-lg font-semibold text-on-surface-variant">-$85.00</span>
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-between md:justify-center items-center">
+<span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-[12px] font-label-md tracking-wider uppercase flex items-center gap-1"><div class="w-1.5 h-1.5 rounded-full bg-amber-700 animate-pulse"></div>Pending</span>
+<button class="md:hidden p-2 text-on-surface-variant"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+<div class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container-lowest shadow-sm rounded-full p-1">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container" title="Download Receipt">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+</button>
+</div>
+</div>
+<!-- Row 4 (Refund) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-md md:gap-stack-sm p-stack-lg border-b border-outline-variant/10 hover:bg-surface-container-low/50 transition-colors items-center group relative">
+<div class="col-span-1 md:col-span-3 flex flex-col gap-1">
+<span class="text-body-md font-body-md font-semibold text-on-surface line-clamp-1">Refund for #NL-88310</span>
+<span class="text-label-md font-label-md text-on-surface-variant font-mono">#TXN-49155</span>
+</div>
+<div class="col-span-1 md:col-span-3 flex flex-col gap-1">
+<span class="text-body-md font-body-md text-on-surface">Oct 18, 2023</span>
+<span class="text-label-md font-label-md text-on-surface-variant">11:20 EST</span>
+</div>
+<div class="col-span-1 md:col-span-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">account_balance_wallet</span>
+<span class="text-body-md font-body-md text-on-surface text-sm">Wallet Balance</span>
+</div>
+<div class="col-span-1 md:col-span-2 md:text-right flex items-center md:justify-end gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">reply</span>
+<span class="text-body-lg font-body-lg font-semibold text-on-surface">+$210.00</span>
+</div>
+<div class="col-span-1 md:col-span-2 flex justify-between md:justify-center items-center">
+<span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-[12px] font-label-md tracking-wider uppercase">Refunded</span>
+<button class="md:hidden p-2 text-on-surface-variant"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+<div class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container-lowest shadow-sm rounded-full p-1">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container" title="Download Receipt">
+<span class="material-symbols-outlined text-[18px]">receipt</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="hidden p-stack-lg bg-surface-container-lowest flex items-center justify-between border-t border-outline-variant/10">
+<p class="text-label-md font-label-md text-on-surface-variant">Showing 1 to 4 of 24 entries</p>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest text-on-surface transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<div class="hidden md:flex items-center gap-1">
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-primary text-on-primary font-label-md transition-colors shadow-sm">1</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface hover:bg-surface-container text-on-surface font-label-md transition-colors">2</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface hover:bg-surface-container text-on-surface font-label-md transition-colors">3</button>
+<span class="w-10 h-10 flex items-center justify-center text-on-surface-variant">...</span>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-surface hover:bg-surface-container-highest text-on-surface transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div></main>
+
+<script>
+  document.getElementById('export-csv-btn')?.addEventListener('click', () => {
+    const rows = [
+      ["Transaction ID", "Description", "Date", "Payment Method", "Amount", "Status"]
+    ];
+    document.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-12').forEach(row => {
+      const id = row.querySelector('.font-mono')?.textContent?.replace('#', '').trim() || '';
+      const desc = row.querySelector('.font-semibold.text-on-surface')?.textContent?.trim() || '';
+      const date = row.children[1]?.querySelector('span')?.textContent?.trim() || '';
+      const method = row.children[2]?.querySelector('.text-sm')?.textContent?.trim() || '';
+      const amount = row.children[3]?.querySelector('.text-body-lg')?.textContent?.trim() || '';
+      const status = row.children[4]?.querySelector('span')?.textContent?.trim() || 'Completed';
+      if (id && desc) {
+        rows.push([`"${id}"`, `"${desc.replace(/"/g, '""')}"`, `"${date}"`, `"${method}"`, `"${amount}"`, `"${status}"`]);
+      }
+    });
+    if (rows.length <= 1) {
+      alert('No transactions to export.');
+      return;
+    }
+    const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `wallet_transactions_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+</script>
+
+{{> user/footer}}

@@ -1,235 +1,226 @@
+<!-- Mobile Admin Sidebar Backdrop -->
+<div id="adminSidebarBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden hidden transition-opacity" onclick="toggleAdminSidebar()"></div>
+
 <aside
+    id="adminSidebar"
     class="fixed left-0 top-0 h-screen w-64
            bg-surface-container-low
            border-r border-outline-variant/20
            flex flex-col
-           py-container-padding
-           px-stack-md
-           z-50"
+           py-6 px-4
+           z-50
+           transform -translate-x-full lg:translate-x-0
+           transition-all duration-300 ease-in-out
+           overflow-y-auto custom-scrollbar"
 >
 
-    <!-- Logo -->
-    <div class="mb-10 px-2">
+    <!-- Logo & Toggle Buttons -->
+    <div class="sidebar-header-box mb-8 px-2 flex items-center justify-between gap-2">
+        <!-- Expanded Logo Text -->
+        <div class="sidebar-logo-text min-w-0 flex-1">
+            <h1 class="font-headline-lg text-xl font-bold text-on-surface truncate">
+                Nutri Luxe
+            </h1>
+            <p class="font-label-md text-xs text-on-surface-variant/70 truncate">
+                Luxury Wellness Admin
+            </p>
+        </div>
 
-        <h1 class="font-headline-lg text-headline-lg font-bold text-on-surface">
-            Nutri Luxe
-        </h1>
+        <!-- Compact Logo (Shown when reduced/collapsed) -->
+        <div class="sidebar-logo-compact hidden w-10 h-10 rounded-xl bg-primary text-on-primary items-center justify-center font-bold text-base shadow-sm shrink-0 mx-auto" title="Nutri Luxe Admin">
+            NL
+        </div>
 
-        <p class="font-label-md text-label-md text-on-surface-variant/70">
-            Luxury Wellness Admin
-        </p>
+        <div class="flex items-center gap-1 shrink-0">
+            <!-- Collapse/Expand Toggle Button (Reduce to icons) -->
+            <button
+                type="button"
+                id="sidebarCollapseBtn"
+                class="sidebar-toggle-btn flex p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors cursor-pointer"
+                onclick="toggleSidebarCollapse()"
+                title="Reduce sidebar (icons only)"
+                aria-label="Toggle sidebar width"
+            >
+                <span id="sidebarCollapseIcon" class="material-symbols-outlined text-[20px]">
+                    left_panel_close
+                </span>
+            </button>
 
+            <!-- Mobile Close Button -->
+            <button
+                type="button"
+                class="lg:hidden p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors cursor-pointer"
+                onclick="toggleAdminSidebar()"
+                aria-label="Close sidebar"
+            >
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
     </div>
 
 
     <!-- Navigation -->
-
     <nav class="flex-1 space-y-1">
 
         <!-- Dashboard -->
-
         <a
             href="/admin/"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg
+            data-tooltip="Dashboard"
+            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors"
+                   transition-colors group"
         >
-
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined shrink-0 text-[22px]">
                 dashboard
             </span>
-
-            <span>
+            <span class="sidebar-text truncate">
                 Dashboard
             </span>
-
         </a>
 
 
         <!-- Products -->
-
         <a
             href="/admin/product/products"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg
+            data-tooltip="Products"
+            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors"
+                   transition-colors group"
         >
-
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined shrink-0 text-[22px]">
                 inventory_2
             </span>
-
-            <span>
+            <span class="sidebar-text truncate">
                 Products
             </span>
-
         </a>
 
 
         <!-- Orders -->
-
         <a
             href="/admin/order/orders"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg
+            data-tooltip="Orders"
+            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors"
+                   transition-colors group"
         >
-
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined shrink-0 text-[22px]">
                 shopping_cart
             </span>
-
-            <span>
+            <span class="sidebar-text truncate">
                 Orders
             </span>
-
         </a>
 
 
         <!-- Categories -->
-
         <a
             href="/admin/category/categories"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg
+            data-tooltip="Categories"
+            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors"
+                   transition-colors group"
         >
-
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined shrink-0 text-[22px]">
                 category
             </span>
-
-            <span>
+            <span class="sidebar-text truncate">
                 Categories
             </span>
-
         </a>
 
 
         <!-- Coupons -->
-
         <a
-            href="/admin/product/coupons"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg
+            href="/admin/coupons"
+            data-tooltip="Coupons"
+            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors"
+                   transition-colors group"
         >
-
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined shrink-0 text-[22px]">
                 confirmation_number
             </span>
-
-            <span>
+            <span class="sidebar-text truncate">
                 Coupons
             </span>
-
-        </a>
-
-
-        <!-- Banners -->
-
-        <a
-            href="/admin/product/banners"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg
-                   text-on-surface-variant
-                   hover:bg-surface-variant
-                   transition-colors"
-        >
-
-            <span class="material-symbols-outlined">
-                branding_watermark
-            </span>
-
-            <span>
-                Banners
-            </span>
-
         </a>
 
 
         <!-- Offers -->
-
         <a
-            href="/admin/product/offers"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg
+            href="/admin/offers"
+            data-tooltip="Offers"
+            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors"
+                   transition-colors group"
         >
-
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined shrink-0 text-[22px]">
                 local_offer
             </span>
-
-            <span>
+            <span class="sidebar-text truncate">
                 Offers
             </span>
-
         </a>
 
 
         <!-- Customers -->
-
         <a
             href="/admin/customer/customers"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg
+            data-tooltip="Customers"
+            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors"
+                   transition-colors group"
         >
-
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined shrink-0 text-[22px]">
                 group
             </span>
-
-            <span>
+            <span class="sidebar-text truncate">
                 Customers
             </span>
-
         </a>
 
 
         <!-- Sales Report -->
-
         <a
             href="/admin/sales-report"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg
+            data-tooltip="Sales Report"
+            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors"
+                   transition-colors group"
         >
-
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined shrink-0 text-[22px]">
                 assessment
             </span>
-
-            <span>
+            <span class="sidebar-text truncate">
                 Sales Report
             </span>
-
         </a>
 
 
         <!-- Logout -->
-
         <form action="/admin/logout" method="POST" class="m-0 p-0" onsubmit="return confirm('Are you sure you want to log out?');">
             <button
                 type="submit"
-                class="w-full flex items-center gap-3 px-4 py-3 rounded-lg
+                data-tooltip="Logout"
+                class="sidebar-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg
                        text-on-surface-variant
                        hover:bg-red-50
                        hover:text-red-600
-                       transition-colors bg-transparent border-0 cursor-pointer text-left font-inherit"
+                       transition-colors bg-transparent border-0 cursor-pointer text-left font-inherit group"
             >
-                <span class="material-symbols-outlined">
+                <span class="material-symbols-outlined shrink-0 text-[22px]">
                     logout
                 </span>
-                <span>
+                <span class="sidebar-text truncate">
                     Logout
                 </span>
             </button>
@@ -239,26 +230,178 @@
 
 
     <!-- View Store -->
-
-    <div class="mt-auto border-t border-outline-variant/30 pt-6 px-2">
-
+    <div class="mt-auto border-t border-outline-variant/30 pt-6 px-1">
         <a
             href="/"
-            class="w-full flex items-center justify-center gap-2
+            data-tooltip="View Store"
+            class="sidebar-footer-btn w-full flex items-center justify-center gap-2
                    px-4 py-3 rounded-full
                    bg-primary text-on-primary
                    transition-all
                    hover:bg-opacity-90"
         >
-
-            <span class="material-symbols-outlined text-[18px]">
+            <span class="material-symbols-outlined text-[18px] shrink-0">
                 open_in_new
             </span>
-
-            View Store
-
+            <span class="sidebar-text truncate">
+                View Store
+            </span>
         </a>
-
     </div>
 
 </aside>
+
+<style>
+/* Transitions for aside and content wrappers */
+#adminSidebar {
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s ease;
+}
+
+main.lg\:ml-64,
+main.ml-64,
+div.lg\:ml-64,
+header.lg\:ml-64,
+header.ml-64,
+header.lg\:left-64,
+main.md\:ml-64 {
+    transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1), left 0.25s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Sidebar styling when collapsed / reduced */
+body.sidebar-collapsed #adminSidebar {
+    width: 5rem !important; /* 80px */
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
+
+body.sidebar-collapsed #adminSidebar .sidebar-text {
+    display: none !important;
+}
+
+body.sidebar-collapsed #adminSidebar .sidebar-logo-text {
+    display: none !important;
+}
+
+body.sidebar-collapsed #adminSidebar .sidebar-logo-compact {
+    display: flex !important;
+}
+
+body.sidebar-collapsed #adminSidebar .sidebar-header-box {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+body.sidebar-collapsed #adminSidebar .sidebar-nav-item {
+    justify-content: center !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    position: relative;
+}
+
+body.sidebar-collapsed #adminSidebar .sidebar-footer-btn {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    justify-content: center !important;
+}
+
+/* Tooltip on hover when collapsed on desktop */
+@media (min-width: 1024px) {
+    body.sidebar-collapsed #adminSidebar .sidebar-nav-item:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        left: calc(100% + 12px);
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #111827;
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 8px;
+        white-space: nowrap;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+        z-index: 100;
+        pointer-events: none;
+        animation: tooltipFadeIn 0.15s ease-out;
+    }
+
+    body.sidebar-collapsed main.lg\:ml-64,
+    body.sidebar-collapsed main.ml-64,
+    body.sidebar-collapsed div.lg\:ml-64,
+    body.sidebar-collapsed div.ml-64,
+    body.sidebar-collapsed header.lg\:ml-64,
+    body.sidebar-collapsed header.ml-64,
+    body.sidebar-collapsed main.md\:ml-64 {
+        margin-left: 5rem !important;
+    }
+
+    body.sidebar-collapsed header.lg\:left-64,
+    body.sidebar-collapsed header.left-64 {
+        left: 5rem !important;
+    }
+
+    body.sidebar-collapsed header.lg\:max-w-\[calc\(100\%-16rem\)\],
+    body.sidebar-collapsed header[class*="calc(100%-16rem)"] {
+        max-width: calc(100% - 5rem) !important;
+    }
+}
+
+@keyframes tooltipFadeIn {
+    from { opacity: 0; transform: translateY(-50%) translateX(-4px); }
+    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+</style>
+
+<script>
+// Apply saved collapse state instantly before full render to prevent layout jump
+(function() {
+    try {
+        if (localStorage.getItem('adminSidebarCollapsed') === 'true') {
+            document.body.classList.add('sidebar-collapsed');
+        }
+    } catch(e) {}
+})();
+
+function toggleSidebarCollapse() {
+    const isCollapsed = document.body.classList.toggle('sidebar-collapsed');
+    try {
+        localStorage.setItem('adminSidebarCollapsed', isCollapsed ? 'true' : 'false');
+    } catch(e) {}
+    updateCollapseControls();
+}
+
+function updateCollapseControls() {
+    const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+    const icon = document.getElementById('sidebarCollapseIcon');
+    const btn = document.getElementById('sidebarCollapseBtn');
+    if (icon) {
+        icon.textContent = isCollapsed ? 'dock_to_right' : 'left_panel_close';
+    }
+    if (btn) {
+        btn.title = isCollapsed ? 'Expand sidebar' : 'Reduce size (show icons only)';
+    }
+}
+
+function toggleAdminSidebar() {
+    const sidebar = document.getElementById('adminSidebar');
+    const backdrop = document.getElementById('adminSidebarBackdrop');
+    if (!sidebar) return;
+    const isClosed = sidebar.classList.contains('-translate-x-full');
+    if (isClosed) {
+        sidebar.classList.remove('-translate-x-full');
+        if (backdrop) backdrop.classList.remove('hidden');
+    } else {
+        sidebar.classList.add('-translate-x-full');
+        if (backdrop) backdrop.classList.add('hidden');
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateCollapseControls);
+} else {
+    updateCollapseControls();
+}
+</script>

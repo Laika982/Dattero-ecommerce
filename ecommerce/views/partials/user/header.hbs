@@ -4,11 +4,11 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0" name="viewport" />
   <title>Nutri Burfi - Premium Protein Sweets</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;1,300&amp;display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;1,300&amp;display=swap"
     rel="stylesheet" />
   <link
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
@@ -100,14 +100,14 @@
             "full": "9999px"
           },
           "spacing": {
-            "section-gap": "120px",
+            "section-gap": "clamp(48px, 8vw, 120px)",
             "max-width": "1280px",
-            "section-gap-mobile": "64px",
-            "container-padding": "32px",
+            "section-gap-mobile": "40px",
+            "container-padding": "16px",
             "stack-md": "16px",
-            "grid-gutter": "24px",
+            "grid-gutter": "20px",
             "stack-sm": "8px",
-            "stack-lg": "24px"
+            "stack-lg": "20px"
           },
           "fontFamily": {
             "label-md": [
@@ -145,7 +145,7 @@
               }
             ],
             "display-lg": [
-              "56px",
+              "clamp(32px, 6vw, 56px)",
               {
                 "lineHeight": "1.1",
                 "letterSpacing": "-0.02em",
@@ -153,7 +153,7 @@
               }
             ],
             "headline-xl": [
-              "40px",
+              "clamp(26px, 5vw, 40px)",
               {
                 "lineHeight": "1.2",
                 "letterSpacing": "-0.01em",
@@ -175,14 +175,14 @@
               }
             ],
             "headline-lg": [
-              "32px",
+              "clamp(22px, 4vw, 32px)",
               {
                 "lineHeight": "1.25",
                 "fontWeight": "600"
               }
             ],
             "display-lg-mobile": [
-              "40px",
+              "clamp(28px, 5.5vw, 40px)",
               {
                 "lineHeight": "1.1",
                 "letterSpacing": "-0.01em",
@@ -201,20 +201,23 @@
       },
     }
   </script>
-  <link rel="stylesheet" href="../../../public/css/style.css">
+  <link rel="stylesheet" href="/css/style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="../../../public/js/main.js"></script>
+  <script src="/js/main.js"></script>
 </head>
 
-<body class="bg-surface text-on-surface antialiased overflow-x-hidden selection:bg-secondary/30 selection:text-primary">
+<body
+  class="bg-surface text-on-surface antialiased overflow-x-hidden selection:bg-secondary/30 selection:text-primary safe-bottom-padding">
   <!-- TopNavBar Component -->
   <nav
-    class="fixed top-0 w-full z-50 bg-surface/95 dark:bg-surface/90 backdrop-blur-md border-b border-secondary/10 dark:border-secondary-fixed-dim/10 shadow-sm transition-all duration-300 shadow-md"
+    class="fixed top-0 w-full z-40 bg-surface/95 backdrop-blur-md border-b border-secondary/10 shadow-sm transition-all duration-300"
     id="main-nav">
-    <div class="flex justify-between items-center w-full px-container-padding max-w-max-width mx-auto h-20">
+    <div class="flex justify-between items-center w-full px-4 sm:px-6 md:px-8 max-w-max-width mx-auto h-16 sm:h-20">
       <!-- Brand Logo -->
-      <a class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0" href="/">
+      <a class="font-headline-lg text-xl sm:text-2xl md:text-headline-lg font-bold text-on-surface tracking-tight z-10 flex-shrink-0 flex items-center gap-2"
+        href="/">
+        <span class="w-2.5 h-2.5 rounded-full bg-primary inline-block"></span>
         Nutri Burfi
       </a>
       <!-- Navigation Links (Desktop) -->
@@ -229,270 +232,323 @@
           href="/contact" data-nav="contact">Contact</a>
       </div>
       <!-- Trailing Icon Actions -->
-      <div class="flex items-center gap-4 text-on-surface z-10 flex-shrink-0">
-        <button
+      <div class="flex items-center gap-2 sm:gap-4 text-on-surface z-10 flex-shrink-0">
+        <a href="/wishlist" aria-label="Wishlist"
           class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
-          <span class="material-symbols-outlined" data-icon="search">search</span>
-        </button>
-        <button
-          class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
-          <span class="material-symbols-outlined" data-icon="favorite">favorite</span>
-        </button>
-        <a href="/cart"
+          <span class="material-symbols-outlined text-[22px] sm:text-[24px]" data-icon="favorite">favorite</span>
+        </a>
+        <a href="/cart" aria-label="Cart"
           class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 relative">
-          <span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+          <span class="material-symbols-outlined text-[22px] sm:text-[24px]"
+            data-icon="shopping_cart">shopping_cart</span>
           <span class="absolute top-1 right-1 w-2 h-2 bg-accent-blue rounded-full"></span>
         </a>
         <div class="relative hidden md:block">
-
           {{#if user}}
-
-          <!-- USER HAS TOKEN -->
-
-          <a href="/profile"
+          <a href="/profile" aria-label="Account"
             class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
-
-            <span class="material-symbols-outlined">
-              person
-            </span>
-
+            <span class="material-symbols-outlined text-[24px]">person</span>
           </a>
-
           {{else}}
-
-          <!-- USER DOES NOT HAVE TOKEN -->
-
-          <button type="button" id="login-popup-btn"
+          <button type="button" id="login-popup-btn" aria-label="Login"
             class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50">
-
-            <span class="material-symbols-outlined">
-              person
-            </span>
-
+            <span class="material-symbols-outlined text-[24px]">person</span>
           </button>
-
           {{/if}}
-
         </div>
-        <!-- Mobile Menu Toggle -->
+        <!-- Mobile Menu Toggle Button -->
         <button
-          class="md:hidden hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 ml-2"
-          id="mobile-menu-btn">
-          <span class="material-symbols-outlined" data-icon="menu">menu</span>
+          class="md:hidden hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50"
+          id="mobile-menu-btn" aria-label="Toggle navigation menu">
+          <span class="material-symbols-outlined text-[24px]" data-icon="menu">menu</span>
         </button>
       </div>
     </div>
   </nav>
-  <!-- Mobile Menu Overlay (Hidden by default) -->
-  <div class="fixed inset-0 bg-surface z-40 hidden flex-col pt-24 px-container-padding" id="mobile-menu">
-    <a class="mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 transition-colors {{#if (eq currentNav 'home')}}text-on-surface font-bold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}"
-      href="/" data-nav="home">Home</a>
-    <a class="mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 transition-colors {{#if (eq currentNav 'products')}}text-on-surface font-bold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}"
-      href="/products" data-nav="products">Products</a>
-    <a class="mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 transition-colors {{#if (eq currentNav 'about')}}text-on-surface font-bold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}"
-      href="/about" data-nav="about">About Us</a>
-    <a class="mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 transition-colors {{#if (eq currentNav 'contact')}}text-on-surface font-bold{{else}}text-on-surface-variant hover:text-on-surface{{/if}}"
-      href="/contact" data-nav="contact">Contact</a>
 
-    {{#if user}}
-
-    <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between"
-      href="/profile">
-
-      Account
-
-      <span class="material-symbols-outlined">
-        person
-      </span>
-
-    </a>
-
-    {{else}}
-
-    <button
-      class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between w-full text-left"
-      id="mobile-login-popup-btn">
-
-      Account
-
-      <span class="material-symbols-outlined">
-        person
-      </span>
-
-    </button>
-
-    {{/if}}
+  <!-- Mobile Drawer Backdrop & Menu -->
+  <div id="mobile-menu-backdrop"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 md:hidden">
   </div>
-
-  <div id="login-popup" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/40 backdrop-blur-sm">
-
-    <div class="w-[90%] max-w-md rounded-2xl bg-white p-8 shadow-2xl">
-
-      <div class="text-center">
-
-        <span class="material-symbols-outlined text-5xl text-primary">
-          person
-        </span>
-
-        <h2 class="mt-4 text-2xl font-semibold">
-          Login Required
-        </h2>
-
-        <p class="mt-2 text-on-surface-variant">
-          Please login to access your profile.
-        </p>
-
-        <div class="mt-6 flex gap-3">
-
-          <button id="close-login-popup" type="button"
-            class="flex-1 rounded-xl border border-outline-variant px-4 py-3">
-
-            Cancel
-
-          </button>
-
-          <a href="/login" class="flex-1 rounded-xl bg-primary px-4 py-3 text-center text-white">
-
-            Login
-
-          </a>
-
-        </div>
-
+  <aside id="mobile-menu"
+    class="fixed top-0 right-0 bottom-0 w-[82%] max-w-sm bg-surface z-50 flex flex-col shadow-2xl translate-x-full transition-transform duration-300 ease-out md:hidden border-l border-secondary/10">
+    <div class="flex items-center justify-between p-5 border-b border-secondary/10">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-primary inline-block"></span>
+        <span class="font-headline-lg text-lg font-bold text-on-surface">Nutri Burfi</span>
       </div>
-
+      <button id="close-mobile-menu-btn"
+        class="p-2 rounded-full hover:bg-surface-variant/50 active:scale-95 text-on-surface" aria-label="Close menu">
+        <span class="material-symbols-outlined text-[22px]">close</span>
+      </button>
     </div>
+    <nav class="flex-1 overflow-y-auto px-4 py-6 space-y-1">
+      <a class="mobile-nav-link flex items-center gap-3 px-4 py-3.5 rounded-xl font-label-md text-base transition-colors {{#if (eq currentNav 'home')}}bg-primary text-white font-semibold{{else}}text-on-surface hover:bg-surface-variant/50{{/if}}"
+        href="/" data-nav="home">
+        <span class="material-symbols-outlined text-[20px]">home</span>
+        <span>Home</span>
+      </a>
+      <a class="mobile-nav-link flex items-center gap-3 px-4 py-3.5 rounded-xl font-label-md text-base transition-colors {{#if (eq currentNav 'products')}}bg-primary text-white font-semibold{{else}}text-on-surface hover:bg-surface-variant/50{{/if}}"
+        href="/products" data-nav="products">
+        <span class="material-symbols-outlined text-[20px]">storefront</span>
+        <span>Products</span>
+      </a>
+      <a class="mobile-nav-link flex items-center gap-3 px-4 py-3.5 rounded-xl font-label-md text-base transition-colors {{#if (eq currentNav 'about')}}bg-primary text-white font-semibold{{else}}text-on-surface hover:bg-surface-variant/50{{/if}}"
+        href="/about" data-nav="about">
+        <span class="material-symbols-outlined text-[20px]">info</span>
+        <span>About Us</span>
+      </a>
+      <a class="mobile-nav-link flex items-center gap-3 px-4 py-3.5 rounded-xl font-label-md text-base transition-colors {{#if (eq currentNav 'contact')}}bg-primary text-white font-semibold{{else}}text-on-surface hover:bg-surface-variant/50{{/if}}"
+        href="/contact" data-nav="contact">
+        <span class="material-symbols-outlined text-[20px]">mail</span>
+        <span>Contact</span>
+      </a>
+      <div class="h-px bg-secondary/10 my-3"></div>
+      <a class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-on-surface hover:bg-surface-variant/50 font-label-md text-base"
+        href="/wishlist">
+        <span class="material-symbols-outlined text-[20px]">favorite</span>
+        <span>Wishlist</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-on-surface hover:bg-surface-variant/50 font-label-md text-base"
+        href="/cart">
+        <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+        <span>Cart</span>
+      </a>
+      {{#if user}}
+      <a class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-on-surface hover:bg-surface-variant/50 font-label-md text-base"
+        href="/profile">
+        <span class="material-symbols-outlined text-[20px]">person</span>
+        <span>My Account</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-on-surface hover:bg-surface-variant/50 font-label-md text-base"
+        href="/order/orders">
+        <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+        <span>My Orders</span>
+      </a>
+      {{else}}
+      <button type="button"
+        class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-on-surface hover:bg-surface-variant/50 font-label-md text-base w-full text-left"
+        id="mobile-login-popup-btn">
+        <span class="material-symbols-outlined text-[20px]">login</span>
+        <span>Login / Sign Up</span>
+      </button>
+      {{/if}}
+    </nav>
+    <div
+      class="p-4 border-t border-secondary/10 bg-surface-container-low/50 text-xs text-on-surface-variant text-center">
+      Handcrafted Protein Excellence • Nutri Burfi
+    </div>
+  </aside>
 
+  <!-- Mobile Bottom Navigation Bar (Native App Style) -->
+  <nav
+    class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-md border-t border-secondary/10 shadow-[0_-4px_16px_rgba(0,0,0,0.05)] px-2 py-1.5 flex justify-around items-center"
+    id="mobile-bottom-nav">
+    <a href="/"
+      class="flex flex-col items-center justify-center py-1 px-3 text-on-surface-variant hover:text-on-surface transition-colors"
+      data-bottom-nav="home">
+      <span class="material-symbols-outlined text-[22px]">home</span>
+      <span class="text-[11px] font-semibold mt-0.5">Home</span>
+    </a>
+    <a href="/products"
+      class="flex flex-col items-center justify-center py-1 px-3 text-on-surface-variant hover:text-on-surface transition-colors"
+      data-bottom-nav="products">
+      <span class="material-symbols-outlined text-[22px]">storefront</span>
+      <span class="text-[11px] font-semibold mt-0.5">Shop</span>
+    </a>
+    <a href="/wishlist"
+      class="flex flex-col items-center justify-center py-1 px-3 text-on-surface-variant hover:text-on-surface transition-colors"
+      data-bottom-nav="wishlist">
+      <span class="material-symbols-outlined text-[22px]">favorite</span>
+      <span class="text-[11px] font-semibold mt-0.5">Wishlist</span>
+    </a>
+    <a href="/cart"
+      class="flex flex-col items-center justify-center py-1 px-3 text-on-surface-variant hover:text-on-surface transition-colors relative"
+      data-bottom-nav="cart">
+      <span class="material-symbols-outlined text-[22px]">shopping_cart</span>
+      <span class="text-[11px] font-semibold mt-0.5">Cart</span>
+    </a>
+    {{#if user}}
+    <a href="/profile"
+      class="flex flex-col items-center justify-center py-1 px-3 text-on-surface-variant hover:text-on-surface transition-colors"
+      data-bottom-nav="account">
+      <span class="material-symbols-outlined text-[22px]">person</span>
+      <span class="text-[11px] font-semibold mt-0.5">Account</span>
+    </a>
+    {{else}}
+    <button type="button" id="mobile-bottom-login-btn"
+      class="flex flex-col items-center justify-center py-1 px-3 text-on-surface-variant hover:text-on-surface transition-colors">
+      <span class="material-symbols-outlined text-[22px]">person</span>
+      <span class="text-[11px] font-semibold mt-0.5">Account</span>
+    </button>
+    {{/if}}
+  </nav>
 
-
+  <!-- Login Required Popup Modal -->
+  <div id="login-popup"
+    class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div class="w-full max-w-sm rounded-2xl bg-white p-6 sm:p-8 shadow-2xl text-center">
+      <span class="material-symbols-outlined text-5xl text-primary mx-auto">
+        person
+      </span>
+      <h2 class="mt-4 text-xl sm:text-2xl font-semibold text-on-surface">
+        Login Required
+      </h2>
+      <p class="mt-2 text-sm text-on-surface-variant">
+        Please sign in to access your profile and saved selections.
+      </p>
+      <div class="mt-6 flex gap-3">
+        <button id="close-login-popup" type="button"
+          class="flex-1 rounded-xl border border-outline-variant px-4 py-3 font-semibold text-sm hover:bg-surface-gray transition-colors">
+          Cancel
+        </button>
+        <a href="/login"
+          class="flex-1 rounded-xl bg-primary px-4 py-3 text-center text-white font-semibold text-sm hover:opacity-90 transition-opacity">
+          Login
+        </a>
+      </div>
+    </div>
   </div>
-
 
   <script>
+      // Mobile Menu Drawer Control
+      (function () {
+        const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+        const closeMobileMenuBtn = document.getElementById("close-mobile-menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const mobileMenuBackdrop = document.getElementById("mobile-menu-backdrop");
 
-    const loginPopupBtn =
-      document.getElementById("login-popup-btn");
-
-    const mobileLoginPopupBtn =
-      document.getElementById("mobile-login-popup-btn");
-
-    const loginPopup =
-      document.getElementById("login-popup");
-
-    const closeLoginPopup =
-      document.getElementById("close-login-popup");
-
-
-    // Desktop login popup
-    if (loginPopupBtn) {
-
-      loginPopupBtn.addEventListener("click", () => {
-
-        loginPopup.classList.remove("hidden");
-
-        loginPopup.classList.add("flex");
-
-      });
-
-    }
-
-
-    // Mobile login popup
-    if (mobileLoginPopupBtn) {
-
-      mobileLoginPopupBtn.addEventListener("click", () => {
-
-        loginPopup.classList.remove("hidden");
-
-        loginPopup.classList.add("flex");
-
-        const mobileMenu =
-          document.getElementById("mobile-menu");
-
-        if (mobileMenu) {
-          mobileMenu.classList.add("hidden");
+        function openMobileMenu() {
+          if (!mobileMenu || !mobileMenuBackdrop) return;
+          mobileMenuBackdrop.classList.remove("hidden");
+          requestAnimationFrame(() => {
+            mobileMenuBackdrop.classList.remove("opacity-0");
+            mobileMenu.classList.remove("translate-x-full");
+          });
+          document.body.style.overflow = "hidden";
         }
 
-      });
+        function closeMobileMenu() {
+          if (!mobileMenu || !mobileMenuBackdrop) return;
+          mobileMenu.classList.add("translate-x-full");
+          mobileMenuBackdrop.classList.add("opacity-0");
+          setTimeout(() => {
+            mobileMenuBackdrop.classList.add("hidden");
+            document.body.style.overflow = "";
+          }, 300);
+        }
 
-    }
+        if (mobileMenuBtn) mobileMenuBtn.addEventListener("click", openMobileMenu);
+        if (closeMobileMenuBtn) closeMobileMenuBtn.addEventListener("click", closeMobileMenu);
+        if (mobileMenuBackdrop) mobileMenuBackdrop.addEventListener("click", closeMobileMenu);
 
+        // Login Popup Control
+        const loginPopupBtn = document.getElementById("login-popup-btn");
+        const mobileLoginPopupBtn = document.getElementById("mobile-login-popup-btn");
+        const mobileBottomLoginBtn = document.getElementById("mobile-bottom-login-btn");
+        const loginPopup = document.getElementById("login-popup");
+        const closeLoginPopup = document.getElementById("close-login-popup");
 
-    // Close button
-    if (closeLoginPopup) {
+        function showLoginModal() {
+          if (!loginPopup) return;
+          loginPopup.classList.remove("hidden");
+          loginPopup.classList.add("flex");
+          closeMobileMenu();
+        }
 
-      closeLoginPopup.addEventListener("click", () => {
-
-        loginPopup.classList.add("hidden");
-
-        loginPopup.classList.remove("flex");
-
-      });
-
-    }
-
-
-    // Click outside popup
-    if (loginPopup) {
-
-      loginPopup.addEventListener("click", (event) => {
-
-        if (event.target === loginPopup) {
-
+        function hideLoginModal() {
+          if (!loginPopup) return;
           loginPopup.classList.add("hidden");
-
           loginPopup.classList.remove("flex");
-
         }
 
-      });
-
-    }
-
-    // Active Navbar Link Dynamic Selection
-    (function () {
-      function highlightActiveNav() {
-        const path = (window.location.pathname || "/").toLowerCase();
-        let activeKey = "";
-
-        if (path === "/" || path === "") {
-          activeKey = "home";
-        } else if (path.startsWith("/product")) {
-          activeKey = "products";
-        } else if (path.startsWith("/about")) {
-          activeKey = "about";
-        } else if (path.startsWith("/contact")) {
-          activeKey = "contact";
+        if (loginPopupBtn) loginPopupBtn.addEventListener("click", showLoginModal);
+        if (mobileLoginPopupBtn) mobileLoginPopupBtn.addEventListener("click", showLoginModal);
+        if (mobileBottomLoginBtn) mobileBottomLoginBtn.addEventListener("click", showLoginModal);
+        if (closeLoginPopup) closeLoginPopup.addEventListener("click", hideLoginModal);
+        if (loginPopup) {
+          loginPopup.addEventListener("click", (e) => {
+            if (e.target === loginPopup) hideLoginModal();
+          });
         }
 
-        // Desktop nav links
-        const desktopLinks = document.querySelectorAll("#nav-links-desktop a[data-nav]");
-        desktopLinks.forEach(function (link) {
-          const nav = link.getAttribute("data-nav");
-          if (nav === activeKey) {
-            link.className = "nav-link font-label-md text-label-md text-on-surface border-b-2 border-on-surface pb-1 font-semibold transition-colors";
-          } else {
-            link.className = "nav-link font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors";
+        // Dynamic Active Navigation Highlighting
+        function highlightActiveNav() {
+          const path = (window.location.pathname || "/").toLowerCase();
+          let activeKey = "";
+
+          if (path === "/" || path === "") {
+            activeKey = "home";
+          } else if (path.startsWith("/product")) {
+            activeKey = "products";
+          } else if (path.startsWith("/about")) {
+            activeKey = "about";
+          } else if (path.startsWith("/contact")) {
+            activeKey = "contact";
+          } else if (path.startsWith("/wishlist")) {
+            activeKey = "wishlist";
+          } else if (path.startsWith("/cart")) {
+            activeKey = "cart";
+          } else if (path.startsWith("/profile") || path.startsWith("/order") || path.startsWith("/wallet")) {
+            activeKey = "account";
           }
-        });
 
-        // Mobile nav links
-        const mobileLinks = document.querySelectorAll("#mobile-menu a[data-nav]");
-        mobileLinks.forEach(function (link) {
-          const nav = link.getAttribute("data-nav");
-          if (nav === activeKey) {
-            link.className = "mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface font-bold transition-colors";
-          } else {
-            link.className = "mobile-nav-link font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface-variant hover:text-on-surface transition-colors";
+          // Desktop nav links
+          const desktopLinks = document.querySelectorAll("#nav-links-desktop a[data-nav]");
+          desktopLinks.forEach(function (link) {
+            const nav = link.getAttribute("data-nav");
+            if (nav === activeKey) {
+              link.className = "nav-link font-label-md text-label-md text-on-surface border-b-2 border-on-surface pb-1 font-semibold transition-colors";
+            } else {
+              link.className = "nav-link font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors";
+            }
+          });
+
+          // Bottom nav links
+          const bottomLinks = document.querySelectorAll("#mobile-bottom-nav [data-bottom-nav]");
+          bottomLinks.forEach(function (link) {
+            const nav = link.getAttribute("data-bottom-nav");
+            if (nav === activeKey) {
+              link.classList.remove("text-on-surface-variant");
+              link.classList.add("text-primary", "font-bold");
+            } else {
+              link.classList.remove("text-primary", "font-bold");
+              link.classList.add("text-on-surface-variant");
+            }
+          });
+        }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", highlightActiveNav);
+        } else {
+          highlightActiveNav();
+        }
+      })();
+
+      function togglePasswordVisibility(id) {
+        const input = document.getElementById(id);
+        if (!input) return;
+        const container = input.closest('.relative') || input.parentElement;
+        const btn = (input.nextElementSibling && input.nextElementSibling.tagName === 'BUTTON')
+          ? input.nextElementSibling
+          : (container ? container.querySelector('button[type="button"]') : null);
+        const icon = btn
+          ? btn.querySelector('.material-symbols-outlined')
+          : (container ? container.querySelector('.material-symbols-outlined') : null);
+
+        if (input.type === 'password') {
+          input.type = 'text';
+          if (icon) {
+            icon.textContent = 'visibility_off';
+            if (icon.dataset) icon.dataset.icon = 'visibility_off';
           }
-        });
+        } else {
+          input.type = 'password';
+          if (icon) {
+            icon.textContent = 'visibility';
+            if (icon.dataset) icon.dataset.icon = 'visibility';
+          }
+        }
       }
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", highlightActiveNav);
-      } else {
-        highlightActiveNav();
-      }
-    })();
-
+      window.togglePasswordVisibility = togglePasswordVisibility;
   </script>

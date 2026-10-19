@@ -30,9 +30,6 @@ const loadAddress = async (req, res) => {
       .sort({ isDefault: -1, createdAt: -1 })
       .lean();
 
-    console.log("User ID:", userData._id);
-    console.log("Addresses:", address);
-
     return res.render("user/all-address", {
       address,
     });
@@ -236,7 +233,7 @@ const addAddressPost = async (req, res) => {
           $set: {
             isDefault: false,
           },
-        }
+        },
       );
     }
 
@@ -261,7 +258,6 @@ const addAddressPost = async (req, res) => {
     req.session.success = "Address created successfully.";
 
     return res.redirect("/profile/address");
-
   } catch (error) {
     console.error("Add address POST error:", error);
 
@@ -382,7 +378,6 @@ const deleteAddress = async (req, res) => {
       user_id: userId,
     });
 
-
     if (wasDefault) {
       const nextAddress = await Address.findOne({
         user_id: userId,
@@ -398,7 +393,7 @@ const deleteAddress = async (req, res) => {
             $set: {
               isDefault: true,
             },
-          }
+          },
         );
       }
     }
@@ -406,7 +401,6 @@ const deleteAddress = async (req, res) => {
     req.session.success = "Address deleted successfully.";
 
     return res.redirect("/profile/address");
-
   } catch (error) {
     console.error("Delete address error:", error);
 
@@ -452,7 +446,6 @@ const editAddress = async (req, res) => {
     return res.render("user/edit-address", {
       address,
     });
-
   } catch (error) {
     console.error("Load edit address page error:", error);
 
@@ -510,11 +503,10 @@ const editAddressPost = async (req, res) => {
       return res.redirect("/login");
     }
 
-
-const address = await Address.findOne({
-  user_id:userId,
-  _id:addressId
-})
+    const address = await Address.findOne({
+      user_id: userId,
+      _id: addressId,
+    });
 
     if (!address) {
       req.session.error = "Address not found.";
@@ -609,20 +601,20 @@ const address = await Address.findOne({
       });
     }
 
-
-if(defaultAddress){
-  await Address.updateMany({
-    user_id:userId,
-    _id: { $ne: addressId },
-    isDefault:true
-  },{
-    $set:{
-      isDefault:false
+    if (defaultAddress) {
+      await Address.updateMany(
+        {
+          user_id: userId,
+          _id: { $ne: addressId },
+          isDefault: true,
+        },
+        {
+          $set: {
+            isDefault: false,
+          },
+        },
+      );
     }
-  })
-}
-
-
 
     const updatedAddress = await Address.findOneAndUpdate(
       {
@@ -646,7 +638,7 @@ if(defaultAddress){
       {
         new: true,
         runValidators: true,
-      }
+      },
     );
 
     if (!updatedAddress) {
@@ -654,7 +646,7 @@ if(defaultAddress){
       return res.redirect("/profile/address");
     }
 
-req.session.success = "Address Editted Successfully"
+    req.session.success = "Address Editted Successfully";
 
     return res.redirect("/profile/address");
   } catch (error) {

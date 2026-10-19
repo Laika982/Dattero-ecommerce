@@ -102,6 +102,11 @@ const addCategory = async (req, res) => {
   try {
     const { category_name, description } = req.body;
 
+    if(!category_name && !description){
+      req.session.error = " Both field require"
+      return res.redirect("/admin/category/addCategory")
+    }
+
     const category = await Category.findOne({
       category_name: category_name.trim(),
     });
@@ -175,6 +180,7 @@ const editCategory = async (req, res) => {
 
       isListed: req.body.isListed === "true",
     };
+    
 
     // Remove existing image
     if (req.body.removeImage === "true") {

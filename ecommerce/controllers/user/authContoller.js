@@ -7,6 +7,14 @@ import { sendVerificationEmail } from "../../services/emailService.js";
 import { generateOtp } from "../../utils/otp.js";
 import { generateToken } from "../../utils/token.js";
 import { hashPassword, verifyPassword } from "../../utils/password.js";
+import {
+  REFERRAL_COOKIE,
+  buildReferralAttribution,
+  findReferrerByInvite,
+  followReferralInvite,
+  setReferralCookie,
+  clearReferralCookie,
+} from "../../services/referralService.js";
 
 const loadHomepage = async (req, res) => {
   try {
@@ -24,6 +32,13 @@ const loadHomepage = async (req, res) => {
 
 const loadSignUp = async (req, res) => {
   try {
+    const inviteCode = String(req.query.code || req.query.ref || "").trim();
+    if (inviteCode) {
+      const referrer = await findReferrerByInvite(inviteCode);
+      if (referrer?.referralToken) {
+        setReferralCookie(res, referrer.referralToken);
+      }
+    }
     return res.render("user/signup");
   } catch (error) {
     logger.error(error);
@@ -42,19 +57,11 @@ const registerUser = async (req, res) => {
     email = email?.trim().toLowerCase();
     referralCode = referralCode?.trim();
 
-    // =========================
-    // REQUIRED FIELDS
-    // =========================
-
     if (!name || !email || !password || !confirmpassword) {
       req.session.error = "All fields are required.";
 
       return res.redirect("/signup");
     }
-
-    // =========================
-    // NAME VALIDATION
-    // =========================
 
     const nameRegex = /^[A-Za-z\s]+$/;
 
@@ -64,10 +71,6 @@ const registerUser = async (req, res) => {
       return res.redirect("/signup");
     }
 
-    // =========================
-    // EMAIL VALIDATION
-    // =========================
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
@@ -75,10 +78,6 @@ const registerUser = async (req, res) => {
 
       return res.redirect("/signup");
     }
-
-    // =========================
-    // PASSWORD VALIDATION
-    // =========================
 
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -90,19 +89,11 @@ const registerUser = async (req, res) => {
       return res.redirect("/signup");
     }
 
-    // =========================
-    // CONFIRM PASSWORD
-    // =========================
-
     if (password !== confirmpassword) {
       req.session.error = "Passwords do not match.";
 
       return res.redirect("/signup");
     }
-
-    // =========================
-    // CHECK EXISTING USER
-    // =========================
 
     const existingUser = await User.findOne({ email });
 
@@ -112,15 +103,23 @@ const registerUser = async (req, res) => {
       return res.redirect("/signup");
     }
 
-    // =========================
-    // HASH PASSWORD
-    // =========================
+    const invite = referralCode || req.cookies[REFERRAL_COOKIE];
+    if (invite) {
+      const referrer = await findReferrerByInvite(invite);
+      if (!referrer) {
+        req.session.error = "Invalid referral code or invite link.";
+        return res.redirect("/signup");
+      }
+      if (
+        referrer.email &&
+        referrer.email.toLowerCase() === email.toLowerCase()
+      ) {
+        req.session.error = "You cannot use your own referral code.";
+        return res.redirect("/signup");
+      }
+    }
 
     const hashedPassword = await hashPassword(password);
-
-    // =========================
-    // GENERATE OTP
-    // =========================
 
     const otp = generateOtp();
 
@@ -135,17 +134,13 @@ const registerUser = async (req, res) => {
 
     console.log(`Sign up OTP is ${otp}`);
 
-    // =========================
-    // STORE SIGNUP INFORMATION
-    // =========================
-
     const signupToken = generateToken(
       {
         purpose: "signup",
         name,
         email,
         password: hashedPassword,
-        referralCode,
+        referralCode: referralCode || req.cookies[REFERRAL_COOKIE] || "",
       },
       "10m",
     );
@@ -156,10 +151,6 @@ const registerUser = async (req, res) => {
       sameSite: "lax",
       maxAge: 10 * 60 * 1000,
     });
-
-    // =========================
-    // STORE OTP INFORMATION
-    // =========================
 
     const otpToken = generateToken(
       {
@@ -179,10 +170,6 @@ const registerUser = async (req, res) => {
       // OTP session valid for 10 minutes
       maxAge: 10 * 60 * 1000,
     });
-
-    // =========================
-    // SUCCESS
-    // =========================
 
     req.session.success = `OTP sended on ${email} successfully `;
 
@@ -212,19 +199,11 @@ const verifyOtp = async (req, res) => {
   try {
     const otp = String(req.body.otp || "").trim();
 
-    // =========================
-    // EMPTY OTP
-    // =========================
-
     if (!otp) {
       req.session.error = "Please enter OTP.";
 
       return res.redirect("/verify-otp");
     }
-
-    // =========================
-    // GET OTP TOKEN
-    // =========================
 
     const otpToken = req.cookies.otpToken;
 
@@ -236,19 +215,11 @@ const verifyOtp = async (req, res) => {
 
     const otpData = jwt.verify(otpToken, process.env.JWT_SECRET);
 
-    // =========================
-    // CHECK OTP EXPIRY
-    // =========================
-
     if (Date.now() > otpData.otpExpiresAt) {
       req.session.error = "OTP expired. Please click Resend OTP.";
 
       return res.redirect("/verify-otp");
     }
-
-    // =========================
-    // CHECK OTP VALUE
-    // =========================
 
     if (otp !== String(otpData.otp)) {
       req.session.error = "Enter a valid OTP.";
@@ -256,9 +227,7 @@ const verifyOtp = async (req, res) => {
       return res.redirect("/verify-otp");
     }
 
-    // ==================================================
     // SIGNUP
-    // ==================================================
 
     if (otpData.purpose === "signup") {
       const signupToken = req.cookies.signupToken;
@@ -270,10 +239,6 @@ const verifyOtp = async (req, res) => {
       }
 
       const signupData = jwt.verify(signupToken, process.env.JWT_SECRET);
-
-      // =========================
-      // CHECK DUPLICATE EMAIL
-      // =========================
 
       const existingUser = await User.findOne({
         email: signupData.email,
@@ -288,29 +253,27 @@ const verifyOtp = async (req, res) => {
         return res.redirect("/signup");
       }
 
-      // =========================
-      // CREATE USER
-      // =========================
+      const attribution = await buildReferralAttribution({
+        referralCode: signupData.referralCode,
+        referralToken: req.cookies[REFERRAL_COOKIE],
+        excludeEmail: signupData.email,
+      });
 
       const saveUser = new User({
         name: signupData.name,
         email: signupData.email,
         password: signupData.password,
-        referralCode: signupData.referralCode,
+        referredBy: attribution.referredBy,
+        referralOfferId: attribution.referralOfferId,
       });
 
       await saveUser.save();
 
-      // =========================
-      // CLEAR TEMPORARY COOKIES
-      // =========================
-
       res.clearCookie("otpToken");
       res.clearCookie("signupToken");
+      clearReferralCookie(res);
 
-      // =========================
       // LOGIN USER
-      // =========================
 
       const token = generateToken({
         userId: saveUser._id,
@@ -328,9 +291,7 @@ const verifyOtp = async (req, res) => {
       return res.redirect("/");
     }
 
-    // ==================================================
     // FORGOT PASSWORD
-    // ==================================================
 
     if (otpData.purpose === "forgot-password") {
       const resetToken = generateToken(
@@ -355,17 +316,11 @@ const verifyOtp = async (req, res) => {
       return res.redirect("/resetPassword");
     }
 
-    // ==================================================
     // CHANGE EMAIL
-    // ==================================================
 
     if (otpData.purpose === "change-email") {
       const userId = otpData.userId;
       const newEmail = otpData.newEmail;
-
-      // =========================
-      // CHECK EMAIL ALREADY EXISTS
-      // =========================
 
       const existingUser = await User.findOne({
         email: newEmail,
@@ -380,10 +335,6 @@ const verifyOtp = async (req, res) => {
         return res.redirect("/verify-otp");
       }
 
-      // =========================
-      // UPDATE EMAIL
-      // =========================
-
       await User.findByIdAndUpdate(userId, {
         email: newEmail,
         name: otpData.name,
@@ -391,18 +342,10 @@ const verifyOtp = async (req, res) => {
         profileImage: otpData.profileImage || null,
       });
 
-      // =========================
-      // CLEAR OTP TOKEN
-      // =========================
-
       res.clearCookie("otpToken");
 
       return res.redirect("/profile");
     }
-
-    // ==================================================
-    // UNKNOWN PURPOSE
-    // ==================================================
 
     res.clearCookie("otpToken");
 
@@ -412,19 +355,11 @@ const verifyOtp = async (req, res) => {
   } catch (error) {
     logger.error(error);
 
-    // =========================
-    // JWT EXPIRED
-    // =========================
-
     if (error.name === "TokenExpiredError") {
       req.session.error = "OTP session expired. Please request a new OTP.";
 
       return res.redirect("/verify-otp");
     }
-
-    // =========================
-    // OTHER ERRORS
-    // =========================
 
     req.session.error = "Internal Server Error.";
 
@@ -436,14 +371,12 @@ const loadLogin = async (req, res) => {
   try {
     const { blocked } = req.query;
 
-    const error = blocked === "true"
-      ? "Your account has been blocked."
-      : res.locals.error;
+    const error =
+      blocked === "true" ? "Your account has been blocked." : res.locals.error;
 
     return res.render("user/login", {
       error,
     });
-
   } catch (err) {
     console.error("Load login error:", err);
 
@@ -525,19 +458,11 @@ const forgotPassword = async (req, res) => {
 
     email = email?.trim().toLowerCase();
 
-    // =========================
-    // CHECK EMAIL
-    // =========================
-
     if (!email) {
       req.session.error = "Enter email.";
 
       return res.redirect("/forgotPassword");
     }
-
-    // =========================
-    // FIND USER
-    // =========================
 
     const user = await User.findOne({ email });
 
@@ -546,10 +471,6 @@ const forgotPassword = async (req, res) => {
 
       return res.redirect("/forgotPassword");
     }
-
-    // =========================
-    // GENERATE OTP
-    // =========================
 
     const otp = generateOtp();
 
@@ -563,10 +484,6 @@ const forgotPassword = async (req, res) => {
 
     logger.info(`Forgot password OTP: ${otp}`);
 
-    // =========================
-    // CREATE OTP TOKEN
-    // =========================
-
     const otpToken = generateToken(
       {
         purpose: "forgot-password",
@@ -579,10 +496,6 @@ const forgotPassword = async (req, res) => {
       "10m",
     );
 
-    // =========================
-    // STORE OTP TOKEN
-    // =========================
-
     res.cookie("otpToken", otpToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -592,9 +505,6 @@ const forgotPassword = async (req, res) => {
       maxAge: 10 * 60 * 1000,
     });
 
-    // =========================
-    // SUCCESS
-    // =========================
     req.session.success = `OTP sended on ${email} successfully`;
 
     return res.redirect("/verify-otp");
@@ -609,7 +519,6 @@ const forgotPassword = async (req, res) => {
 
 const loadResetPassword = async (req, res) => {
   try {
-
     return res.render("user/reset-password");
   } catch (error) {
     logger.error(error);
@@ -622,19 +531,11 @@ const resetPassword = async (req, res) => {
   try {
     const { newPassword, confirmPassword } = req.body;
 
-    // =========================
-    // CHECK FIELDS
-    // =========================
-
     if (!newPassword || !confirmPassword) {
       req.session.error = "Fill both fields.";
 
       return res.redirect("/resetPassword");
     }
-
-    // =========================
-    // CHECK PASSWORD MATCH
-    // =========================
 
     if (newPassword !== confirmPassword) {
       req.session.error = "Passwords don't match.";
@@ -642,34 +543,17 @@ const resetPassword = async (req, res) => {
       return res.redirect("/resetPassword");
     }
 
-    // =========================
-    // GET RESET TOKEN
-    // =========================
-
     const token = req.cookies.resetEmail;
 
     if (!token) {
-      req.session.error =
-        "Reset session expired. Please try again.";
+      req.session.error = "Reset session expired. Please try again.";
 
       return res.redirect("/resetPassword");
     }
 
-    // =========================
-    // VERIFY JWT
-    // =========================
-
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // =========================
-    // HASH PASSWORD
-    // =========================
-
     const hashedPassword = await hashPassword(newPassword);
-
-    // =========================
-    // UPDATE PASSWORD
-    // =========================
 
     const user = await User.findOneAndUpdate(
       { email: decoded.email },
@@ -677,57 +561,42 @@ const resetPassword = async (req, res) => {
     );
 
     if (!user) {
-      req.session.error  = "User not found.";
+      req.session.error = "User not found.";
 
       return res.redirect("/resetPassword");
     }
 
-    // =========================
-    // CLEAR RESET COOKIE
-    // =========================
-
     res.clearCookie("resetEmail");
 
-    // =========================
-    // SUCCESS
-    // =========================
-    req.session.success = "Password Change Successfully"
+    req.session.success = "Password Change Successfully";
 
     return res.redirect("/login");
   } catch (error) {
     logger.error(error);
 
-    // =========================
-    // RESET TOKEN EXPIRED
-    // =========================
+
 
     if (error.name === "TokenExpiredError") {
       res.clearCookie("resetEmail");
 
-      req.session.error  =
-        "Reset session expired. Please request a new OTP.";
+      req.session.error = "Reset session expired. Please request a new OTP.";
 
       return res.redirect("/resetPassword");
     }
 
-    // =========================
-    // INVALID TOKEN
-    // =========================
+
 
     if (error.name === "JsonWebTokenError") {
       res.clearCookie("resetEmail");
 
-      req.session.error =
-        "Invalid reset session. Please try again.";
+      req.session.error = "Invalid reset session. Please try again.";
 
       return res.redirect("/resetPassword");
     }
 
-    // =========================
-    // SERVER ERROR
-    // =========================
 
-   req.session.error = "Internal Server Error.";
+
+    req.session.error = "Internal Server Error.";
 
     return res.redirect("/resetPassword");
   }
@@ -744,23 +613,17 @@ const resendOtp = async (req, res) => {
       });
     }
 
-    // =================================
-    // VERIFY JWT
-    // =================================
+
 
     const decoded = jwt.verify(otpToken, process.env.JWT_SECRET);
+    
 
-    // =================================
-    // GENERATE NEW OTP
-    // =================================
 
     const otp = generateOtp();
 
     let email;
 
-    // =================================
-    // DETERMINE EMAIL
-    // =================================
+
 
     if (decoded.purpose === "signup") {
       email = decoded.email;
@@ -782,9 +645,7 @@ const resendOtp = async (req, res) => {
       });
     }
 
-    // =================================
-    // SEND NEW OTP
-    // =================================
+
 
     console.log(`Resend OTP: ${otp}`);
 
@@ -797,9 +658,7 @@ const resendOtp = async (req, res) => {
       });
     }
 
-    // =================================
-    // CREATE NEW OTP TOKEN
-    // =================================
+
 
     const newTokenData = {
       purpose: decoded.purpose,
@@ -816,10 +675,7 @@ const resendOtp = async (req, res) => {
       newTokenData.newEmail = decoded.newEmail;
     }
 
-    // =================================
-    // JWT SESSION = 10 MINUTES
-    // OTP = 60 SECONDS
-    // =================================
+
 
     const newOtpToken = generateToken(newTokenData, "10m");
 
@@ -832,7 +688,7 @@ const resendOtp = async (req, res) => {
 
     logger.info(`OTP resent for ${decoded.purpose}`);
 
-    req.session.success = "Resend OTP successfully"
+    req.session.success = "Resend OTP successfully";
     return res.status(200).json({
       success: true,
       message: "OTP resent successfully",
@@ -857,7 +713,7 @@ const resendOtp = async (req, res) => {
 const logoutUser = async (req, res) => {
   try {
     res.clearCookie("token");
-    req.session.success = "Logout success"
+    req.session.success = "Logout success";
     return res.redirect("/");
   } catch (error) {
     logger.error("Logout error:", error);
@@ -865,21 +721,7 @@ const logoutUser = async (req, res) => {
   }
 };
 
-export {
-  loadHomepage,
-  loadLogin,
-  loadSignUp,
-  loadForgotPassword,
-  loadResetPassword,
-  registerUser,
-  verifyOtp,
-  loginUser,
-  forgotPassword,
-  resetPassword,
-  logoutUser,
-  loadVerifyOtp,
-  resendOtp,
-};
+
 
 export default {
   loadHomepage,

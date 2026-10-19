@@ -124,10 +124,14 @@
 </head>
 <body class="bg-surface text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
 {{> admin/aside}}
-<main class="ml-64 min-h-screen">
+<main class="lg:ml-64 ml-0 min-h-screen">
     {{> user/notification}}
-<header class="sticky top-0 w-full z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md flex justify-between items-center h-16 px-container-padding border-b border-outline-variant/30">
-<div class="flex items-center gap-6 flex-1">
+<header class="sticky top-0 w-full z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md flex justify-between items-center h-16 px-4 sm:px-6 md:px-container-padding border-b border-outline-variant/30">
+<div class="flex items-center gap-3 sm:gap-6 flex-1">
+    <!-- Mobile Sidebar Toggle -->
+    <button type="button" class="lg:hidden p-2 rounded-lg text-on-surface-variant hover:text-ink-black hover:bg-surface-variant/50 transition-colors touch-target" onclick="toggleAdminSidebar()" aria-label="Toggle Navigation">
+        <span class="material-symbols-outlined text-[22px]">menu</span>
+    </button>
 <div class="relative w-full max-w-md">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
 <input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-1 focus:ring-primary font-body-md text-body-md" placeholder="Search inventory..." type="text">
@@ -175,18 +179,6 @@
 </button>
 </div>
 </div>
-{{#if error}}
-<div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
-    {{error}}
-</div>
-{{/if}}
-
-{{#if success}}
-<div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
-    {{success}}
-</div>
-{{/if}}
-
 <form id="productForm" action="/admin/product/addProduct" method="POST" enctype="multipart/form-data" class="grid grid-cols-12 gap-grid-gutter">
 <div class="col-span-8 space-y-grid-gutter">
 <!-- Product Details -->
@@ -643,12 +635,12 @@ function displayImages() {
 function handleFileSelection(files) {
     const validImageFiles = Array.from(files).filter(file => file.type.startsWith("image/"));
     if (validImageFiles.length === 0) {
-        alert("Please select valid image files (JPG, PNG, WEBP).");
+        showNotification("error", "Please select valid image files (JPG, PNG, WEBP).");
         return;
     }
 
     if (selectedFiles.length + validImageFiles.length > 5) {
-        alert("Maximum 5 images are allowed in total.");
+        showNotification("error", "Maximum 5 images are allowed in total.");
         return;
     }
 
@@ -741,20 +733,20 @@ imagePreview.addEventListener("click", (e) => {
 document.getElementById("productForm").addEventListener("submit", (e) => {
     if (!productImages.files || productImages.files.length < 3) {
         e.preventDefault();
-        alert("Please upload at least 3 product images.");
+        showNotification("error", "Please upload at least 3 product images.");
         return;
     }
 
     if (productImages.files.length > 5) {
         e.preventDefault();
-        alert("Maximum 5 images are allowed.");
+        showNotification("error", "Maximum 5 images are allowed.");
         return;
     }
 
     const variantRows = document.querySelectorAll("#variantTableBody tr");
     if (variantRows.length === 0) {
         e.preventDefault();
-        alert("Please add at least one variant.");
+        showNotification("error", "Please add at least one variant.");
         return;
     }
 });
@@ -804,12 +796,12 @@ document.getElementById("productForm").addEventListener("submit", (e) => {
         const stock = document.getElementById("variantStock").value;
 
         if (!weight || price === "" || !sku || stock === "") {
-            alert("Please fill all variant fields.");
+            showNotification("error", "Please fill all variant fields.");
             return;
         }
 
         if (Number(price) < 0 || Number(stock) < 0) {
-            alert("Price and stock cannot be negative.");
+            showNotification("error", "Price and stock cannot be negative.");
             return;
         }
 
@@ -823,7 +815,22 @@ document.getElementById("productForm").addEventListener("submit", (e) => {
                 input.value.trim().toUpperCase() ===
                 sku.toUpperCase()
             ) {
-                alert("This SKU already exists.");
+                showNotification("error", "This SKU already exists.");
+                return;
+            }
+        }
+
+        const normalizedWeight = weight.replace(/\s+/g, "").toLowerCase();
+        const existingWeightInputs = variantTableBody.querySelectorAll(
+            'input[name*="[weight]"]'
+        );
+
+        for (const input of existingWeightInputs) {
+            if (
+                input.value.trim().replace(/\s+/g, "").toLowerCase() ===
+                normalizedWeight
+            ) {
+                showNotification("error", "Each product variant must have a unique weight.");
                 return;
             }
         }
@@ -911,7 +918,7 @@ document.getElementById("productForm").addEventListener("submit", (e) => {
         const rows = variantTableBody.querySelectorAll("tr");
 
         if (rows.length <= 1) {
-            alert("At least one variant is required.");
+            showNotification("error", "At least one variant is required.");
             return;
         }
 

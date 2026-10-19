@@ -1,13 +1,40 @@
 {{>user/header}}
 
 <!-- Main Content Area -->
-<main class="flex-1 p-container-padding mt-16 bg-surface-container-low min-h-[calc(100vh-72px)]">
+<main class="flex-1 px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-16 bg-surface min-h-screen safe-bottom-padding">
 
-    <div class="max-w-max-width mx-auto px-container-padding mt-6">
+    <div class="max-w-max-width mx-auto px-2 sm:px-container-padding mt-2 sm:mt-6">
     {{> user/notification}}
 </div>
 
 <div class="max-w-4xl mx-auto">
+
+    <!-- Mobile Account Navigation Tabs with Scroll Option -->
+    <div class="md:hidden mb-6">
+      <div id="account-nav-tabs"
+        class="flex items-center gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-6 sm:px-6 scroll-smooth select-none cursor-grab active:cursor-grabbing custom-nav-scrollbar">
+        <a href="/profile" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+          <span class="material-symbols-outlined text-[16px]">person</span>
+          Profile
+        </a>
+        <a href="/order/orders" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-on-surface text-surface text-xs font-semibold whitespace-nowrap shadow-sm touch-target flex-shrink-0">
+          <span class="material-symbols-outlined text-[16px]">shopping_bag</span>
+          My Orders
+        </a>
+        <a href="/wallet" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+          <span class="material-symbols-outlined text-[16px]">account_balance_wallet</span>
+          Wallet
+        </a>
+        <a href="/wishlist" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+          <span class="material-symbols-outlined text-[16px]">favorite</span>
+          Wishlist
+        </a>
+        <a href="/profile/address" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+          <span class="material-symbols-outlined text-[16px]">location_on</span>
+          Address Book
+        </a>
+      </div>
+    </div>
 
     <!-- Page Header -->
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -19,7 +46,10 @@
 
     <!-- Search Bar -->
     <div class="mb-6">
-        <form id="orderSearchForm" action="/order/orders" method="GET" class="relative flex items-center gap-2" onsubmit="handleOrderSearch(event)">
+        <form id="orderSearchForm" action="/order/orders" method="GET" class="relative flex items-center gap-2">
+            {{#unless isAll}}
+            <input type="hidden" name="status" value="{{currentStatus}}">
+            {{/unless}}
             <div class="relative flex-1 flex items-center">
                 <!-- Search Icon -->
                 <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant/70 text-[20px] pointer-events-none select-none">
@@ -37,12 +67,12 @@
                     class="w-full bg-surface border border-outline/20 rounded-xl pl-10 pr-10 py-2.5 text-body-md text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition-all shadow-sm"
                 >
 
-                <!-- Clear Button (Appears dynamically when text is typed) -->
+                <!-- Clear Button -->
                 <button 
                     type="button" 
                     id="orderSearchClearBtn" 
                     onclick="clearOrderSearch()" 
-                    class="hidden absolute right-3 w-6 h-6 rounded-full items-center justify-center text-on-surface-variant/70 hover:text-on-surface hover:bg-surface-container-high transition-all active:scale-90 cursor-pointer"
+                    class="{{#if search}}flex{{else}}hidden{{/if}} absolute right-3 w-6 h-6 rounded-full items-center justify-center text-on-surface-variant/70 hover:text-on-surface hover:bg-surface-container-high transition-all active:scale-90 cursor-pointer"
                     title="Clear search text"
                     aria-label="Clear search input"
                 >
@@ -63,36 +93,43 @@
     </div>
 
     <!-- Filter Chips -->
-    <div class="flex gap-3 mb-8 overflow-x-auto pb-2 scrollbar-hide">
-        <button type="button" class="filter-chip px-6 py-2 rounded-full bg-on-surface text-surface text-label-md transition-all active:scale-95 cursor-pointer" data-filter="all">All Orders</button>
-        <button type="button" class="filter-chip px-6 py-2 rounded-full border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high transition-colors active:scale-95 cursor-pointer" data-filter="in transit">In Transit</button>
-        <button type="button" class="filter-chip px-6 py-2 rounded-full border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high transition-colors active:scale-95 cursor-pointer" data-filter="delivered">Delivered</button>
-        <button type="button" class="filter-chip px-6 py-2 rounded-full border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high transition-colors active:scale-95 cursor-pointer" data-filter="processing">Processing</button>
-    </div>
-
-    <!-- No Orders Found Message -->
-    <div id="noOrdersFoundMessage" class="hidden py-16 px-4 text-center bg-surface rounded-xl border border-dashed border-outline/30 mb-6">
-        <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
-            <span class="material-symbols-outlined text-2xl">search_off</span>
-        </div>
-            <h3 class="font-headline-md text-lg font-semibold text-on-surface">
-                {{#if search}}
-                    No orders found
-                {{else}}
-                    No orders yet
-                {{/if}}
-            </h3>       
-            <p class="text-sm text-on-surface-variant mt-1">
-                {{#if search}}
-                    We couldn't find any orders matching "{{search}}".
-                {{else}}
-                    Your orders will appear here after you place an order.
-                {{/if}}
-            </p>
-                    <button type="button" onclick="clearOrderSearch()" class="mt-4 px-4 py-2 rounded-lg bg-surface-container-high text-on-surface text-sm font-medium hover:bg-surface-container transition-colors inline-flex items-center gap-1.5 active:scale-95 cursor-pointer">
-            <span class="material-symbols-outlined text-[18px]">clear_all</span>
-            Clear search
-        </button>
+    <div class="flex gap-2 sm:gap-3 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+        <a 
+            href="/order/orders{{#if search}}?search={{search}}{{/if}}" 
+            class="px-5 py-2 rounded-full text-label-md transition-all shrink-0 font-medium {{#if isAll}}bg-on-surface text-surface shadow-sm{{else}}border border-outline/20 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{{/if}}"
+        >
+            All Orders
+        </a>
+        <a 
+            href="/order/orders?status=pending{{#if search}}&search={{search}}{{/if}}" 
+            class="px-5 py-2 rounded-full text-label-md transition-all shrink-0 font-medium {{#if isPending}}bg-on-surface text-surface shadow-sm{{else}}border border-outline/20 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{{/if}}"
+        >
+            Pending
+        </a>
+        <a 
+            href="/order/orders?status=in_transit{{#if search}}&search={{search}}{{/if}}" 
+            class="px-5 py-2 rounded-full text-label-md transition-all shrink-0 font-medium {{#if isInTransit}}bg-on-surface text-surface shadow-sm{{else}}border border-outline/20 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{{/if}}"
+        >
+            In Transit
+        </a>
+        <a 
+            href="/order/orders?status=delivered{{#if search}}&search={{search}}{{/if}}" 
+            class="px-5 py-2 rounded-full text-label-md transition-all shrink-0 font-medium {{#if isDelivered}}bg-on-surface text-surface shadow-sm{{else}}border border-outline/20 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{{/if}}"
+        >
+            Delivered
+        </a>
+        <a 
+            href="/order/orders?status=cancelled{{#if search}}&search={{search}}{{/if}}" 
+            class="px-5 py-2 rounded-full text-label-md transition-all shrink-0 font-medium {{#if isCancelled}}bg-on-surface text-surface shadow-sm{{else}}border border-outline/20 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{{/if}}"
+        >
+            Cancelled
+        </a>
+        <a 
+            href="/order/orders?status=returned{{#if search}}&search={{search}}{{/if}}" 
+            class="px-5 py-2 rounded-full text-label-md transition-all shrink-0 font-medium {{#if isReturned}}bg-on-surface text-surface shadow-sm{{else}}border border-outline/20 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{{/if}}"
+        >
+            Returned
+        </a>
     </div>
 
 <!-- Orders List -->
@@ -145,7 +182,7 @@
                 <div class="flex flex-col items-end">
 
                     <span class="px-3 py-1 rounded-full bg-secondary-container text-on-surface text-[11px] font-bold tracking-widest uppercase mb-2">
-                        {{this.order_status}}
+                        {{formatStatus this.order_status}}
                     </span>
 
                     <span class="font-headline-lg text-on-surface text-2xl">
@@ -162,6 +199,12 @@
 
                 <div class="flex items-center gap-2 text-on-surface-variant text-sm">
 
+                    {{#if (eq this.order_status "return_requested")}}
+
+                        <span class="material-symbols-outlined text-primary scale-90">assignment_return</span>
+                        <span>Return requested</span>
+
+                    {{else}}
                     {{#if (eq this.order_status "delivered")}}
 
                         <span
@@ -186,6 +229,7 @@
                         </span>
 
                     {{/if}}
+                    {{/if}}
 
                 </div>
 
@@ -201,12 +245,14 @@
 
     {{#if (eq this.order_status "delivered")}}
 
-        <a
-            href="/order/orders/{{this.order_id}}/buy-again"
-            class="px-5 py-2 rounded-lg border border-outline text-label-md hover:bg-surface-container-high transition-colors"
-        >
-            Buy Again
-        </a>
+        <form action="/order/orders/{{this.order_id}}/buy-again" method="POST">
+            <button
+                type="submit"
+                class="px-5 py-2 rounded-lg border border-outline text-label-md hover:bg-surface-container-high transition-colors"
+            >
+                Buy Again
+            </button>
+        </form>
 
     {{else}}
 
@@ -237,7 +283,7 @@
             </div>
 
             <h3 class="font-headline-md text-lg font-semibold text-on-surface">
-                {{#if search}}
+                {{#if hasFilter}}
                     No orders found
                 {{else}}
                     No orders yet
@@ -246,11 +292,22 @@
 
             <p class="text-sm text-on-surface-variant mt-1">
                 {{#if search}}
-                    We couldn't find any orders matching "{{search}}".
+                    We couldn't find any orders matching "{{search}}"{{#unless isAll}} with status "{{currentStatusLabel}}"{{/unless}}.
                 {{else}}
-                    Your orders will appear here after you place an order.
+                    {{#unless isAll}}
+                        You don't have any orders with status "{{currentStatusLabel}}".
+                    {{else}}
+                        Your orders will appear here after you place an order.
+                    {{/unless}}
                 {{/if}}
             </p>
+
+            {{#if hasFilter}}
+            <a href="/order/orders" class="mt-4 px-4 py-2 rounded-lg bg-surface-container-high text-on-surface text-sm font-medium hover:bg-surface-container transition-colors inline-flex items-center gap-1.5 active:scale-95 cursor-pointer">
+                <span class="material-symbols-outlined text-[18px]">clear_all</span>
+                Clear filter
+            </a>
+            {{/if}}
 
         </div>
 
@@ -279,7 +336,7 @@
 
         {{#if (gt currentPage 1)}}
         <a
-            href="/order/orders?page={{subtract currentPage 1}}{{#if search}}&search={{search}}{{/if}}"
+            href="/order/orders?page={{subtract currentPage 1}}{{#if search}}&search={{search}}{{/if}}{{#unless isAll}}&status={{currentStatus}}{{/unless}}"
             class="px-3 py-1.5 rounded-lg border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors flex items-center gap-1"
             aria-label="Previous page"
         >
@@ -300,7 +357,7 @@
         {{#each (range 1 totalPages)}}
             {{#if (eq this ../currentPage)}}
             <a
-                href="/order/orders?page={{this}}{{#if ../search}}&search={{../search}}{{/if}}"
+                href="/order/orders?page={{this}}{{#if ../search}}&search={{../search}}{{/if}}{{#unless ../isAll}}&status={{../currentStatus}}{{/unless}}"
                 class="w-8 h-8 rounded-lg bg-on-surface text-surface text-label-md font-semibold flex items-center justify-center shadow-sm"
                 aria-current="page"
             >
@@ -308,7 +365,7 @@
             </a>
             {{else}}
             <a
-                href="/order/orders?page={{this}}{{#if ../search}}&search={{../search}}{{/if}}"
+                href="/order/orders?page={{this}}{{#if ../search}}&search={{../search}}{{/if}}{{#unless ../isAll}}&status={{../currentStatus}}{{/unless}}"
                 class="w-8 h-8 rounded-lg border border-outline/20 text-on-surface-variant text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors flex items-center justify-center"
             >
                 {{this}}
@@ -318,7 +375,7 @@
 
         {{#if (lt currentPage totalPages)}}
         <a
-            href="/order/orders?page={{add currentPage 1}}{{#if search}}&search={{search}}{{/if}}"
+            href="/order/orders?page={{add currentPage 1}}{{#if search}}&search={{search}}{{/if}}{{#unless isAll}}&status={{currentStatus}}{{/unless}}"
             class="px-3 py-1.5 rounded-lg border border-outline/20 text-on-surface text-label-md hover:bg-surface-container-high transition-colors flex items-center gap-1"
             aria-label="Next page"
         >
@@ -339,357 +396,52 @@
     </nav>
     {{/if}}
 
+    </div>
 </div>
+</main>
+
+<script>
+    // Search elements
+    const searchInput = document.getElementById('orderSearchInput');
+    const clearBtn = document.getElementById('orderSearchClearBtn');
+
+    // Toggle clear button visibility dynamically based on text content
+    function updateClearButtonState() {
+        if (!searchInput || !clearBtn) return;
+        if (searchInput.value.trim().length > 0) {
+            clearBtn.classList.remove('hidden');
+            clearBtn.classList.add('flex');
+        } else {
+            clearBtn.classList.add('hidden');
+            clearBtn.classList.remove('flex');
+        }
+    }
+
+    // Clear search input text and reset URL
+    function clearOrderSearch() {
+        if (!searchInput) return;
+        searchInput.value = '';
+        updateClearButtonState();
+
+        const url = new URL(window.location.href);
+        url.searchParams.delete('search');
+        url.searchParams.delete('page');
+        window.location.href = url.pathname + (url.searchParams.toString() ? '?' + url.searchParams.toString() : '');
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            updateClearButtonState();
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                clearOrderSearch();
+            }
+        });
+    }
 
-<!-- Mobile Bottom Navigation -->
 
-<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-lg border-t border-on-surface/5 px-6 py-3 z-50">
-
-<div class="flex justify-between items-center">
-
-<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
-
-<span class="material-symbols-outlined">home</span>
-
-<span class="text-[10px] font-bold uppercase tracking-tighter">Home</span>
-
-</a>
-
-<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
-
-<span class="material-symbols-outlined">search</span>
-
-<span class="text-[10px] font-bold uppercase tracking-tighter">Explore</span>
-
-</a>
-
-<a class="flex flex-col items-center gap-1 text-on-surface" href="#">
-
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
-
-<span class="text-[10px] font-bold uppercase tracking-tighter">Orders</span>
-
-</a>
-
-<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
-
-<span class="material-symbols-outlined">shopping_cart</span>
-
-<span class="text-[10px] font-bold uppercase tracking-tighter">Cart</span>
-
-</a>
-
-<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
-
-<span class="material-symbols-outlined">person</span>
-
-<span class="text-[10px] font-bold uppercase tracking-tighter">Account</span>
-
-</a>
-
-</div>
-
-</nav>
-
-{{!-- <script>
-
-    // Search elements
-
-    const searchInput = document.getElementById('orderSearchInput');
-
-    const clearBtn = document.getElementById('orderSearchClearBtn');
-
-    const searchForm = document.getElementById('orderSearchForm');
-
-    const emptyState = document.getElementById('noOrdersFoundMessage');
-
-    const searchKeywordSpan = document.getElementById('searchKeywordSpan');
-
-    const visibleCountSpan = document.getElementById('visibleOrdersCount');
-
-    const totalCountSpan = document.getElementById('totalOrdersCount');
-
-    const filterChips = document.querySelectorAll('.filter-chip');
-
-
-
-    let currentStatusFilter = 'all';
-
-
-
-    // Update total count on load
-
-    const allCards = document.querySelectorAll('.order-card-item');
-
-    if (totalCountSpan) {
-
-        totalCountSpan.textContent = allCards.length;
-
-    }
-
-
-
-    // Toggle clear button visibility dynamically based on text content
-
-    function updateClearButtonState() {
-
-        if (!searchInput || !clearBtn) return;
-
-        if (searchInput.value.trim().length > 0) {
-
-            clearBtn.classList.remove('hidden');
-
-            clearBtn.classList.add('flex');
-
-        } else {
-
-            clearBtn.classList.add('hidden');
-
-            clearBtn.classList.remove('flex');
-
-        }
-
-    }
-
-
-
-    // Clear search input text and reset orders
-
-    function clearOrderSearch() {
-
-        if (!searchInput) return;
-
-        searchInput.value = '';
-
-        updateClearButtonState();
-
-        searchInput.focus();
-
-
-
-        // If URL has search query parameter, reload clean /orders or update URL
-
-        const url = new URL(window.location.href);
-
-        if (url.searchParams.has('search')) {
-
-            url.searchParams.delete('search');
-
-            url.searchParams.delete('page');
-
-            window.location.href = url.pathname + (url.searchParams.toString() ? '?' + url.searchParams.toString() : '');
-
-            return;
-
-        }
-
-
-
-        applyCombinedFilter();
-
-    }
-
-
-
-    // Filter order cards based on search query and status filter
-
-    function applyCombinedFilter() {
-
-        const query = (searchInput ? searchInput.value.trim().toLowerCase() : '');
-
-        const cards = document.querySelectorAll('.order-card-item');
-
-        let visibleCount = 0;
-
-
-
-        cards.forEach(card => {
-
-            const cardText = card.textContent.toLowerCase();
-
-            const matchesQuery = !query || cardText.includes(query);
-
-
-
-            let matchesStatus = true;
-
-            if (currentStatusFilter !== 'all') {
-
-                matchesStatus = cardText.includes(currentStatusFilter);
-
-            }
-
-
-
-            if (matchesQuery && matchesStatus) {
-
-                card.style.display = '';
-
-                visibleCount++;
-
-            } else {
-
-                card.style.display = 'none';
-
-            }
-
-        });
-
-
-
-        // Toggle empty state
-
-        if (emptyState) {
-
-            if (visibleCount === 0 && (query || currentStatusFilter !== 'all')) {
-
-                emptyState.classList.remove('hidden');
-
-                if (searchKeywordSpan) {
-
-                    searchKeywordSpan.textContent = query || currentStatusFilter;
-
-                }
-
-            } else {
-
-                emptyState.classList.add('hidden');
-
-            }
-
-        }
-
-
-
-        // Update visible counter
-
-        if (visibleCountSpan) {
-
-            visibleCountSpan.textContent = visibleCount;
-
-        }
-
-    }
-
-
-
-    // Handle form submission / search button click
-
-    function handleOrderSearch(event) {
-
-        const cards = document.querySelectorAll('.order-card-item');
-
-        if (cards.length > 0) {
-
-            event.preventDefault();
-
-            applyCombinedFilter();
-
-            // Update URL without full refresh for smooth SPA feel
-
-            const url = new URL(window.location.href);
-
-            const val = searchInput ? searchInput.value.trim() : '';
-
-            if (val) {
-
-                url.searchParams.set('search', val);
-
-            } else {
-
-                url.searchParams.delete('search');
-
-            }
-
-            window.history.replaceState({}, '', url.toString());
-
-        }
-
-    }
-
-
-
-    // Real-time input listener: When anything is typed, pasted, or key pressed
-
-    if (searchInput) {
-
-        searchInput.addEventListener('input', () => {
-
-            updateClearButtonState();
-
-            applyCombinedFilter();
-
-        });
-
-
-
-        searchInput.addEventListener('paste', () => {
-
-            setTimeout(() => {
-
-                updateClearButtonState();
-
-                applyCombinedFilter();
-
-            }, 10);
-
-        });
-
-
-
-        searchInput.addEventListener('keydown', (e) => {
-
-            if (e.key === 'Escape') {
-
-                clearOrderSearch();
-
-            }
-
-        });
-
-
-
-        // Check initial value
-
-        updateClearButtonState();
-
-        if (searchInput.value.trim().length > 0) {
-
-            applyCombinedFilter();
-
-        }
-
-    }
-
-
-
-    // Filter chips interaction
-
-    filterChips.forEach(chip => {
-
-        chip.addEventListener('click', () => {
-
-            filterChips.forEach(c => {
-
-                c.classList.remove('bg-on-surface', 'text-surface');
-
-                c.classList.add('border', 'border-outline/20', 'text-on-surface-variant');
-
-            });
-
-            chip.classList.remove('border', 'border-outline/20', 'text-on-surface-variant');
-
-            chip.classList.add('bg-on-surface', 'text-surface');
-
-
-
-            currentStatusFilter = chip.getAttribute('data-filter') || 'all';
-
-            applyCombinedFilter();
-
-        });
-
-    });
 
 
 
@@ -731,106 +483,48 @@
 
     });
 
-</script> --}}
+    // Account navigation tabs scrolling & drag interactions
+    const navTabs = document.getElementById('account-nav-tabs');
+    if (navTabs) {
+        // Auto-center active tab
+        const activeTab = navTabs.querySelector('.bg-on-surface');
+        if (activeTab) {
+            activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+
+        // Mouse wheel horizontal scroll support
+        navTabs.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                navTabs.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
+
+        // Click and drag to scroll support
+        let isDown = false;
+        let startX;
+        let scrollLeftStart;
+
+        navTabs.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - navTabs.offsetLeft;
+            scrollLeftStart = navTabs.scrollLeft;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+
+        navTabs.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - navTabs.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            navTabs.scrollLeft = scrollLeftStart - walk;
+        });
+    }
+</script>
 
 
 
-<footer class="bg-surface-container-high w-full pt-section-gap pb-stack-lg border-t border-secondary/10">
-
-<div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter px-container-padding max-w-max-width mx-auto">
-
-<div class="flex flex-col gap-6 col-span-1 md:col-span-1">
-
-<span class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Nutri Burfi</span>
-
-<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">
-
-                    Elevating functional nutrition through the art of traditional craftsmanship. Premium protein sweets for the modern lifestyle.
-
-                </p>
-
-<div class="flex gap-4 mt-2">
-
-<a class="text-on-surface-variant hover:text-accent-blue transition-colors" href="#">
-
-<span class="material-symbols-outlined" data-icon="share">share</span>
-
-</a>
-
-</div>
-
-</div>
-
-<div class="flex flex-col gap-4">
-
-<h4 class="font-label-md text-label-md text-on-surface mb-2">Shop</h4>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Shop All</a>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Protein Burfi</a>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Performance Bars</a>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Wholesale</a>
-
-</div>
-
-<div class="flex flex-col gap-4">
-
-<h4 class="font-label-md text-label-md text-on-surface mb-2">About</h4>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Our Story</a>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Ingredients</a>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Nutritional Science</a>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Contact Us</a>
-
-</div>
-
-<div class="flex flex-col gap-4">
-
-<h4 class="font-label-md text-label-md text-on-surface mb-2">Support</h4>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">FAQ</a>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Shipping Info</a>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Returns</a>
-
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200" href="#">Privacy Policy</a>
-
-</div>
-
-<div class="col-span-1 md:col-span-4 mt-12 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
-
-<p class="font-label-md text-[10px] text-on-surface-variant font-normal">© 2024 Nutri Burfi. Handcrafted Protein Excellence.</p>
-
-<div class="flex gap-4 p-8 min-h-[300px]">
-
-<span class="font-label-md text-[10px] text-on-surface-variant font-normal">Secure Checkout</span>
-
-</div>
-
-</div>
-
-</div>
-
-</footer>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</body></html>
+{{> user/footer}}

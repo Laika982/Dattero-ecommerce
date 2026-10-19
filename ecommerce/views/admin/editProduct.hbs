@@ -139,75 +139,18 @@
 
 <body class="bg-surface text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
     <!-- SideNavBar Shell -->
-    <aside
-        class="fixed left-0 top-0 h-full w-64 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col h-screen py-container-padding px-stack-md z-50">
-        <div class="mb-10 px-2">
-            <h1 class="font-headline-lg text-headline-lg font-bold text-on-surface dark:text-on-primary-fixed">Nutri
-                Luxe</h1>
-            <p class="font-label-md text-label-md text-on-surface-variant/70">Luxury Wellness Admin</p>
-        </div>
-        <nav class="flex-1 space-y-1"><a
-                class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group"
-                href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span><span
-                    class="font-label-md text-label-md">Dashboard</span></a>
-            <!-- Active Tab: Products -->
-            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary dark:text-primary-fixed font-bold border-r-2 border-primary dark:border-primary-fixed bg-surface-variant transition-colors group"
-                href="#">
-                <span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
-                <span class="font-label-md text-label-md">Products</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group"
-                href="#">
-                <span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
-                <span class="font-label-md text-label-md">Orders</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group"
-                href="#">
-                <span class="material-symbols-outlined" data-icon="category">category</span>
-                <span class="font-label-md text-label-md">Categories</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group"
-                href="#">
-                <span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
-                <span class="font-label-md text-label-md">Coupons</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group"
-                href="#">
-                <span class="material-symbols-outlined" data-icon="branding_watermark">branding_watermark</span>
-                <span class="font-label-md text-label-md">Banners</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group"
-                href="#">
-                <span class="material-symbols-outlined" data-icon="local_offer">local_offer</span>
-                <span class="font-label-md text-label-md">Offers</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group"
-                href="#">
-                <span class="material-symbols-outlined" data-icon="group">group</span>
-                <span class="font-label-md text-label-md">Customers</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group"
-                href="#"><span class="material-symbols-outlined" data-icon="assessment">assessment</span><span
-                    class="font-label-md text-label-md">Sales Report</span></a><a
-                class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-on-secondary-container hover:bg-surface-variant dark:hover:bg-on-primary-fixed-variant transition-colors group"
-                href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span><span
-                    class="font-label-md text-label-md">Logout</span></a>
-        </nav>
-        <div class="mt-auto border-t border-outline-variant/30 pt-6 px-2">
-            <button
-                class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-primary text-on-primary font-label-md transition-all active:scale-95 hover:bg-opacity-90">
-                <span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
-                View Store
-            </button>
-        </div>
-    </aside>
+    {{> admin/aside}}
     <!-- Main Content Area -->
-    <main class="ml-64 min-h-screen">
+    <main class="lg:ml-64 ml-0 min-h-screen">
         {{> user/notification}}
         <!-- TopNavBar Shell -->
         <header
-            class="sticky top-0 w-full z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md flex justify-between items-center h-16 px-container-padding border-b border-outline-variant/30">
-            <div class="flex items-center gap-6 flex-1">
+            class="sticky top-0 w-full z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md flex justify-between items-center h-16 px-4 sm:px-6 md:px-container-padding border-b border-outline-variant/30">
+            <div class="flex items-center gap-3 sm:gap-6 flex-1">
+                <!-- Mobile Sidebar Toggle -->
+                <button type="button" class="lg:hidden p-2 rounded-lg text-on-surface-variant hover:text-ink-black hover:bg-surface-variant/50 transition-colors touch-target" onclick="toggleAdminSidebar()" aria-label="Toggle Navigation">
+                    <span class="material-symbols-outlined text-[22px]">menu</span>
+                </button>
                 <div class="relative w-full max-w-md">
                     <span
                         class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant"
@@ -264,18 +207,6 @@
                     </button>
                 </div>
             </div>
-            <!-- Bento Layout Form -->
-            {{#if error}}
-            <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl mb-6">
-                {{error}}
-            </div>
-            {{/if}}
-
-            {{#if success}}
-            <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl mb-6">
-                {{success}}
-            </div>
-            {{/if}}
 
             <form id="productForm" action="/admin/product/editProduct/{{product._id}}?_method=PUT" method="POST"
                 enctype="multipart/form-data" class="grid grid-cols-12 gap-grid-gutter">
@@ -292,7 +223,7 @@
                                 <input
                                     class="w-full bg-surface-container-low border-none rounded-lg p-4 font-body-md text-body-md form-input-focus transition-all"
                                     placeholder="e.g., Artisan Nutri Burfi - Gold Edition" type="text"
-                                    name="product_name" value="{{product.productName}}" required>
+                                    name="product_name" value="{{product.productName}}" >
                             </div>
                             <div>
                                 <label
@@ -300,7 +231,7 @@
                                 <textarea
                                     class="w-full bg-surface-container-low border-none rounded-lg p-4 font-body-md text-body-md form-input-focus transition-all leading-relaxed"
                                     placeholder="Describe the luxury experience, nutritional value, and artisanal craftsmanship..."
-                                    rows="8" name="description" required>{{product.productDescription}}</textarea>
+                                    rows="8" name="description" >{{product.productDescription}}</textarea>
                             </div>
                         </div>
                     </section>
@@ -891,13 +822,13 @@
             function handleFiles(files) {
                 const validImages = Array.from(files).filter(file => file.type.startsWith("image/"));
                 if (validImages.length === 0) {
-                    alert("Please select valid image files (JPG, PNG, WEBP).");
+                    showNotification("error", "Please select valid image files (JPG, PNG, WEBP).");
                     return;
                 }
 
                 const currentTotal = getRemainingDbImagesCount() + selectedFiles.length;
                 if (currentTotal + validImages.length > 5) {
-                    alert(`Maximum 5 images allowed. You currently have ${currentTotal} image(s).`);
+                    showNotification("error", "Maximum 5 images are allowed in total.");
                     return;
                 }
 
@@ -1027,20 +958,20 @@
 
                     if (totalRemaining < 3) {
                         e.preventDefault();
-                        alert(`Product must have at least 3 images. You currently have ${totalRemaining}.`);
+                        showNotification("error", "Please keep at least 3 product images.");
                         return;
                     }
 
                     if (totalRemaining > 5) {
                         e.preventDefault();
-                        alert(`Maximum 5 images allowed. You currently have ${totalRemaining}.`);
+                        showNotification("error", "Maximum 5 images are allowed.");
                         return;
                     }
 
                     const variantRows = document.querySelectorAll("#variantTableBody tr:not(#noVariantsRow)");
                     if (variantRows.length === 0) {
                         e.preventDefault();
-                        alert("Please have at least one variant.");
+                        showNotification("error", "Please add at least one variant.");
                         return;
                     }
 
@@ -1098,12 +1029,12 @@
                     const stock = stockInput ? stockInput.value.trim() : "";
 
                     if (!weight || price === "" || !sku || stock === "") {
-                        alert("Please fill all variant fields.");
+                        showNotification("error", "Please fill all variant fields.");
                         return;
                     }
 
                     if (Number(price) < 0 || Number(stock) < 0) {
-                        alert("Price and stock cannot be negative.");
+                        showNotification("error", "Price and stock cannot be negative.");
                         return;
                     }
 
@@ -1111,7 +1042,7 @@
                     const existingSkuInputs = variantTableBody.querySelectorAll('input[name*="[sku]"]');
                     for (const input of existingSkuInputs) {
                         if (input.value.trim().toUpperCase() === sku.toUpperCase()) {
-                            alert("This SKU already exists in this product.");
+                            showNotification("error", "This SKU already exists in this product.");
                             return;
                         }
                     }
@@ -1196,7 +1127,7 @@
 
                 const rows = variantTableBody.querySelectorAll("tr:not(#noVariantsRow)");
                 if (rows.length <= 1) {
-                    alert("At least one variant is required.");
+                    showNotification("error", "At least one variant is required.");
                     return;
                 }
 

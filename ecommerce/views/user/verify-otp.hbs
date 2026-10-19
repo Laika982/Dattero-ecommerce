@@ -1,56 +1,48 @@
 {{>user/header}}
 <!-- Main Content Canvas -->
-<div class="fixed inset-0 bg-surface z-40 hidden flex-col pt-24 px-container-padding" id="mobile-menu">
-    <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 text-on-surface" href="#">Home</a>
-    <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Products</a>
-    <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">About Us</a>
-    <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10" href="#">Contact</a>
-    <a class="font-headline-lg text-headline-lg py-4 border-b border-secondary/10 flex items-center justify-between"
-        href="#">Account <span class="material-symbols-outlined">person</span></a>
-</div>
-<main class="flex-grow flex items-center justify-center px-container-padding py-section-gap">
+<main class="flex-grow flex items-center justify-center px-4 sm:px-6 py-8 sm:py-16 safe-bottom-padding">
     <!-- Verification Card -->
     <div
-        class="w-full max-w-[480px] bg-surface-container-lowest rounded-xl p-8 md:p-12 border border-outline-variant/30 ambient-shadow relative overflow-hidden">
+        class="w-full max-w-[480px] bg-surface-container-lowest rounded-2xl p-5 sm:p-8 md:p-12 border border-outline-variant/30 ambient-shadow relative overflow-hidden">
         <!-- Subtle Background Motif -->
         <div class="absolute -top-24 -right-24 w-48 h-48 bg-primary-fixed/20 rounded-full blur-3xl"></div>
         <!-- Content -->
         <div class="relative z-10 text-center">
             <div
-                class="mb-stack-lg inline-flex items-center justify-center w-16 h-16 rounded-full bg-surface-container-high text-primary">
-                <span class="material-symbols-outlined text-4xl" data-icon="mark_email_unread">mark_email_unread</span>
+                class="mb-4 sm:mb-6 inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-surface-container-high text-primary">
+                <span class="material-symbols-outlined text-3xl sm:text-4xl" data-icon="mark_email_unread">mark_email_unread</span>
             </div>
-            <h2 class="font-headline-xl text-headline-xl text-on-surface mb-2">Verify your email</h2>
-            <p class="font-body-md text-on-surface-variant mb-10">We've sent a 6-digit verification code to your
+            <h2 class="font-headline-xl text-xl sm:text-2xl md:text-headline-xl text-on-surface mb-2 font-bold">Verify your email</h2>
+            <p class="font-body-md text-xs sm:text-sm text-on-surface-variant mb-6 sm:mb-10 leading-relaxed">We've sent a 6-digit verification code to your
                 inbox. Please enter it below to continue your luxury wellness journey.</p>
             <!-- OTP Input Area -->
             {{> user/notification}}
 
-            <form class="space-y-8" id="otp-form" action="/verify-otp" method="post">
+            <form class="space-y-6 sm:space-y-8" id="otp-form" action="/verify-otp" method="post">
                 <input type="hidden" name="otp" id="otp-value">
-                <div class="flex justify-between gap-2 md:gap-4">
+                <div class="flex justify-between items-center gap-1.5 sm:gap-2.5 md:gap-3 w-full">
                     <input
-                        class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric"
                         autocomplete="one-time-code">
                     <input
-                        class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
                     <input
-                        class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
                     <input
-                        class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
                     <input
-                        class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
                     <input
-                        class="otp-input w-12 h-16 md:w-14 md:h-20 text-center text-2xl font-semibold bg-surface-gray border border-outline-variant/30 rounded-lg transition-all focus:bg-surface-container-lowest"
+                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
                 </div>
                 <button
-                    class="w-full py-4 font-label-md text-label-md rounded-full hover:opacity-90 active:scale-[0.98] transition-all uppercase tracking-widest shadow-lg shadow-primary-container/20 bg-ink-black text-on-primary"
+                    class="w-full py-3.5 sm:py-4 font-label-md text-xs sm:text-label-md rounded-full hover:opacity-90 active:scale-[0.98] transition-all uppercase tracking-widest shadow-lg shadow-primary-container/20 bg-ink-black text-on-primary touch-target"
                     type="submit">
                     Verify Identity
                 </button>
@@ -194,7 +186,6 @@
     <!-- Background Atmospheric Element (Image) -->
 
 </main>
-{{> user/footer}}
 <script>
     // ==============================
     // OTP INPUT LOGIC

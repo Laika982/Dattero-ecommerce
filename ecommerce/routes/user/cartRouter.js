@@ -2,7 +2,7 @@ import express from "express";
 
 import cartController from "../../controllers/user/cartController.js";
 
-import {isAuthenticated} from "../../middleware/authMidilware.js";
+import { isAuthenticated } from "../../middleware/authMidilware.js";
 
 
 const router = express.Router();

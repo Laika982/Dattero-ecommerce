@@ -1,6 +1,8 @@
 import Order from "../../models/orderSchema.js";
 import User from "../../models/userSchema.js";
 import { increaseStock } from "../../services/inventoryService.js";
+import { creditWallet } from "../../services/walletService.js";
+import { processReferralReward } from "../../services/referralService.js";
 
 const adminListOrders = async (req, res) => {
   try {
@@ -153,7 +155,23 @@ const adminEditOrder = async (req, res) => {
       return res.status(404).send("Order not found");
     }
 
-    return res.render("admin/editOrder", { order });
+    const statusLabels = {
+      pending: "Pending",
+      shipped: "Shipped",
+      out_for_delivery: "Out for delivery",
+      delivered: "Delivered",
+      return_requested: "Return requested",
+      cancelled: "Cancelled",
+      returned: "Returned",
+    };
+    const nextStatuses = (allowedTransitions[order.order_status] || []).map(
+      (status) => ({
+        value: status,
+        label: statusLabels[status],
+      }),
+    );
+
+    return res.render("admin/editOrder", { order, nextStatuses });
   } catch (error) {
     console.error("Admin edit order error:", error);
     return res.status(500).send("Unable to load order editor");
@@ -176,9 +194,12 @@ const adminOrderReturn = async (req, res) => {
         item.quantity - (item.returned_quantity || 0),
         0,
       );
+      const orderWasDelivered = ["delivered", "return_requested"].includes(
+        order.order_status,
+      );
       const delivered =
         item.status === "delivered" ||
-        (order.order_status === "delivered" && item.status === "pending");
+        (orderWasDelivered && item.status === "pending");
 
       return {
         ...item,
@@ -189,9 +210,7 @@ const adminOrderReturn = async (req, res) => {
 
     return res.render("admin/orderReturn", {
       order,
-      hasReturnableItems: order.items.some(
-        (item) => item.is_returnable,
-      ),
+      hasReturnableItems: order.items.some((item) => item.is_returnable),
     });
   } catch (error) {
     console.error("Admin order return error:", error);
@@ -222,6 +241,9 @@ const processOrderReturn = async (req, res) => {
 
     const seenItemIds = new Set();
     const itemsToReturn = [];
+    const orderWasDelivered = ["delivered", "return_requested"].includes(
+      order.order_status,
+    );
 
     for (const requestedItem of requestedItems) {
       const itemId = String(requestedItem.itemId || "");
@@ -240,7 +262,7 @@ const processOrderReturn = async (req, res) => {
       const returnableQuantity = item.quantity - (item.returned_quantity || 0);
       const delivered =
         item.status === "delivered" ||
-        (order.order_status === "delivered" && item.status === "pending");
+        (orderWasDelivered && item.status === "pending");
 
       if (
         !delivered ||
@@ -258,12 +280,24 @@ const processOrderReturn = async (req, res) => {
       itemsToReturn.push({ item, quantity, reason });
     }
 
+    const refundAmount = Number(itemsToReturn.reduce(
+      (total, { item, quantity }) => total + Number(item.price) * quantity,
+      0,
+    ).toFixed(2));
+
+    if (!Number.isFinite(refundAmount) || refundAmount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Unable to calculate a valid refund for the selected items.",
+      });
+    }
+
     for (const { item, quantity } of itemsToReturn) {
       await increaseStock(item.variant_id, quantity);
     }
 
     for (const { item, quantity, reason } of itemsToReturn) {
-      if (item.status === "pending" && order.order_status === "delivered") {
+      if (item.status === "pending" && orderWasDelivered) {
         item.status = "delivered";
       }
       item.returned_quantity = (item.returned_quantity || 0) + quantity;
@@ -283,13 +317,27 @@ const processOrderReturn = async (req, res) => {
 
     if (allItemsClosed && hasReturnedItems) {
       order.order_status = "returned";
+    } else if (order.order_status === "return_requested") {
+      order.order_status = "delivered";
+    }
+
+    if (order.return_request?.status === "pending") {
+      order.return_request.status = "processed";
+      order.return_request.processed_at = new Date();
     }
 
     await order.save();
+    await creditWallet({
+      userId: order.user_id,
+      amount: refundAmount,
+      reason: "ORDER_RETURN",
+      orderId: order._id,
+    });
 
     return res.json({
       success: true,
-      message: "Return processed successfully.",
+      message: `Return processed. ₹${refundAmount.toFixed(2)} was credited to the customer's wallet.`,
+      refundAmount,
     });
   } catch (error) {
     console.error("Process order return error:", error);
@@ -309,6 +357,8 @@ const allowedTransitions = {
 
   delivered: [],
 
+  return_requested: [],
+
   cancelled: [],
 
   returned: [],
@@ -325,6 +375,7 @@ const updateOrderStatus = async (req, res) => {
       "shipped",
       "out_for_delivery",
       "delivered",
+      "return_requested",
       "cancelled",
     ];
 
@@ -350,6 +401,13 @@ const updateOrderStatus = async (req, res) => {
 
     const currentStatus = order.order_status;
 
+    if (newStatus === currentStatus) {
+      return res.json({
+        success: true,
+        message: "Order status is unchanged",
+      });
+    }
+
     if (!allowedTransitions[currentStatus].includes(newStatus)) {
       return res.status(400).json({
         success: false,
@@ -367,6 +425,16 @@ const updateOrderStatus = async (req, res) => {
           item.status = "cancelled";
         }
       }
+
+      if (order.payment_status === "paid" && order.final_amount > 0) {
+        await creditWallet({
+          userId: order.user_id,
+          amount: order.final_amount,
+          reason: "ORDER_CANCELLATION",
+          orderId: order._id,
+        });
+        order.payment_status = "refunded";
+      }
     }
 
     // Delivered items
@@ -376,9 +444,23 @@ const updateOrderStatus = async (req, res) => {
           item.status = "delivered";
         }
       }
+      if (order.payment_status === "pending") {
+        order.payment_status = "paid";
+      }
     }
 
     await order.save();
+
+    if (order.payment_status === "paid") {
+      try {
+        const orderCustomer = await User.findById(order.user_id);
+        if (orderCustomer?.referredBy) {
+          await processReferralReward({ order, user: orderCustomer });
+        }
+      } catch (rewardErr) {
+        console.error("Admin order referral reward error:", rewardErr);
+      }
+    }
 
     return res.json({
       success: true,

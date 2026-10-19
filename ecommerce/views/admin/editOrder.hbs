@@ -130,10 +130,14 @@
 <!-- SideNavBar -->
  {{> admin/aside}}
 <!-- Main Wrapper -->
-<div class="ml-64 min-h-screen flex flex-col">
+<div class="lg:ml-64 ml-0 min-h-screen flex flex-col">
 <!-- TopNavBar -->
-<header class="sticky top-0 w-full z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center h-16 px-container-padding">
-<div class="flex items-center gap-4 flex-grow max-w-xl">
+<header class="sticky top-0 w-full z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center h-16 px-4 sm:px-6 md:px-container-padding">
+<div class="flex items-center gap-3 sm:gap-4 flex-grow max-w-xl">
+    <!-- Mobile Sidebar Toggle -->
+    <button type="button" class="lg:hidden p-2 rounded-lg text-on-surface-variant hover:text-ink-black hover:bg-surface-variant/50 transition-colors touch-target" onclick="toggleAdminSidebar()" aria-label="Toggle Navigation">
+        <span class="material-symbols-outlined text-[22px]">menu</span>
+    </button>
 <div class="relative w-full">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant" data-icon="search">search</span>
 <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 focus:ring-1 focus:ring-primary text-body-md" placeholder="Search orders, customers..." type="text">
@@ -184,12 +188,10 @@
 <div class="space-y-2">
 <label class="font-label-md text-on-surface">Order Status</label>
 <select id="orderStatus" name="status" class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 focus:ring-1 focus:ring-primary text-body-md appearance-none">
-<option value="pending" {{#if (eq order.order_status "pending")}}selected{{/if}}>Pending</option>
-<option value="shipped" {{#if (eq order.order_status "shipped")}}selected{{/if}}>Shipped</option>
-<option value="out_for_delivery" {{#if (eq order.order_status "out_for_delivery")}}selected{{/if}}>Out for delivery</option>
-<option value="delivered" {{#if (eq order.order_status "delivered")}}selected{{/if}}>Delivered</option>
-<option value="cancelled" {{#if (eq order.order_status "cancelled")}}selected{{/if}}>Cancelled</option>
-<option value="returned" {{#if (eq order.order_status "returned")}}selected{{/if}} disabled>Returned</option>
+<option value="{{order.order_status}}" selected>{{formatStatus order.order_status}} (Current)</option>
+{{#each nextStatuses}}
+<option value="{{this.value}}">{{this.label}}</option>
+{{/each}}
 </select>
 </div>
 {{!-- <div class="space-y-2">

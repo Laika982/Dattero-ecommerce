@@ -1,6 +1,7 @@
 import Product from "../../models/productSchema.js";
 import Variant from "../../models/variantSchema.js";
 import Category from "../../models/categorySchema.js";
+import { getProductOfferPricing } from "../../services/offerService.js";
 
 const loadProducts = async (req, res) => {
   try {
@@ -70,19 +71,44 @@ const loadProducts = async (req, res) => {
       matchVarients[productId].push(product);
     });
 
+    const offerPricing = await getProductOfferPricing(productsFromDb, varients);
+
     //calculate the one product price
     let products = productsFromDb.map((product) => {
       const productId = product._id.toString();
 
       const productVarient = matchVarients[productId] || [];
 
-      const price = productVarient
-        .map((variant) => Number(variant.regular_price))
-        .filter((price) => !Number.isNaN(price));
+      const pricedVariants = productVarient
+        .map((variant) => {
+          const pricing = offerPricing.get(String(variant._id));
+          const listPrice = pricing?.price ?? Number(variant.regular_price);
+          return Number.isFinite(listPrice)
+            ? {
+              listPrice,
+              originalPrice: pricing?.basePrice ?? Number(variant.regular_price),
+              offerPercent: pricing?.discountPercentage || 0,
+              offerName: pricing?.offerName || null,
+            }
+            : null;
+        })
+        .filter(Boolean);
 
-      const listPrice = price.length > 0 ? Math.min(...price) : null;
+      if (!pricedVariants.length) {
+        return { ...product, listPrice: null };
+      }
 
-      return { ...product, listPrice };
+      const cheapest = pricedVariants.reduce((current, variant) =>
+        variant.listPrice < current.listPrice ? variant : current,
+      );
+
+      return {
+        ...product,
+        listPrice: cheapest.listPrice,
+        originalPrice: cheapest.offerPercent ? cheapest.originalPrice : null,
+        offerPercent: cheapest.offerPercent,
+        offerName: cheapest.offerName,
+      };
     });
 
     products = products.filter((product) => product.listPrice !== null);
@@ -186,15 +212,21 @@ const loadProduct = async (req, res) => {
       return res.redirect("/products");
     }
 
+    const offerPricing = await getProductOfferPricing([product], variants);
+
     const variantsWithPrice = variants.map((variant) => {
-      const effectivePrice =
+      const pricing = offerPricing.get(String(variant._id));
+      const effectivePrice = pricing?.price ?? (
         variant.sale_price !== null && variant.sale_price !== undefined
           ? Number(variant.sale_price)
-          : Number(variant.regular_price);
+          : Number(variant.regular_price)
+      );
 
       return {
         ...variant,
         effectivePrice,
+        offerName: pricing?.offerName || null,
+        offerPercent: pricing?.discountPercentage || 0,
       };
     });
 

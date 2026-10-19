@@ -12,6 +12,7 @@ import {
 } from "../../middleware/authMidilware.js";
 
 import userController from "../../controllers/user/authContoller.js";
+import { followReferralInvite, REFERRAL_COOKIE } from "../../services/referralService.js";
 
 const router = express.Router();
 
@@ -30,10 +31,18 @@ router.get("/contact", (req, res) => {
   res.render("user/contact");
 });
 
+// ingredients
+router.get("/ingredients", (req, res) => {
+  res.render("user/ingredients");
+});
+
+// Referral invite link
+router.get("/invite/:token", followReferralInvite);
+
 // ==================== GUEST ROUTES ====================
 
 // Login page
-router.get("/login", isGuest,  noCache, userController.loadLogin);
+router.get("/login", isGuest, noCache, userController.loadLogin);
 
 // Signup page
 router.get("/signup", isGuest, noCache, userController.loadSignUp);
@@ -95,54 +104,53 @@ router.get(
 );
 
 // Google callback
-router.get(
-  "/auth/google/callback",
-  (req, res, next) => {
-    passport.authenticate("google", { session: false }, (err, user, info) => {
-      if (err) {
-        console.error("Google authentication error:", err);
-        req.session.error = "Google authentication failed. Please try again.";
-        return res.redirect("/login");
-      }
+router.get("/auth/google/callback", (req, res, next) => {
+  passport.authenticate("google", { session: false }, (err, user, info) => {
+    if (err) {
+      console.error("Google authentication error:", err);
+      req.session.error = "Google authentication failed. Please try again.";
+      return res.redirect("/login");
+    }
 
-      if (!user) {
-        res.clearCookie("token");
-        const message = (info && info.message) || "Authentication failed. Please try again.";
-        req.session.error = message;
-        if (message.toLowerCase().includes("blocked")) {
-          return res.redirect("/login?blocked=true");
-        }
-        return res.redirect("/login");
-      }
-
-      if (user.isBlocked) {
-        res.clearCookie("token");
-        req.session.error = "Your account has been blocked.";
+    if (!user) {
+      res.clearCookie("token");
+      const message =
+        (info && info.message) || "Authentication failed. Please try again.";
+      req.session.error = message;
+      if (message.toLowerCase().includes("blocked")) {
         return res.redirect("/login?blocked=true");
       }
+      return res.redirect("/login");
+    }
 
-      const token = jwt.sign(
-        {
-          userId: user._id,
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: "1d",
-        },
-      );
+    if (user.isBlocked) {
+      res.clearCookie("token");
+      req.session.error = "Your account has been blocked.";
+      return res.redirect("/login?blocked=true");
+    }
 
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 24 * 60 * 60 * 1000,
-      });
+    const token = jwt.sign(
+      {
+        userId: user._id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      },
+    );
 
-      return res.redirect("/");
-    })(req, res, next);
-  },
-);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
+    res.clearCookie(REFERRAL_COOKIE);
+
+    return res.redirect("/");
+  })(req, res, next);
+});
 
 // ==================== AUTHENTICATED ====================
 

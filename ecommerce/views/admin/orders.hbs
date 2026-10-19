@@ -124,8 +124,12 @@
 <!-- SideNavBar Anchor -->
  {{> admin/aside}}
 <!-- TopNavBar Anchor -->
-<header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 ml-64 flex justify-between items-center h-16 px-container-padding">
+<header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 lg:ml-64 ml-0 flex justify-between items-center h-16 px-4 sm:px-6 md:px-container-padding">
 <div class="flex items-center flex-1 max-w-xl">
+    <!-- Mobile Sidebar Toggle -->
+    <button type="button" class="lg:hidden p-2 rounded-lg text-on-surface-variant hover:text-ink-black hover:bg-surface-variant/50 transition-colors mr-2 touch-target" onclick="toggleAdminSidebar()" aria-label="Toggle Navigation">
+        <span class="material-symbols-outlined text-[22px]">menu</span>
+    </button>
     <div class="flex items-center flex-1">
 
         <div class="relative w-full max-w-md">
@@ -204,7 +208,7 @@
 </div>
 </header>
 <!-- Main Content Canvas -->
-<main class="ml-64 p-container-padding h-[calc(100vh-64px)] overflow-y-auto">
+<main class="lg:ml-64 ml-0 p-4 sm:p-6 md:p-container-padding h-[calc(100vh-64px)] overflow-y-auto">
 <div class="max-w-max-width mx-auto">
 <!-- Header Section -->
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-lg mb-10">
@@ -323,7 +327,7 @@
 </main>
 
 <div id="ordersFilterModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/30 backdrop-blur-sm px-4" role="presentation">
-    <section class="w-full max-w-md bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/20 overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="ordersFilterTitle">
+    <section class="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/20" role="dialog" aria-modal="true" aria-labelledby="ordersFilterTitle">
         <div class="flex items-center justify-between px-6 py-5 border-b border-outline-variant/20">
             <div>
                 <h2 id="ordersFilterTitle" class="text-lg font-bold text-on-surface">Filter Orders</h2>
@@ -333,7 +337,7 @@
                 <span class="material-symbols-outlined">close</span>
             </button>
         </div>
-        <div class="p-6 space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-6">
             <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-surface-container-low cursor-pointer transition">
                 <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-primary">receipt_long</span></div><div><p class="font-semibold text-on-surface">All Orders</p><p class="text-xs text-on-surface-variant">Show every order</p></div></div>
                 <input type="radio" name="orderStatusFilter" value="" class="w-4 h-4 accent-primary" {{#unless status}}checked{{/unless}}>
@@ -353,6 +357,10 @@
             <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-green-50 cursor-pointer transition">
                 <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center"><span class="material-symbols-outlined text-green-600">check_circle</span></div><div><p class="font-semibold text-on-surface">Delivered</p><p class="text-xs text-on-surface-variant">Successfully delivered orders</p></div></div>
                 <input type="radio" name="orderStatusFilter" value="delivered" class="w-4 h-4 accent-primary" {{#if (eq status "delivered")}}checked{{/if}}>
+            </label>
+            <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-primary/5 cursor-pointer transition">
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center"><span class="material-symbols-outlined text-primary">assignment_return</span></div><div><p class="font-semibold text-on-surface">Return requested</p><p class="text-xs text-on-surface-variant">Customer requests awaiting review</p></div></div>
+                <input type="radio" name="orderStatusFilter" value="return_requested" class="w-4 h-4 accent-primary" {{#if (eq status "return_requested")}}checked{{/if}}>
             </label>
             <label class="flex items-center justify-between p-4 rounded-xl border border-outline-variant/30 hover:bg-red-50 cursor-pointer transition">
                 <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center"><span class="material-symbols-outlined text-red-600">cancel</span></div><div><p class="font-semibold text-on-surface">Cancelled</p><p class="text-xs text-on-surface-variant">Cancelled orders</p></div></div>

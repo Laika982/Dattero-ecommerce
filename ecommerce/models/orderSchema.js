@@ -56,9 +56,19 @@ const orderItemSchema = new mongoose.Schema(
       default: 0,
     },
 
+    coupon_code: {
+      type: String,
+      default: null,
+    },
+
     item_total: {
       type: Number,
       required: true,
+    },
+
+    gross_total: {
+      type: Number,
+      default: null,
     },
 
     status: {
@@ -162,6 +172,27 @@ const orderSchema = new mongoose.Schema(
       default: 0,
     },
 
+    offer_discount: {
+      type: Number,
+      default: 0,
+    },
+
+    referral_discount: {
+      type: Number,
+      default: 0,
+    },
+
+    referral_offer_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Offer",
+      default: null,
+    },
+
+    coupon_code: {
+      type: String,
+      default: null,
+    },
+
     tax: {
       type: Number,
       default: 0,
@@ -179,7 +210,7 @@ const orderSchema = new mongoose.Schema(
 
     payment_method: {
       type: String,
-      enum: ["cod"],
+      enum: ["cod", "upi", "wallet"],
       default: "cod",
     },
 
@@ -196,10 +227,32 @@ const orderSchema = new mongoose.Schema(
         "shipped",
         "out_for_delivery",
         "delivered",
+        "return_requested",
         "cancelled",
         "returned",
       ],
       default: "pending",
+    },
+
+    return_request: {
+      reason: {
+        type: String,
+        default: null,
+        maxlength: 500,
+      },
+      status: {
+        type: String,
+        enum: ["pending", "processed"],
+        default: null,
+      },
+      requested_at: {
+        type: Date,
+        default: null,
+      },
+      processed_at: {
+        type: Date,
+        default: null,
+      },
     },
   },
   {

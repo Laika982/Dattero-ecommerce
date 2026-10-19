@@ -1,255 +1,291 @@
 {{>user/header}}
-<div class="max-w-max-width mt-10 mx-auto flex min-h-screen">
-<!-- Sidebar Navigation -->
-{{> user/notification}}
-<!-- Main Content -->
-<main class="flex-1 p-container-padding lg:p-12 overflow-y-auto w-full">
-<header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-<div>
-<h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Saved Addresses</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">Manage your delivery locations for a seamless checkout experience. Set your default shipping and billing preferences below.</p>
-</div>
-<a href="/profile/address/add" class="flex items-center gap-2 px-6 py-3 bg-on-surface text-white rounded-full font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all shadow-md">
-<span class="material-symbols-outlined !text-white !text-lg">add</span>
-                    Add New Address
-                </a>
-</header>
-<!-- Address Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-grid-gutter">
-{{#each address}}
-<!-- Address Card -->
-<div class="bg-surface-container-lowest border border-on-surface/5 rounded-xl p-8 address-card-hover flex flex-col relative overflow-hidden group">
-{{#if this.isDefault}}
-<div class="absolute top-0 left-0 w-full h-1 bg-on-surface"></div>
-{{/if}}
-<div class="flex justify-between items-start mb-6">
-<div class="flex flex-col">
-<span class="text-[10px] tracking-widest uppercase font-bold text-on-surface/50 mb-1">
-  {{#if this.isDefault}}Default Shipping{{else}}Secondary Location{{/if}}
-</span>
-<h3 class="font-headline-lg text-[20px] text-on-surface">{{this.addressLabel}}</h3>
-</div>
-<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
-<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">
-  {{#if (eq this.addressLabel "Home")}}home{{else if (eq this.addressLabel "Work")}}work{{else}}location_on{{/if}}
-</span>
-</div>
-</div>
-<div class="space-y-1 mb-8 flex-1">
-<p class="font-semibold text-on-surface">{{this.fullName}}</p>
-<p class="text-on-surface-variant leading-relaxed">
-  {{this.street}}{{#if this.suite}}<br>{{this.suite}}{{/if}}<br>{{this.city}}, {{this.state}} {{this.zip}}<br>{{this.country}}
-</p>
-<p class="text-on-surface-variant mt-2 text-sm flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">phone</span>
-    {{this.phone}}
-</p>
-</div>
-<div class="flex items-center justify-between pt-6 border-t border-on-surface/5">
-{{#if this.isDefault}}
-<div class="flex items-center gap-1 text-primary font-bold text-label-md">
-  <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-  Primary
-</div>
-{{else}}
+<main class="min-h-screen px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-16 safe-bottom-padding">
+  <div class="max-w-max-width mx-auto px-2 sm:px-container-padding mt-2 sm:mt-6">
+    {{> user/notification}}
+  </div>
 
+  <div class="max-w-max-width mx-auto">
 
-<form action="/profile/address/make-primary/{{this._id}}?_method=PATCH" method="POST" class="inline">
-  <button type="submit" class="text-label-md font-medium text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 group/btn">
-    <span class="material-symbols-outlined text-sm group-hover/btn:scale-110 transition-transform">star</span>
-    Set as Primary
-  </button>
-</form>
-{{/if}}
+    <!-- Mobile Account Navigation Tabs with Scroll Option -->
+    <div class="md:hidden mb-6">
+      <div id="account-nav-tabs"
+        class="flex items-center gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:-mx-6 sm:px-6 scroll-smooth select-none cursor-grab active:cursor-grabbing custom-nav-scrollbar">
+        <a href="/profile" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+          <span class="material-symbols-outlined text-[16px]">person</span>
+          Profile
+        </a>
+        <a href="/order/orders" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+          <span class="material-symbols-outlined text-[16px]">shopping_bag</span>
+          My Orders
+        </a>
+        <a href="/wallet" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+          <span class="material-symbols-outlined text-[16px]">account_balance_wallet</span>
+          Wallet
+        </a>
+        <a href="/wishlist" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold whitespace-nowrap hover:bg-surface-variant transition-colors touch-target flex-shrink-0">
+          <span class="material-symbols-outlined text-[16px]">favorite</span>
+          Wishlist
+        </a>
+        <a href="/profile/address" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-on-surface text-surface text-xs font-semibold whitespace-nowrap shadow-sm touch-target flex-shrink-0">
+          <span class="material-symbols-outlined text-[16px]">location_on</span>
+          Address Book
+        </a>
+      </div>
+    </div>
 
-<a href="/profile/address/edit/{{this._id}}" class="text-label-md font-medium text-on-surface hover:text-primary transition-colors flex items-center gap-1 group/btn inline-flex">
-  <span class="material-symbols-outlined text-sm group-hover/btn:scale-110 transition-transform">edit</span>
-  Edit
-</a>
+    <!-- Header Section -->
+    <header class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-12">
+      <div>
+        <h1 class="font-headline-xl text-2xl sm:text-3xl md:text-headline-xl font-bold text-on-surface mb-1.5 tracking-tight">Saved Addresses</h1>
+        <p class="font-body-lg text-xs sm:text-sm md:text-base text-on-surface-variant max-w-xl">Manage your delivery locations for a seamless checkout experience. Set your default shipping and billing preferences below.</p>
+      </div>
+      <a href="/profile/address/add" class="flex items-center justify-center gap-2 px-6 py-3 bg-on-surface text-white rounded-full font-label-md text-xs sm:text-sm hover:opacity-90 active:scale-95 transition-all shadow-md touch-target w-full sm:w-auto">
+        <span class="material-symbols-outlined !text-white !text-lg">add</span>
+        Add New Address
+      </a>
+    </header>
 
-<form action="/profile/address/delete/{{this._id}}?_method=DELETE" method="POST" class="inline delete-address-form">
-  <button type="submit" class="text-label-md font-medium text-error/80 hover:text-error transition-colors flex items-center gap-1 group/btn">
-    <span class="material-symbols-outlined text-sm group-hover/btn:rotate-12 transition-transform">delete</span>
-    Remove
-  </button>
-</form>
-</div>
-</div>
-{{/each}}
+    <!-- Address Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+      {{#each address}}
+      <!-- Address Card -->
+      <div class="bg-surface-container-lowest border border-on-surface/5 rounded-2xl p-4 sm:p-6 md:p-8 address-card-hover flex flex-col justify-between relative overflow-hidden group shadow-sm">
+        {{#if this.isDefault}}
+        <div class="absolute top-0 left-0 w-full h-1 bg-on-surface"></div>
+        {{/if}}
+        <div>
+          <div class="flex justify-between items-start mb-4 sm:mb-6">
+            <div class="flex flex-col">
+              <span class="text-[10px] tracking-widest uppercase font-bold text-on-surface/50 mb-1">
+                {{#if this.isDefault}}Default Shipping{{else}}Secondary Location{{/if}}
+              </span>
+              <h3 class="font-headline-lg text-lg sm:text-[20px] font-bold text-on-surface">{{this.addressLabel}}</h3>
+            </div>
+            <div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">
+                {{#if (eq this.addressLabel "Home")}}home{{else if (eq this.addressLabel "Work")}}work{{else}}location_on{{/if}}
+              </span>
+            </div>
+          </div>
+          <div class="space-y-1 mb-6 text-xs sm:text-sm">
+            <p class="font-semibold text-on-surface">{{this.fullName}}</p>
+            <p class="text-on-surface-variant leading-relaxed">
+              {{this.street}}{{#if this.suite}}<br>{{this.suite}}{{/if}}<br>{{this.city}}, {{this.state}} {{this.zip}}<br>{{this.country}}
+            </p>
+            <p class="text-on-surface-variant pt-1 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">phone</span>
+              {{this.phone}}
+            </p>
+          </div>
+        </div>
 
-<!-- Empty State / Placeholder Card -->
-<a href="/profile/address/add" class="border-2 border-dashed border-on-surface/10 rounded-xl p-8 flex flex-col items-center justify-center text-on-surface-variant hover:border-on-surface/30 hover:bg-surface-container-low/50 transition-all group min-h-[320px]">
-<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-on-surface-variant">add_location</span>
-</div>
-<p class="font-medium text-on-surface">Add another address</p>
-<p class="text-xs mt-1">Gifts or secondary locations</p>
-</a>
-</div>
-<!-- Helpful Information Section -->
-<section class="mt-20 p-8 rounded-2xl bg-surface-container-low/50 border border-on-surface/5">
-<div class="flex items-start gap-6">
-<div class="hidden sm:flex shrink-0 w-12 h-12 rounded-full bg-on-surface text-white items-center justify-center">
-<span class="material-symbols-outlined">info</span>
-</div>
-<div class="space-y-4">
-<h4 class="font-headline-lg text-lg text-on-surface">About your saved addresses</h4>
-<div class="grid md:grid-cols-2 gap-8">
-<div>
-<p class="font-bold text-sm mb-2 text-on-surface">Security &amp; Privacy</p>
-<p class="text-sm text-on-surface-variant leading-relaxed">Your address information is encrypted and stored securely to ensure your privacy. We never share your shipping details with third-party marketers.</p>
-</div>
-<div>
-<p class="font-bold text-sm mb-2 text-on-surface">Default Shipping</p>
-<p class="text-sm text-on-surface-variant leading-relaxed">Your primary address is automatically selected for new orders. You can change your primary address at any time by editing the address card.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
+        <div class="flex flex-wrap items-center justify-between gap-2.5 pt-4 sm:pt-6 border-t border-on-surface/5">
+          {{#if this.isDefault}}
+          <div class="flex items-center gap-1 text-primary font-bold text-xs sm:text-label-md">
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            Primary
+          </div>
+          {{else}}
+          <form action="/profile/address/make-primary/{{this._id}}?_method=PATCH" method="POST" class="inline">
+            <button type="submit" class="text-xs sm:text-label-md font-medium text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 group/btn touch-target">
+              <span class="material-symbols-outlined text-sm group-hover/btn:scale-110 transition-transform">star</span>
+              Set as Primary
+            </button>
+          </form>
+          {{/if}}
+
+          <div class="flex items-center gap-3 ml-auto">
+            <a href="/profile/address/edit/{{this._id}}" class="text-xs sm:text-label-md font-medium text-on-surface hover:text-primary transition-colors flex items-center gap-1 group/btn inline-flex touch-target">
+              <span class="material-symbols-outlined text-sm group-hover/btn:scale-110 transition-transform">edit</span>
+              Edit
+            </a>
+
+            <form action="/profile/address/delete/{{this._id}}?_method=DELETE" method="POST" class="inline delete-address-form">
+              <button type="submit" class="text-xs sm:text-label-md font-medium text-error/80 hover:text-error transition-colors flex items-center gap-1 group/btn touch-target">
+                <span class="material-symbols-outlined text-sm group-hover/btn:rotate-12 transition-transform">delete</span>
+                Remove
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+
+      <!-- Empty State / Add Address Card -->
+      <a href="/profile/address/add" class="border-2 border-dashed border-on-surface/15 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-on-surface-variant hover:border-on-surface/40 hover:bg-surface-container-low/50 transition-all group min-h-[220px] sm:min-h-[300px] text-center">
+        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-sm">
+          <span class="material-symbols-outlined text-on-surface-variant text-2xl">add_location</span>
+        </div>
+        <p class="font-bold text-on-surface text-sm sm:text-base">Add another address</p>
+        <p class="text-xs text-on-surface-variant mt-1">Gifts or secondary locations</p>
+      </a>
+    </div>
+
+    <!-- Helpful Information Section -->
+    <section class="mt-12 sm:mt-16 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl bg-surface-container-low/50 border border-on-surface/5">
+      <div class="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
+        <div class="hidden sm:flex shrink-0 w-12 h-12 rounded-full bg-on-surface text-white items-center justify-center">
+          <span class="material-symbols-outlined">info</span>
+        </div>
+        <div class="space-y-4 w-full">
+          <h4 class="font-headline-lg text-base sm:text-lg text-on-surface font-bold">About your saved addresses</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
+            <div>
+              <p class="font-bold text-xs sm:text-sm mb-1 sm:mb-2 text-on-surface">Security &amp; Privacy</p>
+              <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">Your address information is encrypted and stored securely to ensure your privacy. We never share your shipping details with third-party marketers.</p>
+            </div>
+            <div>
+              <p class="font-bold text-xs sm:text-sm mb-1 sm:mb-2 text-on-surface">Default Shipping</p>
+              <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">Your primary address is automatically selected for new orders. You can change your primary address at any time by editing the address card.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </main>
-</div>
-<!-- Mobile Navigation (visible only on small screens) -->
-<div class="md:hidden fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-md border-t border-on-surface/5 z-50 flex justify-around items-center py-4 px-6">
-<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="text-[10px] font-medium">Overview</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-on-surface font-bold" href="/profile/address">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">location_on</span>
-<span class="text-[10px]">Addresses</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
-<span class="material-symbols-outlined">shopping_bag</span>
-<span class="text-[10px] font-medium">Cart</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="/profile">
-<span class="material-symbols-outlined">person</span>
-<span class="text-[10px] font-medium">Profile</span>
-</a>
-</div>
-<!-- Footer -->
-{{> user/footer}}
+
 <script>
-        function showConfirmModal({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', icon = 'logout', confirmColorClass = 'bg-primary text-on-primary', iconContainerColor = 'bg-error-container/30', iconColor = 'text-error' }) {
-            return new Promise((resolve) => {
-                const container = document.createElement('div');
-                container.className = 'fixed inset-0 z-50 flex items-center justify-center bg-on-surface/40 backdrop-blur-md opacity-0 animate-[fadeIn_0.3s_ease-out_forwards]';
-                
-                if (!document.getElementById('modal-animation-style')) {
-                    const style = document.createElement('style');
-                    style.id = 'modal-animation-style';
-                    style.innerHTML = `
-                        @keyframes fadeIn {
-                            from { opacity: 0; }
-                            to { opacity: 1; }
-                        }
-                        @keyframes modalSlideUp {
-                            from {
-                                opacity: 0;
-                                transform: scale(0.95) translateY(20px);
-                            }
-                            to {
-                                opacity: 1;
-                                transform: scale(1) translateY(0);
-                            }
-                        }
-                    `;
-                    document.head.appendChild(style);
-                }
+  function showConfirmModal({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', icon = 'logout', confirmColorClass = 'bg-primary text-on-primary', iconContainerColor = 'bg-error-container/30', iconColor = 'text-error' }) {
+    return new Promise((resolve) => {
+      const container = document.createElement('div');
+      container.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/40 backdrop-blur-md opacity-0 animate-[fadeIn_0.3s_ease-out_forwards]';
+      
+      if (!document.getElementById('modal-animation-style')) {
+        const style = document.createElement('style');
+        style.id = 'modal-animation-style';
+        style.innerHTML = `
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+          @keyframes modalSlideUp {
+            from {
+              opacity: 0;
+              transform: scale(0.95) translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: scale(1) translateY(0);
+            }
+          }
+        `;
+        document.head.appendChild(style);
+      }
 
-                container.innerHTML = `
-                    <div class="relative w-full max-w-md mx-auto p-8 bg-surface-container-lowest rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] transform scale-95 opacity-0 animate-[modalSlideUp_0.4s_ease-out_0.1s_forwards] border border-outline-variant/10">
-                        <div class="flex flex-col items-center text-center">
-                            <div class="w-16 h-16 ${iconContainerColor} rounded-full flex items-center justify-center mb-6">
-                                <span class="material-symbols-outlined ${iconColor} text-[32px] font-light">${icon}</span>
-                            </div>
-                            <h2 class="font-headline-xl text-headline-xl text-on-surface mb-4 tracking-tight">${title}</h2>
-                            <p class="font-body-xl text-body-xl text-on-surface-variant mb-10 max-w-[280px]">
-                                ${message}
-                            </p>
-                            <div class="flex flex-col w-full gap-3">
-                                <button class="w-full py-4 ${confirmColorClass} rounded-full font-label-md text-label-md hover:-translate-y-[1px] hover:shadow-lg transition-all duration-200 flex items-center justify-center" id="modal-confirm-btn">
-                                    ${confirmText}
-                                </button>
-                                <button class="w-full py-4 text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors duration-200" id="modal-cancel-btn">
-                                    ${cancelText}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
+      container.innerHTML = `
+        <div class="relative w-full max-w-md mx-4 sm:mx-auto p-6 sm:p-8 bg-surface-container-lowest rounded-2xl sm:rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] transform scale-95 opacity-0 animate-[modalSlideUp_0.4s_ease-out_0.1s_forwards] border border-outline-variant/10">
+          <div class="flex flex-col items-center text-center">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 ${iconContainerColor} rounded-full flex items-center justify-center mb-5 sm:mb-6">
+              <span class="material-symbols-outlined ${iconColor} text-[28px] sm:text-[32px] font-light">${icon}</span>
+            </div>
+            <h2 class="font-headline-xl text-xl sm:text-headline-xl text-on-surface mb-3 sm:mb-4 tracking-tight font-bold">${title}</h2>
+            <p class="font-body-md sm:font-body-xl text-xs sm:text-sm md:text-base text-on-surface-variant mb-8 sm:mb-10 max-w-[280px]">
+              ${message}
+            </p>
+            <div class="flex flex-col w-full gap-3">
+              <button class="w-full py-3.5 sm:py-4 ${confirmColorClass} rounded-full font-label-md text-label-md hover:-translate-y-[1px] hover:shadow-lg active:scale-95 transition-all duration-200 flex items-center justify-center touch-target" id="modal-confirm-btn">
+                ${confirmText}
+              </button>
+              <button class="w-full py-3.5 sm:py-4 text-on-surface-variant font-label-md text-label-md hover:text-on-surface active:scale-95 transition-colors duration-200 touch-target" id="modal-cancel-btn">
+                ${cancelText}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
 
-                document.body.appendChild(container);
+      document.body.appendChild(container);
 
-                const closeModal = (result) => {
-                    container.style.opacity = '0';
-                    container.style.transition = 'opacity 0.2s ease-out';
-                    setTimeout(() => {
-                        container.remove();
-                        resolve(result);
-                    }, 200);
-                };
+      const closeModal = (result) => {
+        container.style.opacity = '0';
+        container.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => {
+          container.remove();
+          resolve(result);
+        }, 200);
+      };
 
-                container.querySelector('#modal-cancel-btn').addEventListener('click', () => closeModal(false));
-                
-                container.addEventListener('click', (e) => {
-                    if (e.target === container) {
-                        closeModal(false);
-                    }
-                });
-
-                const confirmBtn = container.querySelector('#modal-confirm-btn');
-                confirmBtn.addEventListener('click', () => {
-                    confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>';
-                    confirmBtn.classList.add('opacity-80', 'cursor-not-allowed');
-                    setTimeout(() => {
-                        closeModal(true);
-                    }, 800);
-                });
-            });
+      container.querySelector('#modal-cancel-btn').addEventListener('click', () => closeModal(false));
+      
+      container.addEventListener('click', (e) => {
+        if (e.target === container) {
+          closeModal(false);
         }
+      });
 
-        // Address deletion confirmation
-        document.querySelectorAll('.delete-address-form').forEach(form => {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                showConfirmModal({
-                    title: 'Delete Address',
-                    message: 'Are you sure you want to delete this address?',
-                    confirmText: 'Delete',
-                    cancelText: 'Cancel',
-                    icon: 'delete',
-                    iconContainerColor: 'bg-error-container/30',
-                    iconColor: 'text-error'
-                }).then((confirmed) => {
-                    if (confirmed) {
-                        form.submit();
-                    }
-                });
-            });
-        });
+      const confirmBtn = container.querySelector('#modal-confirm-btn');
+      confirmBtn.addEventListener('click', () => {
+        confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>';
+        confirmBtn.classList.add('opacity-80', 'cursor-not-allowed');
+        setTimeout(() => {
+          closeModal(true);
+        }, 800);
+      });
+    });
+  }
 
-        // Simple micro-interactions
-        document.querySelectorAll('.address-card-hover').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                // Potential for more complex JS animations
-            });
-        });
+  // Address deletion confirmation
+  document.querySelectorAll('.delete-address-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      showConfirmModal({
+        title: 'Delete Address',
+        message: 'Are you sure you want to delete this address? This action cannot be undone.',
+        confirmText: 'Delete',
+        cancelText: 'Cancel',
+        icon: 'delete',
+        iconContainerColor: 'bg-error-container/30',
+        iconColor: 'text-error',
+        confirmColorClass: 'bg-error text-white'
+      }).then((confirmed) => {
+        if (confirmed) {
+          form.submit();
+        }
+      });
+    });
+  });
 
-        // Add to Cart / Interaction simulation
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            btn.addEventListener('mousedown', () => {
-                btn.style.transform = 'scale(0.96)';
-            });
-            btn.addEventListener('mouseup', () => {
-                btn.style.transform = 'scale(1)';
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'scale(1)';
-            });
-        });
-    </script>
+  // Account navigation tabs scrolling & drag interactions
+  const navTabs = document.getElementById('account-nav-tabs');
+  if (navTabs) {
+    // Auto-center active tab
+    const activeTab = navTabs.querySelector('.bg-on-surface');
+    if (activeTab) {
+      activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
+    // Mouse wheel horizontal scroll support
+    navTabs.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        navTabs.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+
+    // Click and drag to scroll support
+    let isDown = false;
+    let startX;
+    let scrollLeftStart;
+
+    navTabs.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - navTabs.offsetLeft;
+      scrollLeftStart = navTabs.scrollLeft;
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDown = false;
+    });
+
+    navTabs.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - navTabs.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      navTabs.scrollLeft = scrollLeftStart - walk;
+    });
+  }
+</script>
 
 {{>user/footer}}

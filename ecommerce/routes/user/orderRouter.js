@@ -20,6 +20,21 @@ router.get(
   isAuthenticated,
   orderController.loadOrderDetails,
 );
+router.post(
+  "/orders/:orderId/return-request",
+  isAuthenticated,
+  orderController.requestOrderReturn,
+);
+router.get(
+  "/orders/:orderId/track",
+  isAuthenticated,
+  orderController.loadOrderTracking,
+);
+router.post(
+  "/orders/:orderId/buy-again",
+  isAuthenticated,
+  orderController.buyAgain,
+);
 
 router.patch(
   "/orders/:orderId/items/:itemId/cancel",

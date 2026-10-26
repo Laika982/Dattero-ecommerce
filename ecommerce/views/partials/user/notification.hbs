@@ -106,6 +106,16 @@
 {{/if}}
 
 
+<style>
+    @keyframes toastProgressAnim {
+        from { width: 100%; }
+        to { width: 0%; }
+    }
+    .toast-progress-bar {
+        animation: toastProgressAnim 5s linear forwards;
+    }
+</style>
+
 <!-- Toast JavaScript -->
 <script>
 
@@ -114,13 +124,19 @@
     // ==========================================
 
     function closeToast(toastId) {
+        const selector = toastId ? `#${toastId}` : "#errorToast, #successToast";
+        const toasts = document.querySelectorAll(selector);
 
-        const toast = document.getElementById(toastId);
-
-        if (toast) {
-            toast.remove();
-        }
-
+        toasts.forEach(toast => {
+            toast.style.transition = "opacity 0.25s ease, transform 0.25s ease";
+            toast.style.opacity = "0";
+            toast.style.transform = "translateY(-8px)";
+            setTimeout(() => {
+                if (toast && toast.parentNode) {
+                    toast.remove();
+                }
+            }, 250);
+        });
     }
 
 
@@ -176,7 +192,9 @@
         progressTrack.className = isSuccess ? "h-[2px] w-full bg-green-100" : "h-[2px] w-full bg-red-100";
 
         const progress = document.createElement("div");
-        progress.className = isSuccess ? "h-full w-full bg-green-500" : "h-full w-full bg-red-500";
+        progress.className = isSuccess
+            ? "h-full w-full bg-green-500 toast-progress-bar"
+            : "h-full w-full bg-red-500 toast-progress-bar";
         progressTrack.appendChild(progress);
 
         toast.append(row, progressTrack);
@@ -185,7 +203,6 @@
         window.setTimeout(function () {
             closeToast(toastId);
         }, 5000);
-
     }
 
 
@@ -193,35 +210,31 @@
     // AUTOMATIC CLOSE AFTER 5 SECONDS
     // ==========================================
 
-    document.addEventListener("DOMContentLoaded", function () {
-
+    function initAutoCloseToasts() {
         const errorToast = document.getElementById("errorToast");
         const successToast = document.getElementById("successToast");
 
-
-        // Error toast
         if (errorToast) {
-
+            const errProg = errorToast.querySelector(".bg-red-500");
+            if (errProg) errProg.classList.add("toast-progress-bar");
             setTimeout(function () {
-
                 closeToast("errorToast");
-
             }, 5000);
-
         }
 
-
-        // Success toast
         if (successToast) {
-
+            const succProg = successToast.querySelector(".bg-green-500");
+            if (succProg) succProg.classList.add("toast-progress-bar");
             setTimeout(function () {
-
                 closeToast("successToast");
-
             }, 5000);
-
         }
+    }
 
-    });
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initAutoCloseToasts);
+    } else {
+        initAutoCloseToasts();
+    }
 
 </script>

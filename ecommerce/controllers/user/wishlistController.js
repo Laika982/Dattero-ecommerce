@@ -55,6 +55,22 @@ export const getWishlist = async (req, res) => {
 
 export const addToWishlist = async (req, res) => {
   try {
+    if (!req.user || !req.user._id) {
+      if (
+        req.xhr ||
+        req.headers["accept"]?.includes("application/json") ||
+        req.headers["content-type"]?.includes("application/json") ||
+        req.headers["sec-fetch-dest"] === "empty"
+      ) {
+        return res.status(401).json({
+          success: false,
+          message: "Please log in to add items to wishlist",
+          redirectTo: "/login",
+        });
+      }
+      return res.redirect("/login");
+    }
+
     const userId = req.user._id;
     const { productId } = req.params;
 

@@ -21,7 +21,9 @@ const loadAddress = async (req, res) => {
 
     if (userData.isBlocked) {
       res.clearCookie("token");
-      return res.redirect("/login");
+      delete req.cookies.token;
+      req.session.error = "Your account has been blocked.";
+      return res.redirect("/login?blocked=true");
     }
 
     const address = await Address.find({

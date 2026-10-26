@@ -78,7 +78,7 @@
             <div class="w-full lg:w-2/3">
                 <div class="bg-surface rounded-xl p-container-padding shadow-sm relative overflow-hidden">
                     <form action="/profile/edit?_method=PUT" method="POST" enctype="multipart/form-data"
-                        class="flex flex-col gap-stack-lg relative z-10" id="personal-info-form">
+                        class="flex flex-col gap-stack-lg relative z-10" id="personal-info-form" novalidate>
                         {{> user/notification}}
 
                         <!-- Hidden inputs for profile image upload and removal -->
@@ -94,10 +94,14 @@
                                 <label class="font-label-md text-label-md text-on-surface" for="name">Full Name</label>
                                 <div class="relative">
                                     <input
-                                        class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 px-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
-                                        id="name" name="name" placeholder="Full Name" type="text"
-                                        value="{{userData.name}}" required>
+                                        class="w-full bg-surface-container-low border border-transparent text-on-surface font-body-md rounded-lg py-3 px-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
+                                        id="name" name="name" placeholder="Full Name" type="text" autocomplete="name"
+                                        value="{{userData.name}}">
                                 </div>
+                                <p id="name-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                                    <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                                    <span class="error-text"></span>
+                                </p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2 mt-stack-md mb-2 pb-4 border-b border-surface-variant/50">
@@ -113,9 +117,13 @@
                                     <span
                                         class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-brand-gold transition-colors">mail</span>
                                     <input
-                                        class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
-                                        id="email" name="email" type="email" value="{{userData.email}}" required>
+                                        class="w-full bg-surface-container-low border border-transparent text-on-surface font-body-md rounded-lg py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
+                                        id="email" name="email" type="email" value="{{userData.email}}" autocomplete="email">
                                 </div>
+                                <p id="email-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                                    <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                                    <span class="error-text"></span>
+                                </p>
                                 <p class="font-label-sm text-label-sm text-on-surface-variant mt-1">This email is used
                                     for account recovery and notifications.</p>
                             </div>
@@ -127,9 +135,13 @@
                                     <span
                                         class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-brand-gold transition-colors">call</span>
                                     <input
-                                        class="w-full bg-surface-container-low text-on-surface font-body-md rounded-lg py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
-                                        id="phone" name="phone" type="tel" value="{{userData.phone}}">
+                                        class="w-full bg-surface-container-low border border-transparent text-on-surface font-body-md rounded-lg py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-brand-gold focus:bg-surface transition-all shadow-sm"
+                                        id="phone" name="phone" type="tel" value="{{userData.phone}}" placeholder="9876543210" autocomplete="tel">
                                 </div>
+                                <p id="phone-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                                    <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                                    <span class="error-text"></span>
+                                </p>
                             </div>
                         </div>
 
@@ -150,10 +162,131 @@
             </div>
         </div>
     </div>
+
+    <style>
+      .input-error {
+        border-color: #ef4444 !important;
+        box-shadow: 0 0 0 1px #ef4444 !important;
+        background-color: rgba(254, 242, 242, 0.45) !important;
+      }
+      .input-error:focus {
+        border-color: #ef4444 !important;
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.35) !important;
+      }
+    </style>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('personal-info-form');
-            const saveBtn = document.querySelector('button[type="submit"]');
+            if (!form) return;
+
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+
+            const nameError = document.getElementById('name-error');
+            const emailError = document.getElementById('email-error');
+            const phoneError = document.getElementById('phone-error');
+
+            const submitBtns = document.querySelectorAll('button[type="submit"][form="personal-info-form"], #personal-info-form button[type="submit"]');
+
+            const touched = {
+                name: false,
+                email: false,
+                phone: false
+            };
+
+            const nameRegex = /^[A-Za-z\s]+$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const phoneRegex = /^[6-9]\d{9}$/;
+
+            function showError(input, errorEl, message) {
+                input.classList.add('input-error');
+                if (errorEl) {
+                    const textSpan = errorEl.querySelector('.error-text');
+                    if (textSpan) textSpan.textContent = message;
+                    errorEl.classList.remove('hidden');
+                }
+            }
+
+            function clearError(input, errorEl) {
+                input.classList.remove('input-error');
+                if (errorEl) {
+                    const textSpan = errorEl.querySelector('.error-text');
+                    if (textSpan) textSpan.textContent = '';
+                    errorEl.classList.add('hidden');
+                }
+            }
+
+            function validateName() {
+                const val = (nameInput.value || '').trim();
+                if (!val) {
+                    showError(nameInput, nameError, 'Full name is required.');
+                    return false;
+                }
+                if (val.length < 2 || val.length > 50) {
+                    showError(nameInput, nameError, 'Full name must be between 2 and 50 characters.');
+                    return false;
+                }
+                if (!nameRegex.test(val)) {
+                    showError(nameInput, nameError, 'Full name must contain only letters and spaces.');
+                    return false;
+                }
+                clearError(nameInput, nameError);
+                return true;
+            }
+
+            function validateEmail() {
+                const val = (emailInput.value || '').trim();
+                if (!val) {
+                    showError(emailInput, emailError, 'Email address is required.');
+                    return false;
+                }
+                if (!emailRegex.test(val)) {
+                    showError(emailInput, emailError, 'Please enter a valid email address.');
+                    return false;
+                }
+                clearError(emailInput, emailError);
+                return true;
+            }
+
+            function validatePhone() {
+                const val = (phoneInput.value || '').trim().replace(/\D/g, '');
+                if (!val) {
+                    clearError(phoneInput, phoneError);
+                    return true; // Phone is optional in profile
+                }
+                if (!phoneRegex.test(val)) {
+                    showError(phoneInput, phoneError, 'Phone number must be a valid 10-digit number (starting with 6-9).');
+                    return false;
+                }
+                clearError(phoneInput, phoneError);
+                return true;
+            }
+
+            nameInput.addEventListener('blur', () => {
+                touched.name = true;
+                validateName();
+            });
+            nameInput.addEventListener('input', () => {
+                if (touched.name) validateName();
+            });
+
+            emailInput.addEventListener('blur', () => {
+                touched.email = true;
+                validateEmail();
+            });
+            emailInput.addEventListener('input', () => {
+                if (touched.email) validateEmail();
+            });
+
+            phoneInput.addEventListener('blur', () => {
+                touched.phone = true;
+                validatePhone();
+            });
+            phoneInput.addEventListener('input', () => {
+                if (touched.phone) validatePhone();
+            });
 
             // Avatar interactive elements
             const avatarUpload = document.getElementById('avatar-upload');
@@ -165,7 +298,6 @@
 
             const fallbackAvatarUrl = 'https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E';
 
-            // Function to trigger upload dialog
             const openUploadDialog = () => {
                 avatarUpload.click();
             };
@@ -173,35 +305,50 @@
             if (triggerUpload) triggerUpload.addEventListener('click', openUploadDialog);
             if (changePhotoBtn) changePhotoBtn.addEventListener('click', openUploadDialog);
 
-            // File upload change listener
             if (avatarUpload) {
                 avatarUpload.addEventListener('change', function (e) {
                     if (this.files && this.files[0]) {
                         const reader = new FileReader();
                         reader.onload = function (e) {
                             avatarPreview.src = e.target.result;
-                        }
+                        };
                         reader.readAsDataURL(this.files[0]);
                         removeProfileImageInput.value = 'false';
                     }
                 });
             }
 
-            // Remove photo listener
             if (removePhotoBtn) {
                 removePhotoBtn.addEventListener('click', () => {
                     avatarPreview.src = fallbackAvatarUrl;
-                    avatarUpload.value = ''; // Clear selected file
+                    avatarUpload.value = '';
                     removeProfileImageInput.value = 'true';
                 });
             }
 
-            // Handle form submission visuals
+            // Handle form submission visuals and validation
             form.addEventListener('submit', (e) => {
-                // Simple visual feedback for saving state
-                const originalText = saveBtn.innerText;
-                saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">sync</span> Saving...';
-                saveBtn.classList.add('opacity-80', 'cursor-wait');
+                touched.name = true;
+                touched.email = true;
+                touched.phone = true;
+
+                const isNameValid = validateName();
+                const isEmailValid = validateEmail();
+                const isPhoneValid = validatePhone();
+
+                if (!isNameValid || !isEmailValid || !isPhoneValid) {
+                    e.preventDefault();
+                    if (!isNameValid) nameInput.focus();
+                    else if (!isEmailValid) emailInput.focus();
+                    else if (!isPhoneValid) phoneInput.focus();
+                    return;
+                }
+
+                // If valid, show loading indicator on buttons
+                submitBtns.forEach(btn => {
+                    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">sync</span> Saving...';
+                    btn.classList.add('opacity-80', 'cursor-wait');
+                });
             });
         });
     </script>

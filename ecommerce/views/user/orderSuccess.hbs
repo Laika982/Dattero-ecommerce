@@ -73,6 +73,12 @@
 <span class="">Subtotal</span>
 <span class="">₹{{order.subtotal}}</span>
 </div>
+{{#if order.discount}}
+<div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
+<span class="">Discount</span>
+<span class="text-primary font-semibold">-₹{{order.discount}}</span>
+</div>
+{{/if}}
 <div class="flex justify-between font-body-md text-body-md text-on-surface-variant">
 <span class="">Shipping</span>
 <span class="text-primary font-semibold">₹{{order.shipping_charge}}</span>

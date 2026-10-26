@@ -10,6 +10,7 @@ const listCoupons = async (req, res) => {
       : "all";
     const requestedPage = Math.max(Number(req.query.page) || 1, 1);
     const limit = 5;
+    const search = req.query.search ? req.query.search.trim() : "";
     const query =
       filter === "active"
         ? { is_active: true }
@@ -18,6 +19,9 @@ const listCoupons = async (req, res) => {
           : filter === "expired"
             ? { expiry_date: { $lt: new Date() } }
             : {};
+    if (search) {
+      query.code = { $regex: search, $options: "i" };
+    }
     const totalCoupons = await Coupon.countDocuments(query);
     const totalPages = Math.ceil(totalCoupons / limit);
     const currentPage = totalPages ? Math.min(requestedPage, totalPages) : 1;
@@ -36,6 +40,7 @@ const listCoupons = async (req, res) => {
       totalPages,
       currentPage,
       filter,
+      search,
       pages: Array.from({ length: totalPages }, (_, index) => index + 1),
       startItem: totalCoupons ? skip + 1 : 0,
       endItem: skip + coupons.length,
@@ -94,7 +99,6 @@ const createCoupon = async (req, res) => {
       discountValue,
       status,
       minAmount,
-      usageLimit,
       startDate,
       endDate,
     ];
@@ -117,7 +121,10 @@ const createCoupon = async (req, res) => {
       maxDiscount == null || String(maxDiscount).trim() === ""
         ? null
         : Number(maxDiscount);
-    const parsedUsageLimit = Number(usageLimit);
+    const parsedUsageLimit =
+      usageLimit == null || String(usageLimit).trim() === ""
+        ? null
+        : Number(usageLimit);
 
     if (!/^[A-Z0-9_-]{6,30}$/.test(formatedCouponCode)) {
       req.session.error =
@@ -139,8 +146,8 @@ const createCoupon = async (req, res) => {
       req.session.error = "Percentage discount cannot exceed 100";
       return res.redirect("/admin/coupons/add");
     }
-    if (parsedUsageLimit < 1) {
-      req.session.error = "Usage limit at least 1";
+    if (parsedUsageLimit !== null && parsedUsageLimit < 1) {
+      req.session.error = "Usage limit per customer must be at least 1";
       return res.redirect("/admin/coupons/add");
     }
 
@@ -151,8 +158,8 @@ const createCoupon = async (req, res) => {
       parsedMinAmount < 0 ||
       (parsedMaxDiscount !== null &&
         (!Number.isFinite(parsedMaxDiscount) || parsedMaxDiscount <= 0)) ||
-      !Number.isInteger(parsedUsageLimit) ||
-      parsedUsageLimit < 1
+      (parsedUsageLimit !== null &&
+        (!Number.isInteger(parsedUsageLimit) || parsedUsageLimit < 1))
     ) {
       req.session.error = "Please enter valid numeric values";
       return res.redirect("/admin/coupons/add");

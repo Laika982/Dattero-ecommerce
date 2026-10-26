@@ -1,13 +1,19 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Edit coupon | Admin</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>body{font-family:Inter,sans-serif}</style>
+  <style>
+    body {
+      font-family: Inter, sans-serif
+    }
+  </style>
 </head>
+
 <body class="min-h-screen bg-slate-50 text-slate-900">
   {{> admin/aside}}
   <main class="mx-auto min-h-screen max-w-4xl px-5 py-10 md:ml-64 md:px-8">
@@ -17,42 +23,54 @@
       <h1 class="text-3xl font-bold">Edit coupon</h1>
       <p class="mt-2 text-slate-600">Update {{coupon.code}}</p>
     </header>
-    {{#if error}}<p role="alert" class="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-red-800">{{error}}</p>{{/if}}
+    {{#if error}}<p role="alert" class="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-red-800">
+      {{error}}</p>{{/if}}
 
-    <form id="editCouponForm" method="post" action="/admin/coupons/edit/{{coupon._id}}?_method=PATCH" class="space-y-6 rounded-md border border-slate-200 bg-white p-5 md:p-7">
+    <form id="editCouponForm" method="post" action="/admin/coupons/edit/{{coupon._id}}?_method=PATCH"
+      class="space-y-6 rounded-md border border-slate-200 bg-white p-5 md:p-7">
       <input type="hidden" name="_method" value="PATCH">
       <div class="grid gap-5 sm:grid-cols-2">
         <div class="sm:col-span-2">
           <label for="couponCode" class="mb-1.5 block text-sm font-semibold">Coupon code</label>
-          <input id="couponCode" name="couponCode" value="{{coupon.code}}" required minlength="6" maxlength="30" class="w-full rounded-md border-slate-300 uppercase focus:border-emerald-700 focus:ring-emerald-700">
+          <input id="couponCode" name="couponCode" value="{{coupon.code}}" required minlength="6" maxlength="30"
+            class="w-full rounded-md border-slate-300 uppercase focus:border-emerald-700 focus:ring-emerald-700">
         </div>
         <div>
           <label for="discountType" class="mb-1.5 block text-sm font-semibold">Discount type</label>
-          <select id="discountType" name="discountType" required class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
-            <option value="PERCENTAGE" {{#if (eq coupon.discount_type "PERCENTAGE")}}selected{{/if}}>Percentage</option>
-            <option value="FIXED" {{#if (eq coupon.discount_type "FIXED")}}selected{{/if}}>Fixed amount</option>
+          <select id="discountType" name="discountType" required
+            class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
+            <option value="PERCENTAGE" {{#if (eq coupon.discount_type "PERCENTAGE" )}}selected{{/if}}>Percentage
+            </option>
+            <option value="FIXED" {{#if (eq coupon.discount_type "FIXED" )}}selected{{/if}}>Fixed amount</option>
           </select>
         </div>
         <div>
           <label for="discountValue" class="mb-1.5 block text-sm font-semibold">Discount value</label>
-          <input id="discountValue" name="discountValue" type="number" value="{{coupon.discount_value}}" min="0.01" step="0.01" required class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
+          <input id="discountValue" name="discountValue" type="number" value="{{coupon.discount_value}}" min="0.01"
+            step="0.01" required
+            class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
           <p class="mt-1 text-xs text-slate-500">Percentage discounts cannot exceed 100.</p>
         </div>
         <div>
-          <label for="maxDiscount" class="mb-1.5 block text-sm font-semibold">Maximum discount <span class="font-normal text-slate-500">(optional)</span></label>
-          <input id="maxDiscount" name="maxDiscount" type="number" value="{{coupon.max_discount}}" min="0.01" step="0.01" class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
+          <label for="maxDiscount" class="mb-1.5 block text-sm font-semibold">Maximum discount <span
+              class="font-normal text-slate-500">(optional)</span></label>
+          <input id="maxDiscount" name="maxDiscount" type="number" value="{{coupon.max_discount}}" min="0.01"
+            step="0.01" class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
         </div>
         <div>
           <label for="minAmount" class="mb-1.5 block text-sm font-semibold">Minimum purchase</label>
-          <input id="minAmount" name="minAmount" type="number" value="{{coupon.minimum_purchase}}" min="0" step="0.01" required class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
+          <input id="minAmount" name="minAmount" type="number" value="{{coupon.minimum_purchase}}" min="0" step="0.01"
+            required class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
         </div>
         <div>
           <label for="usageLimit" class="mb-1.5 block text-sm font-semibold">Usage limit</label>
-          <input id="usageLimit" name="usageLimit" type="number" value="{{coupon.usage_limit}}" min="1" step="1" required class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
+          <input id="usageLimit" name="usageLimit" type="number" value="{{coupon.usage_limit}}" min="1" step="1"
+            required class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
         </div>
         <div>
           <label for="categoryId" class="mb-1.5 block text-sm font-semibold">Category</label>
-          <select id="categoryId" name="category_id" required class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
+          <select id="categoryId" name="category_id" required
+            class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
             <option value="" disabled>Select category</option>
             {{#each categories}}
             <option value="{{_id}}" {{#if (eq _id ../coupon.category_id)}}selected{{/if}}>{{category_name}}</option>
@@ -61,25 +79,32 @@
         </div>
         <div>
           <label for="status" class="mb-1.5 block text-sm font-semibold">Status</label>
-          <select id="status" name="status" required class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
+          <select id="status" name="status" required
+            class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
             <option value="active" {{#if coupon.isActive}}selected{{/if}}>Active</option>
             <option value="inactive" {{#unless coupon.isActive}}selected{{/unless}}>Inactive</option>
           </select>
         </div>
         <div>
           <label for="startDate" class="mb-1.5 block text-sm font-semibold">Start date</label>
-          <input id="startDate" name="startDate" type="date" value="{{coupon.startDateValue}}" required class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
+          <input id="startDate" name="startDate" type="date" value="{{coupon.startDateValue}}" required
+            class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
         </div>
         <div>
           <label for="endDate" class="mb-1.5 block text-sm font-semibold">End date</label>
-          <input id="endDate" name="endDate" type="date" value="{{coupon.expiryDateValue}}" required class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
+          <input id="endDate" name="endDate" type="date" value="{{coupon.expiryDateValue}}" required
+            class="w-full rounded-md border-slate-300 focus:border-emerald-700 focus:ring-emerald-700">
         </div>
       </div>
       <div class="flex flex-wrap justify-end gap-3 border-t border-slate-100 pt-5">
-        <a href="/admin/coupons" class="rounded-md border border-slate-300 px-4 py-2.5 font-medium text-slate-700 hover:bg-slate-50">Cancel</a>
-        <button type="submit" class="rounded-md bg-emerald-700 px-5 py-2.5 font-semibold text-white hover:bg-emerald-800">Save changes</button>
+        <a href="/admin/coupons"
+          class="rounded-md border border-slate-300 px-4 py-2.5 font-medium text-slate-700 hover:bg-slate-50">Cancel</a>
+        <button type="submit"
+          class="rounded-md bg-emerald-700 px-5 py-2.5 font-semibold text-white hover:bg-emerald-800">Save
+          changes</button>
       </div>
     </form>
   </main>
 </body>
+
 </html>

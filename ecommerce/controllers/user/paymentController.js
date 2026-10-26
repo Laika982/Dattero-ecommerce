@@ -125,7 +125,12 @@ export const verifyPayment = async (req, res) => {
 
 export const createCheckoutPaymentOrder = async (req, res) => {
   try {
-    const { addressId, couponCode = "" } = req.body;
+    const { addressId } = req.body;
+    const couponCode = (
+      typeof req.body.couponCode === "string" && req.body.couponCode.trim()
+        ? req.body.couponCode.trim()
+        : (req.session?.appliedCouponCode || "")
+    );
     const userId = req.user._id;
 
     if (!mongoose.isValidObjectId(addressId)) {

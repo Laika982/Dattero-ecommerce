@@ -27,6 +27,7 @@ export const loadOffersPage = async (req, res) => {
     const requestedPage = Math.max(Number(req.query.page) || 1, 1);
     const limit = 5;
     const now = new Date();
+    const search = req.query.search ? req.query.search.trim() : "";
     const query = filter === "product"
       ? { offer_type: "PRODUCT" }
       : filter === "category"
@@ -38,6 +39,9 @@ export const loadOffersPage = async (req, res) => {
             : filter === "inactive"
               ? { $or: [{ is_active: false }, { end_date: { $lte: now } }, { start_date: { $gt: now } }] }
               : {};
+    if (search) {
+      query.name = { $regex: search, $options: "i" };
+    }
 
     const totalOffers = await Offer.countDocuments(query);
     const totalPages = Math.ceil(totalOffers / limit);
@@ -66,6 +70,7 @@ export const loadOffersPage = async (req, res) => {
       totalPages,
       currentPage,
       filter,
+      search,
       pages: Array.from({ length: totalPages }, (_, index) => index + 1),
       startItem: totalOffers ? skip + 1 : 0,
       endItem: skip + offerDocuments.length,

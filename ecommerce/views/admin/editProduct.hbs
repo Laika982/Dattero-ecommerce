@@ -143,42 +143,6 @@
     <!-- Main Content Area -->
     <main class="lg:ml-64 ml-0 min-h-screen">
         {{> user/notification}}
-        <!-- TopNavBar Shell -->
-        <header
-            class="sticky top-0 w-full z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md flex justify-between items-center h-16 px-4 sm:px-6 md:px-container-padding border-b border-outline-variant/30">
-            <div class="flex items-center gap-3 sm:gap-6 flex-1">
-                <!-- Mobile Sidebar Toggle -->
-                <button type="button" class="lg:hidden p-2 rounded-lg text-on-surface-variant hover:text-ink-black hover:bg-surface-variant/50 transition-colors touch-target" onclick="toggleAdminSidebar()" aria-label="Toggle Navigation">
-                    <span class="material-symbols-outlined text-[22px]">menu</span>
-                </button>
-                <div class="relative w-full max-w-md">
-                    <span
-                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant"
-                        data-icon="search">search</span>
-                    <input
-                        class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-1 focus:ring-primary font-body-md text-body-md"
-                        placeholder="Search inventory..." type="text">
-                </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:scale-95">
-                    <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-                </button>
-                <button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:scale-95">
-                    <span class="material-symbols-outlined" data-icon="settings">settings</span>
-                </button>
-                <div class="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
-                <button class="flex items-center gap-2 group">
-                    <div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
-                        <img class="w-full h-full object-cover"
-                            data-alt="A professional studio portrait of a high-end wellness administrator with a friendly and composed expression. The lighting is soft and flattering, reminiscent of a luxury lifestyle magazine profile. The background is a clean, minimalist off-white aesthetic consistent with a premium brand identity."
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgQSH6IKUpenA4XtRvw9YfoxgqQEXc4ZeQKz8WaBrvNR9to1pCmg7xDAyLO4no_P5o3UMVxdUp8Mx5FemBvVKZ-8qo66cMIV-bO8J210NHaVzE6_O-xBI4K67ex4YQ9l46w2jZ7NrPKm8DCBQrTNOHfUIE8_F6WFcoNQcUFs512b2y4F2J4Ma1izPZJJgNbPxKLC0WbOnH8aist6pBBSP73OIVtNeShQMOn1VhU5rBvvuBLb3_5P1thyo9l3nkoV6s-G4mXr2Ddz8">
-                    </div>
-                    <span
-                        class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">Profile</span>
-                </button>
-            </div>
-        </header>
         <!-- Page Content -->
         <div class="max-w-max-width mx-auto px-container-padding py-stack-lg">
             <!-- Breadcrumbs -->

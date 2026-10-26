@@ -241,7 +241,10 @@
           class="hover:opacity-80 transition-opacity active:scale-95 duration-150 ease-in-out p-2 rounded-full hover:bg-surface-variant/50 relative">
           <span class="material-symbols-outlined text-[22px] sm:text-[24px]"
             data-icon="shopping_cart">shopping_cart</span>
-          <span class="absolute top-1 right-1 w-2 h-2 bg-accent-blue rounded-full"></span>
+          <span id="cart-badge-desktop"
+            class="cart-badge {{#unless cartCount}}hidden{{/unless}} absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 bg-accent-blue text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none shadow-sm pointer-events-none">
+            {{#if cartCount}}{{cartCount}}{{/if}}
+          </span>
         </a>
         <div class="relative hidden md:block">
           {{#if user}}
@@ -309,10 +312,16 @@
         <span class="material-symbols-outlined text-[20px]">favorite</span>
         <span>Wishlist</span>
       </a>
-      <a class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-on-surface hover:bg-surface-variant/50 font-label-md text-base"
+      <a class="flex items-center justify-between px-4 py-3.5 rounded-xl text-on-surface hover:bg-surface-variant/50 font-label-md text-base"
         href="/cart">
-        <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
-        <span>Cart</span>
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+          <span>Cart</span>
+        </div>
+        <span id="cart-badge-drawer"
+          class="cart-badge {{#unless cartCount}}hidden{{/unless}} min-w-[20px] h-[20px] px-1.5 bg-accent-blue text-white text-[11px] font-bold rounded-full flex items-center justify-center leading-none">
+          {{#if cartCount}}{{cartCount}}{{/if}}
+        </span>
       </a>
       {{#if user}}
       <a class="flex items-center gap-3 px-4 py-3.5 rounded-xl text-on-surface hover:bg-surface-variant/50 font-label-md text-base"
@@ -365,7 +374,13 @@
     <a href="/cart"
       class="flex flex-col items-center justify-center py-1 px-3 text-on-surface-variant hover:text-on-surface transition-colors relative"
       data-bottom-nav="cart">
-      <span class="material-symbols-outlined text-[22px]">shopping_cart</span>
+      <div class="relative inline-flex items-center justify-center">
+        <span class="material-symbols-outlined text-[22px]">shopping_cart</span>
+        <span id="cart-badge-bottom"
+          class="cart-badge {{#unless cartCount}}hidden{{/unless}} absolute -top-1 -right-2.5 min-w-[16px] h-[16px] px-0.5 bg-accent-blue text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none shadow-sm pointer-events-none">
+          {{#if cartCount}}{{cartCount}}{{/if}}
+        </span>
+      </div>
       <span class="text-[11px] font-semibold mt-0.5">Cart</span>
     </a>
     {{#if user}}
@@ -551,4 +566,51 @@
         }
       }
       window.togglePasswordVisibility = togglePasswordVisibility;
+
+      function updateCartBadge(count) {
+        const num = Number(count) || 0;
+        const badges = document.querySelectorAll('.cart-badge');
+        badges.forEach(badge => {
+          if (num > 0) {
+            badge.textContent = num > 99 ? '99+' : num;
+            badge.classList.remove('hidden');
+          } else {
+            badge.textContent = '';
+            badge.classList.add('hidden');
+          }
+        });
+      }
+      window.updateCartBadge = updateCartBadge;
+
+      // Global response interceptor for blocked account handling & cart badge sync
+      (function () {
+        const originalFetch = window.fetch;
+        if (!originalFetch) return;
+        window.fetch = async function (...args) {
+          const response = await originalFetch.apply(this, args);
+          if (response.status === 403) {
+            try {
+              const clone = response.clone();
+              const data = await clone.json();
+              if (data && (data.isBlocked || data.redirectTo)) {
+                window.location.href = data.redirectTo || "/login?blocked=true";
+              }
+            } catch (_) {}
+          } else if (response.ok) {
+            try {
+              const clone = response.clone();
+              const data = await clone.json();
+              if (data && typeof data === 'object') {
+                if (typeof data.cartCount === 'number') {
+                  updateCartBadge(data.cartCount);
+                } else if (data.cart && Array.isArray(data.cart.items)) {
+                  const total = data.cart.items.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+                  updateCartBadge(total);
+                }
+              }
+            } catch (_) {}
+          }
+          return response;
+        };
+      })();
   </script>

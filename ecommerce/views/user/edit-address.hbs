@@ -16,76 +16,112 @@
         <div class="bg-surface-container-lowest rounded-xl p-8 border border-black/5 shadow-sm">
 {{> user/notification}}
 
-            <form id="addressForm" action="/profile/address/edit/{{address._id}}?_method=PUT" method="POST" class="space-y-6">
+            <form id="addressForm" action="/profile/address/edit/{{address._id}}?_method=PUT" method="POST" class="space-y-6" novalidate>
                 <input type="hidden" name="isDefault" id="isDefault"
                     value="{{#if address.isDefault}}true{{else}}false{{/if}}">
                 <!-- Name & Phone -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-grid-gutter">
-                    <div class="space-y-2">
+                    <div class="space-y-1.5">
                         <label for="fullName" class="block font-label-md text-label-md text-on-surface-variant">Full
                             Name</label>
                         <input type="text" id="fullName" name="fullName" value="{{address.fullName}}"
-                            placeholder="John Doe"
-                            class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                            placeholder="John Doe" autocomplete="name"
+                            class="w-full bg-surface-container-low border border-transparent rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        <p id="fullName-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                            <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                            <span class="error-text"></span>
+                        </p>
                     </div>
-                    <div class="space-y-2">
+                    <div class="space-y-1.5">
                         <label for="phone" class="block font-label-md text-label-md text-on-surface-variant">Phone
                             Number</label>
                         <input type="tel" id="phone" name="phone" value="{{address.phone}}"
-                            placeholder="+1 (555) 000-0000"
-                            class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                            placeholder="9876543210" autocomplete="tel"
+                            class="w-full bg-surface-container-low border border-transparent rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        <p id="phone-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                            <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                            <span class="error-text"></span>
+                        </p>
                     </div>
                 </div>
                 <!-- Street Address -->
-                <div class="space-y-2">
+                <div class="space-y-1.5">
                     <label for="street" class="block font-label-md text-label-md text-on-surface-variant">Street
                         Address</label>
                     <input type="text" id="street" name="street" value="{{address.street}}"
-                        placeholder="123 Wellness Way"
-                        class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        placeholder="123 Wellness Way" autocomplete="street-address"
+                        class="w-full bg-surface-container-low border border-transparent rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                    <p id="street-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                        <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                        <span class="error-text"></span>
+                    </p>
                 </div>
                 <!-- Suite / Apartment -->
-                <div class="space-y-2">
+                <div class="space-y-1.5">
                     <label for="suite" class="block font-label-md text-label-md text-on-surface-variant">Apartment,
                         suite, etc. (optional)</label>
                     <input type="text" id="suite" name="suite" value="{{address.suite}}" placeholder="Penthouse A"
-                        class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        class="w-full bg-surface-container-low border border-transparent rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                    <p id="suite-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                        <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                        <span class="error-text"></span>
+                    </p>
                 </div>
                 <!-- City, State, Zip -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-grid-gutter">
-                    <div class="space-y-2">
+                    <div class="space-y-1.5">
                         <label for="city" class="block font-label-md text-label-md text-on-surface-variant">City</label>
-                        <input type="text" id="city" name="city" value="{{address.city}}" placeholder="New York"
-                            class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        <input type="text" id="city" name="city" value="{{address.city}}" placeholder="Mumbai" autocomplete="address-level2"
+                            class="w-full bg-surface-container-low border border-transparent rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        <p id="city-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                            <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                            <span class="error-text"></span>
+                        </p>
                     </div>
-                    <div class="space-y-2">
+                    <div class="space-y-1.5">
                         <label for="state" class="block font-label-md text-label-md text-on-surface-variant">State /
                             Province</label>
-                        <input type="text" id="state" name="state" value="{{address.state}}" placeholder="NY"
-                            class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        <input type="text" id="state" name="state" value="{{address.state}}" placeholder="Maharashtra" autocomplete="address-level1"
+                            class="w-full bg-surface-container-low border border-transparent rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        <p id="state-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                            <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                            <span class="error-text"></span>
+                        </p>
                     </div>
-                    <div class="space-y-2">
+                    <div class="space-y-1.5">
                         <label for="zip" class="block font-label-md text-label-md text-on-surface-variant">ZIP / Postal
                             Code</label>
-                        <input type="text" id="zip" name="zip" value="{{address.zip}}" placeholder="10001"
-                            class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        <input type="text" id="zip" name="zip" value="{{address.zip}}" placeholder="400001" autocomplete="postal-code" maxlength="6"
+                            class="w-full bg-surface-container-low border border-transparent rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        <p id="zip-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                            <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                            <span class="error-text"></span>
+                        </p>
                     </div>
                 </div>
-                <!-- Country -->
+                <!-- Country & Label -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-2">
+                    <div class="space-y-1.5">
                         <label for="country"
                             class="block font-label-md text-label-md text-on-surface-variant">Country</label>
                         <input type="text" id="country" name="country" value="{{address.country}}"
-                            placeholder="United States"
-                            class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                            placeholder="India" autocomplete="country-name"
+                            class="w-full bg-surface-container-low border border-transparent rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        <p id="country-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                            <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                            <span class="error-text"></span>
+                        </p>
                     </div>
-                    <div class="space-y-2">
+                    <div class="space-y-1.5">
                         <label for="addressLabel"
                             class="block font-label-md text-label-md text-on-surface-variant">Address Label</label>
                         <input type="text" id="addressLabel" name="addressLabel" value="{{address.addressLabel}}"
                             placeholder="e.g., Home, Work"
-                            class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                            class="w-full bg-surface-container-low border border-transparent rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-1 focus:ring-primary transition-all">
+                        <p id="addressLabel-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                            <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                            <span class="error-text"></span>
+                        </p>
                     </div>
                 </div>
                 <!-- Default Toggle -->
@@ -131,6 +167,18 @@
     </section>
 </main>
 
+<style>
+  .input-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 1px #ef4444 !important;
+    background-color: rgba(254, 242, 242, 0.45) !important;
+  }
+  .input-error:focus {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.35) !important;
+  }
+</style>
+
 <script>
     function toggleSwitch(container) {
         const dot = container.querySelector('#switch-dot') || container.nextElementSibling.querySelector('#switch-dot');
@@ -153,6 +201,264 @@
             hiddenInput.value = "true";
         }
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("addressForm");
+        if (!form) return;
+
+        const fullNameInput = document.getElementById("fullName");
+        const phoneInput = document.getElementById("phone");
+        const streetInput = document.getElementById("street");
+        const suiteInput = document.getElementById("suite");
+        const cityInput = document.getElementById("city");
+        const stateInput = document.getElementById("state");
+        const zipInput = document.getElementById("zip");
+        const countryInput = document.getElementById("country");
+        const addressLabelInput = document.getElementById("addressLabel");
+
+        const fullNameError = document.getElementById("fullName-error");
+        const phoneError = document.getElementById("phone-error");
+        const streetError = document.getElementById("street-error");
+        const suiteError = document.getElementById("suite-error");
+        const cityError = document.getElementById("city-error");
+        const stateError = document.getElementById("state-error");
+        const zipError = document.getElementById("zip-error");
+        const countryError = document.getElementById("country-error");
+        const addressLabelError = document.getElementById("addressLabel-error");
+
+        const touched = {};
+
+        const nameRegex = /^[A-Za-z\s]{3,50}$/;
+        const phoneRegex = /^[6-9]\d{9}$/;
+        const streetRegex = /^[A-Za-z0-9\s,.-]{5,150}$/;
+        const suiteRegex = /^[A-Za-z0-9\s,.-]{0,50}$/;
+        const cityRegex = /^[A-Za-z\s]{2,50}$/;
+        const stateRegex = /^[A-Za-z\s]{2,50}$/;
+        const zipRegex = /^\d{6}$/;
+        const countryRegex = /^[A-Za-z\s]{2,50}$/;
+
+        function showError(input, errorEl, message) {
+            input.classList.add("input-error");
+            if (errorEl) {
+                const textSpan = errorEl.querySelector(".error-text");
+                if (textSpan) textSpan.textContent = message;
+                errorEl.classList.remove("hidden");
+            }
+        }
+
+        function clearError(input, errorEl) {
+            input.classList.remove("input-error");
+            if (errorEl) {
+                const textSpan = errorEl.querySelector(".error-text");
+                if (textSpan) textSpan.textContent = "";
+                errorEl.classList.add("hidden");
+            }
+        }
+
+        function validateFullName() {
+            const val = (fullNameInput.value || "").trim();
+            if (!val) {
+                showError(fullNameInput, fullNameError, "Full name is required.");
+                return false;
+            }
+            if (val.length < 3 || val.length > 50) {
+                showError(fullNameInput, fullNameError, "Full name must be between 3 and 50 characters.");
+                return false;
+            }
+            if (!/^[A-Za-z\s]+$/.test(val)) {
+                showError(fullNameInput, fullNameError, "Full name must contain only letters and spaces.");
+                return false;
+            }
+            clearError(fullNameInput, fullNameError);
+            return true;
+        }
+
+        function validatePhone() {
+            const val = (phoneInput.value || "").trim().replace(/\D/g, "");
+            if (!val) {
+                showError(phoneInput, phoneError, "Phone number is required.");
+                return false;
+            }
+            if (!phoneRegex.test(val)) {
+                showError(phoneInput, phoneError, "Phone number must be a valid 10-digit number (starting with 6-9).");
+                return false;
+            }
+            clearError(phoneInput, phoneError);
+            return true;
+        }
+
+        function validateStreet() {
+            const val = (streetInput.value || "").trim();
+            if (!val) {
+                showError(streetInput, streetError, "Street address is required.");
+                return false;
+            }
+            if (val.length < 5 || val.length > 150) {
+                showError(streetInput, streetError, "Street address must be between 5 and 150 characters.");
+                return false;
+            }
+            if (!streetRegex.test(val)) {
+                showError(streetInput, streetError, "Street address contains invalid characters.");
+                return false;
+            }
+            clearError(streetInput, streetError);
+            return true;
+        }
+
+        function validateSuite() {
+            const val = (suiteInput.value || "").trim();
+            if (!val) {
+                clearError(suiteInput, suiteError);
+                return true;
+            }
+            if (val.length > 50) {
+                showError(suiteInput, suiteError, "Suite must not exceed 50 characters.");
+                return false;
+            }
+            if (!suiteRegex.test(val)) {
+                showError(suiteInput, suiteError, "Suite contains invalid characters.");
+                return false;
+            }
+            clearError(suiteInput, suiteError);
+            return true;
+        }
+
+        function validateCity() {
+            const val = (cityInput.value || "").trim();
+            if (!val) {
+                showError(cityInput, cityError, "City is required.");
+                return false;
+            }
+            if (val.length < 2 || val.length > 50) {
+                showError(cityInput, cityError, "City must be between 2 and 50 characters.");
+                return false;
+            }
+            if (!cityRegex.test(val)) {
+                showError(cityInput, cityError, "City must contain only letters and spaces.");
+                return false;
+            }
+            clearError(cityInput, cityError);
+            return true;
+        }
+
+        function validateState() {
+            const val = (stateInput.value || "").trim();
+            if (!val) {
+                showError(stateInput, stateError, "State / Province is required.");
+                return false;
+            }
+            if (val.length < 2 || val.length > 50) {
+                showError(stateInput, stateError, "State must be between 2 and 50 characters.");
+                return false;
+            }
+            if (!stateRegex.test(val)) {
+                showError(stateInput, stateError, "State must contain only letters and spaces.");
+                return false;
+            }
+            clearError(stateInput, stateError);
+            return true;
+        }
+
+        function validateZip() {
+            const val = (zipInput.value || "").trim();
+            if (!val) {
+                showError(zipInput, zipError, "ZIP / Postal code is required.");
+                return false;
+            }
+            if (!zipRegex.test(val)) {
+                showError(zipInput, zipError, "ZIP code must be exactly 6 digits.");
+                return false;
+            }
+            clearError(zipInput, zipError);
+            return true;
+        }
+
+        function validateCountry() {
+            const val = (countryInput.value || "").trim();
+            if (!val) {
+                showError(countryInput, countryError, "Country is required.");
+                return false;
+            }
+            if (val.length < 2 || val.length > 50) {
+                showError(countryInput, countryError, "Country must be between 2 and 50 characters.");
+                return false;
+            }
+            if (!countryRegex.test(val)) {
+                showError(countryInput, countryError, "Country must contain only letters and spaces.");
+                return false;
+            }
+            clearError(countryInput, countryError);
+            return true;
+        }
+
+        function validateAddressLabel() {
+            const val = (addressLabelInput.value || "").trim();
+            if (val.length > 30) {
+                showError(addressLabelInput, addressLabelError, "Label must not exceed 30 characters.");
+                return false;
+            }
+            clearError(addressLabelInput, addressLabelError);
+            return true;
+        }
+
+        function setupField(input, errorKey, validator) {
+            input.addEventListener("blur", function () {
+                touched[errorKey] = true;
+                validator();
+            });
+            input.addEventListener("input", function () {
+                if (touched[errorKey]) validator();
+            });
+        }
+
+        setupField(fullNameInput, "fullName", validateFullName);
+        setupField(phoneInput, "phone", validatePhone);
+        setupField(streetInput, "street", validateStreet);
+        setupField(suiteInput, "suite", validateSuite);
+        setupField(cityInput, "city", validateCity);
+        setupField(stateInput, "state", validateState);
+        setupField(zipInput, "zip", validateZip);
+        setupField(countryInput, "country", validateCountry);
+        setupField(addressLabelInput, "addressLabel", validateAddressLabel);
+
+        form.addEventListener("submit", function (e) {
+            Object.keys(touched).forEach(k => touched[k] = true);
+            touched.fullName = true;
+            touched.phone = true;
+            touched.street = true;
+            touched.suite = true;
+            touched.city = true;
+            touched.state = true;
+            touched.zip = true;
+            touched.country = true;
+            touched.addressLabel = true;
+
+            const isFullNameValid = validateFullName();
+            const isPhoneValid = validatePhone();
+            const isStreetValid = validateStreet();
+            const isSuiteValid = validateSuite();
+            const isCityValid = validateCity();
+            const isStateValid = validateState();
+            const isZipValid = validateZip();
+            const isCountryValid = validateCountry();
+            const isLabelValid = validateAddressLabel();
+
+            const isAllValid = isFullNameValid && isPhoneValid && isStreetValid && isSuiteValid && isCityValid && isStateValid && isZipValid && isCountryValid && isLabelValid;
+
+            if (!isAllValid) {
+                e.preventDefault();
+                if (!isFullNameValid) fullNameInput.focus();
+                else if (!isPhoneValid) phoneInput.focus();
+                else if (!isStreetValid) streetInput.focus();
+                else if (!isSuiteValid) suiteInput.focus();
+                else if (!isCityValid) cityInput.focus();
+                else if (!isStateValid) stateInput.focus();
+                else if (!isZipValid) zipInput.focus();
+                else if (!isCountryValid) countryInput.focus();
+                else if (!isLabelValid) addressLabelInput.focus();
+            }
+        });
+    });
 </script>
 
 {{>user/footer}}

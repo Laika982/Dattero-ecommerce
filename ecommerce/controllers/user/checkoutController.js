@@ -3,6 +3,7 @@ import Product from "../../models/productSchema.js";
 import Variant from "../../models/variantSchema.js";
 import Address from "../../models/addressSchema.js";
 import Coupon from "../../models/couponSchema.js";
+import Order from "../../models/orderSchema.js";
 
 import {
   calculateItemPrice,
@@ -119,10 +120,14 @@ export const loadCheckout = async (req, res) => {
     }
 
     const totals = calculateCartTotals(checkoutItems);
+    const sessionCouponCode = typeof req.session?.appliedCouponCode === "string"
+      ? req.session.appliedCouponCode.trim()
+      : "";
+
     const checkoutDiscounts = await applyCheckoutDiscounts({
       user: req.user,
       subtotal: totals.subtotal,
-      couponCode: "",
+      couponCode: sessionCouponCode,
       cartItems: checkoutItems,
       validateCoupon,
     });
@@ -132,7 +137,13 @@ export const loadCheckout = async (req, res) => {
     );
     totals.referralDiscount = checkoutDiscounts.referralDiscount;
     totals.referralOfferName = checkoutDiscounts.referralOffer?.name || null;
-    totals.finalAmount = Math.max(0, totals.finalAmount - checkoutDiscounts.referralDiscount);
+    totals.baseFinalAmount = Math.max(0, totals.finalAmount - checkoutDiscounts.referralDiscount);
+    totals.couponDiscount = checkoutDiscounts.couponDiscount || 0;
+    totals.finalAmount = Math.max(0, totals.baseFinalAmount - totals.couponDiscount);
+
+    if (sessionCouponCode && !checkoutDiscounts.coupon && req.session) {
+      req.session.appliedCouponCode = null;
+    }
 
     const couponDocuments = await Coupon.find({
       is_active: true,
@@ -149,25 +160,64 @@ export const loadCheckout = async (req, res) => {
       quantity: item.quantity,
     }));
 
+    const userCouponOrders = await Order.aggregate([
+      {
+        $match: {
+          user_id: req.user._id,
+          coupon_code: { $ne: null },
+          order_status: { $nin: ["cancelled"] },
+        },
+      },
+      {
+        $group: {
+          _id: "$coupon_code",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    const userOrderCountMap = new Map(
+      userCouponOrders.map((entry) => [entry._id, entry.count]),
+    );
+
     const availableCoupons = couponDocuments
       .filter((coupon) => {
         if (!coupon.is_active) return false;
         if (coupon.start_date && new Date() < new Date(coupon.start_date)) return false;
         if (new Date() > new Date(coupon.expiry_date)) return false;
 
-        const hasUsesRemaining =
-          coupon.usage_limit == null || coupon.used_count < coupon.usage_limit;
-        const alreadyUsed = (coupon.used_by || []).some(
-          (userId) => userId.toString() === req.user._id.toString(),
-        );
+        if (
+          coupon.usage_limit !== null &&
+          coupon.usage_limit !== undefined &&
+          coupon.usage_limit > 0
+        ) {
+          const orderCount = userOrderCountMap.get(coupon.code) || 0;
+          const usedByCount = (coupon.used_by || []).filter(
+            (userId) =>
+              (userId?._id ? userId._id.toString() : userId?.toString()) ===
+              req.user._id.toString(),
+          ).length;
+          const userUsageCount = Math.max(orderCount, usedByCount);
+          if (userUsageCount >= coupon.usage_limit) {
+            return false;
+          }
+        }
 
-        return hasUsesRemaining && !alreadyUsed;
+        return true;
       })
       .map((coupon) => {
+        const orderCount = userOrderCountMap.get(coupon.code) || 0;
+        const usedByCount = (coupon.used_by || []).filter(
+          (userId) =>
+            (userId?._id ? userId._id.toString() : userId?.toString()) ===
+            req.user._id.toString(),
+        ).length;
+        const userUsageCount = Math.max(orderCount, usedByCount);
+
         const eligibility = evaluateCouponEligibility(coupon, {
           subtotal: totals.subtotal,
           cartItems: checkoutCartItems,
           userId: req.user._id,
+          userUsageCount,
         });
 
         const discountLabel = coupon.discount_type === "PERCENTAGE"
@@ -233,7 +283,10 @@ export const loadCheckout = async (req, res) => {
       totals,
       availableCoupons,
       wallet,
+      appliedCoupon: checkoutDiscounts.coupon || null,
+      couponDiscount: checkoutDiscounts.couponDiscount || 0,
     });
+
   } catch (error) {
     console.error("Checkout load error:", error);
 

@@ -63,6 +63,14 @@ export const loadOfferPricingMap = async (products, variants) => {
   return getProductOfferPricing(products, variants);
 };
 
+export const FREE_SHIPPING_THRESHOLD = 1000;
+export const STANDARD_SHIPPING_CHARGE = 50;
+
+export const calculateOrderShipping = (subtotal) => {
+  if (subtotal <= 0) return 0;
+  return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_CHARGE;
+};
+
 export const calculateCartTotals = (items) => {
   let subtotal = 0;
 
@@ -75,7 +83,7 @@ export const calculateCartTotals = (items) => {
 
   const tax = 0;
 
-  const shipping = subtotal >= 1000 ? 0 : 50;
+  const shipping = calculateOrderShipping(subtotal);
 
   const finalAmount = subtotal - discount + tax + shipping;
 

@@ -404,8 +404,8 @@ const loginUser = async (req, res) => {
 
     // Check blocked user
     if (user.isBlocked) {
-      req.session.error = "User is blocked";
-      return res.redirect("/login");
+      req.session.error = "Your account has been blocked.";
+      return res.redirect("/login?blocked=true");
     }
 
     // Compare password
@@ -468,6 +468,12 @@ const forgotPassword = async (req, res) => {
 
     if (!user) {
       req.session.error = "Enter a valid email.";
+
+      return res.redirect("/forgotPassword");
+    }
+
+    if (user.isBlocked) {
+      req.session.error = "Your account has been blocked.";
 
       return res.redirect("/forgotPassword");
     }
@@ -616,7 +622,7 @@ const resendOtp = async (req, res) => {
 
 
     const decoded = jwt.verify(otpToken, process.env.JWT_SECRET);
-    
+
 
 
     const otp = generateOtp();
@@ -629,6 +635,13 @@ const resendOtp = async (req, res) => {
       email = decoded.email;
     } else if (decoded.purpose === "forgot-password") {
       email = decoded.email;
+      const user = await User.findOne({ email });
+      if (user && user.isBlocked) {
+        return res.status(403).json({
+          success: false,
+          message: "Your account has been blocked.",
+        });
+      }
     } else if (decoded.purpose === "change-email") {
       email = decoded.newEmail;
     } else {

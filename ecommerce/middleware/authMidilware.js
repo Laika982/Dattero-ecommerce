@@ -1,12 +1,28 @@
 import jwt from "jsonwebtoken";
 import User from "../models/userSchema.js";
 
+const isAjaxOrJson = (req) =>
+    Boolean(
+        req.xhr ||
+        req.headers["x-requested-with"] === "XMLHttpRequest" ||
+        req.headers["accept"]?.includes("application/json") ||
+        req.headers["content-type"]?.includes("application/json") ||
+        req.headers["sec-fetch-dest"] === "empty"
+    );
+
 const isAuthenticated = async (req, res, next) => {
     try {
         res.set("Cache-Control", "no-store");
 
         const token = req.cookies.token;
         if (!token) {
+            if (isAjaxOrJson(req)) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Authentication required. Please log in.",
+                    redirectTo: "/login",
+                });
+            }
             return res.redirect("/login");
         }
 
@@ -16,11 +32,31 @@ const isAuthenticated = async (req, res, next) => {
 
         if (!user) {
             res.clearCookie("token");
+            delete req.cookies.token;
+
+            if (isAjaxOrJson(req)) {
+                return res.status(401).json({
+                    success: false,
+                    message: "User not found. Please log in again.",
+                    redirectTo: "/login",
+                });
+            }
             return res.redirect("/login");
         }
 
         if (user.isBlocked === true) {
             res.clearCookie("token");
+            delete req.cookies.token;
+            req.session.error = "Your account has been blocked.";
+
+            if (isAjaxOrJson(req)) {
+                return res.status(403).json({
+                    success: false,
+                    message: "Your account has been blocked.",
+                    isBlocked: true,
+                    redirectTo: "/login?blocked=true",
+                });
+            }
 
             return res.redirect("/login?blocked=true");
         }
@@ -32,12 +68,21 @@ const isAuthenticated = async (req, res, next) => {
         console.error("Authentication error:", error);
 
         res.clearCookie("token");
+        delete req.cookies.token;
+
+        if (isAjaxOrJson(req)) {
+            return res.status(401).json({
+                success: false,
+                message: "Session expired or invalid. Please log in again.",
+                redirectTo: "/login",
+            });
+        }
 
         return res.redirect("/login");
     }
 };
 
-const isGuest = (req, res, next) => {
+const isGuest = async (req, res, next) => {
     try {
         const token = req.cookies.token;
 
@@ -47,13 +92,22 @@ const isGuest = (req, res, next) => {
         }
 
         // Check whether token is valid
-        jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        const user = await User.findById(decoded.userId);
+
+        if (!user || user.isBlocked) {
+            res.clearCookie("token");
+            delete req.cookies.token;
+            return next();
+        }
 
         // User is already logged in
         return res.redirect("/");
     } catch (error) {
         // Token is invalid or expired
         res.clearCookie("token");
+        delete req.cookies.token;
 
         return next();
     }

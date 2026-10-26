@@ -14,6 +14,12 @@ router.get(
   cartController.loadCart
 );
 
+router.get(
+  "/count",
+  isAuthenticated,
+  cartController.getCartCount
+);
+
 
 router.post(
   "/add",

@@ -247,11 +247,12 @@
 <!-- Right Column: Order Summary (Sticky on Desktop) -->
 <div class="w-full lg:w-1/3">
 <div class="bg-surface-container-lowest p-5 sm:p-7 rounded-2xl border border-outline-variant/30 apple-shadow flex flex-col gap-5 sm:gap-6 lg:sticky lg:top-24"><div class="flex items-center justify-between border-b border-outline-variant/20 pb-4"><h2 class="font-headline-lg text-[18px] sm:text-[20px] font-bold text-ink-black tracking-tight">Order Summary</h2><span class="px-2.5 py-0.5 rounded-full bg-surface-gray border border-outline-variant/30 text-on-surface-variant font-label-md text-[11px] font-semibold tracking-wide">{{checkoutItems.length}} Items</span></div>
-<div class="flex flex-col gap-3 py-2 border-b border-outline-variant/20"><button type="button" class="inline-flex items-center gap-2 text-accent-blue hover:opacity-80 transition-opacity text-left group"><span class="material-symbols-outlined text-[18px]">sell</span><span class="font-label-md text-xs font-semibold tracking-wide">View Available Offers</span></button><div class="flex gap-2 items-center w-full mt-1"><input class="form-input-premium flex-1 rounded-lg px-3.5 py-2 font-body-md text-sm text-on-surface min-w-0" placeholder="Gift card or discount code" type="text"><button type="button" class="bg-surface-gray text-ink-black border border-outline-variant/40 px-3 sm:px-4 py-2 rounded-lg font-label-md text-xs font-semibold hover:bg-surface-variant transition-colors flex-shrink-0 touch-target">Apply</button></div></div><div class="flex flex-col gap-2 py-1"><div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Subtotal</span><span class="font-medium text-ink-black">₹{{totals.subtotal}}</span></div>
+<div class="flex flex-col gap-3 py-2 border-b border-outline-variant/20"><button type="button" class="inline-flex items-center gap-2 text-accent-blue hover:opacity-80 transition-opacity text-left group"><span class="material-symbols-outlined text-[18px]">sell</span><span class="font-label-md text-xs font-semibold tracking-wide">View Available Offers</span></button><div class="flex gap-2 items-center w-full mt-1"><input class="form-input-premium flex-1 rounded-lg px-3.5 py-2 font-body-md text-sm text-on-surface min-w-0" placeholder="Gift card or discount code" type="text" value="{{#if appliedCoupon}}{{appliedCoupon.code}}{{/if}}"><button type="button" class="bg-surface-gray text-ink-black border border-outline-variant/40 px-3 sm:px-4 py-2 rounded-lg font-label-md text-xs font-semibold hover:bg-surface-variant transition-colors flex-shrink-0 touch-target">Apply</button></div></div><div class="flex flex-col gap-2 py-1"><div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Subtotal</span><span class="font-medium text-ink-black">₹{{totals.subtotal}}</span></div>
 <div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Shipping</span><span class="font-medium text-ink-black">₹{{totals.shipping}}</span></div>
 <div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Estimated Taxes</span><span class="font-medium text-ink-black">₹{{totals.tax}}</span></div>
 <div class="flex justify-between items-baseline pt-4 mt-2 border-t border-outline-variant/20"><span class="font-headline-lg text-[18px] font-bold text-ink-black">Total</span><span class="font-headline-lg text-[22px] sm:text-[24px] font-bold text-ink-black">₹{{totals.finalAmount}}</span></div></div><div class="flex flex-col gap-2 mt-1">
-<button type="button" id="placeOrderBtn" class="w-full bg-ink-black text-white font-label-md text-[15px] font-semibold py-3.5 px-6 rounded-xl hover:bg-ink-black/90 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm touch-target">Place Order <span class="material-symbols-outlined text-[18px]">arrow_forward</span></button><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() => { window.location.href='{{DATA:SCREEN:SCREEN_63}}' }, 1500)" class="w-full text-center text-xs text-on-surface-variant hover:text-ink-black hover:underline py-1.5 transition-colors">Simulate Payment Failure</button></div></div>
+<button type="button" id="placeOrderBtn" class="w-full bg-ink-black text-white font-label-md text-[15px] font-semibold py-3.5 px-6 rounded-xl hover:bg-ink-black/90 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm touch-target">Place Order <span class="material-symbols-outlined text-[18px]">arrow_forward</span></button><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() => { window.location.href='/payment/failed' }, 1500)" class="w-full text-center text-xs text-on-surface-variant hover:text-ink-black hover:underline py-1.5 transition-colors">Simulate Payment Failure</button></div></div>
+
 </div>
 </div>
 </main>
@@ -459,8 +460,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const totalValue = totalLabel?.nextElementSibling;
   const totalRow = totalLabel?.parentElement;
   const couponRow = couponInput?.parentElement;
-  const baseFinalAmount = Number((totalValue?.textContent || '').replace(/[^\d.]/g, ''));
-  let appliedCouponCode = '';
+  const baseFinalAmount = Number('{{totals.baseFinalAmount}}') || Number((totalValue?.textContent || '').replace(/[^\d.]/g, ''));
+  let appliedCouponCode = '{{#if appliedCoupon}}{{appliedCoupon.code}}{{/if}}';
+  const initialCouponDiscount = Number('{{#if couponDiscount}}{{couponDiscount}}{{else}}0{{/if}}');
 
   const rawWalletBalance = Number('{{wallet.rawBalance}}' || '{{wallet.balance}}' || 0);
   const walletBadge = document.getElementById('walletBadge');
@@ -560,7 +562,16 @@ document.addEventListener('DOMContentLoaded', () => {
       removeButton.type = 'button';
       removeButton.className = 'ml-2 font-semibold underline';
       removeButton.textContent = 'Remove';
-      removeButton.addEventListener('click', () => {
+      removeButton.addEventListener('click', async () => {
+        try {
+          await fetch('/coupon/remove', {
+            method: 'POST',
+            headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          });
+        } catch (e) {
+          console.error('Failed to remove coupon from session:', e);
+        }
+        localStorage.removeItem('checkout_coupon_code');
         appliedCouponCode = '';
         couponInput.value = '';
         totalValue.textContent = `₹${baseFinalAmount.toFixed(2)}`;
@@ -593,6 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!Number.isFinite(discount) || discount <= 0) throw new Error('This coupon has no applicable discount.');
 
       appliedCouponCode = data.coupon.code;
+      localStorage.setItem('checkout_coupon_code', appliedCouponCode);
       couponInput.value = appliedCouponCode;
       discountValue.textContent = `-₹${discount.toFixed(2)}`;
       discountRow.classList.remove('hidden');
@@ -606,6 +618,22 @@ document.addEventListener('DOMContentLoaded', () => {
       couponApplyButton.disabled = false;
     }
   };
+
+  if (appliedCouponCode && initialCouponDiscount > 0) {
+    localStorage.setItem('checkout_coupon_code', appliedCouponCode);
+    couponInput.value = appliedCouponCode;
+    discountValue.textContent = `-₹${initialCouponDiscount.toFixed(2)}`;
+    discountRow.classList.remove('hidden');
+    totalValue.textContent = `₹${Math.max(0, baseFinalAmount - initialCouponDiscount).toFixed(2)}`;
+    setCouponStatus(`${appliedCouponCode} applied. You save ₹${initialCouponDiscount.toFixed(2)}.`, false, true);
+    updatePaymentUI();
+  } else {
+    const savedCode = localStorage.getItem('checkout_coupon_code');
+    if (savedCode) {
+      applyCoupon(savedCode);
+    }
+  }
+
 
   let initialCoupons = [];
   try {
@@ -807,6 +835,13 @@ document.addEventListener('DOMContentLoaded', () => {
           order_id: paymentOrder.order.id,
           method: 'upi',
           prefill: paymentOrder.prefill,
+          modal: {
+            ondismiss: function () {
+              placeOrderButton.disabled = false;
+              placeOrderButton.innerHTML = originalContent;
+              showNotification('info', 'Payment checkout closed. You can retry payment.');
+            },
+          },
           config: {
             display: {
               blocks: {
@@ -840,15 +875,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(data.message || 'Payment completed, but the order could not be placed.');
               }
 
+              localStorage.removeItem('checkout_coupon_code');
               window.location.href = `/order/order-success/${encodeURIComponent(data.orderId)}`;
             } catch (error) {
               showNotification('error', error.message);
+              placeOrderButton.disabled = false;
+              placeOrderButton.innerHTML = originalContent;
             }
           },
         });
 
         checkout.on('payment.failed', async (paymentEvent) => {
           try {
+            if (appliedCouponCode) {
+              localStorage.setItem('checkout_coupon_code', appliedCouponCode);
+            }
             await fetch('/payment/failed', {
               method: 'POST',
               headers: {
@@ -884,10 +925,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      localStorage.removeItem('checkout_coupon_code');
       window.location.href = `/order/order-success/${encodeURIComponent(data.orderId)}`;
     } catch (error) {
       console.error('Place order request failed:', error);
       showNotification('error', 'Unable to place order. Please try again.');
+
     } finally {
       if (placeOrderButton.isConnected) {
         placeOrderButton.disabled = false;

@@ -125,98 +125,83 @@
 <body class="font-body-md text-on-surface">
 <!-- SideNavBar -->
  {{> admin/aside}}
-<!-- TopNavBar -->
-<header class="sticky top-0 w-full z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center h-16 px-4 sm:px-6 md:px-container-padding lg:ml-64 ml-0">
-<div class="flex items-center gap-3">
-    <!-- Mobile Sidebar Toggle -->
-    <button type="button" class="lg:hidden p-2 rounded-lg text-on-surface-variant hover:text-ink-black hover:bg-surface-variant/50 transition-colors touch-target" onclick="toggleAdminSidebar()" aria-label="Toggle Navigation">
-        <span class="material-symbols-outlined text-[22px]">menu</span>
-    </button>
-<div class="flex items-center bg-surface-container-high rounded-full px-4 py-1.5 w-auto sm:w-96 max-w-md">
-<span class="material-symbols-outlined text-outline mr-2">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-body-md w-full placeholder-on-surface-variant/50" placeholder="Search orders, customers..." type="text">
-</div>
-<div class="flex items-center space-x-6">
-<button class="text-on-surface-variant hover:text-primary transition-colors active:scale-95">
-<span class="material-symbols-outlined">notifications</span>
-</button>
-<button class="text-on-surface-variant hover:text-primary transition-colors active:scale-95">
-<span class="material-symbols-outlined">settings</span>
-</button>
-<div class="flex items-center space-x-3 cursor-pointer group">
-<div class="w-8 h-8 rounded-full overflow-hidden">
-<img class="w-full h-auto" data-alt="A professional headshot of a luxury brand administrator, high-end studio lighting, clean minimalist aesthetic, neutral background, sharp focus, 8k resolution, elegant professional attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEPzAjRT6RsZVkY2mPvUCdQxSOdcfpfIc8qDqfcrICVimyWf-3d4PZ69MFmS8dSYhu6axYOO_WZQF5rynqRyfeR-lvoQJBbuDE2kZXFuF_agE2ehrnm6s1Zg6GnLDQrizMqzPH0rbZhYV86HPQnt6a6Oca1M6y8zZASdGGxoHNF823osiAXkIAqw5__qMvjF99L-R746sEzYZNkchlXRtcXFVo5cD2n5dbqWlsM6h__PruDG4PdtfEpjP0zfgOzg7Hw0S2_0KDt6Q">
-</div>
-<span class="font-label-md text-label-md group-hover:text-primary transition-colors">Profile</span>
-</div>
-</div>
-</header>
 <!-- Main Content Area -->
-<main class="lg:ml-64 ml-0 p-4 sm:p-6 md:p-container-padding max-w-[1280px]">
+<main class="lg:ml-64 ml-0 p-4 sm:p-6 md:p-container-padding min-h-screen">
+<div class="max-w-[1360px] mx-auto w-full">
 <!-- Order Header -->
-<div class="flex justify-between items-end mb-stack-lg">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-stack-lg">
 <div>
 <nav class="flex items-center space-x-2 text-on-surface-variant/60 font-label-md mb-2">
 <a class="hover:text-primary" href="/admin/order/orders">Orders</a>
 <span class="material-symbols-outlined text-sm">chevron_right</span>
-<span class="text-on-surface">#{{order.order_id}}</span>
+<span class="text-on-surface font-semibold">#{{order.order_id}}</span>
 </nav>
 <h2 class="font-headline-xl text-headline-xl">Order #{{order.order_id}}</h2>
 <div class="flex items-center mt-2 space-x-3">
-<span class="bg-secondary-container text-secondary px-3 py-1 rounded-full font-label-md text-xs uppercase tracking-widest">{{formatStatus order.order_status}}</span>
+<span class="px-3 py-1 rounded-full font-label-md text-xs uppercase tracking-widest font-bold border {{#if (eq order.order_status 'delivered')}}bg-emerald-100 text-emerald-800 border-emerald-300{{else}}{{#if (eq order.order_status 'cancelled')}}bg-rose-100 text-rose-800 border-rose-300{{else}}{{#if (eq order.order_status 'returned')}}bg-purple-100 text-purple-800 border-purple-300{{else}}{{#if (eq order.order_status 'pending')}}bg-amber-100 text-amber-800 border-amber-300{{else}}bg-blue-100 text-blue-800 border-blue-300{{/if}}{{/if}}{{/if}}{{/if}}">{{formatStatus order.order_status}}</span>
 <span class="text-on-surface-variant font-body-md">{{formatDate order.createdAt}}</span>
 </div>
 </div>
-            {{!-- <button class="bg-on-surface text-surface px-6 py-3 rounded-lg font-label-md flex items-center hover:opacity-90 transition-opacity active:scale-95">
-            <span class="material-symbols-outlined mr-2">print</span> 
-                Print Invoice
-            </button> --}}
-             {{#if (eq order.return_request.status "pending")}}
-             <a href="/admin/order/orders/{{order.order_id}}/return" class="border border-primary/30 bg-primary/5 text-primary px-6 py-3 rounded-lg font-label-md flex items-center gap-2 hover:bg-primary/10 transition-colors active:scale-95 mr-4">
-            <span class="material-symbols-outlined">assignment_return</span>
-                Review Return Request
-            </a>
-             {{/if}}
-             <a href="/admin/order/orders/{{order.order_id}}/edit" class="border bg-primary border-outline-variant/30 text-surface px-6 py-3 rounded-lg font-label-md flex items-center hover:opacity-90 transition-colors active:scale-95 mr-4">
-            <span class="material-symbols-outlined mr-2">edit</span>
-                Edit Order
-            </a>
+<div class="flex items-center gap-3 flex-wrap">
+{{#if (eq order.return_request.status "pending")}}
+<a href="/admin/order/orders/{{order.order_id}}/return" class="border border-primary/30 bg-primary/5 text-primary px-5 py-2.5 rounded-lg font-label-md flex items-center gap-2 hover:bg-primary/10 transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[20px]">assignment_return</span>
+Review Return Request
+</a>
+{{/if}}
+<a href="/admin/order/orders/{{order.order_id}}/edit" class="border bg-primary border-outline-variant/30 text-surface px-5 py-2.5 rounded-lg font-label-md flex items-center gap-2 hover:opacity-90 transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+Edit Order
+</a>
+</div>
 </div>
 <!-- Bento Grid Layout -->
-<div class="grid grid-cols-12 gap-grid-gutter">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-grid-gutter">
 <!-- Left Column: Items and Details -->
-<div class="col-span-8 space-y-grid-gutter">
+<div class="lg:col-span-8 space-y-grid-gutter">
 <!-- Items Table -->
-<div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm ring-1 ring-black/5">
+<div class="bg-surface-container-lowest rounded-xl p-6 sm:p-8 shadow-sm ring-1 ring-black/5">
 <h3 class="font-headline-lg text-headline-lg mb-6">Ordered Items</h3>
 <div class="overflow-x-auto">
 <table class="w-full">
 <thead>
 <tr class="border-b border-outline-variant/30 text-left font-label-md text-on-surface-variant">
-<th class="pb-4 font-semibold">Product</th>
-<th class="pb-4 font-semibold text-center">Quantity</th>
-<th class="pb-4 font-semibold text-right">Price</th>
-<th class="pb-4 font-semibold text-right">Total</th>
+<th class="pb-4 font-semibold text-left">Product</th>
+<th class="pb-4 font-semibold text-center w-24">Quantity</th>
+<th class="pb-4 font-semibold text-right w-28">Price</th>
+<th class="pb-4 font-semibold text-right w-36">Total</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-outline-variant/20">
 {{#each order.items}}
-<tr>
-<td class="py-6">
+<tr class="{{#if this.is_cancelled}}bg-surface-variant/20{{/if}}">
+<td class="py-5 align-middle">
 <div class="flex items-center">
-<div class="w-16 h-16 rounded-lg bg-surface-container-high overflow-hidden mr-4">
+<div class="w-16 h-16 rounded-lg bg-surface-container-high overflow-hidden mr-4 shrink-0 border border-outline-variant/20 {{#if this.is_cancelled}}opacity-75 grayscale-[40%]{{/if}}">
 {{#if this.product_image}}<img class="w-full h-full object-cover" src="{{this.product_image}}" alt="{{this.product_name}}">{{/if}}
 </div>
 <div>
-<p class="font-body-md font-semibold">{{this.product_name}}</p>
-<p class="text-sm text-on-surface-variant">{{this.weight}} · SKU {{this.sku}}</p>
-<p class="text-xs text-on-surface-variant">{{formatStatus this.status}}</p>
+<p class="font-body-md font-semibold text-on-surface">{{this.product_name}}</p>
+<p class="text-sm text-on-surface-variant mb-1.5">{{this.weight}} · SKU {{this.sku}}</p>
+<div class="mt-1">
+  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold border shadow-sm {{#if this.statusBadgeClass}}{{this.statusBadgeClass}}{{else}}{{#if (eq this.status 'delivered')}}bg-emerald-100 text-emerald-800 border-emerald-300{{else}}{{#if (eq this.status 'cancelled')}}bg-rose-100 text-rose-800 border-rose-300{{else}}{{#if (eq this.status 'returned')}}bg-purple-100 text-purple-800 border-purple-300{{else}}{{#if (eq this.status 'pending')}}bg-amber-100 text-amber-800 border-amber-300{{else}}{{#if (eq this.status 'out_for_delivery')}}bg-indigo-100 text-indigo-800 border-indigo-300{{else}}bg-blue-100 text-blue-800 border-blue-300{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}">
+    <span class="w-2 h-2 rounded-full {{#if this.statusDotClass}}{{this.statusDotClass}}{{else}}{{#if (eq this.status 'delivered')}}bg-emerald-500{{else}}{{#if (eq this.status 'cancelled')}}bg-rose-500{{else}}{{#if (eq this.status 'returned')}}bg-purple-500{{else}}{{#if (eq this.status 'pending')}}bg-amber-500{{else}}bg-blue-500{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}"></span>
+    {{formatStatus this.status}}
+  </span>
+</div>
 </div>
 </div>
 </td>
-<td class="py-6 text-center font-body-md">{{this.quantity}}</td>
-<td class="py-6 text-right font-body-md">₹{{this.price}}</td>
-<td class="py-6 text-right font-body-md font-semibold">₹{{this.item_total}}</td>
+<td class="py-5 text-center align-middle font-body-md {{#if this.is_cancelled}}text-on-surface-variant/60{{/if}}">{{this.quantity}}</td>
+<td class="py-5 text-right align-middle font-body-md {{#if this.is_cancelled}}line-through text-on-surface-variant/60{{/if}}">₹{{this.price}}</td>
+<td class="py-5 text-right align-middle font-body-md font-semibold">
+  {{#if this.is_cancelled}}
+    <span class="text-on-surface-variant/70">₹{{this.item_total}}</span>
+    <span class="block text-xs font-semibold text-rose-600 tracking-tight mt-0.5">Cancelled (deducted)</span>
+  {{else}}
+    ₹{{this.item_total}}
+  {{/if}}
+</td>
 </tr>
 {{else}}
 <tr><td colspan="4" class="py-8 text-center text-on-surface-variant">This order has no items.</td></tr>
@@ -226,109 +211,125 @@
 </div>
 <!-- Summary -->
 <div class="mt-8 flex justify-end">
-<div class="w-64 space-y-3">
-<div class="flex justify-between text-on-surface-variant font-body-md">
+<div class="w-full sm:w-80 space-y-3">
+<div class="flex justify-between items-center text-on-surface-variant font-body-md">
 <span class="">Subtotal</span>
-<span class="">₹{{order.subtotal}}</span>
+<span class="font-medium text-on-surface">₹{{order.subtotal}}</span>
 </div>
-<div class="flex justify-between text-on-surface-variant font-body-md">
+{{#if order.has_cancelled_items}}
+<div class="flex justify-between items-center text-xs text-rose-700 bg-rose-50 px-3 py-2 rounded-lg border border-rose-200">
+<span class="font-medium">Cancelled items (deducted)</span>
+<span class="font-semibold">-₹{{order.cancelled_amount}}</span>
+</div>
+{{/if}}
+{{#if order.discount}}
+<div class="flex justify-between items-center text-on-surface-variant font-body-md">
+<span class="">Discount</span>
+<span class="text-emerald-700 font-semibold">-₹{{order.discount}}</span>
+</div>
+{{/if}}
+<div class="flex justify-between items-center text-on-surface-variant font-body-md">
 <span class="">Shipping</span>
-<span class="">₹{{order.shipping_charge}}</span>
+<span class="font-medium text-on-surface">{{#if (eq order.shipping_charge 0)}}Free{{else}}₹{{order.shipping_charge}}{{/if}}</span>
 </div>
-<div class="flex justify-between text-on-surface-variant font-body-md">
+<div class="flex justify-between items-center text-on-surface-variant font-body-md">
 <span class="">Tax (8%)</span>
-<span class="">₹{{order.tax}}</span>
+<span class="font-medium text-on-surface">₹{{order.tax}}</span>
 </div>
-<div class="pt-3 border-t border-outline-variant/30 flex justify-between font-headline-lg text-headline-lg">
+<div class="pt-3 border-t border-outline-variant/30 flex justify-between items-baseline font-headline-lg text-headline-lg">
 <span class="">Total</span>
-<span class="">₹{{order.final_amount}}</span>
+<span class="text-primary font-bold">₹{{order.final_amount}}</span>
 </div>
 </div>
 </div>
 </div>
 <!-- Shipping & Payment Bento -->
-<div class="grid grid-cols-2 gap-grid-gutter">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-grid-gutter">
 <!-- Shipping Address -->
-<div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm ring-1 ring-black/5">
+<div class="bg-surface-container-lowest rounded-xl p-6 sm:p-8 shadow-sm ring-1 ring-black/5 flex flex-col justify-between">
+<div>
 <div class="flex items-center mb-6">
 <span class="material-symbols-outlined text-primary mr-2">local_shipping</span>
 <h3 class="font-headline-lg text-xl font-bold">Shipping Address</h3>
 </div>
-<p class="font-body-md font-semibold">{{order.shipping_address.full_name}}</p>
+<p class="font-body-md font-semibold text-on-surface">{{order.shipping_address.full_name}}</p>
 <p class="font-body-md text-on-surface-variant leading-relaxed mt-1">
-                            {{order.shipping_address.address}}<br>
-                            {{order.shipping_address.city}}, {{order.shipping_address.state}} {{order.shipping_address.zip_code}}<br>
-                            {{order.shipping_address.country}}
-                        </p>
+{{order.shipping_address.address}}<br>
+{{order.shipping_address.city}}, {{order.shipping_address.state}} {{order.shipping_address.zip_code}}<br>
+{{order.shipping_address.country}}
+</p>
+</div>
 {{#if order.shipping_address.phone_number}}
-<p class="mt-4 font-body-md">
+<p class="mt-4 pt-4 border-t border-outline-variant/20 font-body-md">
 <span class="text-on-surface-variant">Phone:</span> {{order.shipping_address.phone_number}}
-                        </p>
+</p>
 {{/if}}
 </div>
 <!-- Payment Method -->
-<div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm ring-1 ring-black/5">
+<div class="bg-surface-container-lowest rounded-xl p-6 sm:p-8 shadow-sm ring-1 ring-black/5 flex flex-col justify-between">
+<div>
 <div class="flex items-center mb-6">
 <span class="material-symbols-outlined text-primary mr-2">payments</span>
 <h3 class="font-headline-lg text-xl font-bold">Payment Method</h3>
 </div>
 <div class="flex items-center p-4 bg-surface-container rounded-lg">
 <div>
-<p class="font-body-md font-semibold">{{formatStatus order.payment_method}}</p>
+<p class="font-body-md font-semibold text-on-surface">{{formatStatus order.payment_method}}</p>
 <p class="text-sm text-on-surface-variant">Payment status: {{formatStatus order.payment_status}}</p>
 </div>
 </div>
-<div class="mt-6">
-<p class="font-label-md text-on-surface-variant uppercase tracking-widest text-xs mb-2">Order Total</p>
-<p class="font-body-md text-on-surface-variant">₹{{order.final_amount}}</p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/20">
+<p class="font-label-md text-on-surface-variant uppercase tracking-widest text-xs mb-1">Order Total</p>
+<p class="font-headline-lg text-xl font-bold text-on-surface">₹{{order.final_amount}}</p>
 </div>
 </div>
 </div>
 </div>
 <!-- Right Column: Timeline and Customer -->
-<div class="col-span-4 space-y-grid-gutter">
+<div class="lg:col-span-4 space-y-grid-gutter">
 <!-- Customer Profile -->
-<div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm ring-1 ring-black/5">
+<div class="bg-surface-container-lowest rounded-xl p-6 sm:p-8 shadow-sm ring-1 ring-black/5">
 <h3 class="font-headline-lg text-xl font-bold mb-6">Customer</h3>
 <div class="flex items-center mb-6">
-<div class="w-14 h-14 rounded-full bg-primary-fixed overflow-hidden mr-4">
-<div class="w-full h-full flex items-center justify-center text-primary font-bold">{{order.user_id.name}}</div>
+<div class="w-14 h-14 rounded-full bg-primary-fixed overflow-hidden mr-4 shrink-0 flex items-center justify-center text-primary font-bold text-lg">
+{{order.user_id.name}}
 </div>
-<div>
+<div class="min-w-0 flex-1">
 {{#if order.user_id}}
-<p class="font-body-md font-bold">{{order.user_id.name}}</p>
-<p class="text-sm text-on-surface-variant">{{order.user_id.email}}</p>
+<p class="font-body-md font-bold text-on-surface truncate">{{order.user_id.name}}</p>
+<p class="text-sm text-on-surface-variant truncate">{{order.user_id.email}}</p>
 {{else}}
-<p class="font-body-md font-bold">Customer unavailable</p>
+<p class="font-body-md font-bold text-on-surface">Customer unavailable</p>
 {{/if}}
 </div>
 </div>
 <div class="space-y-4 pt-4 border-t border-outline-variant/20">
 <div class="flex justify-between items-center">
 <span class="text-on-surface-variant font-body-md">Phone</span>
-<span class="font-semibold">{{order.user_id.phone}}</span>
+<span class="font-semibold text-on-surface">{{order.user_id.phone}}</span>
 </div>
 <div class="flex justify-between items-center">
 <span class="text-on-surface-variant font-body-md">Order ID</span>
-<span class="font-semibold">#{{order.order_id}}</span>
+<span class="font-semibold text-on-surface">#{{order.order_id}}</span>
 </div>
 </div>
 </div>
 <!-- Order Timeline -->
-<div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm ring-1 ring-black/5">
+<div class="bg-surface-container-lowest rounded-xl p-6 sm:p-8 shadow-sm ring-1 ring-black/5">
 <h3 class="font-headline-lg text-xl font-bold mb-8">Order Timeline</h3>
 <div class="space-y-6">
-<div class="order-timeline-item relative flex">
+<div class="order-timeline-item relative flex items-start">
 <div class="order-timeline-dot relative z-10 w-6 h-6 flex-shrink-0 flex items-center justify-center bg-green-100 rounded-full mr-4"><div class="w-2 h-2 bg-green-600 rounded-full"></div></div>
-<div><p class="font-body-md font-bold">Order received</p><p class="text-sm text-on-surface-variant">{{formatDate order.createdAt}}</p></div>
+<div class="min-w-0 flex-1"><p class="font-body-md font-bold text-on-surface">Order received</p><p class="text-sm text-on-surface-variant">{{formatDate order.createdAt}}</p></div>
 </div>
-<div class="order-timeline-item relative flex">
+<div class="order-timeline-item relative flex items-start">
 <div class="order-timeline-dot relative z-10 w-6 h-6 flex-shrink-0 flex items-center justify-center bg-primary-fixed rounded-full mr-4"><div class="w-2 h-2 bg-primary rounded-full"></div></div>
-<div><p class="font-body-md font-bold">Current status</p><p class="text-sm text-on-surface-variant">{{formatStatus order.order_status}}</p></div>
+<div class="min-w-0 flex-1"><p class="font-body-md font-bold text-on-surface">Current status</p><p class="text-sm text-on-surface-variant">{{formatStatus order.order_status}}</p></div>
 </div>
-<div class="order-timeline-item relative flex">
+<div class="order-timeline-item relative flex items-start">
 <div class="order-timeline-dot relative z-10 w-6 h-6 flex-shrink-0 flex items-center justify-center bg-surface-container-high rounded-full mr-4"><div class="w-2 h-2 bg-on-surface-variant rounded-full"></div></div>
-<div><p class="font-body-md font-bold">Last updated</p><p class="text-sm text-on-surface-variant">{{formatDate order.updatedAt}}</p></div>
+<div class="min-w-0 flex-1"><p class="font-body-md font-bold text-on-surface">Last updated</p><p class="text-sm text-on-surface-variant">{{formatDate order.updatedAt}}</p></div>
 </div>
 </div>
 </div>

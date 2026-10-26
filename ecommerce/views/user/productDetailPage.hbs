@@ -158,7 +158,7 @@
                     data-wishlisted="{{#if isWishlisted}}true{{else}}false{{/if}}"
                     aria-pressed="{{#if isWishlisted}}true{{else}}false{{/if}}"
                     onclick="toggleProductWishlist(this, event)"
-                    class="absolute top-3 right-3 sm:top-6 sm:right-6 {{#if isWishlisted}}bg-red-500 hover:bg-red-600{{else}}bg-white/95 hover:bg-white{{/if}} backdrop-blur-md p-2.5 sm:p-3 rounded-full border border-outline-variant/30 transition-all active:scale-95 z-10 shadow-sm">
+                    class="absolute top-3 right-3 sm:top-6 sm:right-6 {{#if isWishlisted}}bg-red-500 hover:bg-red-600{{else}}bg-white/90 hover:bg-white{{/if}} backdrop-blur-md p-2.5 sm:p-3 rounded-full border border-outline-variant/30 transition-all active:scale-95 z-10 shadow-sm">
 
                     <span
                         class="material-symbols-outlined text-[18px] sm:text-[22px] {{#if isWishlisted}}text-white{{else}}text-ink-black{{/if}}">
@@ -821,6 +821,15 @@
         event.stopPropagation();
         if (button.disabled) return;
 
+        const isAuthenticated = {{#if user}}true{{else}}false{{/if}};
+        if (!isAuthenticated) {
+            showNotification("error", "Please log in to add items to wishlist.");
+            setTimeout(() => {
+                window.location.href = "/login";
+            }, 1200);
+            return;
+        }
+
         const wasWishlisted = button.dataset.wishlisted === "true";
         button.disabled = true;
         try {
@@ -829,6 +838,14 @@
                 headers: { "Accept": "application/json" }
             });
             const result = await response.json();
+
+            if (response.status === 401 || result.redirectTo) {
+                showNotification("error", result.message || "Please log in to add items to wishlist.");
+                setTimeout(() => {
+                    window.location.href = result.redirectTo || "/login";
+                }, 1200);
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error(result.message || "Unable to update your wishlist.");
@@ -1069,6 +1086,15 @@
 
     async function addProductDetailToCart() {
 
+        const isAuthenticated = {{#if user}}true{{else}}false{{/if}};
+        if (!isAuthenticated) {
+            showNotification("error", "Please log in to add items to cart.");
+            setTimeout(() => {
+                window.location.href = "/login";
+            }, 1200);
+            return;
+        }
+
         // -----------------------------------------
         // Check variant selection
         // -----------------------------------------
@@ -1160,6 +1186,8 @@
                         method: "POST",
                         headers: {
                             "Content-Type":
+                                "application/json",
+                            "Accept":
                                 "application/json"
                         }
                     }
@@ -1168,6 +1196,20 @@
 
             const data =
                 await response.json();
+
+
+            // -----------------------------------------
+            // REDIRECT GUEST TO LOGIN
+            // -----------------------------------------
+
+            if (response.status === 401 || data.redirectTo) {
+                showNotification("error", data.message || "Please log in to add items to cart.");
+                addToCartButton.innerHTML = originalHTML;
+                setTimeout(() => {
+                    window.location.href = data.redirectTo || "/login";
+                }, 1200);
+                return;
+            }
 
 
             // -----------------------------------------
@@ -1188,6 +1230,13 @@
             }
 
             showNotification("success", data.message || "Product added to cart");
+
+            if (typeof window.updateCartBadge === "function" && (data.cartCount !== undefined || data.cart)) {
+                const totalCartCount = data.cartCount !== undefined
+                    ? data.cartCount
+                    : (data.cart?.items || []).reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+                window.updateCartBadge(totalCartCount);
+            }
 
 
             // -----------------------------------------

@@ -1,9 +1,9 @@
 <!-- Mobile Admin Sidebar Backdrop -->
-<div id="adminSidebarBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden hidden transition-opacity" onclick="toggleAdminSidebar()"></div>
+<div id="adminSidebarBackdrop"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden hidden transition-opacity"
+    onclick="toggleAdminSidebar()"></div>
 
-<aside
-    id="adminSidebar"
-    class="fixed left-0 top-0 h-screen w-64
+<aside id="adminSidebar" class="fixed left-0 top-0 h-screen w-64
            bg-surface-container-low
            border-r border-outline-variant/20
            flex flex-col
@@ -11,8 +11,7 @@
            z-50
            transform -translate-x-full lg:translate-x-0
            transition-all duration-300 ease-in-out
-           overflow-y-auto custom-scrollbar"
->
+           overflow-y-auto custom-scrollbar">
 
     <!-- Logo & Toggle Buttons -->
     <div class="sidebar-header-box mb-8 px-2 flex items-center justify-between gap-2">
@@ -27,32 +26,25 @@
         </div>
 
         <!-- Compact Logo (Shown when reduced/collapsed) -->
-        <div class="sidebar-logo-compact hidden w-10 h-10 rounded-xl bg-primary text-on-primary items-center justify-center font-bold text-base shadow-sm shrink-0 mx-auto" title="Nutri Luxe Admin">
+        <div class="sidebar-logo-compact hidden w-10 h-10 rounded-xl bg-primary text-on-primary items-center justify-center font-bold text-base shadow-sm shrink-0 mx-auto"
+            title="Nutri Luxe Admin">
             NL
         </div>
 
         <div class="flex items-center gap-1 shrink-0">
             <!-- Collapse/Expand Toggle Button (Reduce to icons) -->
-            <button
-                type="button"
-                id="sidebarCollapseBtn"
+            <button type="button" id="sidebarCollapseBtn"
                 class="sidebar-toggle-btn flex p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors cursor-pointer"
-                onclick="toggleSidebarCollapse()"
-                title="Reduce sidebar (icons only)"
-                aria-label="Toggle sidebar width"
-            >
+                onclick="toggleSidebarCollapse()" title="Reduce sidebar (icons only)" aria-label="Toggle sidebar width">
                 <span id="sidebarCollapseIcon" class="material-symbols-outlined text-[20px]">
                     left_panel_close
                 </span>
             </button>
 
             <!-- Mobile Close Button -->
-            <button
-                type="button"
+            <button type="button"
                 class="lg:hidden p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors cursor-pointer"
-                onclick="toggleAdminSidebar()"
-                aria-label="Close sidebar"
-            >
+                onclick="toggleAdminSidebar()" aria-label="Close sidebar">
                 <span class="material-symbols-outlined text-[20px]">close</span>
             </button>
         </div>
@@ -63,14 +55,10 @@
     <nav class="flex-1 space-y-1">
 
         <!-- Dashboard -->
-        <a
-            href="/admin/"
-            data-tooltip="Dashboard"
-            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
+        <a href="/admin/" data-nav="dashboard" data-tooltip="Dashboard" class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors group"
-        >
+                   transition-colors group">
             <span class="material-symbols-outlined shrink-0 text-[22px]">
                 dashboard
             </span>
@@ -81,14 +69,10 @@
 
 
         <!-- Products -->
-        <a
-            href="/admin/product/products"
-            data-tooltip="Products"
-            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
+        <a href="/admin/product/products" data-nav="products" data-tooltip="Products" class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors group"
-        >
+                   transition-colors group">
             <span class="material-symbols-outlined shrink-0 text-[22px]">
                 inventory_2
             </span>
@@ -99,14 +83,10 @@
 
 
         <!-- Orders -->
-        <a
-            href="/admin/order/orders"
-            data-tooltip="Orders"
-            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
+        <a href="/admin/order/orders" data-nav="orders" data-tooltip="Orders" class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors group"
-        >
+                   transition-colors group">
             <span class="material-symbols-outlined shrink-0 text-[22px]">
                 shopping_cart
             </span>
@@ -117,14 +97,10 @@
 
 
         <!-- Categories -->
-        <a
-            href="/admin/category/categories"
-            data-tooltip="Categories"
-            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
+        <a href="/admin/category/categories" data-nav="categories" data-tooltip="Categories" class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors group"
-        >
+                   transition-colors group">
             <span class="material-symbols-outlined shrink-0 text-[22px]">
                 category
             </span>
@@ -135,14 +111,10 @@
 
 
         <!-- Coupons -->
-        <a
-            href="/admin/coupons"
-            data-tooltip="Coupons"
-            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
+        <a href="/admin/coupons" data-nav="coupons" data-tooltip="Coupons" class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors group"
-        >
+                   transition-colors group">
             <span class="material-symbols-outlined shrink-0 text-[22px]">
                 confirmation_number
             </span>
@@ -153,14 +125,10 @@
 
 
         <!-- Offers -->
-        <a
-            href="/admin/offers"
-            data-tooltip="Offers"
-            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
+        <a href="/admin/offers" data-nav="offers" data-tooltip="Offers" class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors group"
-        >
+                   transition-colors group">
             <span class="material-symbols-outlined shrink-0 text-[22px]">
                 local_offer
             </span>
@@ -171,14 +139,10 @@
 
 
         <!-- Customers -->
-        <a
-            href="/admin/customer/customers"
-            data-tooltip="Customers"
-            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
+        <a href="/admin/customer/customers" data-nav="customers" data-tooltip="Customers" class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors group"
-        >
+                   transition-colors group">
             <span class="material-symbols-outlined shrink-0 text-[22px]">
                 group
             </span>
@@ -189,14 +153,10 @@
 
 
         <!-- Sales Report -->
-        <a
-            href="/admin/sales-report"
-            data-tooltip="Sales Report"
-            class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
+        <a href="/admin/sales-report" data-nav="sales-report" data-tooltip="Sales Report" class="sidebar-nav-item flex items-center gap-3 px-4 py-3 rounded-lg
                    text-on-surface-variant
                    hover:bg-surface-variant
-                   transition-colors group"
-        >
+                   transition-colors group">
             <span class="material-symbols-outlined shrink-0 text-[22px]">
                 assessment
             </span>
@@ -207,39 +167,29 @@
 
 
         <!-- Logout -->
-        <form action="/admin/logout" method="POST" class="m-0 p-0" onsubmit="return confirm('Are you sure you want to log out?');">
-            <button
-                type="submit"
-                data-tooltip="Logout"
-                class="sidebar-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg
-                       text-on-surface-variant
-                       hover:bg-red-50
-                       hover:text-red-600
-                       transition-colors bg-transparent border-0 cursor-pointer text-left font-inherit group"
-            >
-                <span class="material-symbols-outlined shrink-0 text-[22px]">
-                    logout
-                </span>
-                <span class="sidebar-text truncate">
-                    Logout
-                </span>
-            </button>
-        </form>
+        <button type="button" id="adminLogoutTriggerBtn" data-tooltip="Logout" class="sidebar-nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg
+                   text-on-surface-variant
+                   hover:bg-red-50
+                   hover:text-red-600
+                   transition-colors bg-transparent border-0 cursor-pointer text-left font-inherit group">
+            <span class="material-symbols-outlined shrink-0 text-[22px]">
+                logout
+            </span>
+            <span class="sidebar-text truncate">
+                Logout
+            </span>
+        </button>
 
     </nav>
 
 
     <!-- View Store -->
     <div class="mt-auto border-t border-outline-variant/30 pt-6 px-1">
-        <a
-            href="/"
-            data-tooltip="View Store"
-            class="sidebar-footer-btn w-full flex items-center justify-center gap-2
+        <a href="/" data-tooltip="View Store" class="sidebar-footer-btn w-full flex items-center justify-center gap-2
                    px-4 py-3 rounded-full
                    bg-primary text-on-primary
                    transition-all
-                   hover:bg-opacity-90"
-        >
+                   hover:bg-opacity-90">
             <span class="material-symbols-outlined text-[18px] shrink-0">
                 open_in_new
             </span>
@@ -251,157 +201,336 @@
 
 </aside>
 
+<!-- Admin Logout Confirmation Modal -->
+<div id="adminLogoutModal"
+    class="hidden fixed inset-0 z-[100] items-center justify-center bg-black/40 backdrop-blur-sm p-4 transition-all duration-200"
+    role="presentation">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-outline-variant/20 p-6 sm:p-7 transform transition-all duration-200 scale-95 opacity-0 modal-box"
+        role="dialog" aria-modal="true" aria-labelledby="adminLogoutTitle">
+        <div class="flex items-start gap-4 mb-4">
+            <div
+                class="w-12 h-12 rounded-full bg-red-50 border border-red-100 flex items-center justify-center shrink-0 text-red-600 shadow-sm">
+                <span class="material-symbols-outlined text-[26px]">logout</span>
+            </div>
+            <div class="flex-1">
+                <div class="flex items-center justify-between">
+                    <h2 id="adminLogoutTitle" class="text-lg sm:text-xl font-bold text-gray-900">Confirm Log Out</h2>
+                    <button type="button" id="closeAdminLogoutModal"
+                        class="text-gray-400 hover:text-gray-700 hover:bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center transition-colors -mr-1"
+                        aria-label="Close dialog">
+                        <span class="material-symbols-outlined text-[20px]">close</span>
+                    </button>
+                </div>
+                <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                    Are you sure you want to log out of the admin panel? You will need to sign in again to access the
+                    dashboard.
+                </p>
+            </div>
+        </div>
+        <div class="flex justify-end items-center gap-3 mt-6 pt-4 border-t border-gray-100">
+            <button type="button" id="cancelAdminLogout"
+                class="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-semibold text-sm hover:bg-gray-100 transition-all active:scale-95">
+                Cancel
+            </button>
+            <form id="adminLogoutForm" action="/admin/logout" method="POST" class="m-0 p-0">
+                <button type="submit" id="confirmAdminLogout"
+                    class="px-6 py-2.5 rounded-xl bg-red-600 text-white font-semibold text-sm hover:bg-red-700 shadow-md shadow-red-600/20 transition-all active:scale-95 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">logout</span>
+                    Log Out
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <style>
-/* Transitions for aside and content wrappers */
-#adminSidebar {
-    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s ease;
-}
-
-main.lg\:ml-64,
-main.ml-64,
-div.lg\:ml-64,
-header.lg\:ml-64,
-header.ml-64,
-header.lg\:left-64,
-main.md\:ml-64 {
-    transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1), left 0.25s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Sidebar styling when collapsed / reduced */
-body.sidebar-collapsed #adminSidebar {
-    width: 5rem !important; /* 80px */
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
-}
-
-body.sidebar-collapsed #adminSidebar .sidebar-text {
-    display: none !important;
-}
-
-body.sidebar-collapsed #adminSidebar .sidebar-logo-text {
-    display: none !important;
-}
-
-body.sidebar-collapsed #adminSidebar .sidebar-logo-compact {
-    display: flex !important;
-}
-
-body.sidebar-collapsed #adminSidebar .sidebar-header-box {
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 0.75rem !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-body.sidebar-collapsed #adminSidebar .sidebar-nav-item {
-    justify-content: center !important;
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
-    position: relative;
-}
-
-body.sidebar-collapsed #adminSidebar .sidebar-footer-btn {
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
-    justify-content: center !important;
-}
-
-/* Tooltip on hover when collapsed on desktop */
-@media (min-width: 1024px) {
-    body.sidebar-collapsed #adminSidebar .sidebar-nav-item:hover::after {
-        content: attr(data-tooltip);
-        position: absolute;
-        left: calc(100% + 12px);
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: #111827;
-        color: #ffffff;
-        font-size: 12px;
-        font-weight: 600;
-        padding: 6px 12px;
-        border-radius: 8px;
-        white-space: nowrap;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
-        z-index: 100;
-        pointer-events: none;
-        animation: tooltipFadeIn 0.15s ease-out;
+    /* Active sidebar item styling (solid black for current page) */
+    .sidebar-nav-item.active {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.3) !important;
     }
 
-    body.sidebar-collapsed main.lg\:ml-64,
-    body.sidebar-collapsed main.ml-64,
-    body.sidebar-collapsed div.lg\:ml-64,
-    body.sidebar-collapsed div.ml-64,
-    body.sidebar-collapsed header.lg\:ml-64,
-    body.sidebar-collapsed header.ml-64,
-    body.sidebar-collapsed main.md\:ml-64 {
-        margin-left: 5rem !important;
+    .sidebar-nav-item.active .sidebar-text,
+    .sidebar-nav-item.active .material-symbols-outlined {
+        color: #ffffff !important;
     }
 
-    body.sidebar-collapsed header.lg\:left-64,
-    body.sidebar-collapsed header.left-64 {
-        left: 5rem !important;
+    .sidebar-nav-item.active:hover {
+        background-color: #171717 !important;
+        color: #ffffff !important;
     }
 
-    body.sidebar-collapsed header.lg\:max-w-\[calc\(100\%-16rem\)\],
-    body.sidebar-collapsed header[class*="calc(100%-16rem)"] {
-        max-width: calc(100% - 5rem) !important;
+    /* Transitions for aside and content wrappers */
+    #adminSidebar {
+        transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s ease;
     }
-}
 
-@keyframes tooltipFadeIn {
-    from { opacity: 0; transform: translateY(-50%) translateX(-4px); }
-    to { opacity: 1; transform: translateY(-50%) translateX(0); }
-}
+    main.lg\:ml-64,
+    main.ml-64,
+    div.lg\:ml-64,
+    header.lg\:ml-64,
+    header.ml-64,
+    header.lg\:left-64,
+    main.md\:ml-64 {
+        transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1), left 0.25s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Sidebar styling when collapsed / reduced */
+    body.sidebar-collapsed #adminSidebar {
+        width: 5rem !important;
+        /* 80px */
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+
+    body.sidebar-collapsed #adminSidebar .sidebar-text {
+        display: none !important;
+    }
+
+    body.sidebar-collapsed #adminSidebar .sidebar-logo-text {
+        display: none !important;
+    }
+
+    body.sidebar-collapsed #adminSidebar .sidebar-logo-compact {
+        display: flex !important;
+    }
+
+    body.sidebar-collapsed #adminSidebar .sidebar-header-box {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    body.sidebar-collapsed #adminSidebar .sidebar-nav-item {
+        justify-content: center !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        position: relative;
+    }
+
+    body.sidebar-collapsed #adminSidebar .sidebar-footer-btn {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        justify-content: center !important;
+    }
+
+    /* Tooltip on hover when collapsed on desktop */
+    @media (min-width: 1024px) {
+        body.sidebar-collapsed #adminSidebar .sidebar-nav-item:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: calc(100% + 12px);
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #111827;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 8px;
+            white-space: nowrap;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+            z-index: 100;
+            pointer-events: none;
+            animation: tooltipFadeIn 0.15s ease-out;
+        }
+
+        body.sidebar-collapsed main.lg\:ml-64,
+        body.sidebar-collapsed main.ml-64,
+        body.sidebar-collapsed div.lg\:ml-64,
+        body.sidebar-collapsed div.ml-64,
+        body.sidebar-collapsed header.lg\:ml-64,
+        body.sidebar-collapsed header.ml-64,
+        body.sidebar-collapsed main.md\:ml-64 {
+            margin-left: 5rem !important;
+        }
+
+        body.sidebar-collapsed header.lg\:left-64,
+        body.sidebar-collapsed header.left-64 {
+            left: 5rem !important;
+        }
+
+        body.sidebar-collapsed header.lg\:max-w-\[calc\(100\%-16rem\)\],
+        body.sidebar-collapsed header[class*="calc(100%-16rem)"] {
+            max-width: calc(100% - 5rem) !important;
+        }
+    }
+
+    @keyframes tooltipFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-50%) translateX(-4px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+    }
 </style>
 
 <script>
-// Apply saved collapse state instantly before full render to prevent layout jump
-(function() {
-    try {
-        if (localStorage.getItem('adminSidebarCollapsed') === 'true') {
-            document.body.classList.add('sidebar-collapsed');
+    // Apply saved collapse state instantly before full render to prevent layout jump
+    (function () {
+        try {
+            if (localStorage.getItem('adminSidebarCollapsed') === 'true') {
+                document.body.classList.add('sidebar-collapsed');
+            }
+        } catch (e) { }
+    })();
+
+    function toggleSidebarCollapse() {
+        const isCollapsed = document.body.classList.toggle('sidebar-collapsed');
+        try {
+            localStorage.setItem('adminSidebarCollapsed', isCollapsed ? 'true' : 'false');
+        } catch (e) { }
+        updateCollapseControls();
+    }
+
+    function updateCollapseControls() {
+        const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+        const icon = document.getElementById('sidebarCollapseIcon');
+        const btn = document.getElementById('sidebarCollapseBtn');
+        if (icon) {
+            icon.textContent = isCollapsed ? 'dock_to_right' : 'left_panel_close';
         }
-    } catch(e) {}
-})();
-
-function toggleSidebarCollapse() {
-    const isCollapsed = document.body.classList.toggle('sidebar-collapsed');
-    try {
-        localStorage.setItem('adminSidebarCollapsed', isCollapsed ? 'true' : 'false');
-    } catch(e) {}
-    updateCollapseControls();
-}
-
-function updateCollapseControls() {
-    const isCollapsed = document.body.classList.contains('sidebar-collapsed');
-    const icon = document.getElementById('sidebarCollapseIcon');
-    const btn = document.getElementById('sidebarCollapseBtn');
-    if (icon) {
-        icon.textContent = isCollapsed ? 'dock_to_right' : 'left_panel_close';
+        if (btn) {
+            btn.title = isCollapsed ? 'Expand sidebar' : 'Reduce size (show icons only)';
+        }
     }
-    if (btn) {
-        btn.title = isCollapsed ? 'Expand sidebar' : 'Reduce size (show icons only)';
-    }
-}
 
-function toggleAdminSidebar() {
-    const sidebar = document.getElementById('adminSidebar');
-    const backdrop = document.getElementById('adminSidebarBackdrop');
-    if (!sidebar) return;
-    const isClosed = sidebar.classList.contains('-translate-x-full');
-    if (isClosed) {
-        sidebar.classList.remove('-translate-x-full');
-        if (backdrop) backdrop.classList.remove('hidden');
+    function toggleAdminSidebar() {
+        const sidebar = document.getElementById('adminSidebar');
+        const backdrop = document.getElementById('adminSidebarBackdrop');
+        if (!sidebar) return;
+        const isClosed = sidebar.classList.contains('-translate-x-full');
+        if (isClosed) {
+            sidebar.classList.remove('-translate-x-full');
+            if (backdrop) backdrop.classList.remove('hidden');
+        } else {
+            sidebar.classList.add('-translate-x-full');
+            if (backdrop) backdrop.classList.add('hidden');
+        }
+    }
+
+    function highlightActiveAdminNav() {
+        const path = window.location.pathname.toLowerCase();
+        const navItems = document.querySelectorAll('#adminSidebar [data-nav]');
+        if (!navItems.length) return;
+
+        let activeKey = null;
+
+        if (path.includes('/admin/product')) {
+            activeKey = 'products';
+        } else if (path.includes('/admin/order')) {
+            activeKey = 'orders';
+        } else if (path.includes('/admin/category') || path.includes('/admin/categories')) {
+            activeKey = 'categories';
+        } else if (path.includes('/admin/coupon')) {
+            activeKey = 'coupons';
+        } else if (path.includes('/admin/offer')) {
+            activeKey = 'offers';
+        } else if (path.includes('/admin/customer')) {
+            activeKey = 'customers';
+        } else if (path.includes('/admin/sales')) {
+            activeKey = 'sales-report';
+        } else if (path === '/admin' || path === '/admin/' || path === '/admin/dashboard') {
+            activeKey = 'dashboard';
+        }
+
+        if (!activeKey) {
+            navItems.forEach(item => {
+                const href = (item.getAttribute('href') || '').toLowerCase();
+                if (href && (path === href || (href !== '/admin/' && href !== '/admin' && path.startsWith(href)))) {
+                    activeKey = item.dataset.nav;
+                }
+            });
+        }
+
+        if (!activeKey && (path === '/admin' || path.startsWith('/admin?'))) {
+            activeKey = 'dashboard';
+        }
+
+        navItems.forEach(item => {
+            if (item.dataset.nav === activeKey) {
+                item.classList.add('active', 'bg-black', 'text-white');
+                item.classList.remove('text-on-surface-variant', 'hover:bg-surface-variant');
+            } else {
+                item.classList.remove('active', 'bg-black', 'text-white');
+                item.classList.add('text-on-surface-variant', 'hover:bg-surface-variant');
+            }
+        });
+    }
+
+    // Highlight current page immediately and on DOM load
+    highlightActiveAdminNav();
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            updateCollapseControls();
+            highlightActiveAdminNav();
+        });
     } else {
-        sidebar.classList.add('-translate-x-full');
-        if (backdrop) backdrop.classList.add('hidden');
+        updateCollapseControls();
+        highlightActiveAdminNav();
     }
-}
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updateCollapseControls);
-} else {
-    updateCollapseControls();
-}
+    // Admin Logout Confirmation Modal Logic
+    (function () {
+        const triggerBtn = document.getElementById('adminLogoutTriggerBtn');
+        const modal = document.getElementById('adminLogoutModal');
+        const closeBtn = document.getElementById('closeAdminLogoutModal');
+        const cancelBtn = document.getElementById('cancelAdminLogout');
+        if (!triggerBtn || !modal) return;
+
+        const modalBox = modal.querySelector('.modal-box');
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            requestAnimationFrame(() => {
+                if (modalBox) {
+                    modalBox.classList.remove('scale-95', 'opacity-0');
+                    modalBox.classList.add('scale-100', 'opacity-100');
+                }
+            });
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            if (modalBox) {
+                modalBox.classList.remove('scale-100', 'opacity-100');
+                modalBox.classList.add('scale-95', 'opacity-0');
+            }
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = '';
+            }, 150);
+        }
+
+        triggerBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            openModal();
+        });
+
+        closeBtn?.addEventListener('click', closeModal);
+        cancelBtn?.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    })();
 </script>

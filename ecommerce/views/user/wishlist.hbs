@@ -125,8 +125,22 @@
                     headers: { "Accept": "application/json" },
                 });
                 const result = await response.json();
+                if (response.status === 401 || result.redirectTo) {
+                    showNotification("error", result.message || "Please log in to add items to cart.");
+                    setTimeout(() => {
+                        window.location.href = result.redirectTo || "/login";
+                    }, 1200);
+                    return;
+                }
                 if (!response.ok || !result.success) {
                     throw new Error(result.message || "Unable to add this product to the cart.");
+                }
+
+                if (typeof window.updateCartBadge === "function" && (result.cartCount !== undefined || result.cart)) {
+                    const totalCartCount = result.cartCount !== undefined
+                        ? result.cartCount
+                        : (result.cart?.items || []).reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+                    window.updateCartBadge(totalCartCount);
                 }
 
                 button.closest(".wishlist-card").remove();

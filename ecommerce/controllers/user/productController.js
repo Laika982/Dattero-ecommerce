@@ -1,6 +1,7 @@
 import Product from "../../models/productSchema.js";
 import Variant from "../../models/variantSchema.js";
 import Category from "../../models/categorySchema.js";
+import Wishlist from "../../models/wishlistSchema.js";
 import { getProductOfferPricing } from "../../services/offerService.js";
 
 const loadProducts = async (req, res) => {
@@ -163,9 +164,32 @@ const loadProducts = async (req, res) => {
 
     const paginatatedProduct = products.slice(skip, skip + limit);
 
+    const userId = req.user?._id || res.locals?.user?._id;
+    let wishlistedProductIds = new Set();
+
+    if (userId) {
+      try {
+        const userWishlist = await Wishlist.findOne({ user_id: userId }).lean();
+        if (userWishlist && Array.isArray(userWishlist.products)) {
+          wishlistedProductIds = new Set(
+            userWishlist.products.map((item) =>
+              (item.product_id?._id || item.product_id).toString()
+            )
+          );
+        }
+      } catch (wishlistErr) {
+        console.error("Error fetching wishlist in loadProducts:", wishlistErr);
+      }
+    }
+
+    const paginatedProductsWithWishlist = paginatatedProduct.map((prod) => ({
+      ...prod,
+      isWishlisted: wishlistedProductIds.has(prod._id.toString()),
+    }));
+
     res.render("user/products", {
       currentNav: "products",
-      products: paginatatedProduct,
+      products: paginatedProductsWithWishlist,
       categories,
 
       search,
@@ -299,11 +323,32 @@ const loadProduct = async (req, res) => {
       .limit(4)
       .lean();
 
+    const userId = req.user?._id || res.locals?.user?._id;
+    let isWishlisted = false;
+
+    if (userId) {
+      try {
+        const userWishlist = await Wishlist.findOne({ user_id: userId }).lean();
+        if (userWishlist && Array.isArray(userWishlist.products)) {
+          const prodIdStr = product._id.toString();
+          isWishlisted = userWishlist.products.some(
+            (item) =>
+              (item.product_id?._id || item.product_id).toString() === prodIdStr
+          );
+        }
+      } catch (wishlistErr) {
+        console.error("Error fetching wishlist in loadProduct:", wishlistErr);
+      }
+    }
+
+    product.isWishlisted = isWishlisted;
+
     //Render product detail
 
     return res.render("user/productDetailPage", {
       currentNav: "products",
       product,
+      isWishlisted,
 
       variants: variantsWithPrice,
 

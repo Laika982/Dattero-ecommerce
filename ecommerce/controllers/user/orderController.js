@@ -17,6 +17,7 @@ import {
   getOfferedUnitPrice,
   loadOfferPricingMap,
   applyCheckoutDiscounts,
+  calculateOrderShipping,
 } from "../../services/pricingService.js";
 
 import {
@@ -25,7 +26,7 @@ import {
 } from "../../services/inventoryService.js";
 
 import { generateOrderId } from "../../utils/generateOrderId.js";
-import { validateCoupon } from "../../services/couponService.js";
+import { validateCoupon, evaluateOrderCouponEligibility } from "../../services/couponService.js";
 import { verifyRazorpaySignature } from "../../services/paymentService.js";
 import {
   getOrCreateWallet,
@@ -41,6 +42,92 @@ const getActiveOrderItems = (order) =>
 
 const getInvoiceItems = (order) =>
   (order.items || []).filter((item) => item.status === "delivered");
+
+const calculateOrderAdjustedTotals = async (order) => {
+  if (!order) return order;
+
+  const nonCancelledItems = (order.items || []).filter(
+    (item) => item.status !== "cancelled",
+  );
+
+  const cancelledItems = (order.items || []).filter(
+    (item) => item.status === "cancelled",
+  );
+
+  const cancelledAmount = cancelledItems.reduce(
+    (acc, item) =>
+      acc + Number(item.item_total != null ? item.item_total : (item.price * item.quantity) || 0),
+    0,
+  );
+
+  const activeSubtotal = nonCancelledItems.reduce(
+    (acc, item) =>
+      acc + Number(item.item_total != null ? item.item_total : (item.price * item.quantity) || 0),
+    0,
+  );
+
+  const isEntireOrderCancelled =
+    order.order_status === "cancelled" || nonCancelledItems.length === 0;
+
+  const hasCancelledItems = cancelledItems.length > 0;
+
+  let activeDiscount = isEntireOrderCancelled ? 0 : Number(order.discount || 0);
+
+  if (!isEntireOrderCancelled && hasCancelledItems && order.coupon_code && activeDiscount > 0) {
+    try {
+      const couponCheck = await evaluateOrderCouponEligibility(order, nonCancelledItems);
+      if (!couponCheck.isEligible) {
+        activeDiscount = 0;
+      } else {
+        activeDiscount = couponCheck.discount;
+      }
+    } catch (err) {
+      console.error("Coupon eligibility error in calculateOrderAdjustedTotals:", err);
+    }
+  }
+
+  const activeShipping = isEntireOrderCancelled
+    ? 0
+    : (hasCancelledItems
+        ? calculateOrderShipping(activeSubtotal)
+        : Number(order.shipping_charge || 0));
+
+  const activeTax = isEntireOrderCancelled
+    ? 0
+    : Number(order.tax || 0);
+
+  const activeFinalAmount = isEntireOrderCancelled
+    ? 0
+    : (hasCancelledItems
+        ? Number(Math.max(0, activeSubtotal - activeDiscount + activeTax + activeShipping).toFixed(2))
+        : Number(order.final_amount || 0));
+
+  const formattedItems = (order.items || []).map((item) => ({
+    ...item,
+    is_cancelled: item.status === "cancelled",
+  }));
+
+  const fullSubtotal = (order.items || []).reduce(
+    (acc, item) =>
+      acc + Number(item.item_total != null ? item.item_total : (item.price * item.quantity) || 0),
+    0,
+  );
+
+  return {
+    ...order,
+    items: formattedItems,
+    original_subtotal: order.subtotal,
+    original_final_amount: order.final_amount,
+    active_subtotal: Number(activeSubtotal.toFixed(2)),
+    subtotal: Number((order.subtotal != null ? order.subtotal : fullSubtotal).toFixed(2)),
+    discount: Number(activeDiscount.toFixed(2)),
+    final_amount: Number(activeFinalAmount.toFixed(2)),
+    shipping_charge: Number(activeShipping.toFixed(2)),
+    tax: Number(activeTax.toFixed(2)),
+    cancelled_amount: Number(cancelledAmount.toFixed(2)),
+    has_cancelled_items: hasCancelledItems,
+  };
+};
 
 const MAX_CART_QUANTITY = 5;
 
@@ -84,9 +171,10 @@ const placeOrder = async (req, res) => {
     const userId = req.user._id;
 
     const { addressId, paymentMethod } = req.body;
-    const couponCode = typeof req.body.couponCode === "string"
+    const couponCode = typeof req.body.couponCode === "string" && req.body.couponCode.trim()
       ? req.body.couponCode.trim()
-      : "";
+      : (req.session?.appliedCouponCode || "");
+
 
     if (!mongoose.isValidObjectId(addressId)) {
       return res.status(400).json({
@@ -349,20 +437,43 @@ const placeOrder = async (req, res) => {
     }
 
     if (coupon) {
+      if (
+        coupon.usage_limit !== null &&
+        coupon.usage_limit !== undefined &&
+        coupon.usage_limit > 0
+      ) {
+        const [orderCount, usedByCount] = await Promise.all([
+          Order.countDocuments({
+            user_id: userId,
+            coupon_code: coupon.code,
+            order_status: { $nin: ["cancelled"] },
+          }).catch(() => 0),
+          Array.isArray(coupon.used_by)
+            ? coupon.used_by.filter(
+                (id) =>
+                  (id?._id ? id._id.toString() : id?.toString()) ===
+                  userId.toString(),
+              ).length
+            : 0,
+        ]);
+        const currentUsage = Math.max(orderCount, usedByCount);
+        if (currentUsage >= coupon.usage_limit) {
+          return res.status(400).json({
+            success: false,
+            message: `You have reached the usage limit (${coupon.usage_limit} ${coupon.usage_limit === 1 ? "time" : "times"}) for this coupon`,
+          });
+        }
+      }
+
       const reservation = await Coupon.updateOne(
         {
           _id: coupon._id,
           is_active: true,
           expiry_date: { $gt: new Date() },
-          used_by: { $ne: userId },
-          $or: [
-            { usage_limit: null },
-            { $expr: { $lt: ["$used_count", "$usage_limit"] } },
-          ],
         },
         {
           $inc: { used_count: 1 },
-          $addToSet: { used_by: userId },
+          $push: { used_by: userId },
         },
       );
 
@@ -391,10 +502,21 @@ const placeOrder = async (req, res) => {
 
       if (!claimedPayment) {
         if (couponReservationId) {
-          await Coupon.updateOne(
-            { _id: couponReservationId, used_by: userId },
-            { $inc: { used_count: -1 }, $pull: { used_by: userId } },
-          );
+          try {
+            const cDoc = await Coupon.findById(couponReservationId);
+            if (cDoc) {
+              cDoc.used_count = Math.max(0, (cDoc.used_count || 1) - 1);
+              const idx = (cDoc.used_by || []).findIndex(
+                (id) => (id?._id || id).toString() === userId.toString(),
+              );
+              if (idx !== -1) {
+                cDoc.used_by.splice(idx, 1);
+              }
+              await cDoc.save();
+            }
+          } catch (rErr) {
+            console.error("Coupon rollback error:", rErr);
+          }
           couponReservationId = null;
         }
         return res.status(409).json({
@@ -505,6 +627,9 @@ const placeOrder = async (req, res) => {
     }
 
     couponReservationId = null;
+    if (req.session) {
+      req.session.appliedCouponCode = null;
+    }
 
     cart.items = [];
 
@@ -544,13 +669,17 @@ const placeOrder = async (req, res) => {
 
     if (couponReservationId) {
       try {
-        await Coupon.updateOne(
-          { _id: couponReservationId, used_by: req.user._id },
-          {
-            $inc: { used_count: -1 },
-            $pull: { used_by: req.user._id },
-          },
-        );
+        const cDoc = await Coupon.findById(couponReservationId);
+        if (cDoc) {
+          cDoc.used_count = Math.max(0, (cDoc.used_count || 1) - 1);
+          const idx = (cDoc.used_by || []).findIndex(
+            (id) => (id?._id || id).toString() === req.user._id.toString(),
+          );
+          if (idx !== -1) {
+            cDoc.used_by.splice(idx, 1);
+          }
+          await cDoc.save();
+        }
       } catch (rollbackError) {
         console.error("Coupon reservation rollback error:", rollbackError);
       }
@@ -679,7 +808,7 @@ const loadOrders = async (req, res) => {
     const totalPages = Math.ceil(totalOrders / limit);
 
     return res.render("user/orderList", {
-      orders,
+      orders: await Promise.all(orders.map(calculateOrderAdjustedTotals)),
       search,
       currentStatus,
       currentStatusLabel,
@@ -716,8 +845,10 @@ const loadOrderDetails = async (req, res) => {
       return res.status(404).send("Order not found");
     }
 
+    const adjustedOrder = await calculateOrderAdjustedTotals(order);
+
     return res.render("user/orderDetails", {
-      order,
+      order: adjustedOrder,
       hasInvoiceItems: getActiveOrderItems(order).length > 0,
     });
   } catch (error) {
@@ -819,8 +950,10 @@ const loadOrderTracking = async (req, res) => {
               : "upcoming",
         }));
 
+    const adjustedOrder = await calculateOrderAdjustedTotals(order);
+
     return res.render("user/orderTracking", {
-      order,
+      order: adjustedOrder,
       trackingSteps,
       isCancelled,
       isReturned,
@@ -988,36 +1121,131 @@ const cancelOrderItem = async (req, res) => {
     item.status = "cancelled";
     item.cancellation_reason = reason || null;
 
+    const nonCancelledItems = (order.items || []).filter(
+      (i) => i.status !== "cancelled",
+    );
+    const allCancelled = nonCancelledItems.length === 0;
+
+    const previousFinalAmount = Number(order.final_amount || 0);
+
+    let newDiscount = 0;
+    let newShippingCharge = 0;
+    let newFinalAmount = 0;
+    let isCouponRemoved = false;
+
+    if (allCancelled) {
+      order.order_status = "cancelled";
+      newDiscount = 0;
+      newShippingCharge = 0;
+      newFinalAmount = 0;
+
+      if (order.coupon_code) {
+        try {
+          const couponDoc = await Coupon.findOne({ code: order.coupon_code });
+          if (couponDoc) {
+            couponDoc.used_count = Math.max(0, (couponDoc.used_count || 1) - 1);
+            const idx = (couponDoc.used_by || []).findIndex(
+              (id) => (id?._id || id).toString() === userId.toString(),
+            );
+            if (idx !== -1) {
+              couponDoc.used_by.splice(idx, 1);
+            }
+            await couponDoc.save();
+          }
+        } catch (couponRestoreError) {
+          console.error("Error restoring coupon on item cancellation:", couponRestoreError);
+        }
+      }
+    } else {
+      const activeSubtotal = nonCancelledItems.reduce(
+        (acc, i) =>
+          acc + Number(i.item_total != null ? i.item_total : (i.price * i.quantity) || 0),
+        0,
+      );
+
+      // Check coupon validity on remaining active items
+      const couponCheck = await evaluateOrderCouponEligibility(order, nonCancelledItems);
+      if (couponCheck.isEligible) {
+        newDiscount = couponCheck.discount;
+      } else {
+        newDiscount = 0;
+        if (order.discount > 0 && order.coupon_code) {
+          isCouponRemoved = true;
+          try {
+            const couponDoc = await Coupon.findOne({ code: order.coupon_code });
+            if (couponDoc) {
+              couponDoc.used_count = Math.max(0, (couponDoc.used_count || 1) - 1);
+              const idx = (couponDoc.used_by || []).findIndex(
+                (id) => (id?._id || id).toString() === userId.toString(),
+              );
+              if (idx !== -1) {
+                couponDoc.used_by.splice(idx, 1);
+              }
+              await couponDoc.save();
+            }
+          } catch (couponRestoreError) {
+            console.error("Error restoring coupon usage on coupon removal:", couponRestoreError);
+          }
+        }
+      }
+
+      // Check shipping charge: if activeSubtotal < 1000, add 50, otherwise 0
+      newShippingCharge = calculateOrderShipping(activeSubtotal);
+
+      const activeTax = Number(order.tax || 0);
+      newFinalAmount = Number(
+        Math.max(0, activeSubtotal - newDiscount + activeTax + newShippingCharge).toFixed(2),
+      );
+    }
+
+    let refundAmount = 0;
     if (order.payment_status === "paid") {
-      const itemRefundAmount = Number(((item.price - (item.discount || 0)) * item.quantity).toFixed(2));
-      if (itemRefundAmount > 0) {
+      refundAmount = Number(
+        Math.max(0, previousFinalAmount - newFinalAmount).toFixed(2),
+      );
+      if (refundAmount > 0) {
         await creditWallet({
           userId,
-          amount: Math.min(itemRefundAmount, order.final_amount),
+          amount: refundAmount,
           reason: "ORDER_CANCELLATION",
           orderId: order._id,
         });
       }
-    }
 
-    // Check whether every item is cancelled
-    const allCancelled = order.items.every(
-      (item) => item.status === "cancelled",
-    );
-
-    if (allCancelled) {
-      order.order_status = "cancelled";
-      if (order.payment_status === "paid") {
+      if (allCancelled) {
         order.payment_status = "refunded";
       }
     }
 
+    order.discount = newDiscount;
+    order.shipping_charge = newShippingCharge;
+    order.final_amount = newFinalAmount;
+
     // Save order
     await order.save();
 
+    let message = "Product cancelled successfully.";
+    if (allCancelled) {
+      message = "All items cancelled successfully." + (order.payment_status === "refunded" ? " Refund credited to wallet." : "");
+    } else {
+      const extraNotes = [];
+      if (isCouponRemoved) {
+        extraNotes.push("Coupon discount removed");
+      }
+      if (newShippingCharge > 0 && order.shipping_charge === 0) {
+        extraNotes.push("₹50 shipping charge applied");
+      }
+      if (refundAmount > 0) {
+        extraNotes.push(`₹${refundAmount.toFixed(2)} refunded to wallet`);
+      }
+      if (extraNotes.length > 0) {
+        message += ` (${extraNotes.join(", ")})`;
+      }
+    }
+
     return res.json({
       success: true,
-      message: "Product cancelled successfully" + (order.payment_status === "refunded" ? ". Refund credited to wallet." : ""),
+      message,
     });
   } catch (error) {
     console.error("Cancel item error:", error);
@@ -1080,6 +1308,28 @@ const cancelEntireOrder = async (req, res) => {
         orderId: order._id,
       });
       order.payment_status = "refunded";
+    }
+
+    order.discount = 0;
+    order.shipping_charge = 0;
+    order.final_amount = 0;
+
+    if (order.coupon_code) {
+      try {
+        const couponDoc = await Coupon.findOne({ code: order.coupon_code });
+        if (couponDoc) {
+          couponDoc.used_count = Math.max(0, (couponDoc.used_count || 1) - 1);
+          const idx = (couponDoc.used_by || []).findIndex(
+            (id) => (id?._id || id).toString() === userId.toString(),
+          );
+          if (idx !== -1) {
+            couponDoc.used_by.splice(idx, 1);
+          }
+          await couponDoc.save();
+        }
+      } catch (couponRestoreError) {
+        console.error("Error restoring coupon on entire order cancellation:", couponRestoreError);
+      }
     }
 
     await order.save();

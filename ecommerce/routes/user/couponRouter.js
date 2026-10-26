@@ -1,5 +1,5 @@
 import express from "express";
-import { applyCoupon } from "../../controllers/user/couponController.js";
+import { applyCoupon, removeCoupon } from "../../controllers/user/couponController.js";
 import { isAuthenticated } from "../../middleware/authMidilware.js";
 
 const router = express.Router();
@@ -10,4 +10,10 @@ router.post(
   applyCoupon
 );
 
-export default router;
+router.post(
+  "/remove",
+  isAuthenticated,
+  removeCoupon
+);
+
+export default router;

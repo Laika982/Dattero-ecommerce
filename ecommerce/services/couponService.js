@@ -2,9 +2,17 @@ import Coupon from "../models/couponSchema.js";
 import Cart from "../models/cartSchema.js";
 import Product from "../models/productSchema.js";
 
+import Order from "../models/orderSchema.js";
+
 export const evaluateCouponEligibility = (
   coupon,
-  { subtotal = 0, cartItems = [], userId = null, now = new Date() } = {},
+  {
+    subtotal = 0,
+    cartItems = [],
+    userId = null,
+    userUsageCount = null,
+    now = new Date(),
+  } = {},
 ) => {
   if (!coupon) {
     return { eligible: false, reason: "Invalid coupon" };
@@ -23,21 +31,27 @@ export const evaluateCouponEligibility = (
     return { eligible: false, reason: "This coupon has expired." };
   }
 
+  // Check Usage Limit Per Customer
   if (
     coupon.usage_limit !== null &&
     coupon.usage_limit !== undefined &&
-    coupon.used_count >= coupon.usage_limit
+    coupon.usage_limit > 0
   ) {
-    return { eligible: false, reason: "Coupon usage limit reached" };
-  }
+    let usageCount = 0;
+    if (userUsageCount !== null && userUsageCount !== undefined) {
+      usageCount = Number(userUsageCount) || 0;
+    } else if (userId && Array.isArray(coupon.used_by)) {
+      usageCount = coupon.used_by.filter(
+        (id) =>
+          (id?._id ? id._id.toString() : id?.toString()) === userId.toString(),
+      ).length;
+    }
 
-  if (userId && Array.isArray(coupon.used_by)) {
-    const alreadyUsed = coupon.used_by.some(
-      (id) =>
-        (id?._id ? id._id.toString() : id?.toString()) === userId.toString(),
-    );
-    if (alreadyUsed) {
-      return { eligible: false, reason: "You have already used this coupon" };
+    if (userId && usageCount >= coupon.usage_limit) {
+      return {
+        eligible: false,
+        reason: `You have reached the usage limit (${coupon.usage_limit} ${coupon.usage_limit === 1 ? "time" : "times"}) for this coupon.`,
+      };
     }
   }
 
@@ -141,10 +155,30 @@ export const validateCoupon = async ({ code, userId, subtotal, cartItems }) => {
     }
   }
 
+  let userUsageCount = 0;
+  if (userId) {
+    const [orderCount, usedByCount] = await Promise.all([
+      Order.countDocuments({
+        user_id: userId,
+        coupon_code: coupon.code,
+        order_status: { $nin: ["cancelled"] },
+      }).catch(() => 0),
+      Array.isArray(coupon.used_by)
+        ? coupon.used_by.filter(
+            (id) =>
+              (id?._id ? id._id.toString() : id?.toString()) ===
+              userId.toString(),
+          ).length
+        : 0,
+    ]);
+    userUsageCount = Math.max(orderCount, usedByCount);
+  }
+
   const eligibility = evaluateCouponEligibility(coupon, {
     subtotal,
     cartItems: items || [],
     userId,
+    userUsageCount,
   });
 
   if (!eligibility.eligible) {
@@ -179,3 +213,189 @@ export const validateCoupon = async ({ code, userId, subtotal, cartItems }) => {
     discount,
   };
 };
+
+export const evaluateOrderCouponEligibility = async (order, activeItems = []) => {
+  if (!order || !order.coupon_code) {
+    return { isEligible: false, discount: 0 };
+  }
+
+  const activeSubtotal = (activeItems || []).reduce(
+    (acc, item) =>
+      acc + Number(item.item_total != null ? item.item_total : (item.price * item.quantity) || 0),
+    0,
+  );
+
+  if (activeSubtotal <= 0) {
+    return { isEligible: false, discount: 0 };
+  }
+
+  const coupon = await Coupon.findOne({
+    code: order.coupon_code.trim().toUpperCase(),
+  })
+    .populate("category_id")
+    .populate("product_id")
+    .lean();
+
+  if (!coupon) {
+    return { isEligible: false, discount: 0 };
+  }
+
+  // Minimum purchase check
+  const minPurchase = Number(coupon.minimum_purchase || 0);
+  if (activeSubtotal < minPurchase) {
+    return { isEligible: false, discount: 0, reason: "Minimum purchase amount not reached." };
+  }
+
+  const appliesTo =
+    coupon.applies_to ||
+    (coupon.product_id ? "PRODUCT" : coupon.category_id ? "CATEGORY" : "ALL");
+
+  if (appliesTo === "PRODUCT") {
+    const targetProductId = coupon.product_id?._id
+      ? coupon.product_id._id.toString()
+      : coupon.product_id?.toString();
+
+    if (!targetProductId) {
+      return { isEligible: false, discount: 0 };
+    }
+
+    const hasProduct = activeItems.some((item) => {
+      const pid = item.product_id?._id
+        ? item.product_id._id.toString()
+        : item.product_id?.toString();
+      return pid === targetProductId;
+    });
+
+    if (!hasProduct) {
+      return { isEligible: false, discount: 0, reason: "Eligible product has been cancelled." };
+    }
+
+    const eligibleSubtotal = activeItems
+      .filter((item) => {
+        const pid = item.product_id?._id
+          ? item.product_id._id.toString()
+          : item.product_id?.toString();
+        return pid === targetProductId;
+      })
+      .reduce(
+        (acc, item) =>
+          acc + Number(item.item_total != null ? item.item_total : (item.price * item.quantity) || 0),
+        0,
+      );
+
+    let discount = 0;
+    if (coupon.discount_type === "PERCENTAGE") {
+      discount = (eligibleSubtotal * coupon.discount_value) / 100;
+      if (
+        coupon.max_discount !== null &&
+        coupon.max_discount !== undefined &&
+        coupon.max_discount > 0 &&
+        discount > coupon.max_discount
+      ) {
+        discount = coupon.max_discount;
+      }
+    } else if (coupon.discount_type === "FIXED") {
+      discount = Math.min(coupon.discount_value, eligibleSubtotal);
+    }
+
+    discount = Number(Math.min(discount, activeSubtotal).toFixed(2));
+    return { isEligible: true, discount, coupon };
+  }
+
+  if (appliesTo === "CATEGORY") {
+    const targetCategoryId = coupon.category_id?._id
+      ? coupon.category_id._id.toString()
+      : coupon.category_id?.toString();
+
+    if (!targetCategoryId) {
+      return { isEligible: false, discount: 0 };
+    }
+
+    const productIdsToFetch = [];
+    const productCategoryMap = new Map();
+
+    for (const item of activeItems) {
+      const catId = item.product_id?.category_id?._id
+        ? item.product_id.category_id._id.toString()
+        : item.product_id?.category_id?.toString();
+      const pid = item.product_id?._id
+        ? item.product_id._id.toString()
+        : item.product_id?.toString();
+
+      if (catId && pid) {
+        productCategoryMap.set(pid, catId);
+      } else if (pid) {
+        productIdsToFetch.push(pid);
+      }
+    }
+
+    if (productIdsToFetch.length > 0) {
+      const fetchedProducts = await Product.find({ _id: { $in: productIdsToFetch } })
+        .select("category_id")
+        .lean();
+      for (const p of fetchedProducts) {
+        const cid = p.category_id?._id
+          ? p.category_id._id.toString()
+          : p.category_id?.toString();
+        if (cid) {
+          productCategoryMap.set(p._id.toString(), cid);
+        }
+      }
+    }
+
+    const eligibleItems = activeItems.filter((item) => {
+      const pid = item.product_id?._id
+        ? item.product_id._id.toString()
+        : item.product_id?.toString();
+      return productCategoryMap.get(pid) === targetCategoryId;
+    });
+
+    if (eligibleItems.length === 0) {
+      return { isEligible: false, discount: 0, reason: "Eligible category items have been cancelled." };
+    }
+
+    const eligibleSubtotal = eligibleItems.reduce(
+      (acc, item) =>
+        acc + Number(item.item_total != null ? item.item_total : (item.price * item.quantity) || 0),
+      0,
+    );
+
+    let discount = 0;
+    if (coupon.discount_type === "PERCENTAGE") {
+      discount = (eligibleSubtotal * coupon.discount_value) / 100;
+      if (
+        coupon.max_discount !== null &&
+        coupon.max_discount !== undefined &&
+        coupon.max_discount > 0 &&
+        discount > coupon.max_discount
+      ) {
+        discount = coupon.max_discount;
+      }
+    } else if (coupon.discount_type === "FIXED") {
+      discount = Math.min(coupon.discount_value, eligibleSubtotal);
+    }
+
+    discount = Number(Math.min(discount, activeSubtotal).toFixed(2));
+    return { isEligible: true, discount, coupon };
+  }
+
+  // ALL items
+  let discount = 0;
+  if (coupon.discount_type === "PERCENTAGE") {
+    discount = (activeSubtotal * coupon.discount_value) / 100;
+    if (
+      coupon.max_discount !== null &&
+      coupon.max_discount !== undefined &&
+      coupon.max_discount > 0 &&
+      discount > coupon.max_discount
+    ) {
+      discount = coupon.max_discount;
+    }
+  } else if (coupon.discount_type === "FIXED") {
+    discount = Math.min(coupon.discount_value, activeSubtotal);
+  }
+
+  discount = Number(Math.min(discount, activeSubtotal).toFixed(2));
+  return { isEligible: true, discount, coupon };
+};
+

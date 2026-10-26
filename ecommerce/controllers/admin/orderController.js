@@ -1,8 +1,11 @@
 import Order from "../../models/orderSchema.js";
+import Coupon from "../../models/couponSchema.js";
 import User from "../../models/userSchema.js";
 import { increaseStock } from "../../services/inventoryService.js";
 import { creditWallet } from "../../services/walletService.js";
 import { processReferralReward } from "../../services/referralService.js";
+import { evaluateOrderCouponEligibility } from "../../services/couponService.js";
+import { calculateOrderShipping } from "../../services/pricingService.js";
 
 const adminListOrders = async (req, res) => {
   try {
@@ -120,6 +123,129 @@ const adminListOrders = async (req, res) => {
   }
 };
 
+const calculateOrderAdjustedTotals = async (order) => {
+  const nonCancelledItems = (order.items || []).filter(
+    (item) => item.status !== "cancelled"
+  );
+
+  const cancelledItems = (order.items || []).filter(
+    (item) => item.status === "cancelled"
+  );
+
+  const cancelledAmount = cancelledItems.reduce(
+    (acc, item) =>
+      acc + Number(item.item_total != null ? item.item_total : (item.price * item.quantity) || 0),
+    0
+  );
+
+  const activeSubtotal = nonCancelledItems.reduce(
+    (acc, item) =>
+      acc + Number(item.item_total != null ? item.item_total : (item.price * item.quantity) || 0),
+    0
+  );
+
+  const isEntireOrderCancelled =
+    order.order_status === "cancelled" || nonCancelledItems.length === 0;
+
+  const hasCancelledItems = cancelledItems.length > 0;
+
+  let activeDiscount = isEntireOrderCancelled ? 0 : Number(order.discount || 0);
+
+  if (!isEntireOrderCancelled && hasCancelledItems && order.coupon_code && activeDiscount > 0) {
+    try {
+      const couponCheck = await evaluateOrderCouponEligibility(order, nonCancelledItems);
+      if (!couponCheck.isEligible) {
+        activeDiscount = 0;
+      } else {
+        activeDiscount = couponCheck.discount;
+      }
+    } catch (err) {
+      console.error("Admin coupon eligibility error in calculateOrderAdjustedTotals:", err);
+    }
+  }
+
+  const activeShipping = isEntireOrderCancelled
+    ? 0
+    : (hasCancelledItems
+        ? calculateOrderShipping(activeSubtotal)
+        : Number(order.shipping_charge || 0));
+
+  const activeTax = isEntireOrderCancelled
+    ? 0
+    : Number(order.tax || 0);
+
+  const activeFinalAmount = isEntireOrderCancelled
+    ? 0
+    : (hasCancelledItems
+        ? Number(Math.max(0, activeSubtotal - activeDiscount + activeTax + activeShipping).toFixed(2))
+        : Number(order.final_amount || 0));
+
+  const statusStyles = {
+    pending: {
+      badge: "bg-amber-100 text-amber-800 border-amber-300",
+      dot: "bg-amber-500",
+    },
+    shipped: {
+      badge: "bg-blue-100 text-blue-800 border-blue-300",
+      dot: "bg-blue-500",
+    },
+    out_for_delivery: {
+      badge: "bg-indigo-100 text-indigo-800 border-indigo-300",
+      dot: "bg-indigo-500",
+    },
+    delivered: {
+      badge: "bg-emerald-100 text-emerald-800 border-emerald-300",
+      dot: "bg-emerald-500",
+    },
+    cancelled: {
+      badge: "bg-rose-100 text-rose-800 border-rose-300",
+      dot: "bg-rose-500",
+    },
+    returned: {
+      badge: "bg-purple-100 text-purple-800 border-purple-300",
+      dot: "bg-purple-500",
+    },
+    return_requested: {
+      badge: "bg-orange-100 text-orange-800 border-orange-300",
+      dot: "bg-orange-500",
+    },
+  };
+
+  const formattedItems = (order.items || []).map((item) => {
+    const style = statusStyles[item.status] || {
+      badge: "bg-gray-100 text-gray-800 border-gray-300",
+      dot: "bg-gray-500",
+    };
+    return {
+      ...item,
+      is_cancelled: item.status === "cancelled",
+      statusBadgeClass: style.badge,
+      statusDotClass: style.dot,
+    };
+  });
+
+  const fullSubtotal = (order.items || []).reduce(
+    (acc, item) =>
+      acc + Number(item.item_total != null ? item.item_total : (item.price * item.quantity) || 0),
+    0
+  );
+
+  return {
+    ...order,
+    items: formattedItems,
+    original_subtotal: order.subtotal,
+    original_final_amount: order.final_amount,
+    active_subtotal: Number(activeSubtotal.toFixed(2)),
+    subtotal: Number((order.subtotal != null ? order.subtotal : fullSubtotal).toFixed(2)),
+    discount: Number(activeDiscount.toFixed(2)),
+    final_amount: Number(activeFinalAmount.toFixed(2)),
+    shipping_charge: Number(activeShipping.toFixed(2)),
+    tax: Number(activeTax.toFixed(2)),
+    cancelled_amount: Number(cancelledAmount.toFixed(2)),
+    has_cancelled_items: hasCancelledItems,
+  };
+};
+
 const adminOrderDetails = async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -134,8 +260,10 @@ const adminOrderDetails = async (req, res) => {
       return res.status(404).send("Order not found");
     }
 
+    const adjustedOrder = await calculateOrderAdjustedTotals(order);
+
     return res.render("admin/orderDetails", {
-      order,
+      order: adjustedOrder,
     });
   } catch (error) {
     console.error("Admin order details error:", error);
@@ -155,6 +283,12 @@ const adminEditOrder = async (req, res) => {
       return res.status(404).send("Order not found");
     }
 
+    const adjustedOrder = await calculateOrderAdjustedTotals(order);
+    adjustedOrder.items = (adjustedOrder.items || []).filter(
+      (item) => item.status !== "cancelled" && !item.is_cancelled
+    );
+    adjustedOrder.subtotal = adjustedOrder.active_subtotal;
+
     const statusLabels = {
       pending: "Pending",
       shipped: "Shipped",
@@ -171,7 +305,7 @@ const adminEditOrder = async (req, res) => {
       }),
     );
 
-    return res.render("admin/editOrder", { order, nextStatuses });
+    return res.render("admin/editOrder", { order: adjustedOrder, nextStatuses });
   } catch (error) {
     console.error("Admin edit order error:", error);
     return res.status(500).send("Unable to load order editor");
@@ -189,7 +323,9 @@ const adminOrderReturn = async (req, res) => {
       return res.status(404).send("Order not found");
     }
 
-    order.items = order.items.map((item) => {
+    const adjustedOrder = await calculateOrderAdjustedTotals(order);
+
+    adjustedOrder.items = adjustedOrder.items.map((item) => {
       const returnableQuantity = Math.max(
         item.quantity - (item.returned_quantity || 0),
         0,
@@ -201,16 +337,19 @@ const adminOrderReturn = async (req, res) => {
         item.status === "delivered" ||
         (orderWasDelivered && item.status === "pending");
 
+      const isReturnable = delivered && returnableQuantity > 0 && item.status !== "cancelled";
+
       return {
         ...item,
+        item_total: item.item_total != null ? Number(item.item_total) : Number((item.price * item.quantity).toFixed(2)),
         returnable_quantity: returnableQuantity,
-        is_returnable: delivered && returnableQuantity > 0,
+        is_returnable: isReturnable,
       };
     });
 
     return res.render("admin/orderReturn", {
-      order,
-      hasReturnableItems: order.items.some((item) => item.is_returnable),
+      order: adjustedOrder,
+      hasReturnableItems: adjustedOrder.items.some((item) => item.is_returnable),
     });
   } catch (error) {
     console.error("Admin order return error:", error);
@@ -247,8 +386,6 @@ const processOrderReturn = async (req, res) => {
 
     for (const requestedItem of requestedItems) {
       const itemId = String(requestedItem.itemId || "");
-      const quantity = Number(requestedItem.quantity);
-      const reason = String(requestedItem.reason || "").trim();
       const item = order.items.id(itemId);
 
       if (!item || seenItemIds.has(itemId)) {
@@ -264,12 +401,21 @@ const processOrderReturn = async (req, res) => {
         item.status === "delivered" ||
         (orderWasDelivered && item.status === "pending");
 
+      const parsedQty = Number(requestedItem.quantity);
+      const quantity = Number.isInteger(parsedQty) && parsedQty >= 1
+        ? parsedQty
+        : returnableQuantity;
+
+      const reason = String(requestedItem.reason || "").trim() ||
+        String(order.return_request?.reason || "").trim() ||
+        "Return approved by admin";
+
       if (
         !delivered ||
         !Number.isInteger(quantity) ||
         quantity < 1 ||
         quantity > returnableQuantity ||
-        !reason
+        item.status === "cancelled"
       ) {
         return res.status(400).json({
           success: false,
@@ -434,6 +580,28 @@ const updateOrderStatus = async (req, res) => {
           orderId: order._id,
         });
         order.payment_status = "refunded";
+      }
+
+      order.discount = 0;
+      order.shipping_charge = 0;
+      order.final_amount = 0;
+
+      if (order.coupon_code) {
+        try {
+          const couponDoc = await Coupon.findOne({ code: order.coupon_code });
+          if (couponDoc) {
+            couponDoc.used_count = Math.max(0, (couponDoc.used_count || 1) - 1);
+            const idx = (couponDoc.used_by || []).findIndex(
+              (id) => (id?._id || id).toString() === order.user_id.toString(),
+            );
+            if (idx !== -1) {
+              couponDoc.used_by.splice(idx, 1);
+            }
+            await couponDoc.save();
+          }
+        } catch (couponRestoreError) {
+          console.error("Error restoring coupon on admin order cancellation:", couponRestoreError);
+        }
       }
     }
 

@@ -73,6 +73,10 @@ export const applyCoupon = async (req, res) => {
       validateCoupon,
     });
 
+    if (req.session) {
+      req.session.appliedCouponCode = checkoutDiscounts.coupon.code;
+    }
+
     return res.status(200).json({
       success: true,
       message: "Coupon applied successfully",
@@ -94,3 +98,22 @@ export const applyCoupon = async (req, res) => {
     });
   }
 };
+
+export const removeCoupon = async (req, res) => {
+  try {
+    if (req.session) {
+      req.session.appliedCouponCode = null;
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Coupon removed successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to remove coupon",
+    });
+  }
+};
+

@@ -10,10 +10,13 @@
         <div class="relative z-10 text-center">
             <div
                 class="mb-4 sm:mb-6 inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-surface-container-high text-primary">
-                <span class="material-symbols-outlined text-3xl sm:text-4xl" data-icon="mark_email_unread">mark_email_unread</span>
+                <span class="material-symbols-outlined text-3xl sm:text-4xl"
+                    data-icon="mark_email_unread">mark_email_unread</span>
             </div>
-            <h2 class="font-headline-xl text-xl sm:text-2xl md:text-headline-xl text-on-surface mb-2 font-bold">Verify your email</h2>
-            <p class="font-body-md text-xs sm:text-sm text-on-surface-variant mb-6 sm:mb-10 leading-relaxed">We've sent a 6-digit verification code to your
+            <h2 class="font-headline-xl text-xl sm:text-2xl md:text-headline-xl text-on-surface mb-2 font-bold">Verify
+                your email</h2>
+            <p class="font-body-md text-xs sm:text-sm text-on-surface-variant mb-6 sm:mb-10 leading-relaxed">We've sent
+                a 6-digit verification code to your
                 inbox. Please enter it below to continue your luxury wellness journey.</p>
             <!-- OTP Input Area -->
             {{> user/notification}}
@@ -177,301 +180,173 @@
                     </button>
 
                     <span class="text-primary font-mono ml-2" id="timer">
-                        01:50
+                        01:00
                     </span>
                 </p>
             </div>
         </div>
     </div>
-    <!-- Background Atmospheric Element (Image) -->
-
 </main>
+
 <script>
-    // ==============================
-    // OTP INPUT LOGIC
-    // ==============================
-
-    const inputs = document.querySelectorAll(".otp-input");
-
-    inputs.forEach((input, index) => {
-
-        input.addEventListener("input", (e) => {
-
-            // Allow only numbers
-            e.target.value = e.target.value.replace(/\D/g, "");
-
-            // Move to next input
-            if (e.target.value.length === 1 && index < inputs.length - 1) {
-                inputs[index + 1].focus();
-            }
-        });
-
-
-        input.addEventListener("keydown", (e) => {
-
-            if (
-                e.key === "Backspace" &&
-                !e.target.value &&
-                index > 0
-            ) {
-                inputs[index - 1].focus();
-            }
-        });
-    });
-
-
-    // ==============================
-    // OTP TIMER
-    // ==============================
-
-    const resendLink = document.getElementById("resend-link");
-    const timer = document.getElementById("timer");
-
-    // Common key for all OTP flows
-    const STORAGE_KEY = "otp_expiry";
-
-    // 60 seconds
-    const DURATION = 60;
-
-    let countdown;
-
-
-    // ==============================
-    // GET REMAINING TIME
-    // ==============================
-
-    function getRemainingTime() {
-
-        const stored = sessionStorage.getItem(STORAGE_KEY);
-
-        if (!stored) {
-            return null;
-        }
-
-        const remaining = Math.ceil(
-            (Number(stored) - Date.now()) / 1000
-        );
-
-        return remaining > 0 ? remaining : 0;
-    }
-
-
-    // ==============================
-    // SET EXPIRY
-    // ==============================
-
-    function setExpiry(seconds) {
-
-        const expiry = Date.now() + (seconds * 1000);
-
-        sessionStorage.setItem(
-            STORAGE_KEY,
-            expiry.toString()
-        );
-
-        return seconds;
-    }
-
-
-    // ==============================
-    // DISPLAY TIMER
-    // ==============================
-
-    function updateDisplay(seconds) {
-
-        const minutes = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-
-        timer.textContent =
-            `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-    }
-
-
-    // ==============================
-    // ENABLE RESEND
-    // ==============================
-
-    function enableResend() {
-
-        clearInterval(countdown);
-
-        timer.textContent = "";
-
-        resendLink.disabled = false;
-
-        resendLink.classList.remove(
-            "cursor-not-allowed",
-            "opacity-50"
-        );
-
-        resendLink.classList.add("cursor-pointer");
-
-        sessionStorage.removeItem(STORAGE_KEY);
-    }
-
-
-    // ==============================
-    // START TIMER
-    // ==============================
-
-    function startTimer(forceReset = false) {
-
-        clearInterval(countdown);
-
-        let remaining = getRemainingTime();
-
-
-        // First load OR after resend
-        if (forceReset || remaining === null) {
-
-            remaining = setExpiry(DURATION);
-        }
-
-
-        // Timer already expired
-        if (remaining <= 0) {
-
-            enableResend();
-
-            return;
-        }
-
-
-        // Disable resend button
-        resendLink.disabled = true;
-
-        resendLink.classList.add(
-            "cursor-not-allowed",
-            "opacity-50"
-        );
-
-        resendLink.classList.remove("cursor-pointer");
-
-
-        updateDisplay(remaining);
-
-
-        countdown = setInterval(() => {
-
-            const currentRemaining = getRemainingTime();
-
-
-            if (
-                currentRemaining === null ||
-                currentRemaining <= 0
-            ) {
-
-                enableResend();
-
-                return;
+    document.addEventListener("DOMContentLoaded", function () {
+        const resendLink = document.getElementById("resend-link");
+        const timer = document.getElementById("timer");
+
+        const STORAGE_KEY = "otp_expiry";
+        const DURATION = 60; // 60 seconds
+
+        const serverExpiryRaw = {{#if otpExpiresAt}}{{otpExpiresAt}}{{else}}null{{/if}};
+        const serverExpiry = (serverExpiryRaw && !isNaN(Number(serverExpiryRaw))) ? Number(serverExpiryRaw) : null;
+
+        let countdown = null;
+
+        function getExpiryTime(forceReset, customExpiry) {
+            // 1. If explicit custom expiry passed (e.g. from /resend-otp JSON response)
+            if (customExpiry && !isNaN(Number(customExpiry))) {
+                const num = Number(customExpiry);
+                sessionStorage.setItem(STORAGE_KEY, String(num));
+                return num;
             }
 
+            // 2. If forceReset explicitly requested
+            if (forceReset) {
+                const fresh = Date.now() + (DURATION * 1000);
+                sessionStorage.setItem(STORAGE_KEY, String(fresh));
+                return fresh;
+            }
 
-            updateDisplay(currentRemaining);
+            // 3. If server provided a future expiration timestamp in the JWT session
+            if (serverExpiry && serverExpiry > Date.now()) {
+                sessionStorage.setItem(STORAGE_KEY, String(serverExpiry));
+                return serverExpiry;
+            }
 
-        }, 1000);
-    }
+            // 4. Check sessionStorage for a still-valid timestamp
+            const stored = sessionStorage.getItem(STORAGE_KEY);
+            if (stored && !isNaN(Number(stored))) {
+                const storedNum = Number(stored);
+                if (storedNum > Date.now()) {
+                    return storedNum;
+                }
+            }
 
-
-    // ==============================
-    // START TIMER WHEN PAGE LOADS
-    // ==============================
-
-    startTimer();
-
-
-    // ==============================
-    // RESEND OTP
-    // ==============================
-
-    resendLink.addEventListener("click", async () => {
-
-        if (resendLink.disabled) {
-            return;
+            // 5. Default fallback: fresh duration from now
+            const fresh = Date.now() + (DURATION * 1000);
+            sessionStorage.setItem(STORAGE_KEY, String(fresh));
+            return fresh;
         }
 
+        function enableResend() {
+            if (countdown) {
+                clearInterval(countdown);
+                countdown = null;
+            }
+            if (timer) {
+                timer.textContent = "";
+            }
+            if (resendLink) {
+                resendLink.disabled = false;
+                resendLink.classList.remove("cursor-not-allowed", "opacity-50");
+                resendLink.classList.add("cursor-pointer");
+            }
+            sessionStorage.removeItem(STORAGE_KEY);
+        }
 
-        resendLink.disabled = true;
+        function disableResend() {
+            if (resendLink) {
+                resendLink.disabled = true;
+                resendLink.classList.add("cursor-not-allowed", "opacity-50");
+                resendLink.classList.remove("cursor-pointer");
+            }
+        }
 
+        function updateDisplay(seconds) {
+            if (!timer) return;
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            timer.textContent = `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+        }
 
-        try {
+        function startTimer(forceReset = false, customExpiry = null) {
+            if (countdown) {
+                clearInterval(countdown);
+                countdown = null;
+            }
 
-            const response = await fetch("/resend-otp", {
-                method: "POST"
+            if (!timer || !resendLink) return;
+
+            const expiry = getExpiryTime(forceReset, customExpiry);
+
+            function tick() {
+                const remaining = Math.ceil((expiry - Date.now()) / 1000);
+
+                if (remaining <= 0) {
+                    enableResend();
+                    return;
+                }
+
+                disableResend();
+                updateDisplay(remaining);
+            }
+
+            tick();
+            countdown = setInterval(tick, 1000);
+        }
+
+        // Initialize countdown timer immediately on page load
+        startTimer();
+
+        // ==============================
+        // RESEND OTP ACTION
+        // ==============================
+        if (resendLink) {
+            resendLink.addEventListener("click", async function () {
+                if (resendLink.disabled) return;
+                disableResend();
+
+                try {
+                    const response = await fetch("/resend-otp", {
+                        method: "POST"
+                    });
+
+                    const contentType = response.headers.get("content-type") || "";
+                    if (!contentType.includes("application/json")) {
+                        throw new Error("Server returned an unexpected response.");
+                    }
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        throw new Error(data.message || "Failed to resend OTP");
+                    }
+
+                    // Clear inputs and reset focus
+                    const inputs = document.querySelectorAll(".otp-input");
+                    inputs.forEach(input => { input.value = ""; });
+                    const hiddenOtp = document.getElementById("otp-value");
+                    if (hiddenOtp) hiddenOtp.value = "";
+                    if (inputs.length > 0) inputs[0].focus();
+
+                    // Start timer with returned expiration or fresh 60s
+                    startTimer(true, data.otpExpiresAt || null);
+
+                    if (typeof showNotification === "function") {
+                        showNotification("success", data.message || "OTP resent successfully");
+                    }
+                } catch (error) {
+                    console.error("Resend OTP error:", error);
+                    if (typeof showNotification === "function") {
+                        showNotification("error", error.message);
+                    } else {
+                        alert(error.message);
+                    }
+                    enableResend();
+                }
             });
-
-
-            // Don't blindly parse HTML as JSON
-            const contentType = response.headers.get("content-type") || "";
-
-
-            if (!contentType.includes("application/json")) {
-
-                throw new Error(
-                    "Server returned an unexpected response."
-                );
-            }
-
-
-            const data = await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.message || "Failed to resend OTP"
-                );
-            }
-
-
-            console.log("OTP resent successfully");
-
-
-            // Clear old OTP inputs
-            inputs.forEach(input => {
-                input.value = "";
-            });
-
-            inputs[0].focus();
-
-
-            // Start new 60-second countdown
-            startTimer(true);
-
-
-        } catch (error) {
-
-            console.error("Resend OTP error:", error);
-
-            alert(error.message);
-
-            resendLink.disabled = false;
-
-            resendLink.classList.remove(
-                "cursor-not-allowed",
-                "opacity-50"
-            );
-
-            resendLink.classList.add("cursor-pointer");
         }
     });
 
-</script>
-
-
-
-<script>
-    window.addEventListener("pageshow", function (event) {
-
-        // If browser restored /verify-otp from BFCache
-        if (event.persisted) {
-            window.location.reload();
-        }
-
-    });
-</script>
-
-<script>
     window.addEventListener("pageshow", function (event) {
         if (event.persisted) {
             window.location.reload();

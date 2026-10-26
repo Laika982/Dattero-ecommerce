@@ -23,77 +23,133 @@
 
 
 
-        <form class="flex flex-col gap-stack-lg" method="post">
+        <form id="signupForm" class="flex flex-col gap-stack-lg" method="post" action="/signup" novalidate>
             <!-- Full Name -->
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-1.5">
                 <label class="font-label-md text-label-md text-on-surface-variant" for="fullName">Full Name</label>
                 <input
-                    class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border-transparent focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors py-3 px-4 rounded-xl"
-                    id="fullName" placeholder="Jane Doe" type="text" name="name">
+                    class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border border-outline-variant/30 focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-all py-3 px-4 rounded-xl"
+                    id="fullName" placeholder="Jane Doe" type="text" name="name" autocomplete="name">
+                <p id="name-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                    <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                    <span class="error-text"></span>
+                </p>
             </div>
             <!-- Email -->
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-1.5">
                 <label class="font-label-md text-label-md text-on-surface-variant" for="email">Email Address</label>
                 <input
-                    class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border-transparent focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors py-3 px-4 rounded-xl"
-                    id="email" placeholder="jane@example.com" type="email" name="email">
+                    class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border border-outline-variant/30 focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-all py-3 px-4 rounded-xl"
+                    id="email" placeholder="jane@example.com" type="email" name="email" autocomplete="email">
+                <p id="email-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                    <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                    <span class="error-text"></span>
+                </p>
             </div>
-            <!-- Mobile -->
 
+            <!-- Password & Confirm Password Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
                 <!-- Password -->
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col gap-1.5">
                     <label class="font-label-md text-label-md text-on-surface-variant" for="password">Password</label>
                     <div class="relative">
                         <input
-                            class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border-transparent focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors py-3 px-4 pr-12 rounded-xl"
-                            id="password" placeholder="••••••••" type="password" name="password">
+                            class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border border-outline-variant/30 focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-all py-3 px-4 pr-12 rounded-xl"
+                            id="password" placeholder="••••••••" type="password" name="password" autocomplete="new-password">
                         <button type="button" onclick="togglePasswordVisibility('password')"
-                            class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-ink-black transition-colors">
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-ink-black transition-colors" aria-label="Toggle password visibility">
                             <span class="material-symbols-outlined text-xl">visibility</span>
                         </button>
                     </div>
+                    <p id="password-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                        <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                        <span class="error-text"></span>
+                    </p>
                 </div>
                 <!-- Confirm Password -->
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col gap-1.5">
                     <label class="font-label-md text-label-md text-on-surface-variant" for="confirmPassword">Confirm
                         Password</label>
                     <div class="relative">
                         <input
-                            class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border-transparent focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors py-3 px-4 pr-12 rounded-xl"
-                            id="confirmPassword" placeholder="••••••••" type="password" name="confirmpassword">
+                            class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border border-outline-variant/30 focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-all py-3 px-4 pr-12 rounded-xl"
+                            id="confirmPassword" placeholder="••••••••" type="password" name="confirmpassword" autocomplete="new-password">
                         <button type="button" onclick="togglePasswordVisibility('confirmPassword')"
-                            class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-ink-black transition-colors">
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-ink-black transition-colors" aria-label="Toggle confirm password visibility">
                             <span class="material-symbols-outlined text-xl">visibility</span>
                         </button>
                     </div>
+                    <p id="confirmPassword-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                        <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                        <span class="error-text"></span>
+                    </p>
                 </div>
             </div>
-            <div class="flex flex-col gap-2">
+
+            <!-- Password Requirements Checklist -->
+            <div id="password-requirements" class="p-3.5 bg-surface-gray/90 rounded-xl border border-outline-variant/30 text-xs space-y-2 transition-all">
+                <p class="font-semibold text-[11px] uppercase tracking-wider text-on-surface-variant flex items-center justify-between">
+                    <span>Password Requirements</span>
+                    <span id="pwd-strength-label" class="font-medium text-[11px] text-outline"></span>
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[12px]">
+                    <div id="req-length" class="flex items-center gap-1.5 text-on-surface-variant/70 transition-colors">
+                        <span class="material-symbols-outlined text-[15px] shrink-0 req-icon">radio_button_unchecked</span>
+                        <span>At least 8 characters</span>
+                    </div>
+                    <div id="req-letter" class="flex items-center gap-1.5 text-on-surface-variant/70 transition-colors">
+                        <span class="material-symbols-outlined text-[15px] shrink-0 req-icon">radio_button_unchecked</span>
+                        <span>At least 1 letter (a-z, A-Z)</span>
+                    </div>
+                    <div id="req-number" class="flex items-center gap-1.5 text-on-surface-variant/70 transition-colors">
+                        <span class="material-symbols-outlined text-[15px] shrink-0 req-icon">radio_button_unchecked</span>
+                        <span>At least 1 number (0-9)</span>
+                    </div>
+                    <div id="req-special" class="flex items-center gap-1.5 text-on-surface-variant/70 transition-colors">
+                        <span class="material-symbols-outlined text-[15px] shrink-0 req-icon">radio_button_unchecked</span>
+                        <span>Special symbol (@$!%*?&)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referral Code -->
+            <div class="flex flex-col gap-1.5">
                 <label class="font-label-md text-label-md text-on-surface-variant" for="referralCode">Referral Code
                     (Optional)</label>
                 <input
-                    class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border-transparent focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors py-3 px-4 rounded-xl"
+                    class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border border-outline-variant/30 focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-all py-3 px-4 rounded-xl"
                     id="referralCode" placeholder="e.g., LUXE-GOLD-2024" type="text" name="referralCode">
+                <p id="referralCode-error" class="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium hidden" role="alert">
+                    <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                    <span class="error-text"></span>
+                </p>
             </div>
+
             <!-- Terms -->
-            <div class="flex items-start gap-3 mt-2 mb-2">
-                <div class="flex items-center h-5">
-                    <input
-                        class="w-4 h-4 rounded border-outline-variant text-ink-black focus:ring-ink-black focus:ring-offset-0 bg-surface-container-lowest"
-                        id="terms" required="" type="checkbox">
+            <div class="flex flex-col gap-1 mt-2 mb-2">
+                <div class="flex items-start gap-3">
+                    <div class="flex items-center h-5">
+                        <input
+                            class="w-4 h-4 rounded border-outline-variant text-ink-black focus:ring-ink-black focus:ring-offset-0 bg-surface-container-lowest"
+                            id="terms" type="checkbox">
+                    </div>
+                    <label class="font-body-md text-body-md text-on-surface-variant text-sm leading-tight pt-0.5 cursor-pointer"
+                        for="terms">
+                        I agree to the <a class="text-ink-black underline hover:text-accent-blue transition-colors"
+                            href="/about">Terms of Service</a> and <a
+                            class="text-ink-black underline hover:text-accent-blue transition-colors" href="/about">Privacy
+                            Policy</a>.
+                    </label>
                 </div>
-                <label class="font-body-md text-body-md text-on-surface-variant text-sm leading-tight pt-0.5"
-                    for="terms">
-                    I agree to the <a class="text-ink-black underline hover:text-accent-blue transition-colors"
-                        href="#">Terms of Service</a> and <a
-                        class="text-ink-black underline hover:text-accent-blue transition-colors" href="#">Privacy
-                        Policy</a>.
-                </label>
+                <p id="terms-error" class="text-xs text-red-600 flex items-center gap-1 font-medium hidden ml-7 mt-1" role="alert">
+                    <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+                    <span class="error-text"></span>
+                </p>
             </div>
+
             <!-- Submit Button -->
             <button
-                class="bg-ink-black text-surface-container-lowest font-label-md w-full py-4 rounded-[16px] hover:bg-ink-black/90 transition-colors flex justify-center items-center gap-2"
+                class="bg-ink-black text-surface-container-lowest font-label-md w-full py-4 rounded-[16px] hover:bg-ink-black/90 transition-colors flex justify-center items-center gap-2 mt-2"
                 type="submit">
                 Create Account
                 <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
@@ -108,4 +164,309 @@
         </div>
     </div>
 </main>
+
+<style>
+  .input-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 1px #ef4444 !important;
+    background-color: rgba(254, 242, 242, 0.45) !important;
+  }
+  .input-error:focus {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.35) !important;
+  }
+  .req-valid {
+    color: #059669 !important;
+    font-weight: 500 !important;
+  }
+  .req-valid .req-icon {
+    color: #059669 !important;
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("signupForm");
+  if (!form) return;
+
+  const nameInput = document.getElementById("fullName");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const confirmPasswordInput = document.getElementById("confirmPassword");
+  const referralCodeInput = document.getElementById("referralCode");
+  const termsCheckbox = document.getElementById("terms");
+
+  const nameError = document.getElementById("name-error");
+  const emailError = document.getElementById("email-error");
+  const passwordError = document.getElementById("password-error");
+  const confirmPasswordError = document.getElementById("confirmPassword-error");
+  const referralCodeError = document.getElementById("referralCode-error");
+  const termsError = document.getElementById("terms-error");
+
+  const reqLength = document.getElementById("req-length");
+  const reqLetter = document.getElementById("req-letter");
+  const reqNumber = document.getElementById("req-number");
+  const reqSpecial = document.getElementById("req-special");
+  const strengthLabel = document.getElementById("pwd-strength-label");
+
+  const touched = {
+    name: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+    referralCode: false,
+    terms: false,
+  };
+
+  const nameRegex = /^[A-Za-z\s]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  function showError(input, errorEl, message) {
+    if (input && input.type !== "checkbox") {
+      input.classList.add("input-error");
+    }
+    if (errorEl) {
+      const textSpan = errorEl.querySelector(".error-text");
+      if (textSpan) textSpan.textContent = message;
+      errorEl.classList.remove("hidden");
+    }
+  }
+
+  function clearError(input, errorEl) {
+    if (input && input.type !== "checkbox") {
+      input.classList.remove("input-error");
+    }
+    if (errorEl) {
+      const textSpan = errorEl.querySelector(".error-text");
+      if (textSpan) textSpan.textContent = "";
+      errorEl.classList.add("hidden");
+    }
+  }
+
+  function updateRequirement(el, isValid) {
+    if (!el) return;
+    const icon = el.querySelector(".req-icon");
+    if (isValid) {
+      el.classList.add("req-valid");
+      if (icon) icon.textContent = "check_circle";
+    } else {
+      el.classList.remove("req-valid");
+      if (icon) icon.textContent = "radio_button_unchecked";
+    }
+  }
+
+  function updatePasswordRequirements(val) {
+    const hasLength = val.length >= 8;
+    const hasLetter = /[A-Za-z]/.test(val);
+    const hasNumber = /\d/.test(val);
+    const hasSpecial = /[@$!%*?&]/.test(val);
+
+    updateRequirement(reqLength, hasLength);
+    updateRequirement(reqLetter, hasLetter);
+    updateRequirement(reqNumber, hasNumber);
+    updateRequirement(reqSpecial, hasSpecial);
+
+    const totalMet = [hasLength, hasLetter, hasNumber, hasSpecial].filter(Boolean).length;
+    if (strengthLabel) {
+      if (val.length === 0) {
+        strengthLabel.textContent = "";
+      } else if (totalMet <= 2) {
+        strengthLabel.textContent = "Weak";
+        strengthLabel.className = "font-medium text-[11px] text-red-500";
+      } else if (totalMet === 3) {
+        strengthLabel.textContent = "Medium";
+        strengthLabel.className = "font-medium text-[11px] text-amber-600";
+      } else {
+        strengthLabel.textContent = "Strong";
+        strengthLabel.className = "font-medium text-[11px] text-emerald-600";
+      }
+    }
+
+    return hasLength && hasLetter && hasNumber && hasSpecial;
+  }
+
+  function validateName() {
+    const val = (nameInput.value || "").trim();
+    if (!val) {
+      showError(nameInput, nameError, "Full name is required.");
+      return false;
+    }
+    if (val.length < 2) {
+      showError(nameInput, nameError, "Full name must be at least 2 characters.");
+      return false;
+    }
+    if (val.length > 50) {
+      showError(nameInput, nameError, "Full name cannot exceed 50 characters.");
+      return false;
+    }
+    if (!nameRegex.test(val)) {
+      showError(nameInput, nameError, "Name must contain only letters and spaces.");
+      return false;
+    }
+    clearError(nameInput, nameError);
+    return true;
+  }
+
+  function validateEmail() {
+    const val = (emailInput.value || "").trim();
+    if (!val) {
+      showError(emailInput, emailError, "Email address is required.");
+      return false;
+    }
+    if (!emailRegex.test(val)) {
+      showError(emailInput, emailError, "Please enter a valid email address.");
+      return false;
+    }
+    clearError(emailInput, emailError);
+    return true;
+  }
+
+  function validatePassword() {
+    const val = passwordInput.value || "";
+    const allMet = updatePasswordRequirements(val);
+
+    if (!val) {
+      showError(passwordInput, passwordError, "Password is required.");
+      return false;
+    }
+    if (!allMet) {
+      showError(passwordInput, passwordError, "Password must be at least 8 characters with a letter, number, and special character (@$!%*?&).");
+      return false;
+    }
+    clearError(passwordInput, passwordError);
+    return true;
+  }
+
+  function validateConfirmPassword() {
+    const pwd = passwordInput.value || "";
+    const cpwd = confirmPasswordInput.value || "";
+
+    if (!cpwd) {
+      showError(confirmPasswordInput, confirmPasswordError, "Please confirm your password.");
+      return false;
+    }
+    if (pwd !== cpwd) {
+      showError(confirmPasswordInput, confirmPasswordError, "Passwords do not match.");
+      return false;
+    }
+    clearError(confirmPasswordInput, confirmPasswordError);
+    return true;
+  }
+
+  function validateReferralCode() {
+    const val = (referralCodeInput.value || "").trim();
+    if (!val) {
+      clearError(referralCodeInput, referralCodeError);
+      return true;
+    }
+    if (/\s/.test(val)) {
+      showError(referralCodeInput, referralCodeError, "Referral code should not contain spaces.");
+      return false;
+    }
+    if (!/^[A-Za-z0-9_-]+$/.test(val)) {
+      showError(referralCodeInput, referralCodeError, "Referral code can only contain letters, numbers, hyphens, and underscores.");
+      return false;
+    }
+    clearError(referralCodeInput, referralCodeError);
+    return true;
+  }
+
+  function validateTerms() {
+    if (!termsCheckbox.checked) {
+      showError(termsCheckbox, termsError, "You must agree to the Terms of Service and Privacy Policy.");
+      return false;
+    }
+    clearError(termsCheckbox, termsError);
+    return true;
+  }
+
+  // Live input & blur listeners
+  nameInput.addEventListener("blur", function () {
+    touched.name = true;
+    validateName();
+  });
+  nameInput.addEventListener("input", function () {
+    if (touched.name) validateName();
+  });
+
+  emailInput.addEventListener("blur", function () {
+    touched.email = true;
+    validateEmail();
+  });
+  emailInput.addEventListener("input", function () {
+    if (touched.email) validateEmail();
+  });
+
+  passwordInput.addEventListener("input", function () {
+    updatePasswordRequirements(passwordInput.value || "");
+    if (touched.password) validatePassword();
+    if (touched.confirmPassword && confirmPasswordInput.value) {
+      validateConfirmPassword();
+    }
+  });
+  passwordInput.addEventListener("blur", function () {
+    touched.password = true;
+    validatePassword();
+  });
+
+  confirmPasswordInput.addEventListener("blur", function () {
+    touched.confirmPassword = true;
+    validateConfirmPassword();
+  });
+  confirmPasswordInput.addEventListener("input", function () {
+    if (touched.confirmPassword) validateConfirmPassword();
+  });
+
+  referralCodeInput.addEventListener("blur", function () {
+    touched.referralCode = true;
+    validateReferralCode();
+  });
+  referralCodeInput.addEventListener("input", function () {
+    if (touched.referralCode) validateReferralCode();
+  });
+
+  termsCheckbox.addEventListener("change", function () {
+    touched.terms = true;
+    validateTerms();
+  });
+
+  form.addEventListener("submit", function (e) {
+    touched.name = true;
+    touched.email = true;
+    touched.password = true;
+    touched.confirmPassword = true;
+    touched.referralCode = true;
+    touched.terms = true;
+
+    const isNameValid = validateName();
+    const isEmailValid = validateEmail();
+    const isPasswordValid = validatePassword();
+    const isConfirmValid = validateConfirmPassword();
+    const isReferralValid = validateReferralCode();
+    const isTermsValid = validateTerms();
+
+    const isAllValid = isNameValid && isEmailValid && isPasswordValid && isConfirmValid && isReferralValid && isTermsValid;
+
+    if (!isAllValid) {
+      e.preventDefault();
+      // Focus first invalid element
+      if (!isNameValid) {
+        nameInput.focus();
+      } else if (!isEmailValid) {
+        emailInput.focus();
+      } else if (!isPasswordValid) {
+        passwordInput.focus();
+      } else if (!isConfirmValid) {
+        confirmPasswordInput.focus();
+      } else if (!isReferralValid) {
+        referralCodeInput.focus();
+      } else if (!isTermsValid) {
+        termsCheckbox.focus();
+      }
+    }
+  });
+});
+</script>
+
 {{>user/footer}}

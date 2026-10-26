@@ -1,80 +1,246 @@
 {{>user/header}}
 <!-- Main Content Area -->
-<main class="flex-grow flex items-center justify-center px-4 sm:px-6 pt-20 sm:pt-28 md:pt-[140px] pb-12 sm:pb-20 relative safe-bottom-padding">
-<!-- Login Card -->
-<div class="bg-surface-container-lowest rounded-2xl sm:rounded-[24px] shadow-sm p-6 sm:p-10 md:p-14 w-full max-w-[500px] relative z-10 border border-outline-variant/20">
-<div class="text-center mb-6 sm:mb-10">
-<h1 class="font-display-lg text-2xl sm:text-3xl md:text-[40px] font-bold text-ink-black mb-2 sm:mb-3 tracking-tight">Welcome Back</h1>
-<p class="font-body-lg text-sm sm:text-body-lg text-on-surface-variant">Sign in to access your premium nutrition.</p>
-</div>
-{{!-- SUCCESS MESSAGE --}}
-{{> user/notification}}
-<form action="/login" class="space-y-6" method="POST">
-<!-- Email Field -->
-<div class="space-y-2">
-<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="email" name ="email">Email Address</label>
-<div class="relative">
-<input class="w-full bg-surface-gray border border-outline-variant/30 rounded-[16px] py-4 px-5 font-body-lg text-body-lg text-ink-black focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all" id="email" name="email" placeholder="Enter your email" required="" type="email">
-</div>
-</div>
-<!-- Password Field -->
-<div class="space-y-2">
-<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="password" name = "password">Password</label>
-<div class="relative">
-<input class="w-full bg-surface-gray border border-outline-variant/30 rounded-[16px] py-4 px-5 font-body-lg text-body-lg text-ink-black focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all" id="password" name="password" placeholder="Enter your password" required="" type="password">
-<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-ink-black transition-colors" onclick="togglePasswordVisibility('password')" type="button">
-<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
-</button>
-</div>
-</div>
-<!-- Utilities Row -->
-<div class="flex items-center justify-between pt-2 px-1">
-<div class="flex items-center gap-3">
-<input id="remember" name="remember" type="checkbox">
-<label class="font-body-md text-body-md text-on-surface-variant cursor-pointer" for="remember">Remember Me</label>
-</div>
-<a class="font-body-md text-body-md text-accent-blue hover:opacity-80 transition-opacity" href="forgotPassword">Forgot Password?</a>
-</div>
-<!-- Submit Button -->
-<button class="w-full bg-ink-black text-white font-label-md text-[16px] py-4 rounded-[16px] hover:opacity-90 transition-opacity mt-6 flex items-center justify-center gap-2" type="submit">
-                    Sign In
-                    <span class="material-symbols-outlined" data-icon="arrow_forward" style="font-size: 18px;">arrow_forward</span>
-</button>
-</form>
-<!-- Divider -->
-<div class="relative my-8 flex items-center">
-<div class="flex-grow border-t border-outline-variant/30"></div>
-<span class="flex-shrink-0 mx-4 font-label-md text-[12px] text-outline text-on-surface-variant uppercase tracking-wider">Or continue with</span>
-<div class="flex-grow border-t border-outline-variant/30"></div>
-</div>
-<!-- Social Login -->
-<div class="space-y-3">
-    <a href="/auth/google">
-<button class="w-full bg-surface border border-outline-variant/40 text-ink-black font-label-md text-[16px] py-4 rounded-[16px] hover:bg-surface-gray transition-colors flex items-center justify-center gap-3" type="button">
-<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
-<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
-<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
-<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
-</svg>
-                    Continue with Google
-                </button>
-                </a>
-{{!-- <button class="w-full bg-surface border border-outline-variant/40 text-ink-black font-label-md text-[16px] py-4 rounded-[16px] hover:bg-surface-gray transition-colors flex items-center justify-center gap-3" type="button">
-<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.05 2.26.45 3.09.45.71 0 2.04-.43 3.44-.43 1.8 0 3.19.64 4.09 1.84-3.41 2.03-2.82 6.55.51 7.85-.75 1.54-1.63 2.86-3.13 3.26zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"></path>
-</svg>
-                    Continue with Apple
-                </button> --}}
-</div>
-<!-- Create Account Link -->
-<div class="mt-8 text-center">
-<p class="font-body-md text-body-md text-on-surface-variant">
-                    New to Nutri Burfi? 
-                    <a class="font-label-md text-accent-blue hover:opacity-80 transition-opacity ml-1" href="/signup">Create Account</a>
-</p>
-</div>
-</div>
+<main
+  class="flex-grow flex items-center justify-center px-4 sm:px-6 pt-20 sm:pt-28 md:pt-[140px] pb-12 sm:pb-20 relative safe-bottom-padding">
+  <!-- Login Card -->
+  <div
+    class="bg-surface-container-lowest rounded-2xl sm:rounded-[24px] shadow-sm p-6 sm:p-10 md:p-14 w-full max-w-[500px] relative z-10 border border-outline-variant/20">
+    <div class="text-center mb-6 sm:mb-10">
+      <h1
+        class="font-display-lg text-2xl sm:text-3xl md:text-[40px] font-bold text-ink-black mb-2 sm:mb-3 tracking-tight">
+        Welcome Back</h1>
+      <p class="font-body-lg text-sm sm:text-body-lg text-on-surface-variant">Sign in to access your premium nutrition.
+      </p>
+    </div>
+    {{!-- SUCCESS MESSAGE --}}
+    {{> user/notification}}
+    {{#if error}}
+    <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm flex items-center gap-2"
+      role="alert">
+      <span class="material-symbols-outlined text-[20px] text-red-600 shrink-0">block</span>
+      <span class="font-medium">{{error}}</span>
+    </div>
+    {{/if}}
+    <form id="loginForm" action="/login" class="space-y-6" method="POST" novalidate>
+      <!-- Email Field -->
+      <div class="space-y-2">
+        <label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="email">Email Address</label>
+        <div class="relative">
+          <input
+            class="w-full bg-surface-gray border border-outline-variant/30 rounded-[16px] py-4 px-5 font-body-lg text-body-lg text-ink-black focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all"
+            id="email" name="email" placeholder="Enter your email" type="email" autocomplete="email">
+        </div>
+        <p id="email-error" class="text-xs text-red-600 mt-1.5 flex items-center gap-1 font-medium hidden" role="alert">
+          <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+          <span class="error-text"></span>
+        </p>
+      </div>
+      <!-- Password Field -->
+      <div class="space-y-2">
+        <label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="password">Password</label>
+        <div class="relative">
+          <input
+            class="w-full bg-surface-gray border border-outline-variant/30 rounded-[16px] py-4 px-5 font-body-lg text-body-lg text-ink-black focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all"
+            id="password" name="password" placeholder="Enter your password" type="password"
+            autocomplete="current-password">
+          <button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-ink-black transition-colors"
+            onclick="togglePasswordVisibility('password')" type="button">
+            <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+          </button>
+        </div>
+        <p id="password-error" class="text-xs text-red-600 mt-1.5 flex items-center gap-1 font-medium hidden"
+          role="alert">
+          <span class="material-symbols-outlined text-[15px] shrink-0 leading-none">error</span>
+          <span class="error-text"></span>
+        </p>
+      </div>
+      <!-- Utilities Row -->
+      <div class="flex items-center justify-between pt-2 px-1">
+        <div class="flex items-center gap-3">
+          <input id="remember" name="remember" type="checkbox">
+          <label class="font-body-md text-body-md text-on-surface-variant cursor-pointer" for="remember">Remember
+            Me</label>
+        </div>
+        <a class="font-body-md text-body-md text-accent-blue hover:opacity-80 transition-opacity"
+          href="/forgotPassword">Forgot Password?</a>
+      </div>
+      <!-- Submit Button -->
+      <button
+        class="w-full bg-ink-black text-white font-label-md text-[16px] py-4 rounded-[16px] hover:opacity-90 transition-opacity mt-6 flex items-center justify-center gap-2"
+        type="submit">
+        Sign In
+        <span class="material-symbols-outlined" data-icon="arrow_forward" style="font-size: 18px;">arrow_forward</span>
+      </button>
+    </form>
+    <!-- Divider -->
+    <div class="relative my-8 flex items-center">
+      <div class="flex-grow border-t border-outline-variant/30"></div>
+      <span
+        class="flex-shrink-0 mx-4 font-label-md text-[12px] text-outline text-on-surface-variant uppercase tracking-wider">Or
+        continue with</span>
+      <div class="flex-grow border-t border-outline-variant/30"></div>
+    </div>
+    <!-- Social Login -->
+    <div class="space-y-3">
+      <a href="/auth/google">
+        <button
+          class="w-full bg-surface border border-outline-variant/40 text-ink-black font-label-md text-[16px] py-4 rounded-[16px] hover:bg-surface-gray transition-colors flex items-center justify-center gap-3"
+          type="button">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              fill="#4285F4"></path>
+            <path
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              fill="#34A853"></path>
+            <path
+              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              fill="#FBBC05"></path>
+            <path
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              fill="#EA4335"></path>
+          </svg>
+          Continue with Google
+        </button>
+      </a>
+      {{!-- <button
+        class="w-full bg-surface border border-outline-variant/40 text-ink-black font-label-md text-[16px] py-4 rounded-[16px] hover:bg-surface-gray transition-colors flex items-center justify-center gap-3"
+        type="button">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.05 2.26.45 3.09.45.71 0 2.04-.43 3.44-.43 1.8 0 3.19.64 4.09 1.84-3.41 2.03-2.82 6.55.51 7.85-.75 1.54-1.63 2.86-3.13 3.26zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z">
+          </path>
+        </svg>
+        Continue with Apple
+      </button> --}}
+    </div>
+    <!-- Create Account Link -->
+    <div class="mt-8 text-center">
+      <p class="font-body-md text-body-md text-on-surface-variant">
+        New to Nutri Burfi?
+        <a class="font-label-md text-accent-blue hover:opacity-80 transition-opacity ml-1" href="/signup">Create
+          Account</a>
+      </p>
+    </div>
+  </div>
 </main>
+
+<style>
+  .input-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 1px #ef4444 !important;
+    background-color: rgba(254, 242, 242, 0.45) !important;
+  }
+
+  .input-error:focus {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.35) !important;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("loginForm");
+    if (!form) return;
+
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+
+    const emailError = document.getElementById("email-error");
+    const passwordError = document.getElementById("password-error");
+
+    const touched = {
+      email: false,
+      password: false,
+    };
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function showError(input, errorEl, message) {
+      input.classList.add("input-error");
+      if (errorEl) {
+        const textSpan = errorEl.querySelector(".error-text");
+        if (textSpan) textSpan.textContent = message;
+        errorEl.classList.remove("hidden");
+      }
+    }
+
+    function clearError(input, errorEl) {
+      input.classList.remove("input-error");
+      if (errorEl) {
+        const textSpan = errorEl.querySelector(".error-text");
+        if (textSpan) textSpan.textContent = "";
+        errorEl.classList.add("hidden");
+      }
+    }
+
+    function validateEmail() {
+      const val = (emailInput.value || "").trim();
+      if (!val) {
+        showError(emailInput, emailError, "Email address is required.");
+        return false;
+      }
+      if (!emailRegex.test(val)) {
+        showError(emailInput, emailError, "Please enter a valid email address.");
+        return false;
+      }
+      clearError(emailInput, emailError);
+      return true;
+    }
+
+    function validatePassword() {
+      const val = passwordInput.value || "";
+      if (!val) {
+        showError(passwordInput, passwordError, "Password is required.");
+        return false;
+      }
+      if (!val.trim()) {
+        showError(passwordInput, passwordError, "Password cannot contain only spaces.");
+        return false;
+      }
+      clearError(passwordInput, passwordError);
+      return true;
+    }
+
+    emailInput.addEventListener("blur", function () {
+      touched.email = true;
+      validateEmail();
+    });
+
+    emailInput.addEventListener("input", function () {
+      if (touched.email) {
+        validateEmail();
+      }
+    });
+
+    passwordInput.addEventListener("blur", function () {
+      touched.password = true;
+      validatePassword();
+    });
+
+    passwordInput.addEventListener("input", function () {
+      if (touched.password) {
+        validatePassword();
+      }
+    });
+
+    form.addEventListener("submit", function (e) {
+      touched.email = true;
+      touched.password = true;
+
+      const isEmailValid = validateEmail();
+      const isPasswordValid = validatePassword();
+
+      if (!isEmailValid || !isPasswordValid) {
+        e.preventDefault();
+        if (!isEmailValid) {
+          emailInput.focus();
+        } else if (!isPasswordValid) {
+          passwordInput.focus();
+        }
+      }
+    });
+  });
+</script>
 
 {{>user/footer}}

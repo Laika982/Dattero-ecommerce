@@ -34,6 +34,7 @@ import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import hbs from "hbs";
 import User from "./models/userSchema.js";
+import Cart from "./models/cartSchema.js";
 import methodOverride from "method-override";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -69,6 +70,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(async (req, res, next) => {
+  res.locals.cartCount = 0;
   try {
     const token = req.cookies.token;
 
@@ -80,14 +82,73 @@ app.use(async (req, res, next) => {
 
       const user = await User.findById(decoded.userId);
 
-      if (user && !user.isBlocked) {
+      if (!user) {
+        res.clearCookie("token");
+        delete req.cookies.token;
+        req.user = null;
+        res.locals.user = null;
+        res.locals.cartCount = 0;
+      } else if (user.isBlocked) {
+        res.clearCookie("token");
+        delete req.cookies.token;
+        req.user = null;
+        res.locals.user = null;
+        res.locals.cartCount = 0;
+
+        const reqPath = (req.path || "").toLowerCase();
+        const isAuthRoute =
+          reqPath === "/login" ||
+          reqPath === "/signup" ||
+          reqPath === "/verify-otp" ||
+          reqPath === "/logout" ||
+          reqPath.startsWith("/auth/google");
+        const isAdminRoute = reqPath.startsWith("/admin");
+        const isStaticAsset =
+          reqPath.startsWith("/uploads") ||
+          /\.(css|js|jpg|jpeg|png|gif|svg|ico|webp|woff|woff2|ttf|map)$/i.test(reqPath);
+
+        if (!isAuthRoute && !isAdminRoute && !isStaticAsset) {
+          const isAjax = Boolean(
+            req.xhr ||
+            req.headers["x-requested-with"] === "XMLHttpRequest" ||
+            req.headers["accept"]?.includes("application/json") ||
+            req.headers["content-type"]?.includes("application/json") ||
+            req.headers["sec-fetch-dest"] === "empty"
+          );
+
+          if (isAjax) {
+            return res.status(403).json({
+              success: false,
+              message: "Your account has been blocked.",
+              isBlocked: true,
+              redirectTo: "/login?blocked=true",
+            });
+          }
+
+          req.session.error = "Your account has been blocked.";
+          return res.redirect("/login?blocked=true");
+        }
+      } else {
+        req.user = user;
         res.locals.user = user;
+        try {
+          const userCart = await Cart.findOne({ user_id: user._id }).lean();
+          res.locals.cartCount = (userCart?.items || []).reduce(
+            (sum, item) => sum + (Number(item.quantity) || 0),
+            0
+          );
+        } catch (cartErr) {
+          res.locals.cartCount = 0;
+        }
       }
     }
 
   } catch (error) {
-    // Don't redirect here
-    // Authentication is handled by isAuthenticated
+    res.clearCookie("token");
+    delete req.cookies.token;
+    req.user = null;
+    res.locals.user = null;
+    res.locals.cartCount = 0;
   }
 
   next();

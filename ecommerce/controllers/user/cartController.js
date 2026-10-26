@@ -146,6 +146,22 @@ const loadCart = async (req, res) => {
 // add to cart
 const addToCart = async (req, res) => {
   try {
+    if (!req.user || !req.user._id) {
+      if (
+        req.xhr ||
+        req.headers["accept"]?.includes("application/json") ||
+        req.headers["content-type"]?.includes("application/json") ||
+        req.headers["sec-fetch-dest"] === "empty"
+      ) {
+        return res.status(401).json({
+          success: false,
+          message: "Please log in to add items to cart",
+          redirectTo: "/login",
+        });
+      }
+      return res.redirect("/login");
+    }
+
     const userId = req.user._id;
 
     const { productId, variantId, quantity = 1 } = req.query;
@@ -254,10 +270,16 @@ const addToCart = async (req, res) => {
         },
       );
 
+      const totalCount = cart.items.reduce(
+        (sum, itm) => sum + (Number(itm.quantity) || 0),
+        0
+      );
+
       return res.status(201).json({
         success: true,
         message: "Product added to cart",
         cart,
+        cartCount: totalCount,
       });
     }
 
@@ -306,10 +328,16 @@ const addToCart = async (req, res) => {
       },
     );
 
+    const totalCount = cart.items.reduce(
+      (sum, itm) => sum + (Number(itm.quantity) || 0),
+      0
+    );
+
     return res.status(200).json({
       success: true,
       message: "Product added to cart",
       cart,
+      cartCount: totalCount,
     });
   } catch (error) {
     console.error("Add cart error:", error);
@@ -384,10 +412,16 @@ const increaseQuantity = async (req, res) => {
     await cart.save();
     req.session.success = "Cart quantity updated.";
 
+    const totalCount = cart.items.reduce(
+      (sum, itm) => sum + (Number(itm.quantity) || 0),
+      0
+    );
+
     return res.json({
       success: true,
       message: "Cart quantity updated.",
       quantity: item.quantity,
+      cartCount: totalCount,
     });
   } catch (error) {
     console.error("Increase quantity error:", error);
@@ -444,10 +478,16 @@ const decreaseQuantity = async (req, res) => {
     await cart.save();
     req.session.success = "Cart quantity updated.";
 
+    const totalCount = cart.items.reduce(
+      (sum, itm) => sum + (Number(itm.quantity) || 0),
+      0
+    );
+
     return res.json({
       success: true,
       message: "Cart quantity updated.",
       quantity: item.quantity,
+      cartCount: totalCount,
     });
   } catch (error) {
     console.error("Decrease quantity error:", error);
@@ -486,9 +526,15 @@ const removeFromCart = async (req, res) => {
     await cart.save();
     req.session.success = "Item removed from cart.";
 
+    const totalCount = cart.items.reduce(
+      (sum, itm) => sum + (Number(itm.quantity) || 0),
+      0
+    );
+
     return res.json({
       success: true,
       message: "Item removed from cart.",
+      cartCount: totalCount,
     });
   } catch (error) {
     console.error("Remove cart item error:", error);
@@ -501,12 +547,34 @@ const removeFromCart = async (req, res) => {
   }
 };
 
+// Get cart item count
+const getCartCount = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    if (!userId) {
+      return res.json({ success: true, count: 0, cartCount: 0 });
+    }
+
+    const cart = await Cart.findOne({ user_id: userId }).lean();
+    const count = (cart?.items || []).reduce(
+      (sum, item) => sum + (Number(item.quantity) || 0),
+      0
+    );
+
+    return res.json({ success: true, count, cartCount: count });
+  } catch (error) {
+    console.error("Get cart count error:", error);
+    return res.status(500).json({ success: false, count: 0, cartCount: 0 });
+  }
+};
+
 export default {
   loadCart,
   addToCart,
   increaseQuantity,
   decreaseQuantity,
   removeFromCart,
+  getCartCount,
 };
 
 

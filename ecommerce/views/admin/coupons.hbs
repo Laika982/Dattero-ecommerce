@@ -120,38 +120,75 @@
 <!-- SideNavBar -->
 {{> admin/aside}}
 <!-- TopNavBar -->
-<header class="sticky top-0 w-full z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 lg:ml-64 ml-0 lg:max-w-[calc(100%-16rem)]">
-<div class="flex justify-between items-center h-16 px-4 sm:px-6 md:px-container-padding">
-<div class="flex-1 flex items-center">
-    <!-- Mobile Sidebar Toggle -->
-    <button type="button" class="lg:hidden p-2 rounded-lg text-on-surface-variant hover:text-ink-black hover:bg-surface-variant/50 transition-colors mr-2 touch-target" onclick="toggleAdminSidebar()" aria-label="Toggle Navigation">
-        <span class="material-symbols-outlined text-[22px]">menu</span>
-    </button>
-<div class="relative w-full max-w-md">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-1 focus:ring-primary/30 transition-all" placeholder="Search coupons, codes, or rules..." type="text">
-</div>
-</div>
-<div class="flex items-center gap-6">
-<button class="text-on-surface-variant hover:text-primary transition-colors relative">
-<span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
-</button>
-<button class="text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined">settings</span>
-</button>
-<div class="h-8 w-[1px] bg-outline-variant/30"></div>
-<div class="flex items-center gap-3 cursor-pointer group">
-<div class="text-right">
-<p class="font-label-md text-on-surface">Administrator</p>
-<p class="text-[11px] text-on-surface-variant">Nutri Luxe Team</p>
-</div>
-<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-highest border border-outline-variant/30 group-hover:scale-105 transition-transform">
-<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a modern luxury brand administrator, wearing minimalist black attire, clean lighting, high-end boutique aesthetic, blurred office background with warm wooden textures and soft ambient lights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0aPQiqibq2dPcuSUZeifMyxGJRGaELXhmOxLqDs3ANjoitXlG_mZcW817WQDYks0S63pH_EigolpL3EfMtMgC4MlMup1kOpPnW_QnKw1ymkHhYDTSrqPsj2zcC3p0Gl62cXaf_48m2UwDzCGFhaet7hKaV7eZwnVSAIvy30O1vd4WjrUwAMq-aZv1GLXq-6SGV3Olcm14yAYACAZm5bcLhg1gym3Cp6crjstk9tf5QvzuP17T9MOt5ghmHOvTbLHXG2qOte9I-gQ">
-</div>
-</div>
-</div>
-</div>
+<header class="sticky top-0 lg:ml-64 ml-0 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 h-16 flex justify-between items-center px-4 sm:px-6 md:px-container-padding">
+    <!-- Left: Mobile Sidebar Toggle & Search Form -->
+    <div class="flex items-center flex-1 max-w-lg gap-2 sm:gap-3 mr-4">
+        <button type="button" class="lg:hidden p-2 rounded-lg text-on-surface-variant hover:text-ink-black hover:bg-surface-variant/50 transition-colors touch-target shrink-0" onclick="toggleAdminSidebar()" aria-label="Toggle Navigation">
+            <span class="material-symbols-outlined text-[22px]">menu</span>
+        </button>
+
+        <form action="/admin/coupons" method="GET" class="relative w-full flex items-center admin-search-form" data-base-url="/admin/coupons">
+            {{#if filter}}<input type="hidden" name="filter" value="{{filter}}">{{/if}}
+
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px] pointer-events-none">
+                search
+            </span>
+
+            <input
+                class="admin-search-input w-full bg-surface-container-low border border-outline-variant/30 focus:border-transparent rounded-full pl-10 pr-24 py-2 text-sm sm:text-body-md text-on-surface focus:ring-2 focus:ring-primary focus:outline-none transition-all placeholder:text-on-surface-variant/40"
+                placeholder="Search coupons, codes..."
+                type="text"
+                name="search"
+                value="{{search}}"
+                autocomplete="off"
+            >
+
+            <!-- Close / Clear Button (Visible only when text is inside input) -->
+            <button
+                type="button"
+                class="admin-search-clear absolute right-[84px] top-1/2 -translate-y-1/2 z-10 w-6 h-6 items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-error transition-all cursor-pointer {{#if search}}flex{{else}}hidden{{/if}}"
+                title="Clear search"
+                aria-label="Clear search"
+            >
+                <span class="material-symbols-outlined text-[16px] pointer-events-none">close</span>
+            </button>
+
+            <!-- Search Button -->
+            <button
+                type="submit"
+                class="absolute right-1 top-1/2 -translate-y-1/2 px-4 py-1.5 rounded-full bg-primary text-on-primary text-xs sm:text-sm font-semibold hover:opacity-90 active:scale-95 transition-all shadow-sm"
+            >
+                Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Right Side: Store link, Notifications, Admin Profile -->
+    <div class="flex items-center gap-3 sm:gap-5 shrink-0">
+        <a href="/" target="_blank"
+            class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 border border-outline-variant/30 rounded-full hover:bg-surface-variant transition-colors active:scale-95 text-on-surface-variant text-xs sm:text-sm font-label-md">
+            <span class="material-symbols-outlined text-[18px]">visibility</span>
+            <span>View Store</span>
+        </a>
+
+        <!-- Notifications -->
+        <button class="p-2 text-on-surface-variant hover:text-primary transition-colors active:scale-95 relative" title="Notifications" aria-label="Notifications">
+            <span class="material-symbols-outlined text-[20px]">notifications</span>
+        </button>
+
+        <div class="h-6 w-[1px] bg-outline-variant/30 hidden sm:block"></div>
+
+        <!-- Admin Profile -->
+        <div class="flex items-center gap-2.5 cursor-pointer group">
+            <div class="text-right hidden md:block">
+                <p class="font-label-md text-xs sm:text-sm text-on-surface font-semibold leading-tight">Admin</p>
+                <p class="text-[10px] text-on-surface-variant/70">Nutri Luxe Admin</p>
+            </div>
+            <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-on-surface-variant group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[20px]">person</span>
+            </div>
+        </div>
+    </div>
 </header>
 <!-- Main Content -->
 <main class="lg:ml-64 ml-0 p-4 sm:p-6 md:p-container-padding min-h-screen">
@@ -364,6 +401,49 @@
                 // Action for selecting a row
                 console.log('Row clicked:', row.querySelector('.font-bold.font-body-md').innerText);
             });
+        });
+
+        // Admin Search Input with dynamic close button
+        document.querySelectorAll('.admin-search-form').forEach((form) => {
+            const input = form.querySelector('.admin-search-input');
+            const clearBtn = form.querySelector('.admin-search-clear');
+            const baseUrl = form.dataset.baseUrl || form.getAttribute('action');
+
+            if (!input || !clearBtn) return;
+
+            function toggleClearBtn() {
+                if (input.value && input.value.trim().length > 0) {
+                    clearBtn.classList.remove('hidden');
+                    clearBtn.classList.add('flex');
+                } else {
+                    clearBtn.classList.add('hidden');
+                    clearBtn.classList.remove('flex');
+                }
+            }
+
+            input.addEventListener('input', toggleClearBtn);
+            input.addEventListener('keyup', toggleClearBtn);
+            input.addEventListener('change', toggleClearBtn);
+
+            clearBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const hadSearch = new URLSearchParams(window.location.search).has('search');
+                input.value = '';
+                toggleClearBtn();
+                input.focus();
+
+                if (hadSearch) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    urlParams.delete('search');
+                    urlParams.delete('page');
+                    const queryStr = urlParams.toString();
+                    window.location.href = queryStr ? `${baseUrl}?${queryStr}` : baseUrl;
+                }
+            });
+
+            toggleClearBtn();
         });
     </script>
 

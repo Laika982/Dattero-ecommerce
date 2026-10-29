@@ -30,7 +30,7 @@ const adminLogin = async (req, res) => {
     const admin = await User.findOne({ email, isAdmin: true });
 
     if (!admin) {
-     req.session.error= "Admin not found"
+      req.session.error = "Admin not found"
       return res.status(404).render("admin/login");
     }
 
@@ -38,7 +38,7 @@ const adminLogin = async (req, res) => {
     const matchPassword = await verifyPassword(password, admin.password);
 
     if (!matchPassword) {
-      req.session.error= "Incorrect password"
+      req.session.error = "Incorrect password"
       return res.status(400).render("admin/login", {
       });
     }

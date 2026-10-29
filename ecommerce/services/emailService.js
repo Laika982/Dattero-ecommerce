@@ -15,7 +15,7 @@ If you did not request this OTP, please ignore this email.
 Thank you,
 Dattero Team`,
 
-html = `
+  html = `
   <div style="font-family: Arial, sans-serif; line-height: 1.6;">
     <h2 style="color: #222;">Dattero E-Commerce</h2>
 

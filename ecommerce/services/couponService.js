@@ -119,7 +119,7 @@ export const evaluateCouponEligibility = (
   return { eligible: true, reason: null };
 };
 
-export const validateCoupon = async ({ code, userId, subtotal, cartItems }) => {
+export const validateCoupon = async ({ code, userId, subtotal, cartItems, excludeOrderId = null }) => {
   if (!code) {
     throw new Error("Coupon code is required");
   }
@@ -157,21 +157,16 @@ export const validateCoupon = async ({ code, userId, subtotal, cartItems }) => {
 
   let userUsageCount = 0;
   if (userId) {
-    const [orderCount, usedByCount] = await Promise.all([
-      Order.countDocuments({
-        user_id: userId,
-        coupon_code: coupon.code,
-        order_status: { $nin: ["cancelled"] },
-      }).catch(() => 0),
-      Array.isArray(coupon.used_by)
-        ? coupon.used_by.filter(
-            (id) =>
-              (id?._id ? id._id.toString() : id?.toString()) ===
-              userId.toString(),
-          ).length
-        : 0,
-    ]);
-    userUsageCount = Math.max(orderCount, usedByCount);
+    const orderQuery = {
+      user_id: userId,
+      coupon_code: coupon.code,
+      order_status: { $nin: ["cancelled"] },
+      payment_status: { $nin: ["failed"] },
+    };
+    if (excludeOrderId) {
+      orderQuery.order_id = { $ne: excludeOrderId };
+    }
+    userUsageCount = await Order.countDocuments(orderQuery).catch(() => 0);
   }
 
   const eligibility = evaluateCouponEligibility(coupon, {
@@ -398,4 +393,3 @@ export const evaluateOrderCouponEligibility = async (order, activeItems = []) =>
   discount = Number(Math.min(discount, activeSubtotal).toFixed(2));
   return { isEligible: true, discount, coupon };
 };
-

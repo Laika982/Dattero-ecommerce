@@ -14,5 +14,3 @@ router.get("/edit/:addressId", isAuthenticated, addressController.editAddress);
 router.put("/edit/:addressId", isAuthenticated, addressController.editAddressPost);
 
 export default router;
-
-

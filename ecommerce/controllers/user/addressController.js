@@ -1,6 +1,32 @@
 import User from "../../models/userSchema.js";
 import Address from "../../models/addressSchema.js";
 import jwt from "jsonwebtoken";
+import { isAjaxRequest } from "../../utils/isAjax.js";
+
+const sendAddressResponse = (req, res, { isSuccess, message, redirectUrl, statusCode = 200, renderView = null, renderData = {} }) => {
+  if (isSuccess) {
+    req.session.success = message;
+  } else {
+    req.session.error = message;
+  }
+
+  if (isAjaxRequest(req)) {
+    return res.status(statusCode).json({
+      success: isSuccess,
+      message,
+      redirectTo: redirectUrl,
+    });
+  }
+
+  if (renderView) {
+    return res.status(statusCode).render(renderView, {
+      ...renderData,
+      error: message,
+    });
+  }
+
+  return res.redirect(redirectUrl);
+};
 
 const loadAddress = async (req, res) => {
   try {
@@ -145,9 +171,12 @@ const addAddressPost = async (req, res) => {
     const nameRegex = /^[A-Za-z\s]{3,50}$/;
 
     if (!nameRegex.test(fullName || "")) {
-      return res.status(400).render("user/add-address", {
-        address,
-        error: "Full name must contain only letters and spaces.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Full name must contain only letters and spaces.",
+        statusCode: 400,
+        renderView: "user/add-address",
+        renderData: { address },
       });
     }
 
@@ -155,9 +184,12 @@ const addAddressPost = async (req, res) => {
     const phoneRegex = /^[6-9]\d{9}$/;
 
     if (!phoneRegex.test(phone || "")) {
-      return res.status(400).render("user/add-address", {
-        address,
-        error: "Phone number must be a valid 10-digit number.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Phone number must be a valid 10-digit number.",
+        statusCode: 400,
+        renderView: "user/add-address",
+        renderData: { address },
       });
     }
 
@@ -165,9 +197,12 @@ const addAddressPost = async (req, res) => {
     const streetRegex = /^[A-Za-z0-9\s,.-]{5,150}$/;
 
     if (!streetRegex.test(street || "")) {
-      return res.status(400).render("user/add-address", {
-        address,
-        error: "Street address must be between 5 and 150 characters.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Street address must be between 5 and 150 characters.",
+        statusCode: 400,
+        renderView: "user/add-address",
+        renderData: { address },
       });
     }
 
@@ -175,9 +210,12 @@ const addAddressPost = async (req, res) => {
     const suiteRegex = /^[A-Za-z0-9\s,.-]{0,50}$/;
 
     if (!suiteRegex.test(suite)) {
-      return res.status(400).render("user/add-address", {
-        address,
-        error: "Suite must not exceed 50 characters.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Suite must not exceed 50 characters.",
+        statusCode: 400,
+        renderView: "user/add-address",
+        renderData: { address },
       });
     }
 
@@ -185,9 +223,12 @@ const addAddressPost = async (req, res) => {
     const cityRegex = /^[A-Za-z\s]{2,50}$/;
 
     if (!cityRegex.test(city || "")) {
-      return res.status(400).render("user/add-address", {
-        address,
-        error: "City must contain only letters and spaces.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "City must contain only letters and spaces.",
+        statusCode: 400,
+        renderView: "user/add-address",
+        renderData: { address },
       });
     }
 
@@ -195,9 +236,12 @@ const addAddressPost = async (req, res) => {
     const stateRegex = /^[A-Za-z\s]{2,50}$/;
 
     if (!stateRegex.test(state || "")) {
-      return res.status(400).render("user/add-address", {
-        address,
-        error: "State must contain only letters and spaces.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "State must contain only letters and spaces.",
+        statusCode: 400,
+        renderView: "user/add-address",
+        renderData: { address },
       });
     }
 
@@ -205,9 +249,12 @@ const addAddressPost = async (req, res) => {
     const zipRegex = /^\d{6}$/;
 
     if (!zipRegex.test(zip || "")) {
-      return res.status(400).render("user/add-address", {
-        address,
-        error: "ZIP code must be exactly 6 digits.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "ZIP code must be exactly 6 digits.",
+        statusCode: 400,
+        renderView: "user/add-address",
+        renderData: { address },
       });
     }
 
@@ -215,9 +262,12 @@ const addAddressPost = async (req, res) => {
     const countryRegex = /^[A-Za-z\s]{2,50}$/;
 
     if (!countryRegex.test(country || "")) {
-      return res.status(400).render("user/add-address", {
-        address,
-        error: "Country must contain only letters and spaces.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Country must contain only letters and spaces.",
+        statusCode: 400,
+        renderView: "user/add-address",
+        renderData: { address },
       });
     }
 
@@ -235,7 +285,7 @@ const addAddressPost = async (req, res) => {
           $set: {
             isDefault: false,
           },
-        },
+        }
       );
     }
 
@@ -257,15 +307,21 @@ const addAddressPost = async (req, res) => {
       isDefault: defaultAddress,
     });
 
-    req.session.success = "Address created successfully.";
-
-    return res.redirect("/profile/address");
+    return sendAddressResponse(req, res, {
+      isSuccess: true,
+      message: "Address created successfully.",
+      redirectUrl: "/profile/address",
+      statusCode: 200,
+    });
   } catch (error) {
     console.error("Add address POST error:", error);
 
-    return res.status(500).render("user/add-address", {
-      address: req.body,
-      error: "Something went wrong. Please try again.",
+    return sendAddressResponse(req, res, {
+      isSuccess: false,
+      message: "Something went wrong. Please try again.",
+      statusCode: 500,
+      renderView: "user/add-address",
+      renderData: { address: req.body },
     });
   }
 };
@@ -299,8 +355,12 @@ const makePrimary = async (req, res) => {
     });
 
     if (!address) {
-      req.session.error = "Address not found.";
-      return res.redirect("/profile/address");
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Address not found.",
+        redirectUrl: "/profile/address",
+        statusCode: 404,
+      });
     }
 
     await Address.updateMany(
@@ -311,7 +371,7 @@ const makePrimary = async (req, res) => {
         $set: {
           isDefault: false,
         },
-      },
+      }
     );
 
     await Address.findOneAndUpdate(
@@ -323,18 +383,24 @@ const makePrimary = async (req, res) => {
         $set: {
           isDefault: true,
         },
-      },
+      }
     );
 
-    req.session.success = "Primary address updated successfully.";
-
-    return res.redirect("/profile/address");
+    return sendAddressResponse(req, res, {
+      isSuccess: true,
+      message: "Primary address updated successfully.",
+      redirectUrl: "/profile/address",
+      statusCode: 200,
+    });
   } catch (error) {
     console.error("Make address primary error:", error);
 
-    req.session.error = "Unable to update primary address.";
-
-    return res.redirect("/profile/address");
+    return sendAddressResponse(req, res, {
+      isSuccess: false,
+      message: "Unable to update primary address.",
+      redirectUrl: "/profile/address",
+      statusCode: 500,
+    });
   }
 };
 
@@ -368,8 +434,12 @@ const deleteAddress = async (req, res) => {
     });
 
     if (!addressToDelete) {
-      req.session.error = "Address not found.";
-      return res.redirect("/profile/address");
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Address not found.",
+        redirectUrl: "/profile/address",
+        statusCode: 404,
+      });
     }
 
     const wasDefault = addressToDelete.isDefault;
@@ -395,20 +465,26 @@ const deleteAddress = async (req, res) => {
             $set: {
               isDefault: true,
             },
-          },
+          }
         );
       }
     }
 
-    req.session.success = "Address deleted successfully.";
-
-    return res.redirect("/profile/address");
+    return sendAddressResponse(req, res, {
+      isSuccess: true,
+      message: "Address deleted successfully.",
+      redirectUrl: "/profile/address",
+      statusCode: 200,
+    });
   } catch (error) {
     console.error("Delete address error:", error);
 
-    req.session.error = "Unable to delete address.";
-
-    return res.redirect("/profile/address");
+    return sendAddressResponse(req, res, {
+      isSuccess: false,
+      message: "Unable to delete address.",
+      redirectUrl: "/profile/address",
+      statusCode: 500,
+    });
   }
 };
 
@@ -511,18 +587,39 @@ const editAddressPost = async (req, res) => {
     });
 
     if (!address) {
-      req.session.error = "Address not found.";
-      return res.redirect("/profile/address");
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Address not found.",
+        redirectUrl: "/profile/address",
+        statusCode: 404,
+      });
     }
+
+    const addressData = {
+      ...req.body,
+      _id: addressId,
+      fullName,
+      phone,
+      street,
+      suite,
+      city,
+      state,
+      zip,
+      country,
+      addressLabel,
+      isDefault: defaultAddress,
+    };
 
     // Full Name
     const nameRegex = /^[A-Za-z\s]{3,50}$/;
 
     if (!nameRegex.test(fullName)) {
-      return res.status(400).render("user/edit-address", {
-        userData: user,
-        address: req.body,
-        error: "Full name must contain only letters and spaces.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Full name must contain only letters and spaces.",
+        statusCode: 400,
+        renderView: "user/edit-address",
+        renderData: { userData: user, address: addressData },
       });
     }
 
@@ -530,10 +627,12 @@ const editAddressPost = async (req, res) => {
     const phoneRegex = /^[6-9]\d{9}$/;
 
     if (!phoneRegex.test(phone)) {
-      return res.status(400).render("user/edit-address", {
-        userData: user,
-        address: req.body,
-        error: "Phone number must be a valid 10-digit number.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Phone number must be a valid 10-digit number.",
+        statusCode: 400,
+        renderView: "user/edit-address",
+        renderData: { userData: user, address: addressData },
       });
     }
 
@@ -541,10 +640,12 @@ const editAddressPost = async (req, res) => {
     const streetRegex = /^[A-Za-z0-9\s,.-]{5,150}$/;
 
     if (!streetRegex.test(street)) {
-      return res.status(400).render("user/edit-address", {
-        userData: user,
-        address: req.body,
-        error: "Street address must be between 5 and 150 characters.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Street address must be between 5 and 150 characters.",
+        statusCode: 400,
+        renderView: "user/edit-address",
+        renderData: { userData: user, address: addressData },
       });
     }
 
@@ -552,10 +653,12 @@ const editAddressPost = async (req, res) => {
     const suiteRegex = /^[A-Za-z0-9\s,.-]{0,50}$/;
 
     if (!suiteRegex.test(suite || "")) {
-      return res.status(400).render("user/edit-address", {
-        userData: user,
-        address: req.body,
-        error: "Suite must not exceed 50 characters.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Suite must not exceed 50 characters.",
+        statusCode: 400,
+        renderView: "user/edit-address",
+        renderData: { userData: user, address: addressData },
       });
     }
 
@@ -563,10 +666,12 @@ const editAddressPost = async (req, res) => {
     const cityRegex = /^[A-Za-z\s]{2,50}$/;
 
     if (!cityRegex.test(city)) {
-      return res.status(400).render("user/edit-address", {
-        userData: user,
-        address: req.body,
-        error: "City must contain only letters and spaces.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "City must contain only letters and spaces.",
+        statusCode: 400,
+        renderView: "user/edit-address",
+        renderData: { userData: user, address: addressData },
       });
     }
 
@@ -574,10 +679,12 @@ const editAddressPost = async (req, res) => {
     const stateRegex = /^[A-Za-z\s]{2,50}$/;
 
     if (!stateRegex.test(state)) {
-      return res.status(400).render("user/edit-address", {
-        userData: user,
-        address: req.body,
-        error: "State must contain only letters and spaces.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "State must contain only letters and spaces.",
+        statusCode: 400,
+        renderView: "user/edit-address",
+        renderData: { userData: user, address: addressData },
       });
     }
 
@@ -585,10 +692,12 @@ const editAddressPost = async (req, res) => {
     const zipRegex = /^\d{6}$/;
 
     if (!zipRegex.test(zip)) {
-      return res.status(400).render("user/edit-address", {
-        userData: user,
-        address: req.body,
-        error: "ZIP code must be exactly 6 digits.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "ZIP code must be exactly 6 digits.",
+        statusCode: 400,
+        renderView: "user/edit-address",
+        renderData: { userData: user, address: addressData },
       });
     }
 
@@ -596,10 +705,12 @@ const editAddressPost = async (req, res) => {
     const countryRegex = /^[A-Za-z\s]{2,50}$/;
 
     if (!countryRegex.test(country)) {
-      return res.status(400).render("user/edit-address", {
-        userData: user,
-        address: req.body,
-        error: "Country must contain only letters and spaces.",
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Country must contain only letters and spaces.",
+        statusCode: 400,
+        renderView: "user/edit-address",
+        renderData: { userData: user, address: addressData },
       });
     }
 
@@ -614,7 +725,7 @@ const editAddressPost = async (req, res) => {
           $set: {
             isDefault: false,
           },
-        },
+        }
       );
     }
 
@@ -640,21 +751,33 @@ const editAddressPost = async (req, res) => {
       {
         new: true,
         runValidators: true,
-      },
+      }
     );
 
     if (!updatedAddress) {
-      req.session.error = "Unable to update address.";
-      return res.redirect("/profile/address");
+      return sendAddressResponse(req, res, {
+        isSuccess: false,
+        message: "Unable to update address.",
+        redirectUrl: "/profile/address",
+        statusCode: 500,
+      });
     }
 
-    req.session.success = "Address Editted Successfully";
-
-    return res.redirect("/profile/address");
+    return sendAddressResponse(req, res, {
+      isSuccess: true,
+      message: "Address Editted Successfully",
+      redirectUrl: "/profile/address",
+      statusCode: 200,
+    });
   } catch (error) {
     console.error("Edit address POST error:", error);
 
-    return res.redirect("/profile/address");
+    return sendAddressResponse(req, res, {
+      isSuccess: false,
+      message: "Unable to update address.",
+      redirectUrl: "/profile/address",
+      statusCode: 500,
+    });
   }
 };
 

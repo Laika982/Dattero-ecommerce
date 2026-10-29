@@ -15,6 +15,26 @@ import {
   setReferralCookie,
   clearReferralCookie,
 } from "../../services/referralService.js";
+import { isAjaxRequest } from "../../utils/isAjax.js";
+
+const sendAuthResponse = (req, res, { isSuccess, message, redirectUrl, statusCode = 200, extra = {} }) => {
+  if (isSuccess) {
+    req.session.success = message;
+  } else {
+    req.session.error = message;
+  }
+
+  if (isAjaxRequest(req)) {
+    return res.status(statusCode).json({
+      success: isSuccess,
+      message,
+      redirectTo: redirectUrl,
+      ...extra,
+    });
+  }
+
+  return res.redirect(redirectUrl);
+};
 
 const loadHomepage = async (req, res) => {
   try {
@@ -58,64 +78,89 @@ const registerUser = async (req, res) => {
     referralCode = referralCode?.trim();
 
     if (!name || !email || !password || !confirmpassword) {
-      req.session.error = "All fields are required.";
-
-      return res.redirect("/signup");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "All fields are required.",
+        redirectUrl: "/signup",
+        statusCode: 400,
+      });
     }
 
     const nameRegex = /^[A-Za-z\s]+$/;
 
     if (!nameRegex.test(name)) {
-      req.session.error = "Name must contain only letters and spaces.";
-
-      return res.redirect("/signup");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Name must contain only letters and spaces.",
+        redirectUrl: "/signup",
+        statusCode: 400,
+      });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
-      req.session.error = "Please enter a valid email address.";
-
-      return res.redirect("/signup");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Please enter a valid email address.",
+        redirectUrl: "/signup",
+        statusCode: 400,
+      });
     }
 
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     if (!passwordRegex.test(password)) {
-      req.session.error =
-        "Password must be at least 8 characters and contain a letter, number, and special character.";
-
-      return res.redirect("/signup");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Password must be at least 8 characters and contain a letter, number, and special character.",
+        redirectUrl: "/signup",
+        statusCode: 400,
+      });
     }
 
     if (password !== confirmpassword) {
-      req.session.error = "Passwords do not match.";
-
-      return res.redirect("/signup");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Passwords do not match.",
+        redirectUrl: "/signup",
+        statusCode: 400,
+      });
     }
 
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      req.session.error = "User already exists.";
-
-      return res.redirect("/signup");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "User already exists.",
+        redirectUrl: "/signup",
+        statusCode: 400,
+      });
     }
 
     const invite = referralCode || req.cookies[REFERRAL_COOKIE];
     if (invite) {
       const referrer = await findReferrerByInvite(invite);
       if (!referrer) {
-        req.session.error = "Invalid referral code or invite link.";
-        return res.redirect("/signup");
+        return sendAuthResponse(req, res, {
+          isSuccess: false,
+          message: "Invalid referral code or invite link.",
+          redirectUrl: "/signup",
+          statusCode: 400,
+        });
       }
       if (
         referrer.email &&
         referrer.email.toLowerCase() === email.toLowerCase()
       ) {
-        req.session.error = "You cannot use your own referral code.";
-        return res.redirect("/signup");
+        return sendAuthResponse(req, res, {
+          isSuccess: false,
+          message: "You cannot use your own referral code.",
+          redirectUrl: "/signup",
+          statusCode: 400,
+        });
       }
     }
 
@@ -126,12 +171,13 @@ const registerUser = async (req, res) => {
     const emailSent = await sendVerificationEmail(email, otp);
 
     if (!emailSent) {
-      req.session.error =
-        "Unable to send verification email. Please try again.";
-
-      return res.redirect("/signup");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Unable to send verification email. Please try again.",
+        redirectUrl: "/signup",
+        statusCode: 500,
+      });
     }
-
     console.log(`Sign up OTP is ${otp}`);
 
     const signupToken = generateToken(
@@ -171,15 +217,23 @@ const registerUser = async (req, res) => {
       maxAge: 10 * 60 * 1000,
     });
 
-    req.session.success = `OTP sended on ${email} successfully `;
-
-    return res.redirect("/verify-otp");
+    return sendAuthResponse(req, res, {
+      isSuccess: true,
+      message: `OTP sent to ${email} successfully`,
+      redirectUrl: "/verify-otp",
+      statusCode: 200,
+    });
   } catch (error) {
     logger.error(error);
 
     req.session.signupError = "Internal Server Error";
 
-    return res.redirect("/signup");
+    return sendAuthResponse(req, res, {
+      isSuccess: false,
+      message: "Internal Server Error",
+      redirectUrl: "/signup",
+      statusCode: 500,
+    });
   }
 };
 
@@ -187,6 +241,9 @@ const loadVerifyOtp = async (req, res) => {
   try {
     return res.render("user/verify-otp", {
       purpose: req.otpSession.purpose,
+      // Pass the exact expiry from the token so the client timer is always
+      // anchored to this OTP's true deadline, even after email changes.
+      otpExpiresAt: req.otpSession.otpExpiresAt || null,
     });
   } catch (error) {
     logger.error(error);
@@ -200,31 +257,43 @@ const verifyOtp = async (req, res) => {
     const otp = String(req.body.otp || "").trim();
 
     if (!otp) {
-      req.session.error = "Please enter OTP.";
-
-      return res.redirect("/verify-otp");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Please enter OTP.",
+        redirectUrl: "/verify-otp",
+        statusCode: 400,
+      });
     }
 
     const otpToken = req.cookies.otpToken;
 
     if (!otpToken) {
-      req.session.error = "OTP session expired. Please request a new OTP.";
-
-      return res.redirect("/verify-otp");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "OTP session expired. Please request a new OTP.",
+        redirectUrl: "/verify-otp",
+        statusCode: 400,
+      });
     }
 
     const otpData = jwt.verify(otpToken, process.env.JWT_SECRET);
 
     if (Date.now() > otpData.otpExpiresAt) {
-      req.session.error = "OTP expired. Please click Resend OTP.";
-
-      return res.redirect("/verify-otp");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "OTP expired. Please click Resend OTP.",
+        redirectUrl: "/verify-otp",
+        statusCode: 400,
+      });
     }
 
     if (otp !== String(otpData.otp)) {
-      req.session.error = "Enter a valid OTP.";
-
-      return res.redirect("/verify-otp");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Enter a valid OTP.",
+        redirectUrl: "/verify-otp",
+        statusCode: 400,
+      });
     }
 
     // SIGNUP
@@ -233,9 +302,12 @@ const verifyOtp = async (req, res) => {
       const signupToken = req.cookies.signupToken;
 
       if (!signupToken) {
-        req.session.error = "Signup session expired. Please signup again.";
-
-        return res.redirect("/verify-otp");
+        return sendAuthResponse(req, res, {
+          isSuccess: false,
+          message: "Signup session expired. Please signup again.",
+          redirectUrl: "/verify-otp",
+          statusCode: 400,
+        });
       }
 
       const signupData = jwt.verify(signupToken, process.env.JWT_SECRET);
@@ -248,9 +320,12 @@ const verifyOtp = async (req, res) => {
         res.clearCookie("otpToken");
         res.clearCookie("signupToken");
 
-        req.session.error = "Email is already registered. Please login.";
-
-        return res.redirect("/signup");
+        return sendAuthResponse(req, res, {
+          isSuccess: false,
+          message: "Email is already registered. Please login.",
+          redirectUrl: "/signup",
+          statusCode: 400,
+        });
       }
 
       const attribution = await buildReferralAttribution({
@@ -286,9 +361,12 @@ const verifyOtp = async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000,
       });
 
-      req.session.success = "Sign Up successfull";
-
-      return res.redirect("/");
+      return sendAuthResponse(req, res, {
+        isSuccess: true,
+        message: "Sign Up successful",
+        redirectUrl: "/",
+        statusCode: 200,
+      });
     }
 
     // FORGOT PASSWORD
@@ -313,7 +391,12 @@ const verifyOtp = async (req, res) => {
         maxAge: 10 * 60 * 1000,
       });
 
-      return res.redirect("/resetPassword");
+      return sendAuthResponse(req, res, {
+        isSuccess: true,
+        message: "OTP verified successfully",
+        redirectUrl: "/resetPassword",
+        statusCode: 200,
+      });
     }
 
     // CHANGE EMAIL
@@ -330,9 +413,12 @@ const verifyOtp = async (req, res) => {
       if (existingUser) {
         res.clearCookie("otpToken");
 
-        req.session.error = "This email is already registered.";
-
-        return res.redirect("/verify-otp");
+        return sendAuthResponse(req, res, {
+          isSuccess: false,
+          message: "This email is already registered.",
+          redirectUrl: "/verify-otp",
+          statusCode: 400,
+        });
       }
 
       await User.findByIdAndUpdate(userId, {
@@ -344,26 +430,40 @@ const verifyOtp = async (req, res) => {
 
       res.clearCookie("otpToken");
 
-      return res.redirect("/profile");
+      return sendAuthResponse(req, res, {
+        isSuccess: true,
+        message: "Email updated successfully",
+        redirectUrl: "/profile",
+        statusCode: 200,
+      });
     }
 
     res.clearCookie("otpToken");
 
-    req.session.error = "Invalid OTP session.";
-
-    return res.redirect("/verify-otp");
+    return sendAuthResponse(req, res, {
+      isSuccess: false,
+      message: "Invalid OTP session.",
+      redirectUrl: "/verify-otp",
+      statusCode: 400,
+    });
   } catch (error) {
     logger.error(error);
 
     if (error.name === "TokenExpiredError") {
-      req.session.error = "OTP session expired. Please request a new OTP.";
-
-      return res.redirect("/verify-otp");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "OTP session expired. Please request a new OTP.",
+        redirectUrl: "/verify-otp",
+        statusCode: 400,
+      });
     }
 
-    req.session.error = "Internal Server Error.";
-
-    return res.redirect("/verify-otp");
+    return sendAuthResponse(req, res, {
+      isSuccess: false,
+      message: "Internal Server Error.",
+      redirectUrl: "/verify-otp",
+      statusCode: 500,
+    });
   }
 };
 
@@ -390,21 +490,37 @@ const loginUser = async (req, res) => {
 
     // Validate input
     if (!email || !password) {
-      req.session.error = "All fields are required";
-      return res.redirect("/login");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "All fields are required",
+        redirectUrl: "/login",
+        statusCode: 400,
+      });
     }
 
     // Find user
     const user = await User.findOne({ email });
 
     if (!user) {
-      req.session.error = "User does not exist";
-      return res.redirect("/login");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "User does not exist",
+        redirectUrl: "/login",
+        statusCode: 400,
+      });
     }
 
     // Check blocked user
     if (user.isBlocked) {
       req.session.error = "Your account has been blocked.";
+      if (isAjaxRequest(req)) {
+        return res.status(403).json({
+          success: false,
+          message: "Your account has been blocked.",
+          blocked: true,
+          redirectTo: "/login?blocked=true",
+        });
+      }
       return res.redirect("/login?blocked=true");
     }
 
@@ -412,8 +528,12 @@ const loginUser = async (req, res) => {
     const matchPassword = await verifyPassword(password, user.password);
 
     if (!matchPassword) {
-      req.session.error = "Incorrect password";
-      return res.redirect("/login");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Incorrect password",
+        redirectUrl: "/login",
+        statusCode: 400,
+      });
     }
 
     // Generate JWT
@@ -429,14 +549,21 @@ const loginUser = async (req, res) => {
     });
 
     // Successful login
-    req.session.success = "login successfull";
-    return res.redirect("/");
+    return sendAuthResponse(req, res, {
+      isSuccess: true,
+      message: "Login successful",
+      redirectUrl: "/",
+      statusCode: 200,
+    });
   } catch (error) {
     logger.error(error);
 
-    req.session.error = "Internal Server Error";
-
-    return res.redirect("/login");
+    return sendAuthResponse(req, res, {
+      isSuccess: false,
+      message: "Internal Server Error",
+      redirectUrl: "/login",
+      statusCode: 500,
+    });
   }
 };
 
@@ -459,23 +586,32 @@ const forgotPassword = async (req, res) => {
     email = email?.trim().toLowerCase();
 
     if (!email) {
-      req.session.error = "Enter email.";
-
-      return res.redirect("/forgotPassword");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Enter email.",
+        redirectUrl: "/forgotPassword",
+        statusCode: 400,
+      });
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      req.session.error = "Enter a valid email.";
-
-      return res.redirect("/forgotPassword");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Enter a valid email.",
+        redirectUrl: "/forgotPassword",
+        statusCode: 400,
+      });
     }
 
     if (user.isBlocked) {
-      req.session.error = "Your account has been blocked.";
-
-      return res.redirect("/forgotPassword");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Your account has been blocked.",
+        redirectUrl: "/forgotPassword",
+        statusCode: 403,
+      });
     }
 
     const otp = generateOtp();
@@ -483,9 +619,12 @@ const forgotPassword = async (req, res) => {
     const emailSent = await sendVerificationEmail(email, otp);
 
     if (!emailSent) {
-      req.session.error = "Unable to send OTP. Please try again.";
-
-      return res.redirect("/forgotPassword");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Unable to send OTP. Please try again.",
+        redirectUrl: "/forgotPassword",
+        statusCode: 500,
+      });
     }
 
     logger.info(`Forgot password OTP: ${otp}`);
@@ -511,15 +650,23 @@ const forgotPassword = async (req, res) => {
       maxAge: 10 * 60 * 1000,
     });
 
-    req.session.success = `OTP sended on ${email} successfully`;
-
-    return res.redirect("/verify-otp");
+    return sendAuthResponse(req, res, {
+      isSuccess: true,
+      message: `OTP sent to ${email} successfully`,
+      redirectUrl: "/verify-otp",
+      statusCode: 200,
+    });
   } catch (error) {
     logger.error(error);
 
     req.session.forgotPasswordError = "Internal Server Error.";
 
-    return res.redirect("/forgotPassword");
+    return sendAuthResponse(req, res, {
+      isSuccess: false,
+      message: "Internal Server Error.",
+      redirectUrl: "/forgotPassword",
+      statusCode: 500,
+    });
   }
 };
 
@@ -538,23 +685,32 @@ const resetPassword = async (req, res) => {
     const { newPassword, confirmPassword } = req.body;
 
     if (!newPassword || !confirmPassword) {
-      req.session.error = "Fill both fields.";
-
-      return res.redirect("/resetPassword");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Fill both fields.",
+        redirectUrl: "/resetPassword",
+        statusCode: 400,
+      });
     }
 
     if (newPassword !== confirmPassword) {
-      req.session.error = "Passwords don't match.";
-
-      return res.redirect("/resetPassword");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Passwords don't match.",
+        redirectUrl: "/resetPassword",
+        statusCode: 400,
+      });
     }
 
     const token = req.cookies.resetEmail;
 
     if (!token) {
-      req.session.error = "Reset session expired. Please try again.";
-
-      return res.redirect("/resetPassword");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Reset session expired. Please try again.",
+        redirectUrl: "/resetPassword",
+        statusCode: 400,
+      });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -567,44 +723,53 @@ const resetPassword = async (req, res) => {
     );
 
     if (!user) {
-      req.session.error = "User not found.";
-
-      return res.redirect("/resetPassword");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "User not found.",
+        redirectUrl: "/resetPassword",
+        statusCode: 400,
+      });
     }
 
     res.clearCookie("resetEmail");
 
-    req.session.success = "Password Change Successfully";
-
-    return res.redirect("/login");
+    return sendAuthResponse(req, res, {
+      isSuccess: true,
+      message: "Password Changed Successfully",
+      redirectUrl: "/login",
+      statusCode: 200,
+    });
   } catch (error) {
     logger.error(error);
-
-
 
     if (error.name === "TokenExpiredError") {
       res.clearCookie("resetEmail");
 
-      req.session.error = "Reset session expired. Please request a new OTP.";
-
-      return res.redirect("/resetPassword");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Reset session expired. Please request a new OTP.",
+        redirectUrl: "/resetPassword",
+        statusCode: 400,
+      });
     }
-
-
 
     if (error.name === "JsonWebTokenError") {
       res.clearCookie("resetEmail");
 
-      req.session.error = "Invalid reset session. Please try again.";
-
-      return res.redirect("/resetPassword");
+      return sendAuthResponse(req, res, {
+        isSuccess: false,
+        message: "Invalid reset session. Please try again.",
+        redirectUrl: "/resetPassword",
+        statusCode: 400,
+      });
     }
 
-
-
-    req.session.error = "Internal Server Error.";
-
-    return res.redirect("/resetPassword");
+    return sendAuthResponse(req, res, {
+      isSuccess: false,
+      message: "Internal Server Error.",
+      redirectUrl: "/resetPassword",
+      statusCode: 500,
+    });
   }
 };
 
@@ -727,9 +892,23 @@ const logoutUser = async (req, res) => {
   try {
     res.clearCookie("token");
     req.session.success = "Logout success";
+    if (isAjaxRequest(req)) {
+      return res.status(200).json({
+        success: true,
+        message: "Logout success",
+        redirectTo: "/",
+      });
+    }
     return res.redirect("/");
   } catch (error) {
     logger.error("Logout error:", error);
+    if (isAjaxRequest(req)) {
+      return res.status(500).json({
+        success: false,
+        message: "Logout error",
+        redirectTo: "/",
+      });
+    }
     return res.redirect("/");
   }
 };

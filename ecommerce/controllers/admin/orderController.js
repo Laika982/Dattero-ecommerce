@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Order from "../../models/orderSchema.js";
 import Coupon from "../../models/couponSchema.js";
 import User from "../../models/userSchema.js";
@@ -9,7 +10,7 @@ import { calculateOrderShipping } from "../../services/pricingService.js";
 
 const adminListOrders = async (req, res) => {
   try {
-    const { search = "", status = "", sort = "newest" } = req.query;
+    const { search = "", status = "", sort = "newest", userId = "" } = req.query;
 
     const page = Math.max(Number(req.query.page) || 1, 1);
 
@@ -51,12 +52,17 @@ const adminListOrders = async (req, res) => {
       const users = await User.find({
         $or: [
           {
+            name: {
+              $regex: search,
+              $options: "i",
+            },
+          },
+          {
             username: {
               $regex: search,
               $options: "i",
             },
           },
-
           {
             email: {
               $regex: search,
@@ -67,9 +73,7 @@ const adminListOrders = async (req, res) => {
       }).select("_id");
 
       userIds = users.map((user) => user._id);
-    }
 
-    if (search) {
       filter.$or = [
         {
           order_id: {
@@ -88,9 +92,15 @@ const adminListOrders = async (req, res) => {
       }
     }
 
+    let filteredCustomer = null;
+    if (userId && mongoose.isValidObjectId(userId)) {
+      filter.user_id = userId;
+      filteredCustomer = await User.findById(userId).lean();
+    }
+
     const [orders, totalOrders] = await Promise.all([
       Order.find(filter)
-        .populate("user_id", "username email phone_number")
+        .populate("user_id", "name username email phone phone_number profileImage")
         .sort(sortOption)
         .skip(skip)
         .limit(limit)
@@ -99,22 +109,22 @@ const adminListOrders = async (req, res) => {
       Order.countDocuments(filter),
     ]);
 
-    const totalPages = Math.ceil(totalOrders / limit);
+    const totalPages = Math.ceil(totalOrders / limit) || 1;
+    const startIndex = totalOrders > 0 ? skip + 1 : 0;
+    const endIndex = Math.min(skip + limit, totalOrders);
 
     return res.render("admin/orders", {
       orders,
-
       search,
-
       status,
-
       sort,
-
+      userId,
+      filteredCustomer,
       currentPage: page,
-
       totalPages,
-
       totalOrders,
+      startIndex,
+      endIndex,
     });
   } catch (error) {
     console.error("Admin orders error:", error);
@@ -167,8 +177,8 @@ const calculateOrderAdjustedTotals = async (order) => {
   const activeShipping = isEntireOrderCancelled
     ? 0
     : (hasCancelledItems
-        ? calculateOrderShipping(activeSubtotal)
-        : Number(order.shipping_charge || 0));
+      ? calculateOrderShipping(activeSubtotal)
+      : Number(order.shipping_charge || 0));
 
   const activeTax = isEntireOrderCancelled
     ? 0
@@ -177,8 +187,8 @@ const calculateOrderAdjustedTotals = async (order) => {
   const activeFinalAmount = isEntireOrderCancelled
     ? 0
     : (hasCancelledItems
-        ? Number(Math.max(0, activeSubtotal - activeDiscount + activeTax + activeShipping).toFixed(2))
-        : Number(order.final_amount || 0));
+      ? Number(Math.max(0, activeSubtotal - activeDiscount + activeTax + activeShipping).toFixed(2))
+      : Number(order.final_amount || 0));
 
   const statusStyles = {
     pending: {
@@ -253,7 +263,7 @@ const adminOrderDetails = async (req, res) => {
     const order = await Order.findOne({
       order_id: orderId,
     })
-      .populate("user_id", "name email phone")
+      .populate("user_id", "name email phone profileImage")
       .lean();
 
     if (!order) {
@@ -276,7 +286,7 @@ const adminEditOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
     const order = await Order.findOne({ order_id: orderId })
-      .populate("user_id", "name email phone")
+      .populate("user_id", "name email phone profileImage")
       .lean();
 
     if (!order) {
@@ -316,7 +326,7 @@ const adminOrderReturn = async (req, res) => {
   try {
     const { orderId } = req.params;
     const order = await Order.findOne({ order_id: orderId })
-      .populate("user_id", "name email phone")
+      .populate("user_id", "name email phone profileImage")
       .lean();
 
     if (!order) {
@@ -568,6 +578,7 @@ const updateOrderStatus = async (req, res) => {
     if (newStatus === "cancelled") {
       for (const item of order.items) {
         if (item.status !== "cancelled") {
+          await increaseStock(item.variant_id, item.quantity);
           item.status = "cancelled";
         }
       }

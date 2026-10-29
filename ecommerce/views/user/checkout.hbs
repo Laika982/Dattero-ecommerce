@@ -4,12 +4,21 @@
         <div class="max-w-max-width mx-auto px-2 sm:px-4 mt-2 sm:mt-4">
         {{> user/notification}}
     </div>
+    {{#if retryOrderId}}
+    <div class="max-w-max-width mx-auto px-2 sm:px-4 mb-4">
+      <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-sm shadow-xs">
+        <span class="material-symbols-outlined text-[20px] text-amber-600">refresh</span>
+        <span>Retrying payment for <strong>Order #{{retryOrderId}}</strong>. You can review your address, apply coupons, and choose a payment method to complete this order.</span>
+      </div>
+    </div>
+    {{/if}}
 <div class="flex flex-col lg:flex-row gap-8 relative items-start">
 <!-- Left Column: Checkout Forms -->
 <div class="w-full lg:w-2/3 flex flex-col gap-8">
 <!-- Contact / Delivery Address Section -->
 <section class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 apple-shadow relative transition-all duration-300" id="deliveryAddressSection">
   <input type="hidden" name="selectedAddressId" id="selectedAddressId" value="{{#if selectedAddress}}{{selectedAddress._id}}{{/if}}">
+  <input type="hidden" id="checkoutRetryOrderId" value="{{#if retryOrderId}}{{retryOrderId}}{{/if}}">
   
   <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
     <div class="flex items-center gap-2">
@@ -86,7 +95,26 @@
             <h3 class="font-headline-lg text-[16px] font-semibold text-ink-black leading-snug">{{this.product_name}}</h3>
             <span class="font-headline-lg text-[16px] font-bold text-ink-black whitespace-nowrap">₹{{this.price}}</span>
           </div>
-          <p class="font-body-md text-[12px] text-on-surface-variant mt-0.5">{{this.weight}} • SKU: {{this.sku}}</p>
+          <!-- Variant Selector Dropdown -->
+          <div class="flex items-center flex-wrap gap-2 mt-1">
+            <label class="sr-only" for="checkout-variant-select-{{this.variantId}}">Change Variant</label>
+            <div class="relative inline-flex items-center">
+              <select
+                id="checkout-variant-select-{{this.variantId}}"
+                data-change-variant
+                data-current-variant-id="{{this.variantId}}"
+                class="appearance-none bg-surface-gray hover:bg-surface-variant text-ink-black font-label-md text-[11px] sm:text-xs font-semibold py-1 pl-2.5 pr-6 rounded-lg border border-outline-variant/40 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all cursor-pointer"
+                aria-label="Change variant"
+              >
+                {{#each this.availableVariants}}
+                  <option value="{{this.variantId}}" {{#if this.isCurrent}}selected{{/if}} {{#if this.isOutOfStock}}disabled{{/if}}>
+                    {{this.weight}} - ₹{{this.price}}{{#if this.isOutOfStock}} (Out of stock){{/if}}
+                  </option>
+                {{/each}}
+              </select>
+            </div>
+            <span class="text-[11px] text-on-surface-variant">SKU: {{this.sku}}</span>
+          </div>
           <!-- Rating Row -->
           <div class="flex items-center gap-1.5 mt-1.5">
             <div class="flex items-center text-[#c89b3c] text-[13px]">
@@ -169,9 +197,9 @@
           </div>
         </div>
         <div class="flex items-center gap-2.5 shrink-0">
-          <a href="/wallet" target="_blank" onclick="event.stopPropagation();" class="text-xs font-semibold text-accent-blue hover:underline hidden sm:inline-flex items-center gap-0.5 py-1 px-2 rounded-md hover:bg-surface-gray transition-colors">
+          <button type="button" id="headerAddFundsBtn" onclick="event.stopPropagation();" class="text-xs font-semibold text-accent-blue hover:underline hidden sm:inline-flex items-center gap-0.5 py-1 px-2 rounded-md hover:bg-surface-gray transition-colors cursor-pointer">
             <span class="material-symbols-outlined text-[15px]">add_circle</span> Add Funds
-          </a>
+          </button>
           <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
             <span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
           </div>
@@ -187,14 +215,19 @@
           </span>
           <span class="font-medium text-ink-black">Remaining balance: <strong class="text-emerald-700 font-bold" id="walletRemainingBalance">₹0.00</strong></span>
         </div>
-        <div id="walletInsufficientMsg" class="hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs">
-          <div class="flex items-start sm:items-center gap-2">
+        <div id="walletInsufficientMsg" class="hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-amber-50/90 border border-amber-200/80 text-amber-900 text-xs shadow-xs">
+          <div class="flex items-start sm:items-center gap-2 min-w-0">
             <span class="material-symbols-outlined text-[18px] text-amber-600 shrink-0 mt-0.5 sm:mt-0">warning</span>
             <span>Insufficient balance. You need <strong id="walletDeficitAmount" class="font-bold">₹0.00</strong> more to pay using wallet.</span>
           </div>
-          <a href="/wallet" target="_blank" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-ink-black text-white font-semibold hover:bg-ink-black/90 transition-all shrink-0">
-            <span class="material-symbols-outlined text-[14px]">payments</span> Top up Wallet
-          </a>
+          <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end">
+            <button type="button" id="payWalletDeficitBtn" onclick="event.stopPropagation();" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-semibold text-xs transition-all shadow-xs cursor-pointer">
+              <span class="material-symbols-outlined text-[15px]">bolt</span> Pay Balance (<span id="payDeficitBtnAmount">₹0.00</span>)
+            </button>
+            <button type="button" id="openWalletTopupBtn" onclick="event.stopPropagation();" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-ink-black text-white font-semibold text-xs hover:bg-ink-black/90 active:scale-95 transition-all shadow-xs cursor-pointer">
+              <span class="material-symbols-outlined text-[14px]">payments</span> Top up Wallet
+            </button>
+          </div>
         </div>
       </div>
     </label>
@@ -251,7 +284,8 @@
 <div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Shipping</span><span class="font-medium text-ink-black">₹{{totals.shipping}}</span></div>
 <div class="flex justify-between items-center py-1 text-sm text-on-surface-variant"><span class="font-body-md">Estimated Taxes</span><span class="font-medium text-ink-black">₹{{totals.tax}}</span></div>
 <div class="flex justify-between items-baseline pt-4 mt-2 border-t border-outline-variant/20"><span class="font-headline-lg text-[18px] font-bold text-ink-black">Total</span><span class="font-headline-lg text-[22px] sm:text-[24px] font-bold text-ink-black">₹{{totals.finalAmount}}</span></div></div><div class="flex flex-col gap-2 mt-1">
-<button type="button" id="placeOrderBtn" class="w-full bg-ink-black text-white font-label-md text-[15px] font-semibold py-3.5 px-6 rounded-xl hover:bg-ink-black/90 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm touch-target">Place Order <span class="material-symbols-outlined text-[18px]">arrow_forward</span></button><button onclick="this.classList.add('animate-pulse'); this.innerText='Processing...'; setTimeout(() => { window.location.href='/payment/failed' }, 1500)" class="w-full text-center text-xs text-on-surface-variant hover:text-ink-black hover:underline py-1.5 transition-colors">Simulate Payment Failure</button></div></div>
+<button type="button" id="placeOrderBtn" class="w-full bg-ink-black text-white font-label-md text-[15px] font-semibold py-3.5 px-6 rounded-xl hover:bg-ink-black/90 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm touch-target">Place Order <span class="material-symbols-outlined text-[18px]">arrow_forward</span></button>
+</div></div>
 
 </div>
 </div>
@@ -309,6 +343,96 @@
         <p class="text-sm text-on-surface-variant mt-1">Check back later for new offers.</p>
       </div>
       {{/each}}
+    </div>
+  </div>
+</dialog>
+
+<!-- Checkout Wallet Top-up Modal Dialog -->
+<dialog id="checkoutTopupDialog" class="w-[calc(100%-2rem)] max-w-md rounded-3xl border-0 p-0 shadow-2xl backdrop:bg-black/60 m-auto overflow-hidden">
+  <div class="bg-surface-container-lowest rounded-3xl overflow-hidden border border-outline-variant/30 flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-5 sm:p-6 border-b border-outline-variant/20 bg-surface-container-lowest">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+          <span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
+        </div>
+        <div>
+          <h3 class="font-headline-lg text-lg sm:text-xl font-bold text-ink-black">Top Up Wallet</h3>
+          <p class="text-xs text-on-surface-variant">Pay balance amount directly within checkout</p>
+        </div>
+      </div>
+      <button type="button" id="closeCheckoutTopup" class="w-9 h-9 rounded-full bg-surface-gray hover:bg-surface-variant text-on-surface-variant hover:text-ink-black flex items-center justify-center transition-colors cursor-pointer" aria-label="Close dialog">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="p-5 sm:p-6 flex flex-col gap-4">
+      <!-- Order / Wallet Summary Card -->
+      <div class="p-4 rounded-2xl bg-surface-gray/50 border border-outline-variant/30 flex flex-col gap-2.5">
+        <div class="flex items-center justify-between text-xs text-on-surface-variant">
+          <span>Order Total</span>
+          <span id="topupModalOrderTotal" class="font-semibold text-ink-black">₹0.00</span>
+        </div>
+        <div class="flex items-center justify-between text-xs text-on-surface-variant">
+          <span>Current Wallet Balance</span>
+          <span id="topupModalCurrentBalance" class="font-semibold text-emerald-700">₹0.00</span>
+        </div>
+        <div class="pt-2 border-t border-outline-variant/20 flex items-center justify-between">
+          <span class="text-xs font-bold text-amber-900 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px] text-amber-600">info</span>
+            Balance Amount Needed
+          </span>
+          <span id="topupModalDeficit" class="text-sm font-bold text-amber-700 bg-amber-100/70 px-2 py-0.5 rounded-md">₹0.00</span>
+        </div>
+      </div>
+
+      <!-- Amount Input -->
+      <div>
+        <label for="checkoutTopupAmount" class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1.5">
+          Top-up Amount (INR)
+        </label>
+        <div class="relative flex items-center">
+          <span class="absolute left-3.5 text-base font-bold text-ink-black">₹</span>
+          <input
+            id="checkoutTopupAmount"
+            type="number"
+            min="1"
+            max="50000"
+            step="0.01"
+            class="w-full pl-8 pr-4 py-3 rounded-xl border border-outline-variant/60 focus:border-primary focus:ring-2 focus:ring-primary/20 text-ink-black font-bold text-lg bg-white outline-none transition-all"
+            placeholder="Enter amount"
+          />
+        </div>
+      </div>
+
+      <!-- Quick Preset Chips -->
+      <div>
+        <span class="text-[11px] font-semibold text-on-surface-variant block mb-1.5">Quick Options:</span>
+        <div class="flex flex-wrap items-center gap-2" id="checkoutTopupPresets">
+          <button type="button" id="presetExactDeficitBtn" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-300 hover:bg-emerald-100 transition-colors cursor-pointer flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">bolt</span>
+            <span>Exact Balance: <strong id="presetExactDeficitAmount">₹0.00</strong></span>
+          </button>
+          <button type="button" class="preset-chip px-3 py-1.5 text-xs font-medium rounded-lg bg-surface-gray hover:bg-surface-variant text-ink-black border border-outline-variant/30 transition-colors cursor-pointer" data-amount="100">₹100</button>
+          <button type="button" class="preset-chip px-3 py-1.5 text-xs font-medium rounded-lg bg-surface-gray hover:bg-surface-variant text-ink-black border border-outline-variant/30 transition-colors cursor-pointer" data-amount="500">₹500</button>
+          <button type="button" class="preset-chip px-3 py-1.5 text-xs font-medium rounded-lg bg-surface-gray hover:bg-surface-variant text-ink-black border border-outline-variant/30 transition-colors cursor-pointer" data-amount="1000">₹1,000</button>
+          <button type="button" class="preset-chip px-3 py-1.5 text-xs font-medium rounded-lg bg-surface-gray hover:bg-surface-variant text-ink-black border border-outline-variant/30 transition-colors cursor-pointer" data-amount="2000">₹2,000</button>
+        </div>
+      </div>
+
+      <div id="checkoutTopupError" class="text-xs text-red-600 bg-red-50 border border-red-200 p-2.5 rounded-xl hidden"></div>
+
+      <!-- Footer Buttons -->
+      <div class="flex items-center gap-3 pt-2">
+        <button type="button" id="cancelCheckoutTopup" class="flex-1 py-3 px-4 rounded-xl border border-outline-variant/40 text-ink-black text-xs font-semibold hover:bg-surface-gray transition-colors cursor-pointer text-center">
+          Cancel
+        </button>
+        <button type="button" id="submitCheckoutTopup" class="flex-1 py-3 px-4 rounded-xl bg-ink-black text-white text-xs font-semibold hover:bg-ink-black/90 active:scale-95 transition-all shadow-sm cursor-pointer flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">lock</span>
+          <span id="submitCheckoutTopupText">Pay &amp; Top Up</span>
+        </button>
+      </div>
     </div>
   </div>
 </dialog>
@@ -463,19 +587,77 @@ document.addEventListener('DOMContentLoaded', () => {
   const baseFinalAmount = Number('{{totals.baseFinalAmount}}') || Number((totalValue?.textContent || '').replace(/[^\d.]/g, ''));
   let appliedCouponCode = '{{#if appliedCoupon}}{{appliedCoupon.code}}{{/if}}';
   const initialCouponDiscount = Number('{{#if couponDiscount}}{{couponDiscount}}{{else}}0{{/if}}');
+  const retryOrderId = document.getElementById('checkoutRetryOrderId')?.value || undefined;
 
-  const rawWalletBalance = Number('{{wallet.rawBalance}}' || '{{wallet.balance}}' || 0);
+  let rawWalletBalance = Number('{{wallet.rawBalance}}' || '{{wallet.balance}}' || 0);
   const walletBadge = document.getElementById('walletBadge');
   const walletDetailsBox = document.getElementById('walletDetailsBox');
   const walletSufficientMsg = document.getElementById('walletSufficientMsg');
   const walletInsufficientMsg = document.getElementById('walletInsufficientMsg');
   const walletRemainingBalance = document.getElementById('walletRemainingBalance');
   const walletDeficitAmount = document.getElementById('walletDeficitAmount');
+  const payDeficitBtnAmount = document.getElementById('payDeficitBtnAmount');
   const paymentCards = document.querySelectorAll('.payment-option-card');
   const paymentRadios = document.querySelectorAll('input[name="payment"]');
 
+  const ensureRazorpay = () => new Promise((resolve, reject) => {
+    if (window.Razorpay) return resolve(window.Razorpay);
+    const existingScript = document.querySelector('script[src*="checkout.razorpay.com"]');
+    if (existingScript) {
+      existingScript.addEventListener('load', () => resolve(window.Razorpay));
+      existingScript.addEventListener('error', () => reject(new Error('Failed to load Razorpay payment gateway.')));
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    script.onload = () => resolve(window.Razorpay);
+    script.onerror = () => reject(new Error('Failed to load Razorpay payment gateway. Please check your connection.'));
+    document.head.appendChild(script);
+  });
+
   const getCurrentFinalAmount = () => {
     return Number((totalValue?.textContent || '').replace(/[^\d.]/g, '')) || 0;
+  };
+
+  window.handleSimulatePaymentFailure = async function() {
+    const addressRadio = document.querySelector('input[name="address"]:checked');
+    const addressId = addressRadio ? addressRadio.value : (savedSelectedAddressId || null);
+    if (!addressId) {
+      showNotification('error', 'Please select a delivery address first.');
+      return;
+    }
+    const btn = document.getElementById('simulateFailBtn');
+    if (btn) {
+      btn.classList.add('animate-pulse');
+      btn.innerText = 'Recording failed order...';
+      btn.disabled = true;
+    }
+    try {
+      const response = await fetch('/order/place', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          addressId,
+          paymentMethod: 'upi',
+          couponCode: appliedCouponCode,
+          paymentStatus: 'failed',
+          failureReason: 'Payment simulated failure',
+          retryOrderId: document.getElementById('checkoutRetryOrderId')?.value || undefined,
+        }),
+      });
+      const data = await response.json();
+      if (data.success && data.orderId) {
+        window.location.href = `/payment/failed?orderId=${encodeURIComponent(data.orderId)}`;
+        return;
+      }
+    } catch (e) {
+      console.error('Simulation failure error:', e);
+    }
+    window.location.href = '/payment/failed';
   };
 
   const updatePaymentUI = () => {
@@ -499,6 +681,9 @@ document.addEventListener('DOMContentLoaded', () => {
         walletInsufficientMsg?.classList.remove('hidden');
         if (walletDeficitAmount) {
           walletDeficitAmount.textContent = `₹${deficit.toFixed(2)}`;
+        }
+        if (payDeficitBtnAmount) {
+          payDeficitBtnAmount.textContent = `₹${deficit.toFixed(2)}`;
         }
       }
     }
@@ -528,7 +713,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   paymentCards.forEach((card) => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('a')) return;
+      if (e.target.closest('a') || e.target.closest('button')) return;
       const radio = card.querySelector('input[name="payment"]');
       if (radio && !radio.checked) {
         radio.checked = true;
@@ -538,6 +723,271 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   updatePaymentUI();
+
+  // Top Up Wallet Modal & Balance Payment Logic (In-Checkout)
+  const topupDialog = document.getElementById('checkoutTopupDialog');
+  const topupAmountInput = document.getElementById('checkoutTopupAmount');
+  const submitTopupBtn = document.getElementById('submitCheckoutTopup');
+  const submitTopupText = document.getElementById('submitCheckoutTopupText');
+  const topupError = document.getElementById('checkoutTopupError');
+  const presetExactDeficitBtn = document.getElementById('presetExactDeficitBtn');
+  const presetExactDeficitAmount = document.getElementById('presetExactDeficitAmount');
+
+  const openCheckoutTopupModal = (defaultAmt = null) => {
+    const currentTotal = getCurrentFinalAmount();
+    const deficit = Math.max(0, currentTotal - rawWalletBalance);
+    const orderTotalEl = document.getElementById('topupModalOrderTotal');
+    const currentBalanceEl = document.getElementById('topupModalCurrentBalance');
+    const deficitEl = document.getElementById('topupModalDeficit');
+
+    if (orderTotalEl) orderTotalEl.textContent = `₹${currentTotal.toFixed(2)}`;
+    if (currentBalanceEl) currentBalanceEl.textContent = `₹${rawWalletBalance.toFixed(2)}`;
+    if (deficitEl) deficitEl.textContent = `₹${deficit.toFixed(2)}`;
+    if (presetExactDeficitAmount) presetExactDeficitAmount.textContent = `₹${deficit.toFixed(2)}`;
+
+    if (presetExactDeficitBtn) {
+      if (deficit > 0) {
+        presetExactDeficitBtn.classList.remove('hidden');
+      } else {
+        presetExactDeficitBtn.classList.add('hidden');
+      }
+    }
+
+    let initialAmt = defaultAmt;
+    if (initialAmt === null || initialAmt === undefined) {
+      initialAmt = deficit > 0 ? Math.max(1, Math.round(deficit * 100) / 100) : 500;
+    }
+
+    if (topupAmountInput) {
+      topupAmountInput.value = initialAmt.toFixed(2);
+    }
+    if (submitTopupText) {
+      submitTopupText.textContent = `Pay ₹${initialAmt.toFixed(2)} & Top Up`;
+    }
+    if (topupError) {
+      topupError.textContent = '';
+      topupError.classList.add('hidden');
+    }
+
+    if (topupDialog && typeof topupDialog.showModal === 'function') {
+      topupDialog.showModal();
+      topupAmountInput?.focus();
+    }
+  };
+
+  topupAmountInput?.addEventListener('input', () => {
+    const val = Number(topupAmountInput.value);
+    if (submitTopupText) {
+      submitTopupText.textContent = Number.isFinite(val) && val > 0
+        ? `Pay ₹${val.toFixed(2)} & Top Up`
+        : 'Pay & Top Up';
+    }
+  });
+
+  topupAmountInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      submitTopupBtn?.click();
+    }
+  });
+
+  presetExactDeficitBtn?.addEventListener('click', () => {
+    const currentTotal = getCurrentFinalAmount();
+    const deficit = Math.max(0, currentTotal - rawWalletBalance);
+    const exactAmt = Math.max(1, Math.round(deficit * 100) / 100);
+    if (topupAmountInput) {
+      topupAmountInput.value = exactAmt.toFixed(2);
+      topupAmountInput.dispatchEvent(new Event('input'));
+    }
+  });
+
+  document.querySelectorAll('#checkoutTopupPresets .preset-chip').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const amt = Number(btn.dataset.amount || 0);
+      if (amt > 0 && topupAmountInput) {
+        topupAmountInput.value = amt.toFixed(2);
+        topupAmountInput.dispatchEvent(new Event('input'));
+      }
+    });
+  });
+
+  document.getElementById('closeCheckoutTopup')?.addEventListener('click', () => topupDialog?.close());
+  document.getElementById('cancelCheckoutTopup')?.addEventListener('click', () => topupDialog?.close());
+  topupDialog?.addEventListener('click', (e) => {
+    if (e.target === topupDialog) topupDialog.close();
+  });
+
+  document.getElementById('headerAddFundsBtn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openCheckoutTopupModal();
+  });
+
+  document.getElementById('openWalletTopupBtn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openCheckoutTopupModal();
+  });
+
+  let isWalletTopUpProcessing = false;
+  const processWalletTopUp = async (amount, triggerBtn) => {
+    if (isWalletTopUpProcessing) return;
+
+    const numAmount = Math.round(Number(amount) * 100) / 100;
+    if (!Number.isFinite(numAmount) || numAmount < 1 || numAmount > 50000) {
+      showNotification('error', 'Please enter an amount between ₹1 and ₹50,000.');
+      return;
+    }
+
+    isWalletTopUpProcessing = true;
+    const originalBtnHtml = triggerBtn ? triggerBtn.innerHTML : null;
+    if (triggerBtn) {
+      triggerBtn.disabled = true;
+      triggerBtn.innerHTML = `
+        <span class="inline-block w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin"></span>
+        <span>Processing...</span>
+      `;
+    }
+
+    const resetBtnState = () => {
+      isWalletTopUpProcessing = false;
+      if (triggerBtn) {
+        triggerBtn.disabled = false;
+        if (originalBtnHtml) triggerBtn.innerHTML = originalBtnHtml;
+      }
+    };
+
+    try {
+      const RazorpayClass = await ensureRazorpay();
+      if (!RazorpayClass) {
+        throw new Error('Payment gateway failed to load. Please check your internet connection.');
+      }
+
+      const orderResponse = await fetch('/wallet/top-up/create-order', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount: numAmount }),
+      });
+      const orderResult = await orderResponse.json();
+
+      if (!orderResponse.ok || !orderResult.success) {
+        throw new Error(orderResult.message || 'Unable to start wallet top-up.');
+      }
+
+      topupDialog?.close();
+
+      let topupFailed = false;
+
+      const checkout = new RazorpayClass({
+        key: orderResult.key,
+        amount: orderResult.order.amount,
+        currency: orderResult.order.currency,
+        name: 'Nutri Burfi',
+        description: 'Wallet top-up for checkout',
+        order_id: orderResult.order.id,
+        retry: { enabled: false },
+        prefill: orderResult.prefill,
+        theme: { color: '#7b5900' },
+        modal: {
+          confirm_close: false,
+          ondismiss: () => {
+            resetBtnState();
+            if (!topupFailed) {
+              showNotification('info', 'Wallet top-up checkout closed.');
+            }
+          },
+        },
+        handler: async (payment) => {
+          try {
+            showNotification('info', 'Verifying wallet payment...');
+            const verifyResponse = await fetch('/wallet/top-up/verify', {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(payment),
+            });
+            const verifyResult = await verifyResponse.json();
+
+            if (!verifyResponse.ok || !verifyResult.success) {
+              throw new Error(verifyResult.message || 'Wallet payment verification failed.');
+            }
+
+            rawWalletBalance = typeof verifyResult.balance === 'number'
+              ? verifyResult.balance
+              : (rawWalletBalance + numAmount);
+
+            const walletRadio = document.getElementById('payment-wallet');
+            if (walletRadio) {
+              walletRadio.checked = true;
+            }
+
+            updatePaymentUI();
+            showNotification('success', `₹${numAmount.toFixed(2)} added to your wallet! You can now place your order.`);
+          } catch (verifyErr) {
+            console.error('Wallet verification error:', verifyErr);
+            showNotification('error', verifyErr.message || 'Unable to verify wallet payment.');
+          } finally {
+            resetBtnState();
+          }
+        },
+      });
+
+      checkout.on('payment.failed', (event) => {
+        topupFailed = true;
+        const failReason = event.error?.description || event.error?.reason || 'Wallet top-up payment failed';
+        try {
+          fetch('/wallet/failed', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              razorpay_order_id: event.error?.metadata?.order_id || orderResult.order.id,
+              reason: failReason,
+            }),
+            keepalive: true,
+          }).catch(() => {});
+        } catch (e) {}
+
+        showNotification('error', `Wallet top-up failed: ${failReason}`);
+        resetBtnState();
+      });
+
+      checkout.open();
+    } catch (err) {
+      console.error('Top-up error:', err);
+      showNotification('error', err.message || 'Unable to initiate wallet top-up.');
+      resetBtnState();
+    }
+  };
+
+  document.getElementById('payWalletDeficitBtn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const currentTotal = getCurrentFinalAmount();
+    const deficit = Math.max(0, currentTotal - rawWalletBalance);
+    const amountToPay = Math.max(1, Math.round(deficit * 100) / 100);
+    processWalletTopUp(amountToPay, document.getElementById('payWalletDeficitBtn'));
+  });
+
+  submitTopupBtn?.addEventListener('click', () => {
+    const val = Number(topupAmountInput?.value);
+    if (!Number.isFinite(val) || val < 1 || val > 50000) {
+      if (topupError) {
+        topupError.textContent = 'Please enter an amount between ₹1 and ₹50,000.';
+        topupError.classList.remove('hidden');
+      }
+      return;
+    }
+    if (topupError) {
+      topupError.textContent = '';
+      topupError.classList.add('hidden');
+    }
+    processWalletTopUp(val, submitTopupBtn);
+  });
 
   const couponStatus = document.createElement('p');
   couponStatus.className = 'mt-2 min-h-4 text-xs';
@@ -595,7 +1045,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const response = await fetch('/coupon/apply', {
         method: 'POST',
         headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: normalizedCode }),
+        body: JSON.stringify({ code: normalizedCode, retryOrderId: retryOrderId || null }),
       });
       const data = await response.json();
       if (!response.ok || !data.success) throw new Error(data.message || 'Unable to apply coupon.');
@@ -613,6 +1063,8 @@ document.addEventListener('DOMContentLoaded', () => {
       couponOffersDialog.close();
       updatePaymentUI();
     } catch (error) {
+      localStorage.removeItem('checkout_coupon_code');
+      appliedCouponCode = '';
       setCouponStatus(error.message, true);
     } finally {
       couponApplyButton.disabled = false;
@@ -628,10 +1080,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setCouponStatus(`${appliedCouponCode} applied. You save ₹${initialCouponDiscount.toFixed(2)}.`, false, true);
     updatePaymentUI();
   } else {
-    const savedCode = localStorage.getItem('checkout_coupon_code');
-    if (savedCode) {
-      applyCoupon(savedCode);
-    }
+    localStorage.removeItem('checkout_coupon_code');
+    appliedCouponCode = '';
+    couponInput.value = '';
+    discountRow.classList.add('hidden');
+    couponStatus.replaceChildren();
   }
 
 
@@ -725,10 +1178,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (activeCoupon && !activeCoupon.eligible) {
         appliedCouponCode = '';
         couponInput.value = '';
+        localStorage.removeItem('checkout_coupon_code');
         discountRow.classList.add('hidden');
-        setCouponStatus(`${activeCoupon.code} is no longer eligible: ${activeCoupon.reason}`, true);
+        setCouponStatus(`${activeCoupon.code} was removed: ${activeCoupon.reason}`, true);
         totalValue.textContent = `₹${baseFinalAmount.toFixed(2)}`;
         updatePaymentUI();
+        fetch('/coupon/remove', {
+          method: 'POST',
+          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        }).catch(() => {});
       }
     }
 
@@ -810,7 +1268,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       if (paymentMethod === 'upi') {
-        if (!window.Razorpay) throw new Error('Payment checkout did not load. Please try again.');
+        const RazorpayClass = await ensureRazorpay();
+        if (!RazorpayClass) throw new Error('Payment checkout did not load. Please try again.');
 
         const orderResponse = await fetch('/payment/checkout/create-order', {
           method: 'POST',
@@ -823,35 +1282,55 @@ document.addEventListener('DOMContentLoaded', () => {
         const paymentOrder = await orderResponse.json();
 
         if (!orderResponse.ok || !paymentOrder.success) {
-          throw new Error(paymentOrder.message || 'Unable to start UPI payment.');
+          throw new Error(paymentOrder.message || 'Unable to start payment.');
         }
 
-        const checkout = new Razorpay({
+        let checkoutFailed = false;
+
+        const checkout = new RazorpayClass({
           key: paymentOrder.key,
           amount: paymentOrder.order.amount,
           currency: paymentOrder.order.currency,
           name: 'Nutri Burfi',
           description: 'Order payment',
           order_id: paymentOrder.order.id,
-          method: 'upi',
+          retry: { enabled: false },
           prefill: paymentOrder.prefill,
+          theme: { color: '#7b5900' },
           modal: {
-            ondismiss: function () {
+            confirm_close: false,
+            ondismiss: async function () {
               placeOrderButton.disabled = false;
               placeOrderButton.innerHTML = originalContent;
+              if (checkoutFailed) {
+                return;
+              }
+              try {
+                const failRes = await fetch('/order/place', {
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    addressId,
+                    paymentMethod: 'upi',
+                    couponCode: appliedCouponCode,
+                    paymentStatus: 'failed',
+                    failureReason: 'Payment cancelled or dismissed by user',
+                    razorpay_order_id: paymentOrder.order.id,
+                    retryOrderId,
+                  }),
+                });
+                const failData = await failRes.json();
+                if (failData.success && failData.orderId) {
+                  window.location.href = `/payment/failed?orderId=${encodeURIComponent(failData.orderId)}`;
+                  return;
+                }
+              } catch (e) {
+                console.error('Dismiss order fail error:', e);
+              }
               showNotification('info', 'Payment checkout closed. You can retry payment.');
-            },
-          },
-          config: {
-            display: {
-              blocks: {
-                upi: {
-                  name: 'Pay using UPI',
-                  instruments: [{ method: 'upi' }],
-                },
-              },
-              sequence: ['block.upi'],
-              preferences: { show_default_blocks: true },
             },
           },
           handler: async (payment) => {
@@ -866,6 +1345,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   addressId,
                   paymentMethod: 'upi',
                   couponCode: appliedCouponCode,
+                  retryOrderId,
                   ...payment,
                 }),
               });
@@ -886,22 +1366,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         checkout.on('payment.failed', async (paymentEvent) => {
+          checkoutFailed = true;
+          try { checkout.close(); } catch (e) {}
+          document.querySelectorAll('.razorpay-container').forEach(el => el.remove());
+
+          const failReason = paymentEvent.error?.description || 'Online payment failed';
+          let createdOrderId = null;
+
           try {
-            if (appliedCouponCode) {
-              localStorage.setItem('checkout_coupon_code', appliedCouponCode);
-            }
-            await fetch('/payment/failed', {
+            localStorage.removeItem('checkout_coupon_code');
+            const failRes = await fetch('/order/place', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
+                addressId,
+                paymentMethod: 'upi',
+                couponCode: appliedCouponCode,
+                paymentStatus: 'failed',
+                failureReason: failReason,
                 razorpay_order_id: paymentEvent.error?.metadata?.order_id || paymentOrder.order.id,
-                reason: paymentEvent.error?.description || 'UPI payment failed',
+                retryOrderId,
               }),
             });
-          } finally {
+            const failData = await failRes.json();
+            if (failData.success && failData.orderId) {
+              createdOrderId = failData.orderId;
+            }
+          } catch (e) {
+            console.error('Record failed order error:', e);
+          }
+
+          if (createdOrderId) {
+            window.location.href = `/payment/failed?orderId=${encodeURIComponent(createdOrderId)}`;
+          } else {
             window.location.href = '/payment/failed';
           }
         });
@@ -916,7 +1416,7 @@ document.addEventListener('DOMContentLoaded', () => {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ addressId, paymentMethod, couponCode: appliedCouponCode }),
+        body: JSON.stringify({ addressId, paymentMethod, couponCode: appliedCouponCode, retryOrderId }),
       });
       const data = await response.json();
 
@@ -983,6 +1483,46 @@ document.addEventListener('DOMContentLoaded', () => {
       showNotification('error', 'Unable to update cart.');
     } finally {
       if (button.isConnected) button.disabled = false;
+    }
+  });
+
+  document.addEventListener('change', async (event) => {
+    const select = event.target.closest('[data-change-variant]');
+    if (!select) return;
+
+    const cartItem = select.closest('[data-cart-item]');
+    const oldVariantId = select.dataset.currentVariantId || cartItem?.dataset.variantId;
+    const newVariantId = select.value;
+
+    if (!oldVariantId || !newVariantId) return;
+    if (oldVariantId === newVariantId) return;
+
+    select.disabled = true;
+
+    try {
+      const response = await fetch(`/cart/${encodeURIComponent(oldVariantId)}/change-variant`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ oldVariantId, newVariantId }),
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        showNotification('error', data.message || 'Unable to change variant.');
+        select.value = oldVariantId;
+        return;
+      }
+
+      window.location.reload();
+    } catch (error) {
+      console.error('Checkout change variant error:', error);
+      showNotification('error', 'Unable to change variant.');
+      select.value = oldVariantId;
+    } finally {
+      if (select.isConnected) select.disabled = false;
     }
   });
 

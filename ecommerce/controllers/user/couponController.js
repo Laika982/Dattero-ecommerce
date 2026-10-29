@@ -13,7 +13,7 @@ export const applyCoupon = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const { code } = req.body;
+    const { code, retryOrderId } = req.body;
 
     if (!code) {
       return res.status(400).json({
@@ -35,10 +35,10 @@ export const applyCoupon = async (req, res) => {
       Variant.find({ _id: { $in: cart.items.map((item) => item.variant_id) } }).lean(),
     ]);
     const variantMap = new Map(
-      variants.map((variant) => [variant._id.toString(), variant]),
+      variants.map((variant) => [variant._id.toString(), variant])
     );
     const productMap = new Map(
-      products.map((product) => [product._id.toString(), product]),
+      products.map((product) => [product._id.toString(), product])
     );
     const offerPricing = await loadOfferPricingMap(products, variants);
     const items = [];
@@ -47,9 +47,14 @@ export const applyCoupon = async (req, res) => {
     for (const item of cart.items) {
       const variant = variantMap.get(item.variant_id.toString());
       const product = productMap.get(item.product_id.toString());
-      const price = variant && getOfferedUnitPrice(variant, offerPricing.get(variant._id.toString()));
+      const price =
+        variant && getOfferedUnitPrice(variant, offerPricing.get(variant._id.toString()));
 
-      if (!Number.isInteger(item.quantity) || item.quantity < 1 || !Number.isFinite(price)) {
+      if (
+        !Number.isInteger(item.quantity) ||
+        item.quantity < 1 ||
+        !Number.isFinite(price)
+      ) {
         return res.status(400).json({
           success: false,
           message: "Unable to validate the current cart",
@@ -71,6 +76,7 @@ export const applyCoupon = async (req, res) => {
       couponCode: code,
       cartItems,
       validateCoupon,
+      excludeOrderId: retryOrderId || null,
     });
 
     if (req.session) {
@@ -88,7 +94,9 @@ export const applyCoupon = async (req, res) => {
       subtotal: totals.subtotal,
       finalAmount: Math.max(
         0,
-        totals.finalAmount - checkoutDiscounts.couponDiscount - checkoutDiscounts.referralDiscount,
+        totals.finalAmount -
+          checkoutDiscounts.couponDiscount -
+          checkoutDiscounts.referralDiscount
       ),
     });
   } catch (error) {
@@ -116,4 +124,3 @@ export const removeCoupon = async (req, res) => {
     });
   }
 };
-

@@ -21,6 +21,10 @@ const registerHbsHelpers = () => {
     return String(a) === String(b);
   });
 
+  hbs.registerHelper("ne", (a, b) => {
+    return String(a) !== String(b);
+  });
+
   hbs.registerHelper("multiply", (a, b) => {
     return Number(a) * Number(b);
   });
@@ -41,6 +45,16 @@ const registerHbsHelpers = () => {
     }
 
     return array.map(String).includes(String(value));
+  });
+
+  hbs.registerHelper("or", (...args) => {
+    const values = args.slice(0, -1);
+    return values.some(Boolean);
+  });
+
+  hbs.registerHelper("and", (...args) => {
+    const values = args.slice(0, -1);
+    return values.every(Boolean);
   });
 
   hbs.registerHelper("json", function (context) {

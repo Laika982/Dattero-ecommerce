@@ -37,7 +37,7 @@ export const generateInvoicePDF = (order, res) => {
   // --------------------------------------------------
 
   const formatCurrency = (value) => {
-    return `₹${Number(value || 0).toFixed(2)}`;
+    return `Rs. ${Number(value || 0).toFixed(2)}`;
   };
 
   const formatDate = (date) => {
@@ -208,8 +208,7 @@ export const generateInvoicePDF = (order, res) => {
     );
 
   doc.text(
-    `${customer.city || "-"}, ${
-      customer.state || "-"
+    `${customer.city || "-"}, ${customer.state || "-"
     }`,
     rightColumn,
     shippingStartY + 16,

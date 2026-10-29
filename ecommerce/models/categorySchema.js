@@ -4,34 +4,34 @@ const categorySchema = new mongoose.Schema(
   {
     category_name: {
       type: String,
-      required: true
+      required: true,
     },
     description: {
       type: String,
-      required: false
+      required: false,
     },
     sales_quantity: {
       type: Number,
-      required: false
+      required: false,
     },
     stock_quantity: {
       type: Number,
-      required: false
+      required: false,
     },
     isListed: {
       type: Boolean,
-      required: true
+      required: true,
     },
-image: {
-    url: {
+    image: {
+      url: {
         type: String,
-        required: false
+        required: false,
+      },
+      public_id: {
+        type: String,
+        required: false,
+      },
     },
-    public_id: {
-        type: String,
-        required: false
-    }
-}
   },
   { timestamps: true }
 );

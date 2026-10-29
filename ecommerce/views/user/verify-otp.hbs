@@ -1,21 +1,21 @@
 {{>user/header}}
 <!-- Main Content Canvas -->
-<main class="flex-grow flex items-center justify-center px-4 sm:px-6 py-8 sm:py-16 safe-bottom-padding">
+<main class="flex-grow flex items-center justify-center px-4 sm:px-6 pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-20 min-h-[calc(100vh-80px)] safe-bottom-padding relative">
     <!-- Verification Card -->
     <div
-        class="w-full max-w-[480px] bg-surface-container-lowest rounded-2xl p-5 sm:p-8 md:p-12 border border-outline-variant/30 ambient-shadow relative overflow-hidden">
+        class="w-full max-w-[480px] bg-surface-container-lowest rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-outline-variant/30 ambient-shadow relative overflow-hidden">
         <!-- Subtle Background Motif -->
-        <div class="absolute -top-24 -right-24 w-48 h-48 bg-primary-fixed/20 rounded-full blur-3xl"></div>
+        <div class="absolute -top-24 -right-24 w-48 h-48 bg-primary-fixed/20 rounded-full blur-3xl pointer-events-none"></div>
         <!-- Content -->
         <div class="relative z-10 text-center">
             <div
-                class="mb-4 sm:mb-6 inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-surface-container-high text-primary">
+                class="mb-4 sm:mb-6 inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-surface-container-high text-primary mx-auto">
                 <span class="material-symbols-outlined text-3xl sm:text-4xl"
                     data-icon="mark_email_unread">mark_email_unread</span>
             </div>
-            <h2 class="font-headline-xl text-xl sm:text-2xl md:text-headline-xl text-on-surface mb-2 font-bold">Verify
+            <h2 class="font-headline-xl text-xl sm:text-2xl md:text-headline-xl text-on-surface mb-2 font-bold tracking-tight">Verify
                 your email</h2>
-            <p class="font-body-md text-xs sm:text-sm text-on-surface-variant mb-6 sm:mb-10 leading-relaxed">We've sent
+            <p class="font-body-md text-xs sm:text-sm text-on-surface-variant mb-6 sm:mb-8 leading-relaxed max-w-[340px] mx-auto">We've sent
                 a 6-digit verification code to your
                 inbox. Please enter it below to continue your luxury wellness journey.</p>
             <!-- OTP Input Area -->
@@ -23,29 +23,29 @@
 
             <form class="space-y-6 sm:space-y-8" id="otp-form" action="/verify-otp" method="post">
                 <input type="hidden" name="otp" id="otp-value">
-                <div class="flex justify-between items-center gap-1.5 sm:gap-2.5 md:gap-3 w-full">
+                <div class="flex justify-center items-center gap-2 sm:gap-3 w-full">
                     <input
-                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
+                        class="otp-input flex-1 min-w-0 max-w-[50px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric"
                         autocomplete="one-time-code">
                     <input
-                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
+                        class="otp-input flex-1 min-w-0 max-w-[50px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
                     <input
-                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
+                        class="otp-input flex-1 min-w-0 max-w-[50px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
                     <input
-                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
+                        class="otp-input flex-1 min-w-0 max-w-[50px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
                     <input
-                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
+                        class="otp-input flex-1 min-w-0 max-w-[50px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
                     <input
-                        class="otp-input flex-1 min-w-0 max-w-[48px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20"
+                        class="otp-input flex-1 min-w-0 max-w-[50px] h-12 sm:h-14 md:h-16 text-center text-lg sm:text-2xl font-bold bg-surface-gray border border-outline-variant/30 rounded-lg sm:rounded-xl transition-all focus:bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                         maxlength="1" pattern="\d*" required="" type="text" inputmode="numeric">
                 </div>
                 <button
-                    class="w-full py-3.5 sm:py-4 font-label-md text-xs sm:text-label-md rounded-full hover:opacity-90 active:scale-[0.98] transition-all uppercase tracking-widest shadow-lg shadow-primary-container/20 bg-ink-black text-on-primary touch-target"
+                    class="w-full py-3.5 sm:py-4 font-label-md text-xs sm:text-sm font-semibold rounded-full hover:opacity-90 active:scale-[0.98] transition-all uppercase tracking-widest shadow-lg shadow-primary-container/20 bg-ink-black text-on-primary flex items-center justify-center gap-2"
                     type="submit">
                     Verify Identity
                 </button>
@@ -153,36 +153,92 @@
 
 
                 // ==============================
-                // FORM SUBMIT
+                // FORM SUBMIT (AJAX)
                 // ==============================
 
-                otpForm.addEventListener('submit', () => {
+                otpForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
                     updateOtpValue();
+
+                    const otpVal = otpValueInput.value.trim();
+                    if (!otpVal || otpVal.length < 6) {
+                        if (typeof showNotification === 'function') {
+                            showNotification('error', 'Please enter all 6 digits of the verification code.');
+                        }
+                        const firstEmpty = otpInputs.find(input => !input.value) || otpInputs[0];
+                        if (firstEmpty) firstEmpty.focus();
+                        return;
+                    }
+
+                    const submitBtn = otpForm.querySelector('button[type="submit"]');
+                    const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size: 18px;">progress_activity</span> Verifying...';
+                        submitBtn.style.opacity = '0.75';
+                    }
+
+                    try {
+                        const res = await fetch('/verify-otp', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ otp: otpVal })
+                        });
+
+                        const data = await res.json().catch(() => ({}));
+
+                        if (res.ok && data.success) {
+                            if (typeof showNotification === 'function') {
+                                showNotification('success', data.message || 'OTP verified successfully');
+                            }
+                            setTimeout(() => {
+                                window.location.href = data.redirectTo || '/';
+                            }, 400);
+                        } else {
+                            const errorMsg = data.message || 'Invalid verification code. Please try again.';
+                            if (typeof showNotification === 'function') {
+                                showNotification('error', errorMsg);
+                            }
+                            otpInputs.forEach(input => { input.value = ''; });
+                            otpValueInput.value = '';
+                            if (otpInputs[0]) otpInputs[0].focus();
+
+                            if (submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = originalBtnHtml;
+                                submitBtn.style.opacity = '';
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Verify OTP AJAX error:', err);
+                        if (typeof showNotification === 'function') {
+                            showNotification('error', 'An unexpected error occurred. Please try again.');
+                        }
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalBtnHtml;
+                            submitBtn.style.opacity = '';
+                        }
+                    }
                 });
 
             </script>
             <!-- Resend & Timer Logic -->
-            {{!-- <div class="mt-8 pt-8 border-t border-outline-variant/20">
-                <p class="font-body-md text-on-surface-variant" id="timer-container">
-                    Didn't receive the code?
-                    <span class="text-primary font-semibold cursor-not-allowed opacity-50 transition-colors"
-                        id="resend-link">Resend Code</span>
-                    <span class="text-primary font-mono ml-2" id="timer">01:50</span>
-                </p>
-            </div> --}}
-            <div class="mt-8 pt-8 border-t border-outline-variant/20">
-                <p class="font-body-md text-on-surface-variant" id="timer-container">
-                    Didn't receive the code?
-
+            <div class="mt-8 pt-6 border-t border-outline-variant/20 flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm text-on-surface-variant text-center" id="timer-container">
+                <span>Didn't receive the code?</span>
+                <span class="inline-flex items-center gap-2">
                     <button type="button" id="resend-link"
-                        class="text-primary font-semibold cursor-not-allowed opacity-50 transition-colors" disabled>
+                        class="text-primary font-semibold cursor-not-allowed opacity-50 transition-colors hover:underline focus:outline-none" disabled>
                         Resend Code
                     </button>
-
-                    <span class="text-primary font-mono ml-2" id="timer">
+                    <span class="text-primary font-mono font-medium" id="timer">
                         01:00
                     </span>
-                </p>
+                </span>
             </div>
         </div>
     </div>
@@ -209,20 +265,26 @@
                 return num;
             }
 
-            // 2. If forceReset explicitly requested
+            // 2. If forceReset explicitly requested (after resend click)
             if (forceReset) {
                 const fresh = Date.now() + (DURATION * 1000);
                 sessionStorage.setItem(STORAGE_KEY, String(fresh));
                 return fresh;
             }
 
-            // 3. If server provided a future expiration timestamp in the JWT session
-            if (serverExpiry && serverExpiry > Date.now()) {
-                sessionStorage.setItem(STORAGE_KEY, String(serverExpiry));
-                return serverExpiry;
+            // 3. If server provided a fresh expiry from the token (e.g. new email signup),
+            //    always clear any stale sessionStorage first so an old timer can't bleed through.
+            if (serverExpiry && !isNaN(serverExpiry)) {
+                sessionStorage.removeItem(STORAGE_KEY); // clear any leftover from previous OTP
+                if (serverExpiry > Date.now()) {
+                    sessionStorage.setItem(STORAGE_KEY, String(serverExpiry));
+                    return serverExpiry;
+                }
+                // Server expiry already passed — no timer needed
+                return null;
             }
 
-            // 4. Check sessionStorage for a still-valid timestamp
+            // 4. Check sessionStorage for a still-valid timestamp (survives wrong-OTP reload)
             const stored = sessionStorage.getItem(STORAGE_KEY);
             if (stored && !isNaN(Number(stored))) {
                 const storedNum = Number(stored);
@@ -231,10 +293,10 @@
                 }
             }
 
-            // 5. Default fallback: fresh duration from now
-            const fresh = Date.now() + (DURATION * 1000);
-            sessionStorage.setItem(STORAGE_KEY, String(fresh));
-            return fresh;
+            // 5. No valid expiry source found — no OTP was sent (e.g. direct URL visit
+            //    or hard refresh after session cleared). Return null so the caller
+            //    enables the Resend button instead of inventing a phantom timer.
+            return null;
         }
 
         function enableResend() {
@@ -278,20 +340,33 @@
 
             const expiry = getExpiryTime(forceReset, customExpiry);
 
-            function tick() {
+            // null means no OTP was ever sent (direct visit / hard refresh with no session).
+            // Enable resend immediately — don't invent a phantom countdown.
+            if (expiry === null) {
+                enableResend();
+                return;
+            }
+
+            // Check immediately if already expired before starting interval
+            const initialRemaining = Math.ceil((expiry - Date.now()) / 1000);
+            if (initialRemaining <= 0) {
+                enableResend();
+                return;
+            }
+
+            disableResend();
+            updateDisplay(initialRemaining);
+
+            countdown = setInterval(function tick() {
                 const remaining = Math.ceil((expiry - Date.now()) / 1000);
 
                 if (remaining <= 0) {
-                    enableResend();
+                    enableResend(); // safely clears the now-assigned countdown
                     return;
                 }
 
-                disableResend();
                 updateDisplay(remaining);
-            }
-
-            tick();
-            countdown = setInterval(tick, 1000);
+            }, 1000);
         }
 
         // Initialize countdown timer immediately on page load

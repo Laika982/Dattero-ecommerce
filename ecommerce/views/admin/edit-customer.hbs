@@ -175,7 +175,7 @@
   <div class="w-24 h-24 shrink-0">
     <img
       id="photoPreview"
-      src="{{customer.profileImage}}"
+      src="{{#if customer.profileImage}}{{customer.profileImage}}{{else}}/images/avathar.jpg{{/if}}"
       alt="Customer Photo"
       class="w-24 h-24 rounded-full object-cover border border-outline-variant/30"
     >
@@ -329,7 +329,7 @@
       </div>
     </div>
 
-    <button
+    {{!-- <button
       class="px-3.5 py-1.5 rounded-xl bg-surface-container-low hover:bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-colors"
       type="button"
     >
@@ -338,17 +338,17 @@
       </span>
 
       <span class="">Add Address</span>
-    </button>
+    </button> --}}
   </div>
 
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
-    {{#if customer.addresses}}
+    {{#if addresses.length}}
 
-      {{#each customer.addresses}}
+      {{#each addresses}}
 
-        <div class="p-4 rounded-xl bg-surface-container-low flex flex-col justify-between gap-4">
+        <div class="p-4 rounded-xl bg-surface-container-low flex flex-col justify-between gap-4 border border-outline-variant/20 hover:border-outline-variant/40 transition-colors">
 
           <div class="flex flex-col gap-2">
 
@@ -356,60 +356,41 @@
 
               {{#if this.isDefault}}
 
-                <span class="px-2 py-0.5 rounded-full bg-primary text-brand-gold font-label-sm text-label-sm uppercase tracking-wider">
-                  Primary Shipping
+                <span class="px-2.5 py-0.5 rounded-full bg-primary text-brand-gold font-label-sm text-label-sm uppercase tracking-wider font-semibold">
+                  Primary Address
                 </span>
 
               {{else}}
 
-                <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm uppercase tracking-wider">
+                <span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm uppercase tracking-wider font-semibold">
                   {{this.addressLabel}}
                 </span>
 
               {{/if}}
 
-
-              <div class="flex items-center gap-1 text-on-surface-variant">
-
-                <button
-                  class="w-7 h-7 rounded-lg hover:bg-surface flex items-center justify-center transition-colors"
-                  type="button"
-                >
-                  <span class="material-symbols-outlined text-[16px]">
-                    edit
-                  </span>
-                </button>
-
-                <button
-                  class="w-7 h-7 rounded-lg hover:bg-surface flex items-center justify-center transition-colors text-error"
-                  type="button"
-                >
-                  <span class="material-symbols-outlined text-[16px]">
-                    delete
-                  </span>
-                </button>
-
-              </div>
-
             </div>
 
 
-            <div class="flex flex-col">
+            <div class="flex flex-col mt-1">
 
               <span class="font-headline-lg text-body-sm font-bold text-on-surface">
                 {{this.fullName}}
               </span>
 
               <span class="font-body-sm text-body-sm text-on-surface-variant">
-                {{this.street}}
-                {{#if this.suite}}, {{this.suite}}{{/if}}
+                {{this.street}}{{#if this.suite}}, {{this.suite}}{{/if}}
               </span>
 
               <span class="font-body-sm text-body-sm text-on-surface-variant">
-                {{this.city}}, {{this.state}} {{this.zip}}, {{this.country}}
+                {{this.city}}, {{this.state}} {{this.zip}}
               </span>
 
-              <span class="font-body-sm text-body-sm text-on-surface-variant">
+              <span class="font-body-sm text-body-sm text-on-surface-variant font-medium">
+                {{this.country}}
+              </span>
+
+              <span class="font-body-sm text-body-sm text-on-surface font-medium mt-1.5 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[15px] text-brand-gold">call</span>
                 {{this.phone}}
               </span>
 
@@ -418,14 +399,14 @@
           </div>
 
 
-          <div class="flex items-center gap-2 pt-2 text-on-surface-variant font-label-sm text-label-sm">
+          <div class="flex items-center gap-2 pt-2 text-on-surface-variant font-label-sm text-label-sm border-t border-outline-variant/20">
 
             <span class="material-symbols-outlined text-[16px] text-brand-gold">
-              lock
+              verified
             </span>
 
-            <span class="">
-              Verified delivery address
+            <span>
+              Verified customer address
             </span>
 
           </div>
@@ -436,10 +417,11 @@
 
     {{else}}
 
-      <div class="p-4 rounded-xl bg-surface-container-low">
-        <span class="font-body-sm text-body-sm text-on-surface-variant">
-          No addresses available
-        </span>
+      <div class="col-span-full p-8 rounded-xl bg-surface-container-low text-center">
+        <span class="material-symbols-outlined text-[36px] text-on-surface-variant/40 mb-2">home_pin</span>
+        <p class="font-body-md text-on-surface-variant">
+          No addresses saved for this customer yet.
+        </p>
       </div>
 
     {{/if}}
@@ -450,7 +432,7 @@
 
 
 <section class="bg-surface rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow w-full">
-<div class="flex items-center justify-between pb-5">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-5 gap-3">
 <div class="flex items-center gap-3">
 <div class="w-9 h-9 rounded-xl bg-surface-container-low flex items-center justify-center text-brand-gold">
 <span class="material-symbols-outlined text-[20px]">insights</span>
@@ -460,30 +442,40 @@
 <span class="font-label-sm text-label-sm text-on-surface-variant">Financial overview and order telemetry</span>
 </div>
 </div>
-<a class="font-label-md text-label-md text-brand-gold hover:underline flex items-center gap-1" data-path="orders" href="#">
-<span class="">View All Orders</span>
-<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
-</a>
+<div class="flex items-center gap-2 flex-wrap">
+  <a id="viewAllOrdersBtn" href="/admin/order/orders?userId={{customer._id}}" class="px-3.5 py-1.5 rounded-xl bg-primary text-on-primary hover:opacity-90 font-label-md text-label-md flex items-center gap-1.5 transition-all shadow-sm">
+    <span>View All Orders ({{totalOrders}})</span>
+    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+  </a>
+</div>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
 <div class="p-4 rounded-xl bg-surface-container-low flex flex-col gap-1">
 <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Orders</span>
-<span class="font-headline-lg text-headline-lg text-on-surface font-bold">28</span>
-<span class="font-label-sm text-label-sm text-brand-gold font-medium">100% fulfillment</span>
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">{{totalOrders}}</span>
+<span class="font-label-sm text-label-sm text-brand-gold font-medium">{{fulfillmentRate}}% fulfillment</span>
 </div>
 <div class="p-4 rounded-xl bg-surface-container-low flex flex-col gap-1">
 <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Spend</span>
-<span class="font-headline-lg text-headline-lg text-on-surface font-bold">$3,420.50</span>
-<span class="font-label-sm text-label-sm text-brand-gold font-medium">Avg. $122.16 / ord</span>
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">₹{{totalSpent}}</span>
+<span class="font-label-sm text-label-sm text-brand-gold font-medium">Avg. ₹{{avgOrderValue}} / ord</span>
 </div>
 <div class="p-4 rounded-xl bg-surface-container-low flex flex-col gap-1">
 <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Wallet Balance</span>
-<span class="font-headline-lg text-headline-lg text-on-surface font-bold">$120.00</span>
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">₹{{walletBalance}}</span>
 <span class="font-label-sm text-label-sm text-on-surface-variant">Store Credit Active</span>
 </div>
 </div>
 <div class="flex flex-col gap-2">
-<span class="font-label-md text-label-md text-on-surface-variant mb-1">Recent Transactions</span>
+<div class="flex items-center justify-between mb-1">
+  <span class="font-label-md text-label-md text-on-surface-variant">Order History (Recent)</span>
+  {{#if allOrders.length}}
+  <a href="/admin/order/orders?userId={{customer._id}}" class="text-xs text-brand-gold hover:underline flex items-center gap-0.5">
+    <span>View all {{totalOrders}} orders</span>
+    <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+  </a>
+  {{/if}}
+</div>
 <div class="overflow-x-auto">
 <table class="w-full text-left">
 <thead>
@@ -495,45 +487,192 @@
 <th class="py-2.5 px-4 text-right rounded-r-lg">Status</th>
 </tr>
 </thead>
-<tbody class="font-body-sm text-body-sm text-on-surface">
-<tr class="hover:bg-surface-container-low/60 transition-colors">
-<td class="py-3 px-4 font-semibold text-on-surface">#ORD-98412</td>
-<td class="py-3 px-4 text-on-surface-variant">Mar 28, 2024</td>
-<td class="py-3 px-4">Cellular Marine Collagen x 2</td>
-<td class="py-3 px-4 font-medium">$248.00</td>
-<td class="py-3 px-4 text-right">
-<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-brand-gold font-label-sm text-label-sm font-semibold">Delivered</span>
-</td>
-</tr>
-<tr class="hover:bg-surface-container-low/60 transition-colors">
-<td class="py-3 px-4 font-semibold text-on-surface">#ORD-97650</td>
-<td class="py-3 px-4 text-on-surface-variant">Mar 12, 2024</td>
-<td class="py-3 px-4">Sovereign Nootropic Elixir</td>
-<td class="py-3 px-4 font-medium">$135.50</td>
-<td class="py-3 px-4 text-right">
-<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-brand-gold font-label-sm text-label-sm font-semibold">Delivered</span>
-</td>
-</tr>
-<tr class="hover:bg-surface-container-low/60 transition-colors">
-<td class="py-3 px-4 font-semibold text-on-surface">#ORD-96109</td>
-<td class="py-3 px-4 text-on-surface-variant">Feb 19, 2024</td>
-<td class="py-3 px-4">Gold Botanical Restorative Infusion</td>
-<td class="py-3 px-4 font-medium">$410.00</td>
-<td class="py-3 px-4 text-right">
-<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-brand-gold font-label-sm text-label-sm font-semibold">Delivered</span>
-</td>
-</tr>
+<tbody class="font-body-sm text-body-sm text-on-surface divide-y divide-outline-variant/10">
+{{#if recentOrders.length}}
+  {{#each recentOrders}}
+  <tr class="hover:bg-surface-container-low/60 transition-colors">
+    <td class="py-3 px-4 font-semibold text-on-surface">
+      <a href="/admin/orders/{{this.orderId}}" class="hover:text-brand-gold hover:underline">
+        #{{this.orderId}}
+      </a>
+    </td>
+    <td class="py-3 px-4 text-on-surface-variant">{{this.formattedDate}}</td>
+    <td class="py-3 px-4 max-w-xs truncate" title="{{this.productNames}}">{{this.shortProducts}}</td>
+    <td class="py-3 px-4 font-medium">₹{{this.finalAmount}}</td>
+    <td class="py-3 px-4 text-right">
+      <span class="px-2.5 py-0.5 rounded-full {{this.statusColor}} font-label-sm text-label-sm font-semibold capitalize">
+        {{this.statusLabel}}
+      </span>
+    </td>
+  </tr>
+  {{/each}}
+{{else}}
+  <tr>
+    <td colspan="5" class="py-8 text-center text-on-surface-variant">
+      No orders placed by this customer yet.
+    </td>
+  </tr>
+{{/if}}
 </tbody>
 </table>
 </div>
 </div>
 </section>
-<section class="bg-surface rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-4 w-full border border-error-container/40"><div class="flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-error-container flex items-center justify-center text-error"><span class="material-symbols-outlined text-[20px]">warning</span></div><div class="flex flex-col"><h2 class="font-headline-lg text-headline-lg text-on-surface">Danger Zone</h2><span class="font-label-sm text-label-sm text-on-surface-variant">Irreversible administrative actions</span></div></div></div><div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-error-container/20 mt-1"><div class="flex flex-col gap-1"><span class="font-body-sm text-body-sm font-semibold text-error">Delete Customer Account</span><span class="font-label-sm text-label-sm text-error/80">Permanent operation. Will purge all personal data in compliance with GDPR &amp; CCPA privacy mandates.</span></div><button class="px-4 py-2 rounded-xl bg-surface text-error hover:bg-error hover:text-on-error font-label-md text-label-md shadow-sm transition-colors shrink-0" type="button">Delete Account</button></div>
+
+<section class="bg-surface rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-4 w-full border border-error-container/40">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-error-container flex items-center justify-center text-error">
+        <span class="material-symbols-outlined text-[20px]">warning</span>
+      </div>
+      <div class="flex flex-col">
+        <h2 class="font-headline-lg text-headline-lg text-on-surface">Danger Zone</h2>
+        <span class="font-label-sm text-label-sm text-on-surface-variant">Irreversible administrative actions</span>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-error-container/20 mt-1">
+    <div class="flex flex-col gap-1">
+      <span class="font-body-sm text-body-sm font-semibold text-error">Delete Customer Account</span>
+      <span class="font-label-sm text-label-sm text-error/80">Permanent operation. Will purge all customer data and address records in compliance with privacy mandates.</span>
+    </div>
+    <button id="openDeleteAccountModalBtn" type="button" class="px-4 py-2 rounded-xl bg-surface text-error hover:bg-error hover:text-white font-label-md text-label-md shadow-sm transition-colors shrink-0 border border-error/30 cursor-pointer">
+      Delete Account
+    </button>
+  </div>
 </section>
 
       </div>
     </div>
   </main>
+
+  <!-- ==============================================
+       View All Orders Modal
+  =============================================== -->
+  <div id="allOrdersModal" class="fixed inset-0 z-50 items-center justify-center bg-black/60 backdrop-blur-sm hidden" style="display: none;">
+    <div class="bg-surface rounded-2xl w-full max-w-4xl max-h-[85vh] shadow-2xl border border-outline-variant/30 flex flex-col overflow-hidden m-4">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between p-5 border-b border-outline-variant/20 bg-surface-container-low">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-surface flex items-center justify-center text-brand-gold shadow-sm">
+            <span class="material-symbols-outlined text-[22px]">shopping_bag</span>
+          </div>
+          <div>
+            <h3 class="font-headline-lg text-lg font-bold text-on-surface">Order History - {{customer.name}}</h3>
+            <span class="font-label-sm text-xs text-on-surface-variant">{{totalOrders}} total orders placed</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="/admin/order/orders?userId={{customer._id}}" class="px-3 py-1.5 rounded-lg bg-surface hover:bg-surface-container-high text-brand-gold font-label-sm text-xs flex items-center gap-1 border border-outline-variant/30 transition-colors">
+            <span>Open in Orders Page</span>
+            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+          </a>
+          <button id="closeAllOrdersModalBtn" type="button" class="w-8 h-8 rounded-lg hover:bg-surface-variant flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-[20px]">close</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Content: Scrollable Orders Table -->
+      <div class="overflow-y-auto p-5 flex-grow">
+        {{#if allOrders.length}}
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+                  <th class="py-3 px-4 rounded-l-lg">Order ID</th>
+                  <th class="py-3 px-4">Date</th>
+                  <th class="py-3 px-4">Products</th>
+                  <th class="py-3 px-4">Payment</th>
+                  <th class="py-3 px-4">Amount</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right rounded-r-lg">Action</th>
+                </tr>
+              </thead>
+              <tbody class="font-body-sm text-body-sm text-on-surface divide-y divide-outline-variant/10">
+                {{#each allOrders}}
+                  <tr class="hover:bg-surface-container-low/60 transition-colors">
+                    <td class="py-3.5 px-4 font-semibold text-on-surface whitespace-nowrap">
+                      #{{this.orderId}}
+                    </td>
+                    <td class="py-3.5 px-4 text-on-surface-variant whitespace-nowrap">
+                      {{this.formattedDate}}
+                    </td>
+                    <td class="py-3.5 px-4 max-w-xs truncate" title="{{this.productNames}}">
+                      {{this.shortProducts}}
+                    </td>
+                    <td class="py-3.5 px-4 font-label-sm uppercase text-on-surface-variant">
+                      {{this.paymentMethod}}
+                    </td>
+                    <td class="py-3.5 px-4 font-semibold text-on-surface whitespace-nowrap">
+                      ₹{{this.finalAmount}}
+                    </td>
+                    <td class="py-3.5 px-4">
+                      <span class="px-2.5 py-0.5 rounded-full {{this.statusColor}} font-label-sm text-label-sm font-semibold capitalize whitespace-nowrap">
+                        {{this.statusLabel}}
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                      <a href="/admin/orders/{{this.orderId}}" class="px-2.5 py-1 rounded-lg bg-surface border border-outline-variant/30 hover:border-brand-gold hover:text-brand-gold text-on-surface font-label-sm text-xs transition-colors inline-flex items-center gap-1">
+                        <span>Details</span>
+                        <span class="material-symbols-outlined text-[13px]">arrow_forward</span>
+                      </a>
+                    </td>
+                  </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        {{else}}
+          <div class="py-12 text-center text-on-surface-variant">
+            <span class="material-symbols-outlined text-[40px] text-on-surface-variant/40 mb-2">shopping_cart_off</span>
+            <p class="font-body-md">No orders recorded for this customer.</p>
+          </div>
+        {{/if}}
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-outline-variant/20 bg-surface-container-low flex justify-between items-center text-xs text-on-surface-variant">
+        <span>Total spent: <strong class="text-on-surface">₹{{totalSpent}}</strong> across <strong class="text-on-surface">{{totalOrders}}</strong> orders</span>
+        <button id="closeAllOrdersFooterBtn" type="button" class="px-4 py-2 rounded-xl bg-surface text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md shadow-sm cursor-pointer">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       Delete Customer Confirmation Modal
+  =============================================== -->
+  <div id="deleteCustomerModal" class="fixed inset-0 z-50 items-center justify-center bg-black/60 backdrop-blur-sm hidden" style="display: none;">
+    <div class="bg-surface rounded-2xl p-6 w-full max-w-md shadow-2xl border border-error/30 m-4">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center text-error shrink-0">
+          <span class="material-symbols-outlined text-[28px]">delete_forever</span>
+        </div>
+        <div class="flex flex-col">
+          <h3 class="font-headline-lg text-lg font-bold text-on-surface">Delete Customer Account?</h3>
+          <span class="font-label-sm text-xs text-error font-semibold">This action cannot be undone</span>
+        </div>
+      </div>
+      
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Are you sure you want to permanently delete the account for <strong class="text-on-surface">{{customer.name}}</strong> (<span class="text-on-surface">{{customer.email}}</span>)? All profile data and saved addresses will be purged.
+      </p>
+
+      <div class="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-outline-variant/20">
+        <button id="cancelDeleteAccountBtn" type="button" class="px-4 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-label-md text-label-md hover:bg-surface-variant transition-colors cursor-pointer">
+          Cancel
+        </button>
+        <form id="deleteCustomerForm" action="/admin/customer/deleteCustomer/{{customer._id}}?_method=DELETE" method="POST" class="inline">
+          <button id="confirmDeleteAccountBtn" type="submit" class="px-5 py-2.5 rounded-xl bg-error text-white font-label-md text-label-md hover:bg-red-700 shadow-md transition-all flex items-center gap-1.5 cursor-pointer">
+            <span class="material-symbols-outlined text-[18px]">delete</span>
+            <span>Yes, Delete Account</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <script>
     (function () {
@@ -569,42 +708,103 @@
         });
       }
 
-      function closeModal() {
-        if (removePhotoModal) {
-          removePhotoModal.style.display = "none";
-          removePhotoModal.classList.add("hidden");
-          removePhotoModal.classList.remove("flex");
+      function closeModal(modal) {
+        if (modal) {
+          modal.style.display = "none";
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
         }
       }
 
+      function openModal(modal) {
+        if (modal) {
+          modal.style.display = "flex";
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+        }
+      }
+
+      // Remove photo modal
       if (removePhotoBtn && removePhotoModal) {
-        removePhotoBtn.addEventListener("click", () => {
-          removePhotoModal.style.display = "flex";
-          removePhotoModal.classList.remove("hidden");
-          removePhotoModal.classList.add("flex");
-        });
+        removePhotoBtn.addEventListener("click", () => openModal(removePhotoModal));
       }
 
       if (cancelRemoveBtn) {
-        cancelRemoveBtn.addEventListener("click", closeModal);
+        cancelRemoveBtn.addEventListener("click", () => closeModal(removePhotoModal));
       }
 
       if (confirmRemoveBtn) {
         confirmRemoveBtn.addEventListener("click", () => {
           if (removePhoto) removePhoto.value = "true";
           if (photoInput) photoInput.value = "";
-          if (photoPreview) photoPreview.src = "";
-          closeModal();
+          if (photoPreview) photoPreview.src = "/images/avathar.jpg";
+          closeModal(removePhotoModal);
         });
       }
 
       if (removePhotoModal) {
         removePhotoModal.addEventListener("click", (e) => {
           if (e.target === removePhotoModal) {
-            closeModal();
+            closeModal(removePhotoModal);
           }
         });
       }
+
+      // View All Orders Modal
+      const allOrdersModal = document.getElementById("allOrdersModal");
+      const openAllOrdersModalBtn = document.getElementById("openAllOrdersModalBtn");
+      const closeAllOrdersModalBtn = document.getElementById("closeAllOrdersModalBtn");
+      const closeAllOrdersFooterBtn = document.getElementById("closeAllOrdersFooterBtn");
+
+      if (openAllOrdersModalBtn && allOrdersModal) {
+        openAllOrdersModalBtn.addEventListener("click", () => openModal(allOrdersModal));
+      }
+
+      if (closeAllOrdersModalBtn) {
+        closeAllOrdersModalBtn.addEventListener("click", () => closeModal(allOrdersModal));
+      }
+
+      if (closeAllOrdersFooterBtn) {
+        closeAllOrdersFooterBtn.addEventListener("click", () => closeModal(allOrdersModal));
+      }
+
+      if (allOrdersModal) {
+        allOrdersModal.addEventListener("click", (e) => {
+          if (e.target === allOrdersModal) {
+            closeModal(allOrdersModal);
+          }
+        });
+      }
+
+      // Delete Customer Account Modal
+      const deleteCustomerModal = document.getElementById("deleteCustomerModal");
+      const openDeleteAccountModalBtn = document.getElementById("openDeleteAccountModalBtn");
+      const cancelDeleteAccountBtn = document.getElementById("cancelDeleteAccountBtn");
+
+      if (openDeleteAccountModalBtn && deleteCustomerModal) {
+        openDeleteAccountModalBtn.addEventListener("click", () => openModal(deleteCustomerModal));
+      }
+
+      if (cancelDeleteAccountBtn) {
+        cancelDeleteAccountBtn.addEventListener("click", () => closeModal(deleteCustomerModal));
+      }
+
+      if (deleteCustomerModal) {
+        deleteCustomerModal.addEventListener("click", (e) => {
+          if (e.target === deleteCustomerModal) {
+            closeModal(deleteCustomerModal);
+          }
+        });
+      }
+
+      // Close on Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeModal(removePhotoModal);
+          closeModal(allOrdersModal);
+          closeModal(deleteCustomerModal);
+        }
+      });
     })();
   </script>
 </body>

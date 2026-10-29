@@ -1,4 +1,3 @@
-
 import Offer from "../../models/offerSchema.js";
 import Product from "../../models/productSchema.js";
 import Category from "../../models/categorySchema.js";
@@ -6,14 +5,16 @@ import mongoose from "mongoose";
 
 const decorateOffer = (offer, now) => ({
   ...offer,
-  targetLabel: offer.offer_type === "PRODUCT"
-    ? offer.product_id?.productName || "Product unavailable"
-    : offer.offer_type === "CATEGORY"
-      ? offer.category_id?.category_name || "Category unavailable"
-      : "Referred customer first order",
-  discountLabel: offer.discount_type === "PERCENTAGE"
-    ? `${offer.discount_value}% off`
-    : `₹${offer.discount_value} off`,
+  targetLabel:
+    offer.offer_type === "PRODUCT"
+      ? offer.product_id?.productName || "Product unavailable"
+      : offer.offer_type === "CATEGORY"
+        ? offer.category_id?.category_name || "Category unavailable"
+        : "Referred customer first order",
+  discountLabel:
+    offer.discount_type === "PERCENTAGE"
+      ? `${offer.discount_value}% off`
+      : `₹${offer.discount_value} off`,
   startLabel: new Date(offer.start_date).toLocaleDateString("en-IN"),
   endLabel: new Date(offer.end_date).toLocaleDateString("en-IN"),
   currentlyActive: offer.is_active && offer.start_date <= now && offer.end_date > now,
@@ -21,24 +22,33 @@ const decorateOffer = (offer, now) => ({
 
 export const loadOffersPage = async (req, res) => {
   try {
-    const filter = ["product", "category", "referral", "active", "inactive"].includes(req.query.filter)
+    const filter = ["product", "category", "referral", "active", "inactive"].includes(
+      req.query.filter
+    )
       ? req.query.filter
       : "all";
     const requestedPage = Math.max(Number(req.query.page) || 1, 1);
     const limit = 5;
     const now = new Date();
     const search = req.query.search ? req.query.search.trim() : "";
-    const query = filter === "product"
-      ? { offer_type: "PRODUCT" }
-      : filter === "category"
-        ? { offer_type: "CATEGORY" }
-        : filter === "referral"
-          ? { offer_type: "REFERRAL" }
-          : filter === "active"
-            ? { is_active: true, start_date: { $lte: now }, end_date: { $gt: now } }
-            : filter === "inactive"
-              ? { $or: [{ is_active: false }, { end_date: { $lte: now } }, { start_date: { $gt: now } }] }
-              : {};
+    const query =
+      filter === "product"
+        ? { offer_type: "PRODUCT" }
+        : filter === "category"
+          ? { offer_type: "CATEGORY" }
+          : filter === "referral"
+            ? { offer_type: "REFERRAL" }
+            : filter === "active"
+              ? { is_active: true, start_date: { $lte: now }, end_date: { $gt: now } }
+              : filter === "inactive"
+                ? {
+                    $or: [
+                      { is_active: false },
+                      { end_date: { $lte: now } },
+                      { start_date: { $gt: now } },
+                    ],
+                  }
+                : {};
     if (search) {
       query.name = { $regex: search, $options: "i" };
     }
@@ -48,18 +58,19 @@ export const loadOffersPage = async (req, res) => {
     const currentPage = totalPages ? Math.min(requestedPage, totalPages) : 1;
     const skip = (currentPage - 1) * limit;
 
-    const [offerDocuments, productCount, categoryCount, referralCount] = await Promise.all([
-      Offer.find(query)
-        .populate("product_id", "productName")
-        .populate("category_id", "category_name")
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      Offer.countDocuments({ offer_type: "PRODUCT" }),
-      Offer.countDocuments({ offer_type: "CATEGORY" }),
-      Offer.countDocuments({ offer_type: "REFERRAL" }),
-    ]);
+    const [offerDocuments, productCount, categoryCount, referralCount] =
+      await Promise.all([
+        Offer.find(query)
+          .populate("product_id", "productName")
+          .populate("category_id", "category_name")
+          .sort({ createdAt: -1 })
+          .skip(skip)
+          .limit(limit)
+          .lean(),
+        Offer.countDocuments({ offer_type: "PRODUCT" }),
+        Offer.countDocuments({ offer_type: "CATEGORY" }),
+        Offer.countDocuments({ offer_type: "REFERRAL" }),
+      ]);
 
     return res.render("admin/offers", {
       offers: offerDocuments.map((offer) => decorateOffer(offer, now)),
@@ -86,8 +97,14 @@ export const loadOffersPage = async (req, res) => {
 export const showCreateOffer = async (req, res) => {
   try {
     const [products, categories] = await Promise.all([
-      Product.find({ is_listed: true }).select("productName").sort({ productName: 1 }).lean(),
-      Category.find({ isListed: true }).select("category_name").sort({ category_name: 1 }).lean(),
+      Product.find({ is_listed: true })
+        .select("productName")
+        .sort({ productName: 1 })
+        .lean(),
+      Category.find({ isListed: true })
+        .select("category_name")
+        .sort({ category_name: 1 })
+        .lean(),
     ]);
 
     return res.render("admin/addOffer", { products, categories });
@@ -139,18 +156,11 @@ export const createOffer = async (req, res) => {
       return fail("Discount must be greater than zero");
     }
 
-    if (
-      discount_type === "PERCENTAGE" &&
-      value > 100
-    ) {
+    if (discount_type === "PERCENTAGE" && value > 100) {
       return fail("Percentage cannot exceed 100");
     }
 
-    if (
-      Number.isNaN(start.getTime()) ||
-      Number.isNaN(end.getTime()) ||
-      end <= start
-    ) {
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime()) || end <= start) {
       return fail("Invalid offer dates");
     }
 
@@ -161,11 +171,12 @@ export const createOffer = async (req, res) => {
       return fail("Choose a valid category");
     }
 
-    const target = offer_type === "PRODUCT"
-      ? await Product.findById(product_id).select("_id")
-      : offer_type === "CATEGORY"
-        ? await Category.findById(category_id).select("_id")
-        : true;
+    const target =
+      offer_type === "PRODUCT"
+        ? await Product.findById(product_id).select("_id")
+        : offer_type === "CATEGORY"
+          ? await Category.findById(category_id).select("_id")
+          : true;
     if (!target) {
       return fail(offer_type === "PRODUCT" ? "Product not found" : "Category not found");
     }
@@ -173,10 +184,8 @@ export const createOffer = async (req, res) => {
     const offer = await Offer.create({
       name: name.trim(),
       offer_type,
-      product_id:
-        offer_type === "PRODUCT" ? product_id : null,
-      category_id:
-        offer_type === "CATEGORY" ? category_id : null,
+      product_id: offer_type === "PRODUCT" ? product_id : null,
+      category_id: offer_type === "CATEGORY" ? category_id : null,
       discount_type,
       discount_value: value,
       start_date: start,
@@ -205,51 +214,9 @@ export const createOffer = async (req, res) => {
   }
 };
 
-export const listOffers = async (req, res) => {
-  try {
-    const page = Math.max(1, Number(req.query.page) || 1);
-    const limit = Math.min(
-      50,
-      Math.max(1, Number(req.query.limit) || 10)
-    );
-
-    const [offers, total] = await Promise.all([
-      Offer.find()
-        .populate("product_id", "productName")
-        .populate("category_id", "category_name")
-        .sort({ createdAt: -1 })
-        .skip((page - 1) * limit)
-        .limit(limit)
-        .lean(),
-
-      Offer.countDocuments(),
-    ]);
-
-    return res.json({
-      success: true,
-      offers,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
-      },
-    });
-  } catch (error) {
-    console.error("List offers:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Unable to load offers",
-    });
-  }
-};
-
 export const deleteOffer = async (req, res) => {
   try {
-    const offer = await Offer.findByIdAndDelete(
-      req.params.offerId
-    );
+    const offer = await Offer.findByIdAndDelete(req.params.offerId);
 
     if (!offer && !req.is("application/json")) {
       req.session.error = "Offer not found";
@@ -296,8 +263,14 @@ export const showEditOffer = async (req, res) => {
     }
 
     const [products, categories] = await Promise.all([
-      Product.find({ is_listed: true }).select("productName").sort({ productName: 1 }).lean(),
-      Category.find({ isListed: true }).select("category_name").sort({ category_name: 1 }).lean(),
+      Product.find({ is_listed: true })
+        .select("productName")
+        .sort({ productName: 1 })
+        .lean(),
+      Category.find({ isListed: true })
+        .select("category_name")
+        .sort({ category_name: 1 })
+        .lean(),
     ]);
 
     const formatDateForInput = (date) => {
@@ -375,18 +348,11 @@ export const updateOffer = async (req, res) => {
       return fail("Discount must be greater than zero");
     }
 
-    if (
-      discount_type === "PERCENTAGE" &&
-      value > 100
-    ) {
+    if (discount_type === "PERCENTAGE" && value > 100) {
       return fail("Percentage cannot exceed 100");
     }
 
-    if (
-      Number.isNaN(start.getTime()) ||
-      Number.isNaN(end.getTime()) ||
-      end <= start
-    ) {
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime()) || end <= start) {
       return fail("Invalid offer dates");
     }
 
@@ -397,11 +363,12 @@ export const updateOffer = async (req, res) => {
       return fail("Choose a valid category");
     }
 
-    const target = offer_type === "PRODUCT"
-      ? await Product.findById(product_id).select("_id")
-      : offer_type === "CATEGORY"
-        ? await Category.findById(category_id).select("_id")
-        : true;
+    const target =
+      offer_type === "PRODUCT"
+        ? await Product.findById(product_id).select("_id")
+        : offer_type === "CATEGORY"
+          ? await Category.findById(category_id).select("_id")
+          : true;
     if (!target) {
       return fail(offer_type === "PRODUCT" ? "Product not found" : "Category not found");
     }
@@ -449,6 +416,3 @@ export const updateOffer = async (req, res) => {
     return res.status(500).json({ success: false, message: "Unable to update offer" });
   }
 };
-
-export const editOffer = updateOffer;
-

@@ -19,33 +19,72 @@ export const loadCheckout = async (req, res) => {
   try {
     const userId = req.user._id;
 
+    const retryOrderId = req.query.orderId || req.query.retryOrder || null;
+    const isFresh = req.query.fresh === "1" || req.query.init === "1";
+    let retryOrder = null;
+
+    if (retryOrderId) {
+      retryOrder = await Order.findOne({
+        order_id: retryOrderId,
+        user_id: userId,
+        payment_status: "failed",
+      }).lean();
+
+      if (retryOrder && retryOrder.items && retryOrder.items.length > 0) {
+        const needsCartSeed = isFresh || req.session?.loadedRetryOrderId !== retryOrderId;
+        if (needsCartSeed) {
+          if (req.session) {
+            req.session.loadedRetryOrderId = retryOrderId;
+            req.session.appliedCouponCode = retryOrder.coupon_code || null;
+          }
+          let userCart = await Cart.findOne({ user_id: userId });
+          if (!userCart) {
+            userCart = new Cart({ user_id: userId, items: [] });
+          }
+          userCart.items = retryOrder.items.map((item) => ({
+            product_id: item.product_id,
+            variant_id: item.variant_id,
+            quantity: item.quantity,
+          }));
+          await userCart.save();
+
+          if (isFresh) {
+            return res.redirect(`/checkout?orderId=${encodeURIComponent(retryOrderId)}`);
+          }
+        }
+      }
+    }
+
     const cart = await Cart.findOne({
       user_id: userId,
     }).lean();
 
     if (!cart || !cart.items || cart.items.length === 0) {
+      if (req.session) {
+        req.session.loadedRetryOrderId = null;
+      }
       return res.redirect("/cart");
     }
 
     const productIds = cart.items.map((item) => item.product_id);
 
-    const variantIds = cart.items.map((item) => item.variant_id);
-
-    const [products, variants, addresses, userWallet] = await Promise.all([
+    const [products, allVariants, addresses, userWallet] = await Promise.all([
       Product.find({
         _id: { $in: productIds },
-      }).lean(),
+      })
+        .populate("category_id")
+        .lean(),
 
       Variant.find({
-        _id: { $in: variantIds },
+        product_id: { $in: productIds },
       }).lean(),
 
       Address.find({
         user_id: userId,
       })
         .sort({
-          is_default: -1,
-          created_at: -1,
+          isDefault: -1,
+          createdAt: -1,
         })
         .lean(),
 
@@ -57,10 +96,19 @@ export const loadCheckout = async (req, res) => {
     );
 
     const variantMap = new Map(
-      variants.map((variant) => [variant._id.toString(), variant]),
+      allVariants.map((variant) => [variant._id.toString(), variant]),
     );
 
-    const offerPricing = await loadOfferPricingMap(products, variants);
+    const variantsByProduct = new Map();
+    for (const v of allVariants) {
+      const pid = v.product_id.toString();
+      if (!variantsByProduct.has(pid)) {
+        variantsByProduct.set(pid, []);
+      }
+      variantsByProduct.get(pid).push(v);
+    }
+
+    const offerPricing = await loadOfferPricingMap(products, allVariants);
     const checkoutItems = [];
 
     for (const item of cart.items) {
@@ -72,7 +120,12 @@ export const loadCheckout = async (req, res) => {
         return res.redirect("/cart");
       }
 
-      if (product.is_listed !== true || product.is_blocked === true) {
+      if (
+        product.is_listed !== true ||
+        product.is_blocked === true ||
+        !product.category_id ||
+        product.category_id.isListed === false
+      ) {
         return res.redirect("/cart");
       }
 
@@ -92,6 +145,27 @@ export const loadCheckout = async (req, res) => {
       }
 
       const itemTotal = price * item.quantity;
+
+      const productVariants = (variantsByProduct.get(product._id.toString()) || []).slice();
+      productVariants.sort((a, b) => (Number(a.regular_price) || 0) - (Number(b.regular_price) || 0));
+
+      const availableVariants = productVariants.map((v) => {
+        const vOffer = offerPricing.get(v._id.toString());
+        const vPrice = getOfferedUnitPrice(v, vOffer);
+        const isCurrent = v._id.toString() === variant._id.toString();
+        const isOutOfStock = Number(v.stock_quantity) <= 0;
+        return {
+          _id: v._id.toString(),
+          variantId: v._id.toString(),
+          sku: v.sku,
+          weight: v.weight,
+          price: vPrice,
+          regularPrice: v.regular_price,
+          stockQuantity: v.stock_quantity,
+          isCurrent,
+          isOutOfStock,
+        };
+      });
 
       checkoutItems.push({
         productId: product._id.toString(),
@@ -116,6 +190,9 @@ export const loadCheckout = async (req, res) => {
 
         itemTotal,
         item_total: itemTotal,
+
+        availableVariants,
+        hasMultipleVariants: availableVariants.length > 1,
       });
     }
 
@@ -124,13 +201,41 @@ export const loadCheckout = async (req, res) => {
       ? req.session.appliedCouponCode.trim()
       : "";
 
-    const checkoutDiscounts = await applyCheckoutDiscounts({
-      user: req.user,
-      subtotal: totals.subtotal,
-      couponCode: sessionCouponCode,
-      cartItems: checkoutItems,
-      validateCoupon,
-    });
+    let checkoutDiscounts = { coupon: null, couponDiscount: 0, referralOffer: null, referralDiscount: 0 };
+    if (sessionCouponCode) {
+      try {
+        checkoutDiscounts = await applyCheckoutDiscounts({
+          user: req.user,
+          subtotal: totals.subtotal,
+          couponCode: sessionCouponCode,
+          cartItems: checkoutItems,
+          validateCoupon,
+          excludeOrderId: retryOrderId,
+        });
+      } catch (couponError) {
+        if (req.session) {
+          req.session.appliedCouponCode = null;
+        }
+        checkoutDiscounts = await applyCheckoutDiscounts({
+          user: req.user,
+          subtotal: totals.subtotal,
+          couponCode: null,
+          cartItems: checkoutItems,
+          validateCoupon,
+          excludeOrderId: retryOrderId,
+        });
+      }
+    } else {
+      checkoutDiscounts = await applyCheckoutDiscounts({
+        user: req.user,
+        subtotal: totals.subtotal,
+        couponCode: null,
+        cartItems: checkoutItems,
+        validateCoupon,
+        excludeOrderId: retryOrderId,
+      });
+    }
+
     totals.offerDiscount = checkoutItems.reduce(
       (sum, item) => sum + Number(item.offerDiscount || 0),
       0,
@@ -160,13 +265,19 @@ export const loadCheckout = async (req, res) => {
       quantity: item.quantity,
     }));
 
+    const orderMatch = {
+      user_id: req.user._id,
+      coupon_code: { $ne: null },
+      order_status: { $nin: ["cancelled"] },
+      payment_status: { $nin: ["failed"] },
+    };
+    if (retryOrderId) {
+      orderMatch.order_id = { $ne: retryOrderId };
+    }
+
     const userCouponOrders = await Order.aggregate([
       {
-        $match: {
-          user_id: req.user._id,
-          coupon_code: { $ne: null },
-          order_status: { $nin: ["cancelled"] },
-        },
+        $match: orderMatch,
       },
       {
         $group: {
@@ -190,13 +301,7 @@ export const loadCheckout = async (req, res) => {
           coupon.usage_limit !== undefined &&
           coupon.usage_limit > 0
         ) {
-          const orderCount = userOrderCountMap.get(coupon.code) || 0;
-          const usedByCount = (coupon.used_by || []).filter(
-            (userId) =>
-              (userId?._id ? userId._id.toString() : userId?.toString()) ===
-              req.user._id.toString(),
-          ).length;
-          const userUsageCount = Math.max(orderCount, usedByCount);
+          const userUsageCount = userOrderCountMap.get(coupon.code) || 0;
           if (userUsageCount >= coupon.usage_limit) {
             return false;
           }
@@ -205,13 +310,7 @@ export const loadCheckout = async (req, res) => {
         return true;
       })
       .map((coupon) => {
-        const orderCount = userOrderCountMap.get(coupon.code) || 0;
-        const usedByCount = (coupon.used_by || []).filter(
-          (userId) =>
-            (userId?._id ? userId._id.toString() : userId?.toString()) ===
-            req.user._id.toString(),
-        ).length;
-        const userUsageCount = Math.max(orderCount, usedByCount);
+        const userUsageCount = userOrderCountMap.get(coupon.code) || 0;
 
         const eligibility = evaluateCouponEligibility(coupon, {
           subtotal: totals.subtotal,
@@ -277,6 +376,7 @@ export const loadCheckout = async (req, res) => {
     };
 
     return res.render("user/checkout", {
+      user: req.user,
       checkoutItems,
       addresses,
       selectedAddress,
@@ -285,6 +385,7 @@ export const loadCheckout = async (req, res) => {
       wallet,
       appliedCoupon: checkoutDiscounts.coupon || null,
       couponDiscount: checkoutDiscounts.couponDiscount || 0,
+      retryOrderId: retryOrder?.order_id || retryOrderId || null,
     });
 
   } catch (error) {

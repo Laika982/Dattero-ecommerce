@@ -1,7 +1,11 @@
 {{> user/header}}
-<main class="min-h-screen px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-16 safe-bottom-padding bg-surface">
+<div class="flex min-h-screen">
+  {{> user/profileSidebar activeTab="wishlist"}}
+
+  <!-- Main Content Area -->
+  <main class="flex-1 w-full min-w-0 px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 md:ml-64 pb-16 safe-bottom-padding bg-surface">
     <div class="max-w-max-width mx-auto px-2 sm:px-container-padding mt-2 sm:mt-6">
-        {{> user/notification}}
+      {{> user/notification}}
     </div>
 
     <!-- Mobile Account Navigation Tabs with Scroll Option -->
@@ -36,8 +40,7 @@
         <div
             class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 border-b border-outline-variant/20 pb-4 sm:pb-6">
             <div>
-                <h1 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-ink-black mb-1.5">My Favorites
-                </h1>
+                <h1 class="text-2xl md:text-3xl font-bold text-on-surface tracking-tight mb-1.5">My Favorites</h1>
                 <p class="font-body-xl text-sm sm:text-base md:text-body-xl text-on-surface-variant">A curated
                     collection of your wellness essentials.</p>
             </div>
@@ -107,6 +110,7 @@
         </div>
     </div>
 </main>
+</div>
 
 <script>
     document.querySelectorAll("[data-wishlist-cart]").forEach((button) => {
@@ -223,5 +227,14 @@
         });
     }
 </script>
+
+<style>
+  @media (min-width: 768px) {
+    footer {
+      margin-left: 16rem;
+      width: calc(100% - 16rem);
+    }
+  }
+</style>
 
 {{> user/footer}}

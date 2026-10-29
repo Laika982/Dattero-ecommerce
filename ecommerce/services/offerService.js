@@ -10,35 +10,31 @@ const calculateDiscount = (basePrice, offer) => {
   const value = Number(offer.discount_value);
   if (!Number.isFinite(value) || value <= 0) return 0;
 
-  const rawDiscount = offer.discount_type === "PERCENTAGE"
-    ? basePrice * value / 100
-    : value;
+  const rawDiscount =
+    offer.discount_type === "PERCENTAGE" ? (basePrice * value) / 100 : value;
   return Math.min(basePrice, rawDiscount);
 };
 
-export const selectBestProductOffer = ({
-  basePrice,
-  productId,
-  categoryId,
-  offers,
-}) => {
+export const selectBestProductOffer = ({ basePrice, productId, categoryId, offers }) => {
   const price = Number(basePrice);
   if (!Number.isFinite(price) || price <= 0) {
     return { basePrice: price, price, discount: 0, offer: null };
   }
 
-  const best = (offers || []).reduce((currentBest, offer) => {
-    const targetsProduct = offer.offer_type === "PRODUCT" &&
-      String(offer.product_id) === String(productId);
-    const targetsCategory = offer.offer_type === "CATEGORY" &&
-      String(offer.category_id) === String(categoryId);
-    if (!targetsProduct && !targetsCategory) return currentBest;
+  const best = (offers || []).reduce(
+    (currentBest, offer) => {
+      const targetsProduct =
+        offer.offer_type === "PRODUCT" && String(offer.product_id) === String(productId);
+      const targetsCategory =
+        offer.offer_type === "CATEGORY" &&
+        String(offer.category_id) === String(categoryId);
+      if (!targetsProduct && !targetsCategory) return currentBest;
 
-    const discount = calculateDiscount(price, offer);
-    return discount > currentBest.discount
-      ? { offer, discount }
-      : currentBest;
-  }, { offer: null, discount: 0 });
+      const discount = calculateDiscount(price, offer);
+      return discount > currentBest.discount ? { offer, discount } : currentBest;
+    },
+    { offer: null, discount: 0 }
+  );
 
   return {
     basePrice: price,
@@ -50,12 +46,16 @@ export const selectBestProductOffer = ({
 
 export const getProductOfferPricing = async (products, variants, now = new Date()) => {
   const productMap = new Map(
-    (products || []).map((product) => [String(product._id), product]),
+    (products || []).map((product) => [String(product._id), product])
   );
   const productIds = [...productMap.keys()];
-  const categoryIds = [...new Set((products || [])
-    .map((product) => String(product.category_id?._id || product.category_id || ""))
-    .filter(Boolean))];
+  const categoryIds = [
+    ...new Set(
+      (products || [])
+        .map((product) => String(product.category_id?._id || product.category_id || ""))
+        .filter(Boolean)
+    ),
+  ];
 
   if (!productIds.length) return new Map();
 
@@ -72,10 +72,11 @@ export const getProductOfferPricing = async (products, variants, now = new Date(
     const product = productMap.get(String(variant.product_id));
     if (!product) continue;
 
-    const basePrice = variant.sale_price != null &&
+    const basePrice =
+      variant.sale_price != null &&
       Number(variant.sale_price) < Number(variant.regular_price)
-      ? Number(variant.sale_price)
-      : Number(variant.regular_price);
+        ? Number(variant.sale_price)
+        : Number(variant.regular_price);
     const pricing = selectBestProductOffer({
       basePrice,
       productId: product._id,
@@ -87,9 +88,8 @@ export const getProductOfferPricing = async (products, variants, now = new Date(
       ...pricing,
       offerName: pricing.offer?.name || null,
       offerType: pricing.offer?.offer_type || null,
-      discountPercentage: basePrice > 0
-        ? Math.round(pricing.discount / basePrice * 100)
-        : 0,
+      discountPercentage:
+        basePrice > 0 ? Math.round((pricing.discount / basePrice) * 100) : 0,
     });
   }
 

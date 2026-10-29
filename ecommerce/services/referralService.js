@@ -152,7 +152,8 @@ export const buildReferralAttribution = async ({
   if (
     excludeEmail &&
     referrer.email &&
-    String(referrer.email).trim().toLowerCase() === String(excludeEmail).trim().toLowerCase()
+    String(referrer.email).trim().toLowerCase() ===
+      String(excludeEmail).trim().toLowerCase()
   ) {
     return { referredBy: null, referralOfferId: null, referrer: null, offer: null };
   }
@@ -271,7 +272,9 @@ export const processReferralReward = async ({ order, user, session = null }) => 
         referredRewardAmount = Number(Number(offer.discount_value).toFixed(2));
       } else {
         const baseAmount = Number(order.subtotal || order.final_amount || 0);
-        referredRewardAmount = Number(((baseAmount * offer.discount_value) / 100).toFixed(2));
+        referredRewardAmount = Number(
+          ((baseAmount * offer.discount_value) / 100).toFixed(2)
+        );
       }
     }
 

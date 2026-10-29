@@ -3,10 +3,10 @@
   <!-- Decorative background -->
   <div class="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#dce3cf]/40 blur-3xl"></div>
 
-  <div class="relative mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+  <div class="relative mx-auto max-w-7xl px-5 pt-12 pb-24 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
 
     <!-- Main footer content -->
-    <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-10">
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-10">
 
       <!-- Brand section -->
       <div class="lg:col-span-5">
@@ -35,7 +35,7 @@
 
         </a>
 
-        <p class="mt-6 max-w-md text-sm leading-7 text-[#667264] sm:text-base">
+        <p class="mt-5 max-w-md text-sm leading-7 text-[#667264] sm:mt-6 sm:text-base">
           Discover a modern take on traditional sweets. Crafted with care
           for those who want to enjoy familiar flavours while making
           mindful choices.
@@ -43,7 +43,7 @@
 
         <!-- Contact CTA -->
         <a href="/contact"
-          class="mt-7 inline-flex items-center gap-2 rounded-full border border-[#b7c1ae] px-5 py-3 text-sm font-semibold text-[#354b36] transition duration-200 hover:border-[#354b36] hover:bg-[#354b36] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#829477] focus:ring-offset-2">
+          class="mt-6 inline-flex items-center gap-2 rounded-full border border-[#b7c1ae] px-5 py-2.5 text-sm font-semibold text-[#354b36] transition duration-200 hover:border-[#354b36] hover:bg-[#354b36] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#829477] focus:ring-offset-2 sm:mt-7 sm:py-3">
           Get in touch
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="1.8" class="h-4 w-4" aria-hidden="true">
@@ -53,63 +53,68 @@
 
       </div>
 
-      <!-- Shop links -->
-      <div class="lg:col-span-2">
-        <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-[#8b7850]">
-          Explore
-        </h2>
+      <!-- Links section: 2 columns on mobile, aligned neatly side-by-side -->
+      <div class="col-span-1 grid grid-cols-2 gap-8 sm:col-span-2 lg:col-span-4 lg:gap-10">
 
-        <ul class="mt-5 space-y-4">
-          <li>
-            <a href="/products" class="text-sm text-[#596657] transition-colors hover:text-[#283c2d]">
-              Shop all
-            </a>
-          </li>
-          <li>
-            <a href="/products" class="text-sm text-[#596657] transition-colors hover:text-[#283c2d]">
-              Protein sweets
-            </a>
-          </li>
-          <li>
-            <a href="/products" class="text-sm text-[#596657] transition-colors hover:text-[#283c2d]">
-              Nutrition bars
-            </a>
-          </li>
-        </ul>
-      </div>
+        <!-- Shop links -->
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-[#8b7850]">
+            Explore
+          </h2>
 
-      <!-- Company links -->
-      <div class="lg:col-span-2">
-        <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-[#8b7850]">
-          Company
-        </h2>
+          <ul class="mt-4 space-y-3 sm:mt-5 sm:space-y-4">
+            <li>
+              <a href="/products" class="text-sm text-[#596657] transition-colors hover:text-[#283c2d]">
+                Shop all
+              </a>
+            </li>
+            <li>
+              <a href="/products" class="text-sm text-[#596657] transition-colors hover:text-[#283c2d]">
+                Protein sweets
+              </a>
+            </li>
+            <li>
+              <a href="/products" class="text-sm text-[#596657] transition-colors hover:text-[#283c2d]">
+                Nutrition bars
+              </a>
+            </li>
+          </ul>
+        </div>
 
-        <ul class="mt-5 space-y-4">
-          <li>
-            <a href="/about" class="text-sm text-[#596657] transition-colors hover:text-[#283c2d]">
-              Our story
-            </a>
-          </li>
-          <li>
-            <a href="/contact" class="text-sm text-[#596657] transition-colors hover:text-[#283c2d]">
-              Contact us
-            </a>
-          </li>
-        </ul>
+        <!-- Company links -->
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-[#8b7850]">
+            Company
+          </h2>
+
+          <ul class="mt-4 space-y-3 sm:mt-5 sm:space-y-4">
+            <li>
+              <a href="/about" class="text-sm text-[#596657] transition-colors hover:text-[#283c2d]">
+                Our story
+              </a>
+            </li>
+            <li>
+              <a href="/contact" class="text-sm text-[#596657] transition-colors hover:text-[#283c2d]">
+                Contact us
+              </a>
+            </li>
+          </ul>
+        </div>
+
       </div>
 
       <!-- Customer support -->
-      <div class="lg:col-span-3">
+      <div class="col-span-1 sm:col-span-2 lg:col-span-3">
         <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-[#8b7850]">
           Need help?
         </h2>
 
-        <p class="mt-5 text-sm leading-6 text-[#667264]">
+        <p class="mt-3 text-sm leading-6 text-[#667264] sm:mt-5">
           Have a question about your order or our products? We're here to help.
         </p>
 
         <a href="/contact"
-          class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#354b36] transition-colors hover:text-[#8b7850]">
+          class="mt-3.5 inline-flex items-center gap-2 text-sm font-semibold text-[#354b36] transition-colors hover:text-[#8b7850] sm:mt-4">
           Visit customer support
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="1.8" class="h-4 w-4" aria-hidden="true">
@@ -122,79 +127,85 @@
     </div>
 
     <!-- Brand values / trust strip -->
-    <div class="mt-14 grid grid-cols-1 gap-4 border-y border-[#e3e2d4] py-6 sm:grid-cols-3 sm:gap-6">
+    <div class="mt-10 border-y border-[#e3e2d4] py-3 sm:mt-14 sm:py-6">
+      <div class="grid grid-cols-1 divide-y divide-[#e3e2d4]/70 sm:grid-cols-3 sm:divide-y-0 sm:gap-6">
 
-      <div class="flex items-center gap-3">
-        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e9ecdf] text-[#354b36]">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="1.6" class="h-5 w-5" aria-hidden="true">
-            <path d="M12 3 19 6v5c0 4.5-3 7.5-7 10-4-2.5-7-5.5-7-10V6l7-3Z" />
-            <path d="m9 12 2 2 4-4" />
-          </svg>
+        <div class="flex items-center gap-3.5 py-3 sm:py-0">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e9ecdf] text-[#354b36]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.6" class="h-5 w-5" aria-hidden="true">
+              <path d="M12 3 19 6v5c0 4.5-3 7.5-7 10-4-2.5-7-5.5-7-10V6l7-3Z" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-[#354b36]">Quality focused</p>
+            <p class="mt-0.5 text-xs text-[#788274]">Made with care</p>
+          </div>
         </div>
-        <div>
-          <p class="text-sm font-semibold text-[#354b36]">Quality focused</p>
-          <p class="mt-1 text-xs text-[#788274]">Made with care</p>
+
+        <div class="flex items-center gap-3.5 py-3 sm:py-0">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e9ecdf] text-[#354b36]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.6" class="h-5 w-5" aria-hidden="true">
+              <path d="M12 3v18M3 12h18" />
+              <circle cx="12" cy="12" r="8" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-[#354b36]">Tradition inspired</p>
+            <p class="mt-0.5 text-xs text-[#788274]">A modern sweet experience</p>
+          </div>
         </div>
+
+        <div class="flex items-center gap-3.5 py-3 sm:py-0">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e9ecdf] text-[#354b36]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.6" class="h-5 w-5" aria-hidden="true">
+              <path d="M4 5h16v12H4z" />
+              <path d="m4 7 8 6 8-6" />
+              <path d="M8 21h8" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-[#354b36]">We're here to help</p>
+            <p class="mt-0.5 text-xs text-[#788274]">Customer support</p>
+          </div>
+        </div>
+
       </div>
-
-      <div class="flex items-center gap-3">
-        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e9ecdf] text-[#354b36]">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="1.6" class="h-5 w-5" aria-hidden="true">
-            <path d="M12 3v18M3 12h18" />
-            <circle cx="12" cy="12" r="8" />
-          </svg>
-        </div>
-        <div>
-          <p class="text-sm font-semibold text-[#354b36]">Tradition inspired</p>
-          <p class="mt-1 text-xs text-[#788274]">A modern sweet experience</p>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e9ecdf] text-[#354b36]">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="1.6" class="h-5 w-5" aria-hidden="true">
-            <path d="M4 5h16v12H4z" />
-            <path d="m4 7 8 6 8-6" />
-            <path d="M8 21h8" />
-          </svg>
-        </div>
-        <div>
-          <p class="text-sm font-semibold text-[#354b36]">We're here to help</p>
-          <p class="mt-1 text-xs text-[#788274]">Customer support</p>
-        </div>
-      </div>
-
     </div>
 
     <!-- Bottom bar -->
-    <div class="flex flex-col gap-4 pt-7 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-col items-center justify-center gap-4 pt-6 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left sm:pt-7">
 
-      <p class="text-xs leading-5 text-[#788274]">
-        &copy; <span id="footer-year">2026</span> Nutri Burfi.
-        All rights reserved.
-      </p>
-
-      <div class="flex flex-wrap items-center gap-x-5 gap-y-3">
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 order-1 sm:order-2 sm:gap-x-5">
         <a href="/about" class="text-xs text-[#788274] transition-colors hover:text-[#354b36]">
           About us
         </a>
+
+        <span class="text-[#c6cfbd] text-xs select-none">•</span>
 
         <a href="/contact" class="text-xs text-[#788274] transition-colors hover:text-[#354b36]">
           Customer support
         </a>
 
-        <span class="inline-flex items-center gap-2 text-xs font-medium text-[#596657]">
+        <span class="text-[#c6cfbd] text-xs select-none">•</span>
+
+        <span class="inline-flex items-center gap-1.5 text-xs font-medium text-[#596657]">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="1.6" class="h-4 w-4" aria-hidden="true">
+            stroke-width="1.6" class="h-3.5 w-3.5" aria-hidden="true">
             <rect x="5" y="10" width="14" height="11" rx="2" />
             <path d="M8 10V7a4 4 0 1 1 8 0v3" />
           </svg>
           Secure shopping
         </span>
       </div>
+
+      <p class="text-xs leading-5 text-[#788274] order-2 sm:order-1">
+        &copy; <span id="footer-year">2026</span> Nutri Burfi.
+        All rights reserved.
+      </p>
 
     </div>
 

@@ -2,12 +2,85 @@ import mongoose from "mongoose";
 import Wallet from "../../models/walletSchema.js";
 import Payment from "../../models/paymentSchema.js";
 import Order from "../../models/orderSchema.js";
+import Address from "../../models/addressSchema.js";
 import WalletTransaction from "../../models/walletTransactionSchema.js";
 import { getOrCreateWallet, creditWallet } from "../../services/walletService.js";
 import {
   createRazorpayOrder,
   verifyRazorpaySignature,
+  fetchRazorpayOrderPayments,
 } from "../../services/paymentService.js";
+
+export const recordFailedWalletTransaction = async ({
+  userId,
+  amount,
+  reason = "WALLET_TOP_UP",
+  description = "Wallet top-up failed",
+  failureReason = "Transaction failed",
+  razorpayOrderId = null,
+  paymentId = null,
+  orderId = null,
+  type = "CREDIT",
+}) => {
+  try {
+    const wallet = await getOrCreateWallet(userId);
+    const currentBalance = Number((wallet?.balance || 0).toFixed(2));
+
+    if (razorpayOrderId) {
+      const existingTxn = await WalletTransaction.findOne({
+        user_id: userId,
+        razorpay_order_id: razorpayOrderId,
+        status: "FAILED",
+      });
+      if (existingTxn) return existingTxn;
+    }
+
+    return await WalletTransaction.create({
+      user_id: userId,
+      type,
+      amount: Math.max(0, Number(amount || 0)),
+      reason,
+      description,
+      status: "FAILED",
+      failure_reason: String(failureReason || "Transaction failed").slice(0, 500),
+      razorpay_order_id: razorpayOrderId,
+      payment_id: paymentId,
+      order_id: orderId,
+      balance_before: currentBalance,
+      balance_after: currentBalance,
+    });
+  } catch (err) {
+    console.error("Failed to record failed wallet transaction:", err);
+    return null;
+  }
+};
+
+export const ensureFailedTopUpTransactions = async (userId) => {
+  try {
+    const failedPayments = await Payment.find({
+      user_id: userId,
+      purpose: "WALLET_TOP_UP",
+      status: "FAILED",
+    }).lean();
+
+    if (!failedPayments || failedPayments.length === 0) return;
+
+    for (const p of failedPayments) {
+      await recordFailedWalletTransaction({
+        userId,
+        amount: p.amount,
+        reason: "WALLET_TOP_UP",
+        description: "Wallet top-up failed",
+        failureReason: p.failure_reason || "Wallet top-up payment was unsuccessful.",
+        razorpayOrderId: p.razorpay_order_id,
+        paymentId: p._id,
+        type: "CREDIT",
+      });
+    }
+  } catch (err) {
+    console.error("Error ensuring failed top-up transactions:", err);
+  }
+};
 
 const formatTransactions = (transactions) => transactions.map((transaction) => {
   const descriptions = {
@@ -19,15 +92,26 @@ const formatTransactions = (transactions) => transactions.map((transaction) => {
     OTHER: "Wallet adjustment",
   };
 
+  const isFailed = transaction.status === "FAILED";
+  const isPending = transaction.status === "PENDING";
+  const isCompleted = !isFailed && !isPending;
+
+  let baseDesc = transaction.description || descriptions[transaction.reason] || "Wallet transaction";
+
   return {
     ...transaction,
-    description: transaction.description || descriptions[transaction.reason] || "Wallet transaction",
-    displayAmount: `${transaction.type === "CREDIT" ? "+" : "-"}₹${Number(transaction.amount).toFixed(2)}`,
+    status: transaction.status || "COMPLETED",
+    isFailed,
+    isPending,
+    isCompleted,
+    failureReason: transaction.failure_reason || null,
+    description: baseDesc,
+    displayAmount: `${transaction.type === "CREDIT" ? "+" : "-"}₹${Number(transaction.amount || 0).toFixed(2)}`,
     displayDate: new Intl.DateTimeFormat("en-IN", {
       dateStyle: "medium",
       timeStyle: "short",
-    }).format(transaction.createdAt),
-    displayBalance: `₹${Number(transaction.balance_after).toFixed(2)}`,
+    }).format(transaction.createdAt ? new Date(transaction.createdAt) : new Date()),
+    displayBalance: isFailed ? "—" : `₹${Number(transaction.balance_after || 0).toFixed(2)}`,
   };
 });
 
@@ -44,11 +128,13 @@ const calculateMonthlySpending = async (userId) => {
     WalletTransaction.find({
       user_id: userId,
       type: "DEBIT",
+      status: { $ne: "FAILED" },
       createdAt: { $gte: startOfCurrentMonth, $lt: startOfNextMonth },
     }).lean(),
     WalletTransaction.find({
       user_id: userId,
       type: "DEBIT",
+      status: { $ne: "FAILED" },
       createdAt: { $gte: startOfLastMonth, $lt: startOfCurrentMonth },
     }).lean(),
   ]);
@@ -72,39 +158,61 @@ const calculateMonthlySpending = async (userId) => {
     else weeklySpending[3] += amount;
   });
 
-  // If no wallet debits, check if the user has store orders in current/last month
-  if (currentMonthTotal === 0 && lastMonthTotal === 0) {
-    const [currentOrders, lastOrders] = await Promise.all([
-      Order.find({
-        user_id: userId,
-        order_status: { $ne: "cancelled" },
-        createdAt: { $gte: startOfCurrentMonth, $lt: startOfNextMonth },
-      }).lean(),
-      Order.find({
-        user_id: userId,
-        order_status: { $ne: "cancelled" },
-        createdAt: { $gte: startOfLastMonth, $lt: startOfCurrentMonth },
-      }).lean(),
-    ]);
+  // Also include any orders explicitly paid using wallet (payment_method: "wallet" and payment_status: "paid")
+  // that were not already recorded as a WalletTransaction DEBIT (preventing double counting)
+  const currentRecordedOrderIds = new Set(
+    currentMonthDebits
+      .filter((t) => t.order_id)
+      .map((t) => t.order_id.toString())
+  );
+  const lastRecordedOrderIds = new Set(
+    lastMonthDebits
+      .filter((t) => t.order_id)
+      .map((t) => t.order_id.toString())
+  );
 
-    if (currentOrders.length > 0 || lastOrders.length > 0) {
-      currentMonthTotal = currentOrders.reduce(
-        (acc, o) => acc + Number(o.final_amount || 0),
-        0
-      );
-      lastMonthTotal = lastOrders.reduce(
-        (acc, o) => acc + Number(o.final_amount || 0),
-        0
-      );
-      currentOrders.forEach((o) => {
-        const day = new Date(o.createdAt).getDate();
-        const amount = Number(o.final_amount || 0);
-        if (day <= 7) weeklySpending[0] += amount;
-        else if (day <= 14) weeklySpending[1] += amount;
-        else if (day <= 21) weeklySpending[2] += amount;
-        else weeklySpending[3] += amount;
-      });
-    }
+  const [currentWalletOrders, lastWalletOrders] = await Promise.all([
+    Order.find({
+      user_id: userId,
+      payment_method: "wallet",
+      payment_status: "paid",
+      createdAt: { $gte: startOfCurrentMonth, $lt: startOfNextMonth },
+    }).lean(),
+    Order.find({
+      user_id: userId,
+      payment_method: "wallet",
+      payment_status: "paid",
+      createdAt: { $gte: startOfLastMonth, $lt: startOfCurrentMonth },
+    }).lean(),
+  ]);
+
+  const unrecordedCurrentOrders = currentWalletOrders.filter(
+    (o) => !currentRecordedOrderIds.has(o._id.toString())
+  );
+  const unrecordedLastOrders = lastWalletOrders.filter(
+    (o) => !lastRecordedOrderIds.has(o._id.toString())
+  );
+
+  if (unrecordedCurrentOrders.length > 0) {
+    currentMonthTotal += unrecordedCurrentOrders.reduce(
+      (acc, o) => acc + Number(o.final_amount || 0),
+      0
+    );
+    unrecordedCurrentOrders.forEach((o) => {
+      const day = new Date(o.createdAt).getDate();
+      const amount = Number(o.final_amount || 0);
+      if (day <= 7) weeklySpending[0] += amount;
+      else if (day <= 14) weeklySpending[1] += amount;
+      else if (day <= 21) weeklySpending[2] += amount;
+      else weeklySpending[3] += amount;
+    });
+  }
+
+  if (unrecordedLastOrders.length > 0) {
+    lastMonthTotal += unrecordedLastOrders.reduce(
+      (acc, o) => acc + Number(o.final_amount || 0),
+      0
+    );
   }
 
   let percentageChange = "0%";
@@ -177,6 +285,8 @@ const buildTransactionFilter = (userId, filterParam, searchParam) => {
     query.reason = { $in: ["ORDER_CANCELLATION", "ORDER_RETURN"] };
   } else if (filter === "referrals") {
     query.reason = "REFERRAL_REWARD";
+  } else if (filter === "failed") {
+    query.status = "FAILED";
   }
 
   if (search) {
@@ -184,6 +294,8 @@ const buildTransactionFilter = (userId, filterParam, searchParam) => {
     const orConditions = [
       { description: { $regex: cleanSearch, $options: "i" } },
       { reason: { $regex: cleanSearch, $options: "i" } },
+      { failure_reason: { $regex: cleanSearch, $options: "i" } },
+      { status: { $regex: cleanSearch, $options: "i" } },
     ];
     if (mongoose.Types.ObjectId.isValid(cleanSearch)) {
       orConditions.push({ _id: new mongoose.Types.ObjectId(cleanSearch) });
@@ -191,7 +303,7 @@ const buildTransactionFilter = (userId, filterParam, searchParam) => {
     query.$or = orConditions;
   }
 
-  const validFilters = ["all", "orders", "wallet", "refunds", "referrals"];
+  const validFilters = ["all", "orders", "wallet", "refunds", "referrals", "failed"];
   const currentFilter = validFilters.includes(filter) ? filter : "all";
 
   return {
@@ -203,24 +315,38 @@ const buildTransactionFilter = (userId, filterParam, searchParam) => {
     isWallet: currentFilter === "wallet",
     isRefunds: currentFilter === "refunds",
     isReferrals: currentFilter === "referrals",
+    isFailed: currentFilter === "failed",
   };
 };
 
 export const getWallet = async (req, res) => {
   try {
     const userId = req.user._id;
+    await ensureFailedTopUpTransactions(userId);
     const filterData = buildTransactionFilter(userId, req.query.filter);
 
     const wallet = await getOrCreateWallet(userId);
 
-    const [transactions, totalCount, monthlySpending] = await Promise.all([
-      WalletTransaction.find(filterData.query)
-        .sort({ createdAt: -1 })
-        .limit(10)
-        .lean(),
+    const limit = 10;
+    const [totalFilteredTransactions, totalAllTransactions, monthlySpending] = await Promise.all([
+      WalletTransaction.countDocuments(filterData.query),
       WalletTransaction.countDocuments({ user_id: userId }),
       calculateMonthlySpending(userId),
     ]);
+
+    const totalPages = Math.max(1, Math.ceil(totalFilteredTransactions / limit));
+    const rawPage = parseInt(req.query.page, 10);
+    const currentPage = Math.min(Math.max(1, Number.isFinite(rawPage) ? rawPage : 1), totalPages);
+    const skip = (currentPage - 1) * limit;
+
+    const transactions = await WalletTransaction.find(filterData.query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
+    const startIndex = totalFilteredTransactions === 0 ? 0 : skip + 1;
+    const endIndex = Math.min(skip + limit, totalFilteredTransactions);
 
     return res.status(200).render("user/wallet", {
       user: req.user,
@@ -230,7 +356,13 @@ export const getWallet = async (req, res) => {
       monthlySpending,
       ...filterData,
       transactions: formatTransactions(transactions),
-      totalTransactionsCount: totalCount,
+      currentPage,
+      totalPages,
+      totalTransactions: totalFilteredTransactions,
+      totalTransactionsCount: totalAllTransactions,
+      startIndex,
+      endIndex,
+      hasPagination: totalPages > 1,
     });
   } catch (error) {
     console.error("Get wallet error:", error);
@@ -239,36 +371,6 @@ export const getWallet = async (req, res) => {
       success: false,
       message: "Unable to load wallet",
     });
-  }
-};
-
-export const getWalletTransactions = async (req, res) => {
-  try {
-    const userId = req.user._id;
-    const filterData = buildTransactionFilter(
-      userId,
-      req.query.filter,
-      req.query.search
-    );
-
-    const wallet = await getOrCreateWallet(userId);
-
-    const transactions = await WalletTransaction.find(filterData.query)
-      .sort({ createdAt: -1 })
-      .lean();
-
-    return res.status(200).render("user/walletTransactions", {
-      user: req.user,
-      wallet: {
-        balance: Number(wallet.balance).toFixed(2),
-      },
-      ...filterData,
-      transactions: formatTransactions(transactions),
-    });
-  } catch (error) {
-    console.error("Get wallet transactions error:", error);
-
-    return res.status(500).send("Unable to load wallet transactions");
   }
 };
 
@@ -297,6 +399,9 @@ export const createWalletTopUpOrder = async (req, res) => {
       purpose: "WALLET_TOP_UP",
     });
 
+    const defaultAddress = await Address.findOne({ user_id: req.user._id, isDefault: true }).lean()
+      || await Address.findOne({ user_id: req.user._id }).lean();
+
     return res.status(200).json({
       success: true,
       order: {
@@ -305,6 +410,11 @@ export const createWalletTopUpOrder = async (req, res) => {
         currency: order.currency,
       },
       key: process.env.RAZORPAY_KEY_ID,
+      prefill: {
+        name: req.user.name || "",
+        email: req.user.email || "",
+        contact: req.user.phone || defaultAddress?.phone || "",
+      },
     });
   } catch (error) {
     console.error("Create wallet top-up order error:", error);
@@ -352,16 +462,23 @@ export const verifyWalletTopUp = async (req, res) => {
     }
 
     if (payment.status === "SUCCESS") {
-      return res.status(200).json({ success: true, message: "Wallet already credited." });
+      const userWallet = await getOrCreateWallet(req.user._id);
+      return res.status(200).json({
+        success: true,
+        message: "Wallet already credited.",
+        balance: Number(userWallet?.balance || 0),
+        amountCredited: payment.amount,
+      });
     }
 
     const claimedPayment = await Payment.findOneAndUpdate(
-      { _id: payment._id, status: "PENDING" },
+      { _id: payment._id, status: { $in: ["PENDING", "FAILED"] } },
       {
         $set: {
           status: "PROCESSING",
           razorpay_payment_id: razorpayPaymentId,
           razorpay_signature: razorpaySignature,
+          failure_reason: null,
         },
       },
       { new: true },
@@ -374,12 +491,22 @@ export const verifyWalletTopUp = async (req, res) => {
       });
     }
 
+    let creditedWallet = null;
     try {
-      await creditWallet({
+      const creditResult = await creditWallet({
         userId: req.user._id,
         amount: payment.amount,
         reason: "WALLET_TOP_UP",
       });
+      creditedWallet = creditResult?.wallet;
+
+      if (razorpayOrderId) {
+        await WalletTransaction.deleteMany({
+          user_id: req.user._id,
+          razorpay_order_id: razorpayOrderId,
+          status: "FAILED",
+        });
+      }
 
       await Payment.updateOne(
         { _id: payment._id, status: "PROCESSING" },
@@ -396,6 +523,8 @@ export const verifyWalletTopUp = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Wallet credited successfully.",
+      balance: Number(creditedWallet?.balance != null ? creditedWallet.balance : 0),
+      amountCredited: payment.amount,
     });
   } catch (error) {
     console.error("Verify wallet top-up error:", error);
@@ -404,5 +533,303 @@ export const verifyWalletTopUp = async (req, res) => {
       success: false,
       message: "Unable to verify wallet payment.",
     });
+  }
+};
+
+export const walletFailed = async (req, res) => {
+  try {
+    const { razorpay_order_id, reason } = req.body;
+
+    if (typeof razorpay_order_id === "string" && razorpay_order_id) {
+      const payment = await Payment.findOneAndUpdate(
+        {
+          user_id: req.user._id,
+          razorpay_order_id,
+          purpose: "WALLET_TOP_UP",
+        },
+        {
+          status: "FAILED",
+          failure_reason: String(reason || "Wallet top-up failed").slice(0, 500),
+        },
+        { new: true }
+      );
+
+      await recordFailedWalletTransaction({
+        userId: req.user._id,
+        amount: payment?.amount || 0,
+        reason: "WALLET_TOP_UP",
+        description: "Wallet top-up failed",
+        failureReason: payment?.failure_reason || reason || "Wallet top-up failed",
+        razorpayOrderId: razorpay_order_id,
+        paymentId: payment?._id || null,
+        type: "CREDIT",
+      });
+    }
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Wallet failure record error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Unable to record wallet failure",
+    });
+  }
+};
+
+export const walletFailedPage = async (req, res) => {
+  try {
+    const reason = typeof req.query.reason === "string" ? req.query.reason.trim() : "";
+
+    if (reason && req.user?._id) {
+      const pendingPayment = await Payment.findOne({
+        user_id: req.user._id,
+        purpose: "WALLET_TOP_UP",
+        status: "PENDING",
+      }).sort({ createdAt: -1 });
+
+      if (pendingPayment) {
+        pendingPayment.status = "FAILED";
+        pendingPayment.failure_reason = reason;
+        await pendingPayment.save();
+
+        await recordFailedWalletTransaction({
+          userId: req.user._id,
+          amount: pendingPayment.amount,
+          reason: "WALLET_TOP_UP",
+          description: "Wallet top-up failed",
+          failureReason: reason,
+          razorpayOrderId: pendingPayment.razorpay_order_id,
+          paymentId: pendingPayment._id,
+          type: "CREDIT",
+        });
+      } else if (reason.toLowerCase().includes("simulated")) {
+        await recordFailedWalletTransaction({
+          userId: req.user._id,
+          amount: 500,
+          reason: "WALLET_TOP_UP",
+          description: "Wallet top-up failed (Simulated)",
+          failureReason: reason,
+          type: "CREDIT",
+        });
+      }
+    }
+
+    return res.status(200).render("user/walletFailed", {
+      user: req.user,
+      reason: reason || "Your bank or payment provider could not complete this transaction.",
+    });
+  } catch (error) {
+    console.error("Load wallet failed page error:", error);
+    return res.status(500).redirect("/wallet");
+  }
+};
+
+export const checkWalletTopUpStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    if (!orderId) {
+      return res.status(400).json({ success: false, message: "Order ID is required." });
+    }
+
+    const payment = await Payment.findOne({
+      user_id: req.user._id,
+      razorpay_order_id: orderId,
+      purpose: "WALLET_TOP_UP",
+    }).lean();
+
+    if (!payment) {
+      return res.status(404).json({ success: false, message: "Payment record not found." });
+    }
+
+    if (payment.status === "FAILED") {
+      await recordFailedWalletTransaction({
+        userId: req.user._id,
+        amount: payment.amount,
+        reason: "WALLET_TOP_UP",
+        description: "Wallet top-up failed",
+        failureReason: payment.failure_reason || "Wallet top-up payment was unsuccessful.",
+        razorpayOrderId: orderId,
+        paymentId: payment._id,
+        type: "CREDIT",
+      });
+
+      return res.status(200).json({
+        success: true,
+        status: "FAILED",
+        reason: payment.failure_reason || "Wallet top-up payment was unsuccessful.",
+      });
+    }
+
+    if (payment.status === "SUCCESS") {
+      return res.status(200).json({
+        success: true,
+        status: "SUCCESS",
+      });
+    }
+
+    // Inspect Razorpay order payments directly for fast failure detection
+    const items = await fetchRazorpayOrderPayments(orderId);
+    const capturedPayment = items.find((item) => item.status === "captured");
+    if (capturedPayment) {
+      return res.status(200).json({
+        success: true,
+        status: "SUCCESS",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      status: payment.status || "PENDING",
+    });
+  } catch (error) {
+    console.error("Check wallet top-up status error:", error);
+    return res.status(500).json({ success: false, message: "Error checking status." });
+  }
+};
+
+export const handleWalletTopUpCallback = async (req, res) => {
+  try {
+    const errorData =
+      req.body.error ||
+      (req.body["error[code]"]
+        ? {
+          code: req.body["error[code]"],
+          description: req.body["error[description]"],
+          source: req.body["error[source]"],
+          step: req.body["error[step]"],
+          reason: req.body["error[reason]"],
+        }
+        : null);
+
+    if (errorData) {
+      const reason =
+        errorData.description ||
+        errorData.reason ||
+        "Wallet top-up payment was unsuccessful.";
+      const razorpayOrderId =
+        req.body.razorpay_order_id ||
+        (typeof errorData.metadata === "object" ? errorData.metadata.order_id : null);
+
+      if (razorpayOrderId && req.user?._id) {
+        const failedPay = await Payment.findOneAndUpdate(
+          {
+            user_id: req.user._id,
+            razorpay_order_id: razorpayOrderId,
+            purpose: "WALLET_TOP_UP",
+            status: "PENDING",
+          },
+          {
+            status: "FAILED",
+            failure_reason: String(reason).slice(0, 500),
+          },
+          { new: true }
+        );
+
+        await recordFailedWalletTransaction({
+          userId: req.user._id,
+          amount: failedPay?.amount || 0,
+          reason: "WALLET_TOP_UP",
+          description: "Wallet top-up failed",
+          failureReason: String(reason).slice(0, 500),
+          razorpayOrderId,
+          paymentId: failedPay?._id || null,
+          type: "CREDIT",
+        });
+      }
+      return res.redirect(`/wallet/failed?reason=${encodeURIComponent(reason)}`);
+    }
+
+    const {
+      razorpay_order_id: razorpayOrderId,
+      razorpay_payment_id: razorpayPaymentId,
+      razorpay_signature: razorpaySignature,
+    } = req.body;
+
+    if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
+      return res.redirect(
+        `/wallet/failed?reason=${encodeURIComponent("Payment details missing or transaction incomplete.")}`
+      );
+    }
+
+    const payment = await Payment.findOne({
+      user_id: req.user._id,
+      razorpay_order_id: razorpayOrderId,
+      purpose: "WALLET_TOP_UP",
+      method: "RAZORPAY",
+    });
+
+    if (!payment) {
+      return res.redirect(`/wallet/failed?reason=${encodeURIComponent("Payment record not found.")}`);
+    }
+
+    const isValid = verifyRazorpaySignature({
+      razorpayOrderId,
+      razorpayPaymentId,
+      razorpaySignature,
+    });
+
+    if (!isValid) {
+      await Payment.updateOne(
+        { _id: payment._id, status: "PENDING" },
+        { status: "FAILED", failure_reason: "Signature verification failed" }
+      );
+
+      await recordFailedWalletTransaction({
+        userId: req.user._id,
+        amount: payment.amount,
+        reason: "WALLET_TOP_UP",
+        description: "Wallet top-up failed",
+        failureReason: "Signature verification failed",
+        razorpayOrderId,
+        paymentId: payment._id,
+        type: "CREDIT",
+      });
+
+      return res.redirect(`/wallet/failed?reason=${encodeURIComponent("Security signature check failed.")}`);
+    }
+
+    if (payment.status === "SUCCESS") {
+      return res.redirect("/wallet");
+    }
+
+    const claimedPayment = await Payment.findOneAndUpdate(
+      { _id: payment._id, status: "PENDING" },
+      {
+        $set: {
+          status: "PROCESSING",
+          razorpay_payment_id: razorpayPaymentId,
+          razorpay_signature: razorpaySignature,
+        },
+      },
+      { new: true }
+    );
+
+    if (claimedPayment) {
+      try {
+        await creditWallet({
+          userId: req.user._id,
+          amount: payment.amount,
+          reason: "WALLET_TOP_UP",
+        });
+
+        await Payment.updateOne(
+          { _id: payment._id, status: "PROCESSING" },
+          { $set: { status: "SUCCESS" } }
+        );
+      } catch (err) {
+        await Payment.updateOne(
+          { _id: payment._id, status: "PROCESSING" },
+          { $set: { status: "PENDING" } }
+        );
+        throw err;
+      }
+    }
+
+    return res.redirect("/wallet");
+  } catch (error) {
+    console.error("Wallet top-up callback error:", error);
+    return res.redirect(
+      `/wallet/failed?reason=${encodeURIComponent("An unexpected error occurred while processing wallet top-up.")}`
+    );
   }
 };

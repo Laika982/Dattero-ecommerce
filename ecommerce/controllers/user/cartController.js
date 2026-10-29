@@ -32,31 +32,37 @@ const loadCart = async (req, res) => {
       });
     }
 
-    const productIds = cart.items.map((items) => {
-      return items.product_id;
-    });
+    const productIds = cart.items.map((item) => item.product_id);
 
-    const variantIds = cart.items.map((items) => {
-      return items.variant_id;
-    });
-
-    const products = await Product.find({
-      _id: { $in: productIds },
-    }).lean();
-
-    const variants = await Variant.find({
-      _id: { $in: variantIds },
-    }).lean();
+    const [products, allVariants] = await Promise.all([
+      Product.find({
+        _id: { $in: productIds },
+      })
+        .populate("category_id")
+        .lean(),
+      Variant.find({
+        product_id: { $in: productIds },
+      }).lean(),
+    ]);
 
     const productMap = new Map(
       products.map((item) => [item._id.toString(), item]),
     );
 
     const variantMap = new Map(
-      variants.map((item) => [item._id.toString(), item]),
+      allVariants.map((item) => [item._id.toString(), item]),
     );
 
-    const offerPricing = await loadOfferPricingMap(products, variants);
+    const variantsByProduct = new Map();
+    for (const v of allVariants) {
+      const pid = v.product_id.toString();
+      if (!variantsByProduct.has(pid)) {
+        variantsByProduct.set(pid, []);
+      }
+      variantsByProduct.get(pid).push(v);
+    }
+
+    const offerPricing = await loadOfferPricingMap(products, allVariants);
     const cartItems = [];
 
     for (const item of cart.items) {
@@ -75,7 +81,7 @@ const loadCart = async (req, res) => {
 
       let availability = "available";
 
-      if (!product.is_listed) {
+      if (!product.is_listed || !product.category_id || product.category_id.isListed === false) {
         availability = "unlisted";
       }
 
@@ -90,6 +96,27 @@ const loadCart = async (req, res) => {
       if (variant.stock_quantity < item.quantity) {
         availability = "insufficient_stock";
       }
+
+      const productVariants = (variantsByProduct.get(product._id.toString()) || []).slice();
+      productVariants.sort((a, b) => (Number(a.regular_price) || 0) - (Number(b.regular_price) || 0));
+
+      const availableVariants = productVariants.map((v) => {
+        const vOffer = offerPricing.get(v._id.toString());
+        const vPrice = getOfferedUnitPrice(v, vOffer);
+        const isCurrent = v._id.toString() === variant._id.toString();
+        const isOutOfStock = Number(v.stock_quantity) <= 0;
+        return {
+          _id: v._id.toString(),
+          variantId: v._id.toString(),
+          sku: v.sku,
+          weight: v.weight,
+          price: vPrice,
+          regularPrice: v.regular_price,
+          stockQuantity: v.stock_quantity,
+          isCurrent,
+          isOutOfStock,
+        };
+      });
 
       cartItems.push({
         cartItemId: item._id,
@@ -121,6 +148,10 @@ const loadCart = async (req, res) => {
         availability,
 
         canCheckout: availability === "available",
+
+        availableVariants,
+
+        hasMultipleVariants: availableVariants.length > 1,
       });
     }
 
@@ -189,9 +220,9 @@ const addToCart = async (req, res) => {
       });
     }
 
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).populate("category_id");
 
-    if (!product) {
+    if (!product || !product.category_id || product.category_id.isListed === false) {
       req.session.error = "Product not found";
       return res.status(404).json({
         success: false,
@@ -568,12 +599,127 @@ const getCartCount = async (req, res) => {
   }
 };
 
+// Change variant
+const changeVariant = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const oldVariantId = req.params.variantId || req.body.oldVariantId;
+    const newVariantId = req.body.newVariantId || req.body.variantId;
+
+    if (!oldVariantId || !newVariantId) {
+      return res.status(400).json({
+        success: false,
+        message: "Old and new variant IDs are required",
+      });
+    }
+
+    if (oldVariantId.toString() === newVariantId.toString()) {
+      return res.json({
+        success: true,
+        message: "Variant unchanged",
+      });
+    }
+
+    const cart = await Cart.findOne({
+      user_id: userId,
+    });
+
+    if (!cart) {
+      return res.status(404).json({
+        success: false,
+        message: "Cart not found",
+      });
+    }
+
+    const itemIndex = cart.items.findIndex(
+      (item) => item.variant_id.toString() === oldVariantId.toString(),
+    );
+
+    if (itemIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: "Cart item not found",
+      });
+    }
+
+    const currentItem = cart.items[itemIndex];
+    const newVariant = await Variant.findById(newVariantId);
+
+    if (!newVariant) {
+      return res.status(404).json({
+        success: false,
+        message: "Selected variant not found",
+      });
+    }
+
+    if (newVariant.product_id.toString() !== currentItem.product_id.toString()) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid variant for this product",
+      });
+    }
+
+    if (newVariant.stock_quantity <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "This variant is out of stock",
+      });
+    }
+
+    // Check if newVariant is already in the cart (merge if so)
+    const existingIndex = cart.items.findIndex(
+      (item) => item.variant_id.toString() === newVariantId.toString(),
+    );
+
+    if (existingIndex !== -1 && existingIndex !== itemIndex) {
+      const mergedQty = cart.items[existingIndex].quantity + currentItem.quantity;
+      const finalQty = Math.min(
+        mergedQty,
+        MAX_CART_QUANTITY,
+        newVariant.stock_quantity,
+      );
+      cart.items[existingIndex].quantity = finalQty;
+      cart.items.splice(itemIndex, 1);
+    } else {
+      currentItem.variant_id = newVariant._id;
+      if (currentItem.quantity > newVariant.stock_quantity) {
+        currentItem.quantity = Math.max(1, newVariant.stock_quantity);
+      }
+      if (currentItem.quantity > MAX_CART_QUANTITY) {
+        currentItem.quantity = MAX_CART_QUANTITY;
+      }
+    }
+
+    await cart.save();
+
+    const totalCount = cart.items.reduce(
+      (sum, itm) => sum + (Number(itm.quantity) || 0),
+      0,
+    );
+
+    req.session.success = "Variant updated successfully.";
+
+    return res.json({
+      success: true,
+      message: "Variant updated successfully",
+      cartCount: totalCount,
+    });
+  } catch (error) {
+    console.error("Change variant error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Unable to update variant",
+    });
+  }
+};
+
 export default {
   loadCart,
   addToCart,
   increaseQuantity,
   decreaseQuantity,
   removeFromCart,
+  changeVariant,
   getCartCount,
 };
 

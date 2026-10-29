@@ -427,7 +427,8 @@
         setupField(countryInput, "country", validateCountry);
         setupField(addressLabelInput, "addressLabel", validateAddressLabel);
 
-        form.addEventListener("submit", function (e) {
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
             Object.keys(touched).forEach(k => touched[k] = true);
             touched.fullName = true;
             touched.phone = true;
@@ -452,7 +453,6 @@
             const isAllValid = isFullNameValid && isPhoneValid && isStreetValid && isSuiteValid && isCityValid && isStateValid && isZipValid && isCountryValid && isLabelValid;
 
             if (!isAllValid) {
-                e.preventDefault();
                 if (!isFullNameValid) fullNameInput.focus();
                 else if (!isPhoneValid) phoneInput.focus();
                 else if (!isStreetValid) streetInput.focus();
@@ -462,6 +462,61 @@
                 else if (!isZipValid) zipInput.focus();
                 else if (!isCountryValid) countryInput.focus();
                 else if (!isLabelValid) addressLabelInput.focus();
+                return;
+            }
+
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : "";
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin" style="font-size: 18px;">progress_activity</span> Saving Address...';
+                submitBtn.style.opacity = "0.75";
+            }
+
+            try {
+                const formData = new FormData(form);
+                const body = Object.fromEntries(formData.entries());
+
+                const res = await fetch("/profile/address/add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Accept": "application/json",
+                    },
+                    body: JSON.stringify(body),
+                });
+
+                const data = await res.json().catch(() => ({}));
+
+                if (res.ok && data.success) {
+                    if (typeof showNotification === "function") {
+                        showNotification("success", data.message || "Address created successfully.");
+                    }
+                    setTimeout(() => {
+                        window.location.href = data.redirectTo || "/profile/address";
+                    }, 400);
+                } else {
+                    const errorMsg = data.message || "Failed to save address. Please try again.";
+                    if (typeof showNotification === "function") {
+                        showNotification("error", errorMsg);
+                    }
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnHtml;
+                        submitBtn.style.opacity = "";
+                    }
+                }
+            } catch (err) {
+                console.error("Add address AJAX error:", err);
+                if (typeof showNotification === "function") {
+                    showNotification("error", "An unexpected error occurred. Please try again.");
+                }
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
+                    submitBtn.style.opacity = "";
+                }
             }
         });
     });

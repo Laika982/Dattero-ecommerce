@@ -2,8 +2,7 @@ import express from "express";
 const router = express.Router();
 
 import upload from "../../middleware/upload.js";
-import { isAdminAuthenticated,
-  isAdminLoggedIn, } from "../../middleware/authMidilware.js";
+import { isAdminAuthenticated } from "../../middleware/authMidilware.js";
 
 
 import productController from "../../controllers/admin/productController.js";
@@ -16,22 +15,22 @@ import productController from "../../controllers/admin/productController.js";
 router.get("/products", isAdminAuthenticated, productController.productInfo);
 router.get("/addProduct", isAdminAuthenticated, productController.loadAddProduct);
 router.post(
-    "/addProduct",
-    isAdminAuthenticated,
-    upload.array("images", 5),
-    productController.addProduct
+  "/addProduct",
+  isAdminAuthenticated,
+  upload.array("images", 5),
+  productController.addProduct
 );
 router.get(
-    "/editProduct/:id",
-    isAdminAuthenticated,
-    productController.loadEditProduct
+  "/editProduct/:id",
+  isAdminAuthenticated,
+  productController.loadEditProduct
 );
 
 router.put(
-    "/editProduct/:id",
-    isAdminAuthenticated,
-    upload.array("images", 5),
-    productController.editProduct
+  "/editProduct/:id",
+  isAdminAuthenticated,
+  upload.array("images", 5),
+  productController.editProduct
 );
 router.delete("/deleteProduct/:id", isAdminAuthenticated, productController.deleteProduct);
 

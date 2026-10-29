@@ -29,6 +29,7 @@ export const applyCheckoutDiscounts = async ({
   couponCode,
   cartItems,
   validateCoupon,
+  excludeOrderId = null,
 }) => {
   let coupon = null;
   let couponDiscount = 0;
@@ -39,6 +40,7 @@ export const applyCheckoutDiscounts = async ({
       userId: user?._id || user,
       subtotal,
       cartItems,
+      excludeOrderId,
     });
     coupon = couponResult.coupon;
     couponDiscount = Math.min(subtotal, couponResult.discount);
@@ -48,7 +50,7 @@ export const applyCheckoutDiscounts = async ({
   const remaining = Math.max(0, subtotal - couponDiscount);
   const referralDiscount = Math.min(
     remaining,
-    calculateOfferDiscount(remaining, referralOffer),
+    calculateOfferDiscount(remaining, referralOffer)
   );
 
   return {

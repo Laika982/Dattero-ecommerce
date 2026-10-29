@@ -540,77 +540,77 @@
         }
       })();
 
-      function togglePasswordVisibility(id) {
-        const input = document.getElementById(id);
-        if (!input) return;
-        const container = input.closest('.relative') || input.parentElement;
-        const btn = (input.nextElementSibling && input.nextElementSibling.tagName === 'BUTTON')
-          ? input.nextElementSibling
-          : (container ? container.querySelector('button[type="button"]') : null);
-        const icon = btn
-          ? btn.querySelector('.material-symbols-outlined')
-          : (container ? container.querySelector('.material-symbols-outlined') : null);
+    function togglePasswordVisibility(id) {
+      const input = document.getElementById(id);
+      if (!input) return;
+      const container = input.closest('.relative') || input.parentElement;
+      const btn = (input.nextElementSibling && input.nextElementSibling.tagName === 'BUTTON')
+        ? input.nextElementSibling
+        : (container ? container.querySelector('button[type="button"]') : null);
+      const icon = btn
+        ? btn.querySelector('.material-symbols-outlined')
+        : (container ? container.querySelector('.material-symbols-outlined') : null);
 
-        if (input.type === 'password') {
-          input.type = 'text';
-          if (icon) {
-            icon.textContent = 'visibility_off';
-            if (icon.dataset) icon.dataset.icon = 'visibility_off';
-          }
-        } else {
-          input.type = 'password';
-          if (icon) {
-            icon.textContent = 'visibility';
-            if (icon.dataset) icon.dataset.icon = 'visibility';
-          }
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) {
+          icon.textContent = 'visibility_off';
+          if (icon.dataset) icon.dataset.icon = 'visibility_off';
+        }
+      } else {
+        input.type = 'password';
+        if (icon) {
+          icon.textContent = 'visibility';
+          if (icon.dataset) icon.dataset.icon = 'visibility';
         }
       }
-      window.togglePasswordVisibility = togglePasswordVisibility;
+    }
+    window.togglePasswordVisibility = togglePasswordVisibility;
 
-      function updateCartBadge(count) {
-        const num = Number(count) || 0;
-        const badges = document.querySelectorAll('.cart-badge');
-        badges.forEach(badge => {
-          if (num > 0) {
-            badge.textContent = num > 99 ? '99+' : num;
-            badge.classList.remove('hidden');
-          } else {
-            badge.textContent = '';
-            badge.classList.add('hidden');
-          }
-        });
-      }
-      window.updateCartBadge = updateCartBadge;
+    function updateCartBadge(count) {
+      const num = Number(count) || 0;
+      const badges = document.querySelectorAll('.cart-badge');
+      badges.forEach(badge => {
+        if (num > 0) {
+          badge.textContent = num > 99 ? '99+' : num;
+          badge.classList.remove('hidden');
+        } else {
+          badge.textContent = '';
+          badge.classList.add('hidden');
+        }
+      });
+    }
+    window.updateCartBadge = updateCartBadge;
 
-      // Global response interceptor for blocked account handling & cart badge sync
-      (function () {
-        const originalFetch = window.fetch;
-        if (!originalFetch) return;
-        window.fetch = async function (...args) {
-          const response = await originalFetch.apply(this, args);
-          if (response.status === 403) {
-            try {
-              const clone = response.clone();
-              const data = await clone.json();
-              if (data && (data.isBlocked || data.redirectTo)) {
-                window.location.href = data.redirectTo || "/login?blocked=true";
+    // Global response interceptor for blocked account handling & cart badge sync
+    (function () {
+      const originalFetch = window.fetch;
+      if (!originalFetch) return;
+      window.fetch = async function (...args) {
+        const response = await originalFetch.apply(this, args);
+        if (response.status === 403) {
+          try {
+            const clone = response.clone();
+            const data = await clone.json();
+            if (data && (data.isBlocked || data.redirectTo)) {
+              window.location.href = data.redirectTo || "/login?blocked=true";
+            }
+          } catch (_) { }
+        } else if (response.ok) {
+          try {
+            const clone = response.clone();
+            const data = await clone.json();
+            if (data && typeof data === 'object') {
+              if (typeof data.cartCount === 'number') {
+                updateCartBadge(data.cartCount);
+              } else if (data.cart && Array.isArray(data.cart.items)) {
+                const total = data.cart.items.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+                updateCartBadge(total);
               }
-            } catch (_) {}
-          } else if (response.ok) {
-            try {
-              const clone = response.clone();
-              const data = await clone.json();
-              if (data && typeof data === 'object') {
-                if (typeof data.cartCount === 'number') {
-                  updateCartBadge(data.cartCount);
-                } else if (data.cart && Array.isArray(data.cart.items)) {
-                  const total = data.cart.items.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
-                  updateCartBadge(total);
-                }
-              }
-            } catch (_) {}
-          }
-          return response;
-        };
-      })();
+            }
+          } catch (_) { }
+        }
+        return response;
+      };
+    })();
   </script>

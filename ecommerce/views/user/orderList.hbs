@@ -1,13 +1,14 @@
 {{>user/header}}
+<div class="flex min-h-screen">
+  {{> user/profileSidebar activeTab="orders"}}
 
-<!-- Main Content Area -->
-<main class="flex-1 px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-16 bg-surface min-h-screen safe-bottom-padding">
+  <!-- Main Content Area -->
+  <main class="flex-1 w-full min-w-0 px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 md:ml-64 pb-16 safe-bottom-padding">
 
-    <div class="max-w-max-width mx-auto px-2 sm:px-container-padding mt-2 sm:mt-6">
-    {{> user/notification}}
-</div>
-
-<div class="max-w-4xl mx-auto">
+<div class="max-w-max-width mx-auto">
+    <div class="mt-2 sm:mt-4 mb-4">
+      {{> user/notification}}
+    </div>
 
     <!-- Mobile Account Navigation Tabs with Scroll Option -->
     <div class="md:hidden mb-6">
@@ -107,6 +108,12 @@
             Pending
         </a>
         <a 
+            href="/order/orders?status=failed{{#if search}}&search={{search}}{{/if}}" 
+            class="px-5 py-2 rounded-full text-label-md transition-all shrink-0 font-medium {{#if isFailed}}bg-on-surface text-surface shadow-sm{{else}}border border-outline/20 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{{/if}}"
+        >
+            Failed
+        </a>
+        <a 
             href="/order/orders?status=in_transit{{#if search}}&search={{search}}{{/if}}" 
             class="px-5 py-2 rounded-full text-label-md transition-all shrink-0 font-medium {{#if isInTransit}}bg-on-surface text-surface shadow-sm{{else}}border border-outline/20 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{{/if}}"
         >
@@ -179,13 +186,20 @@
 
                 </div>
 
-                <div class="flex flex-col items-end">
+                <div class="w-full md:w-auto flex flex-row md:flex-col justify-between md:justify-center items-center md:items-end mt-2 md:mt-0">
 
-                    <span class="px-3 py-1 rounded-full bg-secondary-container text-on-surface text-[11px] font-bold tracking-widest uppercase mb-2">
+                    {{#if (eq this.payment_status "failed")}}
+                    <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-[11px] font-bold tracking-widest uppercase mb-0 md:mb-2 flex items-center gap-1.5 shadow-xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+                        Payment Failed
+                    </span>
+                    {{else}}
+                    <span class="px-3 py-1 rounded-full bg-secondary-container text-on-surface text-[11px] font-bold tracking-widest uppercase mb-0 md:mb-2">
                         {{formatStatus this.order_status}}
                     </span>
+                    {{/if}}
 
-                    <span class="font-headline-lg text-on-surface text-2xl">
+                    <span class="font-headline-lg text-on-surface text-xl sm:text-2xl">
                         ₹{{this.final_amount}}
                     </span>
 
@@ -195,17 +209,21 @@
 
             <div class="h-px bg-on-surface/5 w-full mb-6"></div>
 
-            <div class="flex justify-between items-center">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
 
                 <div class="flex items-center gap-2 text-on-surface-variant text-sm">
 
-                    {{#if (eq this.order_status "return_requested")}}
+                    {{#if (eq this.payment_status "failed")}}
+
+                        <span class="material-symbols-outlined text-red-600 scale-90">error</span>
+                        <span class="text-red-600 font-medium">Payment was unsuccessful</span>
+
+                    {{else if (eq this.order_status "return_requested")}}
 
                         <span class="material-symbols-outlined text-primary scale-90">assignment_return</span>
                         <span>Return requested</span>
 
-                    {{else}}
-                    {{#if (eq this.order_status "delivered")}}
+                    {{else if (eq this.order_status "delivered")}}
 
                         <span
                             class="material-symbols-outlined text-green-600 scale-90"
@@ -218,6 +236,11 @@
                             Delivered
                         </span>
 
+                    {{else if (eq this.order_status "cancelled")}}
+
+                        <span class="material-symbols-outlined text-red-600 scale-90">cancel</span>
+                        <span class="text-red-600 font-medium">Order cancelled</span>
+
                     {{else}}
 
                         <span class="material-symbols-outlined text-primary scale-90">
@@ -228,7 +251,6 @@
                             Order placed successfully
                         </span>
 
-                    {{/if}}
                     {{/if}}
 
                 </div>
@@ -241,31 +263,38 @@
                     >
                         View Details
                     </a>
-{{#unless (eq this.order_status "cancelled")}}
 
-    {{#if (eq this.order_status "delivered")}}
+                    {{#if (eq this.payment_status "failed")}}
 
-        <form action="/order/orders/{{this.order_id}}/buy-again" method="POST">
-            <button
-                type="submit"
-                class="px-5 py-2 rounded-lg border border-outline text-label-md hover:bg-surface-container-high transition-colors"
-            >
-                Buy Again
-            </button>
-        </form>
+                        <a
+                            href="/checkout?orderId={{this.order_id}}&fresh=1"
+                            class="px-5 py-2 rounded-lg bg-on-surface text-surface text-label-md hover:bg-primary transition-colors flex items-center gap-1.5 font-medium shadow-sm active:scale-95 cursor-pointer"
+                        >
+                            <span class="material-symbols-outlined text-[16px]">refresh</span>
+                            <span>Retry Payment</span>
+                        </a>
 
-    {{else}}
+                    {{else if (eq this.order_status "delivered")}}
 
-        <a
-            href="/order/orders/{{this.order_id}}/track"
-            class="px-5 py-2 rounded-lg bg-on-surface text-surface text-label-md hover:bg-primary transition-colors"
-        >
-            Track Order
-        </a>
+                        <form action="/order/orders/{{this.order_id}}/buy-again" method="POST" class="buy-again-form">
+                            <button
+                                type="submit"
+                                class="px-5 py-2 rounded-lg border border-outline text-label-md hover:bg-surface-container-high transition-colors"
+                            >
+                                Buy Again
+                            </button>
+                        </form>
 
-    {{/if}}
+                    {{else if (ne this.order_status "cancelled")}}
 
-{{/unless}}
+                        <a
+                            href="/order/orders/{{this.order_id}}/track"
+                            class="px-5 py-2 rounded-lg bg-on-surface text-surface text-label-md hover:bg-primary transition-colors"
+                        >
+                            Track Order
+                        </a>
+
+                    {{/if}}
 
                 </div>
 
@@ -397,8 +426,9 @@
     {{/if}}
 
     </div>
+  </div>
+  </main>
 </div>
-</main>
 
 <script>
     // Search elements
@@ -483,6 +513,59 @@
 
     });
 
+    // Handle Buy Again forms via AJAX
+    document.addEventListener('submit', async (e) => {
+        const form = e.target.closest('.buy-again-form');
+        if (!form) return;
+        e.preventDefault();
+
+        const btn = form.querySelector('button[type="submit"]');
+        const originalText = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[16px] inline-block align-middle mr-1">sync</span> Adding...';
+        }
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            });
+            const data = await response.json().catch(() => ({}));
+            if (response.ok && data.success) {
+                if (window.showNotification) {
+                    window.showNotification('success', data.message || 'Products added to cart');
+                }
+                setTimeout(() => {
+                    window.location.href = data.redirectTo || '/cart';
+                }, 600);
+            } else {
+                const errMsg = data.message || 'Failed to add items to cart.';
+                if (window.showNotification) {
+                    window.showNotification('error', errMsg);
+                } else {
+                    alert(errMsg);
+                }
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            }
+        } catch (err) {
+            console.error('Buy again error:', err);
+            if (window.showNotification) {
+                window.showNotification('error', 'Network error. Please try again.');
+            }
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+    });
+
     // Account navigation tabs scrolling & drag interactions
     const navTabs = document.getElementById('account-nav-tabs');
     if (navTabs) {
@@ -525,6 +608,107 @@
     }
 </script>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    async function handleRetryPayment(orderId) {
+        if (!orderId) return;
+        try {
+            if (window.showNotification) {
+                window.showNotification('info', 'Initiating payment...');
+            }
 
+            const response = await fetch(`/order/orders/${encodeURIComponent(orderId)}/retry-payment`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Unable to initiate payment retry.');
+            }
+
+            if (!window.Razorpay) {
+                throw new Error('Payment gateway failed to load. Please check your internet connection.');
+            }
+
+            const checkout = new window.Razorpay({
+                key: data.key,
+                amount: data.order.amount,
+                currency: data.order.currency,
+                name: 'Nutri Burfi',
+                description: `Payment for Order #${orderId}`,
+                order_id: data.order.id,
+                prefill: data.prefill,
+                theme: { color: '#7b5900' },
+                modal: {
+                    ondismiss: function () {
+                        if (window.showNotification) {
+                            window.showNotification('info', 'Payment checkout closed. You can retry anytime.');
+                        }
+                    },
+                },
+                handler: async function (paymentResult) {
+                    try {
+                        const verifyRes = await fetch(`/order/orders/${encodeURIComponent(orderId)}/verify-retry-payment`, {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest',
+                            },
+                            body: JSON.stringify(paymentResult),
+                        });
+                        const verifyData = await verifyRes.json();
+
+                        if (verifyRes.ok && verifyData.success) {
+                            if (window.showNotification) {
+                                window.showNotification('success', 'Payment successful! Order updated.');
+                            }
+                            setTimeout(() => {
+                                window.location.href = `/order/order-success/${encodeURIComponent(orderId)}`;
+                            }, 500);
+                        } else {
+                            throw new Error(verifyData.message || 'Payment verification failed.');
+                        }
+                    } catch (verifyErr) {
+                        if (window.showNotification) {
+                            window.showNotification('error', verifyErr.message || 'Payment verification failed.');
+                        } else {
+                            alert(verifyErr.message || 'Payment verification failed.');
+                        }
+                    }
+                },
+            });
+
+            checkout.on('payment.failed', function (paymentEvent) {
+                if (window.showNotification) {
+                    window.showNotification('error', paymentEvent.error?.description || 'Payment failed. You can try again.');
+                }
+            });
+
+            checkout.open();
+        } catch (err) {
+            console.error('Retry payment error:', err);
+            if (window.showNotification) {
+                window.showNotification('error', err.message || 'Unable to retry payment.');
+            } else {
+                alert(err.message || 'Unable to retry payment.');
+            }
+        }
+    }
+</script>
+
+<style>
+  @media (min-width: 768px) {
+    footer {
+      margin-left: 16rem;
+      width: calc(100% - 16rem);
+    }
+  }
+</style>
 
 {{> user/footer}}

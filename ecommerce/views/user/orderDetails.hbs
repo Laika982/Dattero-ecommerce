@@ -10,7 +10,7 @@
 <nav class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md mb-4">
   <a
     class="hover:text-primary transition-colors"
-    href="order/orders"
+    href="/order/orders"
   >
     Orders
   </a>
@@ -34,14 +34,22 @@
     Placed on {{formatDate order.createdAt}}
   </p>
 
+  {{#if (eq order.payment_status "failed")}}
+  <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full font-label-md text-[12px] uppercase tracking-wider font-bold flex items-center gap-1.5 shadow-xs">
+    <span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+    Payment Failed
+  </span>
+  {{else}}
   <span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full font-label-md text-[12px] uppercase tracking-wider">
     {{formatStatus order.order_status}}
   </span>
+  {{/if}}
 
 </div>
 </div>
 </div>
 <div class="flex flex-wrap items-center gap-3">
+{{#unless (eq order.payment_status "failed")}}
 {{#if hasInvoiceItems}}
 <button type="button" data-invoice-download data-order-id="{{order.order_id}}" class="flex items-center gap-2 px-6 py-3 border border-outline/20 text-on-surface hover:bg-surface-container transition-all active:scale-95 rounded font-label-md text-label-md">
   <span class="material-symbols-outlined">download</span>
@@ -68,8 +76,26 @@
   Order Cancelled
 </span>
 {{/if}}
+{{/unless}}
 </div>
 </header>
+{{#if (eq order.payment_status "failed")}}
+<section class="mb-8 border border-red-200 bg-red-50/70 rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
+    <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-full bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0">
+            <span class="material-symbols-outlined text-[24px]">error</span>
+        </div>
+        <div>
+            <h3 class="font-headline-sm text-base sm:text-lg font-bold text-red-900">Payment Failed</h3>
+            <p class="text-xs sm:text-sm text-red-700 mt-0.5">The payment for this order was not completed. You can retry payment now to confirm and process your order.</p>
+        </div>
+    </div>
+    <a href="/checkout?orderId={{order.order_id}}&fresh=1" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm font-semibold flex items-center gap-2 shadow-sm transition-all active:scale-95 shrink-0 cursor-pointer">
+        <span class="material-symbols-outlined text-[18px]">refresh</span>
+        Retry Payment Now
+    </a>
+</section>
+{{/if}}
 {{#if order.return_request.status}}
 <section id="returnRequest" class="mb-8 border border-outline-variant/30 bg-surface-container-lowest p-6 sm:p-8">
     <div role="status">
@@ -156,17 +182,30 @@
 
       </div>
 
-      <div class="flex flex-wrap gap-4 pt-4 border-t border-on-surface/5">
+      <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-on-surface/5">
 
-        {{#if (eq this.status "delivered")}}
+        {{#if this.canReview}}
+          {{#unless this.is_cancelled}}
           <button
-            class="px-6 py-2.5 bg-black text-white font-label-md text-label-md rounded hover:bg-zinc-800 transition-all active:scale-95"
+            type="button"
+            class="open-review-btn px-5 py-2.5 bg-black text-white hover:bg-zinc-800 font-label-md text-sm font-semibold rounded-xl transition-all active:scale-95 cursor-pointer flex items-center gap-2 shadow-sm"
+            data-product-id="{{#if this.productIdString}}{{this.productIdString}}{{else}}{{this.product_id}}{{/if}}"
+            data-product-name="{{this.product_name}}"
+            data-product-image="{{this.product_image}}"
+            data-weight="{{this.weight}}"
+            data-rating="{{#if this.existingReview}}{{this.existingReview.rating}}{{else}}5{{/if}}"
+            data-title="{{#if this.existingReview}}{{this.existingReview.title}}{{/if}}"
+            data-review="{{#if this.existingReview}}{{this.existingReview.review}}{{/if}}"
+            data-has-existing="{{#if this.existingReview}}true{{else}}false{{/if}}"
           >
-            Write a Review
+            <span class="material-symbols-outlined text-[18px]">rate_review</span>
+            <span>{{#if this.existingReview}}Edit Review ({{this.existingReview.rating}}★){{else}}Write a Review{{/if}}</span>
           </button>
+          {{/unless}}
         {{/if}}
 
         {{#if (eq this.status "pending")}}
+          {{#unless (eq ../order.payment_status "failed")}}
           <button
             type="button"
             data-cancel-item
@@ -176,6 +215,7 @@
           >
             Cancel Item
           </button>
+          {{/unless}}
         {{/if}}
 
         {{#if (eq this.status "cancelled")}}
@@ -321,6 +361,118 @@
 </div>
 </div>
 </div>
+
+<!-- =========================
+     Write a Review Modal
+========================== -->
+<div id="orderReviewModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="orderReviewModalTitle" style="display: none;">
+    <div class="w-full max-w-lg bg-surface rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden my-8 transform transition-all">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between px-6 py-5 border-b border-outline-variant/20 bg-surface-container-low">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-surface flex items-center justify-center text-amber-500 shadow-sm border border-outline-variant/20">
+                    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                </div>
+                <div>
+                    <h3 id="orderReviewModalTitle" class="font-headline-lg text-lg font-bold text-ink-black">
+                        Write a Review
+                    </h3>
+                    <p id="orderReviewModalSubtitle" class="text-xs text-on-surface-variant line-clamp-1 max-w-[260px] sm:max-w-xs">
+                        Rate and share your feedback
+                    </p>
+                </div>
+            </div>
+            <button type="button" id="closeOrderReviewModalBtn" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-ink-black hover:bg-surface-container-high transition-colors cursor-pointer" aria-label="Close modal">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+
+        <!-- Modal Form -->
+        <form id="orderReviewForm" class="p-6 flex flex-col gap-5">
+            <input type="hidden" id="modalProductId" name="productId" value="">
+            <input type="hidden" id="modalRatingInput" name="rating" value="5">
+
+            <!-- Product Preview Card -->
+            <div class="flex items-center gap-3.5 p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/20">
+                <img id="modalProductImage" src="" alt="" class="w-14 h-14 rounded-xl object-cover bg-surface shrink-0 border border-outline-variant/20">
+                <div class="min-w-0 flex-1">
+                    <p id="modalProductName" class="font-headline-lg text-sm font-semibold text-ink-black truncate"></p>
+                    <p id="modalProductWeight" class="text-xs text-on-surface-variant mt-0.5"></p>
+                </div>
+            </div>
+
+            <!-- Star Rating Picker -->
+            <div class="flex flex-col items-center justify-center py-2">
+                <label class="font-label-md text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-2">
+                    Your Rating
+                </label>
+                <div id="modalStarPicker" class="flex items-center gap-1.5 cursor-pointer">
+                    <button type="button" data-star-value="1" class="order-star-btn p-1 rounded-lg hover:scale-110 transition-transform focus:outline-none" aria-label="1 star">
+                        <span class="material-symbols-outlined text-[34px] text-amber-500 pointer-events-none" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </button>
+                    <button type="button" data-star-value="2" class="order-star-btn p-1 rounded-lg hover:scale-110 transition-transform focus:outline-none" aria-label="2 stars">
+                        <span class="material-symbols-outlined text-[34px] text-amber-500 pointer-events-none" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </button>
+                    <button type="button" data-star-value="3" class="order-star-btn p-1 rounded-lg hover:scale-110 transition-transform focus:outline-none" aria-label="3 stars">
+                        <span class="material-symbols-outlined text-[34px] text-amber-500 pointer-events-none" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </button>
+                    <button type="button" data-star-value="4" class="order-star-btn p-1 rounded-lg hover:scale-110 transition-transform focus:outline-none" aria-label="4 stars">
+                        <span class="material-symbols-outlined text-[34px] text-amber-500 pointer-events-none" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </button>
+                    <button type="button" data-star-value="5" class="order-star-btn p-1 rounded-lg hover:scale-110 transition-transform focus:outline-none" aria-label="5 stars">
+                        <span class="material-symbols-outlined text-[34px] text-amber-500 pointer-events-none" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </button>
+                </div>
+                <span id="modalStarRatingLabel" class="text-xs font-semibold text-ink-black mt-1.5 h-4">
+                    Excellent (5/5)
+                </span>
+            </div>
+
+            <!-- Review Title / Headline -->
+            <div class="flex flex-col gap-1.5">
+                <label for="modalReviewTitle" class="font-label-md text-xs font-semibold text-ink-black">
+                    Review Title <span class="text-on-surface-variant/70 font-normal">(Optional)</span>
+                </label>
+                <input type="text" id="modalReviewTitle" name="title" maxlength="100"
+                    placeholder="e.g., Incredible taste & high protein!"
+                    class="w-full px-4 py-2.5 rounded-xl border border-outline-variant/30 bg-surface-container-low text-ink-black text-sm placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary focus:border-transparent focus:outline-none transition-all">
+            </div>
+
+            <!-- Review Body -->
+            <div class="flex flex-col gap-1.5">
+                <div class="flex items-center justify-between">
+                    <label for="modalReviewText" class="font-label-md text-xs font-semibold text-ink-black">
+                        Review Details <span class="text-error font-bold">*</span>
+                    </label>
+                    <span id="modalCharCount" class="text-[11px] text-on-surface-variant">0/1000</span>
+                </div>
+                <textarea id="modalReviewText" name="review" rows="4" required maxlength="1000"
+                    placeholder="Share your thoughts on the taste, texture, nutritional value, and packaging..."
+                    class="w-full px-4 py-3 rounded-xl border border-outline-variant/30 bg-surface-container-low text-ink-black text-sm placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary focus:border-transparent focus:outline-none transition-all resize-none"></textarea>
+            </div>
+
+            <!-- User identity note -->
+            {{#if user}}
+            <div class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-surface-container-low/60 text-xs text-on-surface-variant">
+                <img src="{{#if user.profileImage}}{{user.profileImage}}{{else}}/images/avathar.jpg{{/if}}" alt="{{user.name}}" class="w-6 h-6 rounded-full object-cover border border-outline-variant/20" onerror="this.onerror=null; this.src='/images/avathar.jpg';">
+                <span>Reviewing publicly as <strong class="text-ink-black">{{user.name}}</strong></span>
+            </div>
+            {{/if}}
+
+            <!-- Action Buttons -->
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-outline-variant/20">
+                <button type="button" id="cancelOrderReviewBtn" class="px-5 py-2.5 rounded-xl border border-outline-variant/30 hover:bg-surface-container-high text-ink-black font-label-md text-xs sm:text-sm font-semibold transition-colors cursor-pointer">
+                    Cancel
+                </button>
+                <button type="submit" id="submitOrderReviewBtn" class="px-6 py-2.5 rounded-xl bg-ink-black hover:bg-neutral-800 text-white font-label-md text-xs sm:text-sm font-semibold transition-all active:scale-95 flex items-center gap-2 shadow-sm cursor-pointer">
+                    <span id="submitOrderReviewBtnText">Submit Review</span>
+                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 </main>
 </div>
 <!-- Footer -->
@@ -374,6 +526,63 @@
       returnReasonDialog.addEventListener('click', (event) => {
         if (event.target === returnReasonDialog) returnReasonDialog.close();
       });
+
+      const returnForm = returnReasonDialog.querySelector('form');
+      if (returnForm) {
+        returnForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const reasonInput = document.getElementById('returnReason');
+          const reason = reasonInput?.value.trim() || '';
+
+          if (reason.length < 10 || reason.length > 500) {
+            showNotification('error', 'Please provide a return reason between 10 and 500 characters.');
+            reasonInput?.focus();
+            return;
+          }
+
+          const submitBtn = returnForm.querySelector('button[type="submit"]');
+          const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">sync</span> Submitting...';
+          }
+
+          try {
+            const response = await fetch(returnForm.action, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify({ reason })
+            });
+
+            const data = await response.json().catch(() => ({}));
+
+            if (response.ok && data.success) {
+              returnReasonDialog.close();
+              showNotification('success', data.message || 'Your return request has been submitted.');
+              setTimeout(() => {
+                window.location.reload();
+              }, 800);
+            } else {
+              showNotification('error', data.message || 'Unable to submit return request.');
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+              }
+            }
+          } catch (err) {
+            console.error('Return request submission error:', err);
+            showNotification('error', 'Unable to submit your return request. Please try again.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = originalBtnHtml;
+            }
+          }
+        });
+      }
     }
 
     function showCancelConfirmation(entireOrder = false) {
@@ -510,5 +719,309 @@
                 nav.classList.remove('shadow-md');
             }
         });
+
+        // =============================================
+        // Order Item Review Modal & Submission Logic
+        // =============================================
+        const orderReviewModal = document.getElementById('orderReviewModal');
+        const closeOrderReviewModalBtn = document.getElementById('closeOrderReviewModalBtn');
+        const cancelOrderReviewBtn = document.getElementById('cancelOrderReviewBtn');
+        const orderReviewForm = document.getElementById('orderReviewForm');
+        const modalProductId = document.getElementById('modalProductId');
+        const modalRatingInput = document.getElementById('modalRatingInput');
+        const modalProductName = document.getElementById('modalProductName');
+        const modalProductImage = document.getElementById('modalProductImage');
+        const modalProductWeight = document.getElementById('modalProductWeight');
+        const modalReviewTitle = document.getElementById('modalReviewTitle');
+        const modalReviewText = document.getElementById('modalReviewText');
+        const modalCharCount = document.getElementById('modalCharCount');
+        const modalStarRatingLabel = document.getElementById('modalStarRatingLabel');
+        const orderReviewModalTitle = document.getElementById('orderReviewModalTitle');
+        const orderReviewModalSubtitle = document.getElementById('orderReviewModalSubtitle');
+        const submitOrderReviewBtn = document.getElementById('submitOrderReviewBtn');
+        const submitOrderReviewBtnText = document.getElementById('submitOrderReviewBtnText');
+
+        const orderRatingLabels = {
+            1: 'Poor (1/5)',
+            2: 'Fair (2/5)',
+            3: 'Good (3/5)',
+            4: 'Very Good (4/5)',
+            5: 'Excellent (5/5)'
+        };
+
+        function updateModalStarVisuals(rating) {
+            const starBtns = document.querySelectorAll('.order-star-btn');
+            starBtns.forEach(btn => {
+                const val = parseInt(btn.dataset.starValue);
+                const icon = btn.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    if (val <= rating) {
+                        icon.style.fontVariationSettings = "'FILL' 1";
+                        icon.classList.remove('text-outline-variant/40');
+                        icon.classList.add('text-amber-500');
+                    } else {
+                        icon.style.fontVariationSettings = "'FILL' 0";
+                        icon.classList.remove('text-amber-500');
+                        icon.classList.add('text-outline-variant/40');
+                    }
+                }
+            });
+            if (modalStarRatingLabel) {
+                modalStarRatingLabel.textContent = orderRatingLabels[rating] || `${rating}/5`;
+            }
+        }
+
+        function updateModalCharCount() {
+            if (!modalReviewText || !modalCharCount) return;
+            const len = modalReviewText.value.length;
+            modalCharCount.textContent = `${len}/1000`;
+            if (len >= 950) {
+                modalCharCount.classList.add('text-amber-600', 'font-semibold');
+            } else {
+                modalCharCount.classList.remove('text-amber-600', 'font-semibold');
+            }
+        }
+
+        if (modalReviewText) {
+            modalReviewText.addEventListener('input', updateModalCharCount);
+        }
+
+        const starBtns = document.querySelectorAll('.order-star-btn');
+        starBtns.forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                const hoverVal = parseInt(btn.dataset.starValue);
+                updateModalStarVisuals(hoverVal);
+            });
+
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const selectedVal = parseInt(btn.dataset.starValue);
+                if (modalRatingInput) modalRatingInput.value = selectedVal;
+                updateModalStarVisuals(selectedVal);
+            });
+        });
+
+        const starPickerContainer = document.getElementById('modalStarPicker');
+        if (starPickerContainer) {
+            starPickerContainer.addEventListener('mouseleave', () => {
+                const currentVal = parseInt(modalRatingInput?.value) || 5;
+                updateModalStarVisuals(currentVal);
+            });
+        }
+
+        function openOrderReviewModalFromBtn(button) {
+            if (!orderReviewModal || !button) return;
+            const pId = button.dataset.productId;
+            const pName = button.dataset.productName || 'Product';
+            const pImage = button.dataset.productImage || '';
+            const pWeight = button.dataset.weight || '';
+            const rating = parseInt(button.dataset.rating) || 5;
+            const title = button.dataset.title || '';
+            const review = button.dataset.review || '';
+            const hasExisting = button.dataset.hasExisting === 'true';
+
+            if (modalProductId) modalProductId.value = pId;
+            if (modalRatingInput) modalRatingInput.value = rating;
+            if (modalProductName) modalProductName.textContent = pName;
+            if (modalProductImage) modalProductImage.src = pImage;
+            if (modalProductWeight) modalProductWeight.textContent = pWeight ? `Weight: ${pWeight}` : '';
+            if (modalReviewTitle) modalReviewTitle.value = title;
+            if (modalReviewText) modalReviewText.value = review;
+
+            if (orderReviewModalTitle) {
+                orderReviewModalTitle.textContent = hasExisting ? 'Update Your Review' : 'Write a Review';
+            }
+            if (orderReviewModalSubtitle) {
+                orderReviewModalSubtitle.textContent = pName;
+            }
+            if (submitOrderReviewBtnText) {
+                submitOrderReviewBtnText.textContent = hasExisting ? 'Update Review' : 'Submit Review';
+            }
+
+            updateModalStarVisuals(rating);
+            updateModalCharCount();
+
+            orderReviewModal.classList.remove('hidden');
+            orderReviewModal.classList.add('flex');
+            orderReviewModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOrderReviewModal() {
+            if (!orderReviewModal) return;
+            orderReviewModal.classList.remove('flex');
+            orderReviewModal.classList.add('hidden');
+            orderReviewModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.open-review-btn').forEach(btn => {
+            btn.addEventListener('click', () => openOrderReviewModalFromBtn(btn));
+        });
+
+        if (closeOrderReviewModalBtn) {
+            closeOrderReviewModalBtn.addEventListener('click', closeOrderReviewModal);
+        }
+        if (cancelOrderReviewBtn) {
+            cancelOrderReviewBtn.addEventListener('click', closeOrderReviewModal);
+        }
+
+        if (orderReviewModal) {
+            orderReviewModal.addEventListener('click', (e) => {
+                if (e.target === orderReviewModal) closeOrderReviewModal();
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeOrderReviewModal();
+        });
+
+        if (orderReviewForm) {
+            orderReviewForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const pId = modalProductId?.value;
+                const rating = parseInt(modalRatingInput?.value) || 5;
+                const title = modalReviewTitle?.value || '';
+                const review = modalReviewText?.value || '';
+
+                if (!pId) {
+                    showNotification('error', 'Product identifier missing.');
+                    return;
+                }
+
+                if (!review.trim() || review.trim().length < 3) {
+                    showNotification('error', 'Please provide a review (at least 3 characters).');
+                    modalReviewText?.focus();
+                    return;
+                }
+
+                try {
+                    if (submitOrderReviewBtn) {
+                        submitOrderReviewBtn.disabled = true;
+                        submitOrderReviewBtnText.textContent = 'Submitting...';
+                    }
+
+                    const response = await fetch(`/products/${encodeURIComponent(pId)}/review`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ rating, title, review })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        throw new Error(data.message || 'Unable to submit review.');
+                    }
+
+                    closeOrderReviewModal();
+                    showNotification('success', data.message || 'Review submitted successfully!');
+                    setTimeout(() => window.location.reload(), 700);
+                } catch (err) {
+                    console.error('Submit order review error:', err);
+                    showNotification('error', err.message || 'Failed to submit review.');
+                } finally {
+                    if (submitOrderReviewBtn) {
+                        submitOrderReviewBtn.disabled = false;
+                        submitOrderReviewBtnText.textContent = 'Submit Review';
+                    }
+                }
+            });
+        }
     </script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    async function handleRetryPayment(orderId) {
+        if (!orderId) return;
+        try {
+            if (window.showNotification) {
+                window.showNotification('info', 'Initiating payment...');
+            }
+
+            const response = await fetch(`/order/orders/${encodeURIComponent(orderId)}/retry-payment`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Unable to initiate payment retry.');
+            }
+
+            if (!window.Razorpay) {
+                throw new Error('Payment gateway failed to load. Please check your internet connection.');
+            }
+
+            const checkout = new window.Razorpay({
+                key: data.key,
+                amount: data.order.amount,
+                currency: data.order.currency,
+                name: 'Nutri Burfi',
+                description: `Payment for Order #${orderId}`,
+                order_id: data.order.id,
+                prefill: data.prefill,
+                theme: { color: '#7b5900' },
+                modal: {
+                    ondismiss: function () {
+                        if (window.showNotification) {
+                            window.showNotification('info', 'Payment was not completed. You can retry anytime.');
+                        }
+                    },
+                },
+                handler: async function (paymentResult) {
+                    try {
+                        const verifyRes = await fetch(`/order/orders/${encodeURIComponent(orderId)}/verify-retry-payment`, {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest',
+                            },
+                            body: JSON.stringify(paymentResult),
+                        });
+                        const verifyData = await verifyRes.json();
+
+                        if (verifyRes.ok && verifyData.success) {
+                            if (window.showNotification) {
+                                window.showNotification('success', 'Payment successful! Order confirmed.');
+                            }
+                            setTimeout(() => {
+                                window.location.href = `/order/order-success/${encodeURIComponent(orderId)}`;
+                            }, 500);
+                        } else {
+                            throw new Error(verifyData.message || 'Payment verification failed.');
+                        }
+                    } catch (verifyErr) {
+                        if (window.showNotification) {
+                            window.showNotification('error', verifyErr.message || 'Payment verification failed.');
+                        } else {
+                            alert(verifyErr.message || 'Payment verification failed.');
+                        }
+                    }
+                },
+            });
+
+            checkout.on('payment.failed', function (paymentEvent) {
+                if (window.showNotification) {
+                    window.showNotification('error', paymentEvent.error?.description || 'Payment failed. You can try again.');
+                }
+            });
+
+            checkout.open();
+        } catch (err) {
+            console.error('Retry payment error:', err);
+            if (window.showNotification) {
+                window.showNotification('error', err.message || 'Unable to retry payment.');
+            } else {
+                alert(err.message || 'Unable to retry payment.');
+            }
+        }
+    }
+</script>
 {{> user/footer}}

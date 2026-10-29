@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 import { dirname } from "path";
 import dotenv from "dotenv";
 import morgan from "morgan";
@@ -36,6 +36,8 @@ import hbs from "hbs";
 import User from "./models/userSchema.js";
 import Cart from "./models/cartSchema.js";
 import methodOverride from "method-override";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -44,6 +46,30 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Security Headers - configured to allow payment gateway popups & iframes (Razorpay)
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    crossOriginOpenerPolicy: false,
+    crossOriginResourcePolicy: false,
+    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+  })
+);
+
+// Auth Rate Limiting
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: "Too many authentication attempts. Please try again after 15 minutes.",
+  },
+});
+app.use(["/login", "/signup", "/verify-otp", "/forgotPassword", "/admin/login"], authLimiter);
 
 // Database
 connectDB();
@@ -59,9 +85,15 @@ app.use(
 // Session
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || "dattero_prod_session_secret_key_safe",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000,
+    },
   })
 );
 
@@ -237,9 +269,55 @@ app.use("/admin/coupons", couponRoutes);
 app.use("/admin/offers", offerRoutes);
 app.use("/admin/sales-report", salesReportRouter);
 
-// Start server
-app.listen(PORT, () => {
-  logger.info(
-    `Server is running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`
+// 404 Handler
+app.use((req, res) => {
+  const isAjax = Boolean(
+    req.xhr ||
+    req.headers["x-requested-with"] === "XMLHttpRequest" ||
+    req.headers["accept"]?.includes("application/json") ||
+    req.headers["content-type"]?.includes("application/json")
   );
+  if (isAjax) {
+    return res.status(404).json({
+      success: false,
+      message: "Resource not found",
+    });
+  }
+  return res.status(404).render("user/page-404", { title: "Page Not Found" });
 });
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  logger.error("Unhandled Application Error: " + (err.stack || err.message || err));
+  if (res.headersSent) {
+    return next(err);
+  }
+  const isAjax = Boolean(
+    req.xhr ||
+    req.headers["x-requested-with"] === "XMLHttpRequest" ||
+    req.headers["accept"]?.includes("application/json") ||
+    req.headers["content-type"]?.includes("application/json")
+  );
+  if (isAjax) {
+    return res.status(err.status || 500).json({
+      success: false,
+      message: process.env.NODE_ENV === "production" ? "Internal server error" : (err.message || "Internal server error"),
+    });
+  }
+  return res.status(err.status || 500).render("user/server-error", {
+    title: "Server Error",
+    message: process.env.NODE_ENV === "production" ? "Something went wrong on our end" : err.message,
+  });
+});
+
+// Start server only when executed directly (not when imported in tests)
+const isMain = Boolean(process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href);
+if (isMain && process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    logger.info(
+      `Server is running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`
+    );
+  });
+}
+
+export default app;

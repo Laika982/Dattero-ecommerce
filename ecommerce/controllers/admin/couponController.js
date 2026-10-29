@@ -103,11 +103,7 @@ const createCoupon = async (req, res) => {
       endDate,
     ];
 
-    if (
-      requiredFields.some(
-        (value) => value == null || String(value).trim() === "",
-      )
-    ) {
+    if (requiredFields.some((value) => value == null || String(value).trim() === "")) {
       req.session.error = "All required fields must be filled";
       return res.redirect("/admin/coupons/add");
     }
@@ -122,9 +118,7 @@ const createCoupon = async (req, res) => {
         ? null
         : Number(maxDiscount);
     const parsedUsageLimit =
-      usageLimit == null || String(usageLimit).trim() === ""
-        ? null
-        : Number(usageLimit);
+      usageLimit == null || String(usageLimit).trim() === "" ? null : Number(usageLimit);
 
     if (!/^[A-Z0-9_-]{6,30}$/.test(formatedCouponCode)) {
       req.session.error =
@@ -188,8 +182,7 @@ const createCoupon = async (req, res) => {
       if (category_id === "ALL") {
         finalAppliesTo = "ALL";
       } else if (!category_id || !mongoose.isValidObjectId(category_id)) {
-        req.session.error =
-          "Please select a valid category or choose All Categories";
+        req.session.error = "Please select a valid category or choose All Categories";
         return res.redirect("/admin/coupons/add");
       } else {
         const category = await Category.findById(category_id);
@@ -203,8 +196,7 @@ const createCoupon = async (req, res) => {
       if (product_id === "ALL") {
         finalAppliesTo = "ALL";
       } else if (!product_id || !mongoose.isValidObjectId(product_id)) {
-        req.session.error =
-          "Please select a valid product or choose All Products";
+        req.session.error = "Please select a valid product or choose All Products";
         return res.redirect("/admin/coupons/add");
       } else {
         const product = await Product.findById(product_id);
@@ -330,18 +322,13 @@ const editCoupon = async (req, res) => {
     endDate,
   } = req.body;
 
-  const code =
-    typeof couponCode === "string" ? couponCode.trim().toUpperCase() : "";
+  const code = typeof couponCode === "string" ? couponCode.trim().toUpperCase() : "";
   const value = Number(discountValue);
   const minimum = Number(minAmount);
   const maximum =
-    maxDiscount == null || String(maxDiscount).trim() === ""
-      ? null
-      : Number(maxDiscount);
+    maxDiscount == null || String(maxDiscount).trim() === "" ? null : Number(maxDiscount);
   const usage =
-    usageLimit == null || String(usageLimit).trim() === ""
-      ? null
-      : Number(usageLimit);
+    usageLimit == null || String(usageLimit).trim() === "" ? null : Number(usageLimit);
   const start = new Date(startDate);
   const end = new Date(endDate);
 
@@ -372,11 +359,7 @@ const editCoupon = async (req, res) => {
     return res.redirect(`/admin/coupons/edit/${couponId}`);
   }
 
-  if (
-    Number.isNaN(start.getTime()) ||
-    Number.isNaN(end.getTime()) ||
-    end <= start
-  ) {
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime()) || end <= start) {
     req.session.error = "End date must be after a valid start date";
     return res.redirect(`/admin/coupons/edit/${couponId}`);
   }
@@ -389,8 +372,7 @@ const editCoupon = async (req, res) => {
     if (category_id === "ALL") {
       finalAppliesTo = "ALL";
     } else if (!category_id || !mongoose.isValidObjectId(category_id)) {
-      req.session.error =
-        "Please select a valid category or choose All Categories";
+      req.session.error = "Please select a valid category or choose All Categories";
       return res.redirect(`/admin/coupons/edit/${couponId}`);
     } else {
       const category = await Category.findById(category_id);
@@ -404,8 +386,7 @@ const editCoupon = async (req, res) => {
     if (product_id === "ALL") {
       finalAppliesTo = "ALL";
     } else if (!product_id || !mongoose.isValidObjectId(product_id)) {
-      req.session.error =
-        "Please select a valid product or choose All Products";
+      req.session.error = "Please select a valid product or choose All Products";
       return res.redirect(`/admin/coupons/edit/${couponId}`);
     } else {
       const product = await Product.findById(product_id);
@@ -455,9 +436,7 @@ const editCoupon = async (req, res) => {
   } catch (error) {
     console.error("Edit coupon error:", error);
     req.session.error =
-      error.code === 11000
-        ? "Coupon code already exists"
-        : "Unable to update coupon";
+      error.code === 11000 ? "Coupon code already exists" : "Unable to update coupon";
     return res.redirect(`/admin/coupons/edit/${couponId}`);
   }
 };

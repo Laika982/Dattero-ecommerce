@@ -4,49 +4,20 @@ import cartController from "../../controllers/user/cartController.js";
 
 import { isAuthenticated } from "../../middleware/authMidilware.js";
 
-
 const router = express.Router();
 
+router.get("/", isAuthenticated, cartController.loadCart);
 
-router.get(
-  "/",
-  isAuthenticated,
-  cartController.loadCart
-);
+router.get("/count", isAuthenticated, cartController.getCartCount);
 
-router.get(
-  "/count",
-  isAuthenticated,
-  cartController.getCartCount
-);
+router.post("/add", isAuthenticated, cartController.addToCart);
 
+router.patch("/:variantId/increase", isAuthenticated, cartController.increaseQuantity);
 
-router.post(
-  "/add",
-  isAuthenticated,
-  cartController.addToCart
-);
+router.patch("/:variantId/decrease", isAuthenticated, cartController.decreaseQuantity);
 
+router.patch("/:variantId/change-variant", isAuthenticated, cartController.changeVariant);
 
-router.patch(
-  "/:variantId/increase",
-  isAuthenticated,
-  cartController.increaseQuantity
-);
-
-
-router.patch(
-  "/:variantId/decrease",
-  isAuthenticated,
-  cartController.decreaseQuantity
-);
-
-
-router.delete(
-  "/:variantId",
-  isAuthenticated,
-  cartController.removeFromCart
-);
-
+router.delete("/:variantId", isAuthenticated, cartController.removeFromCart);
 
 export default router;

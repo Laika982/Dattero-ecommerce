@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon -e js,mjs,json,hbs app.js"
+    "dev": "nodemon -e js,mjs,json,hbs app.js",
+    "test": "node --test tests/**/*.test.js"
   },
   "keywords": [
     "ecommerce",
@@ -24,15 +25,17 @@
     "ejs": "^3.1.10",
     "exceljs": "^4.4.0",
     "express": "^4.19.2",
+    "express-rate-limit": "^8.7.1",
     "express-session": "^1.19.0",
     "hbs": "^4.2.1",
+    "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.3",
     "method-override": "^3.0.0",
     "mongoose": "^9.7.2",
     "morgan": "^1.11.0",
     "multer": "^2.2.0",
     "multer-storage-cloudinary": "^4.0.0",
-    "nodemailer": "^9.0.3",
+    "nodemailer": "^10.2.1",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "pdfkit": "^0.20.2",
@@ -40,6 +43,8 @@
     "winston": "^3.19.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "eslint": "^10.13.0",
+    "nodemon": "^3.1.4",
+    "prettier": "^3.9.10"
   }
 }

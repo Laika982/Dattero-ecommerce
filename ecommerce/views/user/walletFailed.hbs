@@ -1,0 +1,85 @@
+{{> user/header}}
+<div class="max-w-max-width mx-auto px-4 sm:px-container-padding mt-4">
+    {{> user/notification}}
+</div>
+
+<!-- Main Content -->
+<main class="flex-grow flex items-center justify-center pt-20 sm:pt-28 pb-12 sm:pb-20 px-4 sm:px-6 safe-bottom-padding">
+    <div class="max-w-2xl w-full text-center">
+        
+        <!-- Animated Hero Icon -->
+        <div class="mb-10 flex justify-center">
+            <div class="relative w-32 h-32 flex items-center justify-center">
+                <div class="absolute inset-0 bg-error/5 rounded-full scale-150 animate-pulse"></div>
+                <div class="relative bg-error text-white w-20 h-20 rounded-full flex items-center justify-center shadow-lg error-shake">
+                    <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'opsz' 48;">account_balance_wallet</span>
+                </div>
+                <!-- Warning badge overlay -->
+                <div class="absolute bottom-2 right-2 bg-amber-500 text-white w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 border-white">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Messaging -->
+        <div class="space-y-stack-md mb-stack-lg">
+            <h1 class="font-headline-xl text-headline-xl text-ink-black tracking-tight">Wallet Top-Up Unsuccessful</h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mx-auto">
+                We couldn't complete your wallet deposit. If any amount was deducted from your bank or card, it will be automatically refunded by your payment provider within 5–7 business days.
+            </p>
+        </div>
+
+        {{#if reason}}
+        <!-- Failure Reason Banner -->
+        <div class="my-6 inline-flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-error/10 text-error text-xs font-semibold max-w-lg mx-auto border border-error/20 text-left shadow-xs">
+            <span class="material-symbols-outlined text-[20px] shrink-0">info</span>
+            <span class="break-words leading-relaxed">Reason: {{reason}}</span>
+        </div>
+        {{/if}}
+
+        <!-- Action Area: Bento Style -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+            <a href="/wallet" class="group relative flex flex-col items-center justify-center p-8 bg-ink-black rounded-xl overflow-hidden transition-all hover:shadow-xl active:scale-95 duration-200 border border-outline-variant/30">
+                <div class="relative z-10 flex flex-col items-center">
+                    <span class="material-symbols-outlined text-white mb-2 text-3xl">refresh</span>
+                    <span class="font-label-md text-label-md text-white uppercase tracking-widest">Retry Top-Up</span>
+                </div>
+            </a>
+
+            <a href="/wallet" class="flex flex-col items-center justify-center p-8 bg-surface-container rounded-xl transition-all hover:bg-surface-container-high active:scale-95 duration-200 border border-outline/5">
+                <span class="material-symbols-outlined text-on-surface-variant mb-2 text-3xl">receipt_long</span>
+                <span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Transaction History</span>
+            </a>
+        </div>
+
+        <div class="mt-4">
+            <a href="/wallet" class="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-blue hover:underline py-2">
+                <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                Return to My Wallet
+            </a>
+        </div>
+
+        <!-- Contextual Help -->
+        <div class="mt-14 p-8 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex flex-col md:flex-row items-center justify-between text-left gap-6">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center">
+                    <span class="material-symbols-outlined text-tertiary">support_agent</span>
+                </div>
+                <div>
+                    <h4 class="font-label-md text-label-md text-on-surface">Need help with your wallet?</h4>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Our support team is available to assist you 24/7.</p>
+                </div>
+            </div>
+            <a href="/contact" class="font-label-md text-label-md text-primary hover:underline transition-all flex items-center gap-1 group">
+                Contact Support
+                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </a>
+        </div>
+
+        <!-- Decorative Subtle Graphic -->
+        <div class="mt-section-gap opacity-30 flex justify-center">
+            <div class="w-48 h-px bg-gradient-to-r from-transparent via-outline to-transparent"></div>
+        </div>
+    </div>
+</main>
+{{> user/footer}}

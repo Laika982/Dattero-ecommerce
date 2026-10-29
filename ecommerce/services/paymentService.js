@@ -43,3 +43,14 @@ export const verifyRazorpaySignature = ({
 
   return expectedSignature === razorpaySignature;
 };
+
+export const fetchRazorpayOrderPayments = async (orderId) => {
+  try {
+    const client = getRazorpayClient();
+    const payments = await client.orders.fetchPayments(orderId);
+    return payments?.items || [];
+  } catch (error) {
+    console.error("fetchRazorpayOrderPayments error:", error);
+    return [];
+  }
+};

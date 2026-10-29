@@ -1,13 +1,12 @@
-import express from "express"
+import express from "express";
 const router = express.Router();
 
+import productContoller from "../../controllers/user/productController.js";
+import { isAuthenticated } from "../../middleware/authMidilware.js";
 
-import productContoller from "../../controllers/user/productController.js"
+router.get("/", productContoller.loadProducts);
+router.get("/:id", productContoller.loadProduct);
+router.post("/:id/review", isAuthenticated, productContoller.submitReview);
+router.post("/review", isAuthenticated, productContoller.submitReview);
 
-
-router.get("/",productContoller.loadProducts)
-
-router.get("/:id",productContoller.loadProduct)
-
-
-export default  router
+export default router;

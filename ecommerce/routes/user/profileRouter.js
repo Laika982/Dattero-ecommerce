@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import { isAuthenticated, isGuest } from "../../middleware/authMidilware.js";
+import { isAuthenticated } from "../../middleware/authMidilware.js";
 
 import profileController from "../../controllers/user/profileController.js";
 import upload from "../../middleware/upload.js";

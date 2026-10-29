@@ -33,6 +33,28 @@ const walletTransactionSchema = new mongoose.Schema(
       required: true,
     },
 
+    status: {
+      type: String,
+      enum: ["COMPLETED", "FAILED", "PENDING"],
+      default: "COMPLETED",
+    },
+
+    failure_reason: {
+      type: String,
+      default: null,
+    },
+
+    razorpay_order_id: {
+      type: String,
+      default: null,
+    },
+
+    payment_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Payment",
+      default: null,
+    },
+
     description: {
       type: String,
       default: "",
@@ -59,7 +81,4 @@ const walletTransactionSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model(
-  "WalletTransaction",
-  walletTransactionSchema
-);
+export default mongoose.model("WalletTransaction", walletTransactionSchema);

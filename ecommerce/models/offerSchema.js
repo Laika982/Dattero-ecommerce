@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 const offerSchema = new mongoose.Schema(
@@ -58,22 +57,12 @@ const offerSchema = new mongoose.Schema(
 );
 
 offerSchema.pre("validate", function () {
-  if (this.start_date && this.end_date &&
-      this.end_date <= this.start_date) {
-    this.invalidate(
-      "end_date",
-      "End date must be after start date"
-    );
+  if (this.start_date && this.end_date && this.end_date <= this.start_date) {
+    this.invalidate("end_date", "End date must be after start date");
   }
 
-  if (
-    this.discount_type === "PERCENTAGE" &&
-    this.discount_value > 100
-  ) {
-    this.invalidate(
-      "discount_value",
-      "Percentage cannot exceed 100"
-    );
+  if (this.discount_type === "PERCENTAGE" && this.discount_value > 100) {
+    this.invalidate("discount_value", "Percentage cannot exceed 100");
   }
 
   if (this.offer_type === "PRODUCT" && !this.product_id) {

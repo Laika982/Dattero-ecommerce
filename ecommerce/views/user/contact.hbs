@@ -13,36 +13,38 @@
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-stack-lg">Send a Message</h2>
 {{> user/notification}}
 
-<form class="space-y-stack-lg">
+<form id="contactForm" action="/contact" method="POST" class="space-y-stack-lg" novalidate>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
 <div class="input-wrapper relative">
-<label class="block font-label-md text-label-md text-on-surface-variant mb-2">First Name</label>
-<input class="w-full bg-surface-gray border border-outline-variant/20 rounded-[12px] focus:ring-2 focus:ring-accent-blue focus:border-accent-blue focus:bg-white px-4 py-3 font-body-lg text-body-lg text-on-surface transition-all" placeholder="Jane" type="text">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="contactFirstName">First Name</label>
+<input id="contactFirstName" name="firstName" class="w-full bg-surface-gray border border-outline-variant/20 rounded-[12px] focus:ring-2 focus:ring-accent-blue focus:border-accent-blue focus:bg-white px-4 py-3 font-body-lg text-body-lg text-on-surface transition-all" placeholder="Jane" type="text">
 </div>
 <div class="input-wrapper relative">
-<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Last Name</label>
-<input class="w-full bg-surface-gray border border-outline-variant/20 rounded-[12px] focus:ring-2 focus:ring-accent-blue focus:border-accent-blue focus:bg-white px-4 py-3 font-body-lg text-body-lg text-on-surface transition-all" placeholder="Doe" type="text">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="contactLastName">Last Name</label>
+<input id="contactLastName" name="lastName" class="w-full bg-surface-gray border border-outline-variant/20 rounded-[12px] focus:ring-2 focus:ring-accent-blue focus:border-accent-blue focus:bg-white px-4 py-3 font-body-lg text-body-lg text-on-surface transition-all" placeholder="Doe" type="text">
 </div>
 </div>
 <div class="input-wrapper relative">
-<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Email Address</label>
-<input class="w-full bg-surface-gray border border-outline-variant/20 rounded-[12px] focus:ring-2 focus:ring-accent-blue focus:border-accent-blue focus:bg-white px-4 py-3 font-body-lg text-body-lg text-on-surface transition-all" placeholder="jane@example.com" type="email">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="contactEmail">Email Address <span class="text-error">*</span></label>
+<input id="contactEmail" name="email" class="w-full bg-surface-gray border border-outline-variant/20 rounded-[12px] focus:ring-2 focus:ring-accent-blue focus:border-accent-blue focus:bg-white px-4 py-3 font-body-lg text-body-lg text-on-surface transition-all" placeholder="jane@example.com" type="email" required>
 </div>
 <div class="input-wrapper relative">
-<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Inquiry Type</label>
-<select class="w-full bg-surface-gray border border-outline-variant/20 rounded-[12px] focus:ring-2 focus:ring-accent-blue focus:border-accent-blue focus:bg-white px-4 py-3 font-body-lg text-body-lg text-on-surface transition-all cursor-pointer">
-<option>General Question</option>
-<option>Wholesale Inquiry</option>
-<option>Order Support</option>
-<option>Press &amp; Media</option>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="contactInquiryType">Inquiry Type</label>
+<select id="contactInquiryType" name="inquiryType" class="w-full bg-surface-gray border border-outline-variant/20 rounded-[12px] focus:ring-2 focus:ring-accent-blue focus:border-accent-blue focus:bg-white px-4 py-3 font-body-lg text-body-lg text-on-surface transition-all cursor-pointer">
+<option value="General Question">General Question</option>
+<option value="Wholesale Inquiry">Wholesale Inquiry</option>
+<option value="Order Support">Order Support</option>
+<option value="Press & Media">Press &amp; Media</option>
 </select>
 </div>
 <div class="input-wrapper relative">
-<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Message</label>
-<textarea class="w-full bg-surface-gray border border-outline-variant/20 rounded-[12px] focus:ring-2 focus:ring-accent-blue focus:border-accent-blue focus:bg-white px-4 py-3 font-body-lg text-body-lg text-on-surface transition-all resize-none" placeholder="How can we help you today?" rows="4"></textarea>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="contactMessage">Message <span class="text-error">*</span></label>
+<textarea id="contactMessage" name="message" class="w-full bg-surface-gray border border-outline-variant/20 rounded-[12px] focus:ring-2 focus:ring-accent-blue focus:border-accent-blue focus:bg-white px-4 py-3 font-body-lg text-body-lg text-on-surface transition-all resize-none" placeholder="How can we help you today?" rows="4" required></textarea>
 </div>
 <div class="pt-stack-md">
-<button class="w-full bg-ink-black text-white font-label-md text-label-md py-4 px-6 rounded-[16px] hover:opacity-90 transition-opacity" type="submit">Send Inquiry</button>
+<button id="contactSubmitBtn" class="w-full bg-ink-black text-white font-label-md text-label-md py-4 px-6 rounded-[16px] hover:opacity-90 transition-opacity flex items-center justify-center gap-2" type="submit">
+  <span>Send Inquiry</span>
+</button>
 </div>
 </form>
 </div>
@@ -140,4 +142,88 @@
 </div>
 </div>
 </main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const contactForm = document.getElementById('contactForm');
+    if (!contactForm) return;
+
+    contactForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById('contactFirstName')?.value.trim() || '';
+      const lastName = document.getElementById('contactLastName')?.value.trim() || '';
+      const email = document.getElementById('contactEmail')?.value.trim() || '';
+      const inquiryType = document.getElementById('contactInquiryType')?.value || '';
+      const message = document.getElementById('contactMessage')?.value.trim() || '';
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        if (window.showNotification) {
+          window.showNotification('error', 'Please enter a valid email address.');
+        } else {
+          alert('Please enter a valid email address.');
+        }
+        document.getElementById('contactEmail')?.focus();
+        return;
+      }
+
+      if (!message) {
+        if (window.showNotification) {
+          window.showNotification('error', 'Please enter your message.');
+        } else {
+          alert('Please enter your message.');
+        }
+        document.getElementById('contactMessage')?.focus();
+        return;
+      }
+
+      const submitBtn = document.getElementById('contactSubmitBtn');
+      const originalHtml = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">sync</span> Sending...';
+      }
+
+      try {
+        const response = await fetch('/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({ firstName, lastName, email, inquiryType, message })
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (response.ok && data.success) {
+          if (window.showNotification) {
+            window.showNotification('success', data.message || 'Message sent successfully!');
+          }
+          contactForm.reset();
+        } else {
+          const errMsg = data.message || 'Failed to send message. Please try again.';
+          if (window.showNotification) {
+            window.showNotification('error', errMsg);
+          } else {
+            alert(errMsg);
+          }
+        }
+      } catch (err) {
+        console.error('Contact submit error:', err);
+        if (window.showNotification) {
+          window.showNotification('error', 'Network error. Please try again.');
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHtml;
+        }
+      }
+    });
+  });
+</script>
+
 {{>user/footer}}

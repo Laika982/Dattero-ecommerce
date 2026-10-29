@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Product from "../../models/productSchema.js";
 import Variant from "../../models/variantSchema.js";
 import Category from "../../models/categorySchema.js";
@@ -8,9 +9,9 @@ const productInfo = async (req, res) => {
   try {
     const { search, filter, page = 1 } = req.query;
 
-    const limit = 5;
+    const limit = 10;
 
-    const currentPage = Number(page);
+    const currentPage = Math.max(1, Number(page) || 1);
 
     const skip = (currentPage - 1) * limit;
 
@@ -24,45 +25,37 @@ const productInfo = async (req, res) => {
     }
 
     if (filter) {
-      let variantQuery = {};
-      if (filter === "in-stock") {
-        variantQuery = {
-          stock_quantity: {
-            $gt: 10,
-          },
-        };
-      }
-
-      if (filter === "low-stock") {
-        variantQuery = {
-          stock_quantity: {
-            $gt: 0,
-            $lte: 10,
-          },
-        };
-      }
-
-      if (filter === "out-of-stock") {
-        variantQuery = {
-          stock_quantity: 0,
-        };
-      }
-
       if (filter === "listed") {
         productQuery.is_listed = true;
-      }
-
-      if (filter === "unlisted") {
+      } else if (filter === "unlisted") {
         productQuery.is_listed = false;
+      } else if (["in-stock", "low-stock", "out-of-stock"].includes(filter)) {
+        const stockAgg = await Variant.aggregate([
+          {
+            $group: {
+              _id: "$product_id",
+              totalStock: { $sum: "$stock_quantity" },
+            },
+          },
+        ]);
+
+        if (filter === "in-stock") {
+          const inStockIds = stockAgg
+            .filter((item) => item.totalStock > 10)
+            .map((item) => item._id);
+          productQuery._id = { $in: inStockIds };
+        } else if (filter === "low-stock") {
+          const lowStockIds = stockAgg
+            .filter((item) => item.totalStock > 0 && item.totalStock <= 10)
+            .map((item) => item._id);
+          productQuery._id = { $in: lowStockIds };
+        } else if (filter === "out-of-stock") {
+          const hasStockIds = stockAgg
+            .filter((item) => item.totalStock > 0)
+            .map((item) => item._id);
+          productQuery._id = { $nin: hasStockIds };
+        }
       }
-
-      const variants = await Variant.find(variantQuery).select("product_id");
-
-      const productIds = variants.map((variant) => variant.product_id);
-
-      productQuery._id = {
-        $in: productIds,
-      };
     }
 
     const totalProducts = await Product.countDocuments(productQuery);
@@ -76,19 +69,23 @@ const productInfo = async (req, res) => {
       .limit(limit)
       .lean();
 
-    const productsWithStock = await Variant.distinct("product_id", {
-      stock_quantity: {
-        $gt: 0,
+    const stockAggAll = await Variant.aggregate([
+      {
+        $group: {
+          _id: "$product_id",
+          totalStock: { $sum: "$stock_quantity" },
+        },
       },
-    });
+    ]);
+    const hasStockIdsAll = stockAggAll
+      .filter((item) => item.totalStock > 0)
+      .map((item) => item._id);
 
     const outOfStockProducts = await Product.countDocuments({
-      _id: {
-        $nin: productsWithStock,
-      },
+      _id: { $nin: hasStockIdsAll },
     });
-    const activeCategories = await Product.countDocuments({
-      is_listed: true,
+    const activeCategories = await Category.countDocuments({
+      isListed: true,
     });
 
     const productIds = products.map((product) => product._id);
@@ -100,13 +97,53 @@ const productInfo = async (req, res) => {
     }).lean();
 
     products.forEach((product) => {
-      product.variants = variants.filter(
-        (variant) => variant.product_id.toString() === product._id.toString(),
+      const pVariants = variants.filter(
+        (variant) => variant.product_id.toString() === product._id.toString()
       );
+      product.variants = pVariants;
+      product.variantCount = pVariants.length;
+
+      const totalStock = pVariants.reduce(
+        (sum, v) => sum + (Number(v.stock_quantity) || 0),
+        0
+      );
+      product.totalStock = totalStock;
+      product.isInStock = totalStock > 10;
+      product.isLowStock = totalStock > 0 && totalStock <= 10;
+      product.isOutOfStock = totalStock <= 0 || pVariants.length === 0;
+
+      if (pVariants.length > 0) {
+        const prices = pVariants
+          .map((v) => Number(v.regular_price))
+          .filter((p) => !isNaN(p));
+        if (prices.length > 0) {
+          const minPrice = Math.min(...prices);
+          const maxPrice = Math.max(...prices);
+          product.minPrice = minPrice;
+          product.maxPrice = maxPrice;
+          product.hasPriceRange = minPrice !== maxPrice;
+          product.priceDisplay =
+            minPrice === maxPrice
+              ? `₹${minPrice}`
+              : `₹${minPrice} - ₹${maxPrice}`;
+        } else {
+          product.priceDisplay = "—";
+        }
+
+        const weights = pVariants.map((v) => v.weight).filter(Boolean);
+        product.variantSummary = weights.join(", ");
+        product.sku = pVariants[0].sku;
+      } else {
+        product.priceDisplay = "—";
+        product.variantSummary = "";
+        product.sku = "No SKU";
+      }
     });
 
-    const totalPages = Math.ceil(totalProducts / limit);
+    const totalPages = Math.ceil(totalProducts / limit) || 1;
     const pages = generatePageArray(totalPages);
+    const startIndex = totalProducts === 0 ? 0 : skip + 1;
+    const endIndex = Math.min(skip + limit, totalProducts);
 
     return res.render("admin/products", {
       products,
@@ -115,6 +152,9 @@ const productInfo = async (req, res) => {
       currentPage,
       totalPages,
       totalProducts,
+      startIndex,
+      endIndex,
+      limit,
       outOfStockProducts,
       activeCategories,
       pages,
@@ -210,7 +250,7 @@ const addProduct = async (req, res) => {
         Number.isNaN(Number(variant.stock_quantity)) ||
         Number(variant.stock_quantity) < 0
       ) {
-  
+
         return redirectWithError("Stock must be a valid positive number.");
       }
     }
@@ -289,14 +329,16 @@ const loadEditProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!id) {
+    if (!id || !mongoose.isValidObjectId(id)) {
+      req.session.error = "Invalid product ID";
       return res.redirect("/admin/product/products");
     }
 
     const product = await Product.findById(id).populate("category_id").lean();
 
     if (!product) {
-      return res.status(404).send("Product not found");
+      req.session.error = "Product not found";
+      return res.redirect("/admin/product/products");
     }
 
     const variants = await Variant.find({
@@ -330,6 +372,13 @@ const editProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
+    if (!id || !mongoose.isValidObjectId(id)) {
+      return redirectWithError(
+        "Invalid product ID.",
+        "/admin/product/products",
+      );
+    }
+
     const {
       category_id,
       product_name,
@@ -338,13 +387,6 @@ const editProduct = async (req, res) => {
       deletedImages,
       status,
     } = req.body;
-
-    if (!id) {
-      return redirectWithError(
-        "Product ID is required.",
-        "/admin/product/products",
-      );
-    }
 
     const product = await Product.findById(id);
 
@@ -544,20 +586,28 @@ const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
+    if (!id || !mongoose.isValidObjectId(id)) {
+      req.session.error = "Invalid product ID";
+      return res.redirect("/admin/product/products");
+    }
+
     const product = await Product.findById(id);
 
     if (!product) {
-      return res.status(404).send("Category not found");
+      req.session.error = "Product not found";
+      return res.redirect("/admin/product/products");
     }
 
     await Product.findByIdAndDelete(id);
+    await Variant.deleteMany({ product_id: id });
 
-    req.session.success = `Product Deleted Successfull`
+    req.session.success = `Product Deleted Successfully`;
 
     return res.redirect("/admin/product/products");
   } catch (error) {
-    console.error("Error deleting category:", error);
-    return res.status(500).send("Internal Server Error");
+    console.error("Error deleting product:", error);
+    req.session.error = "Unable to delete product";
+    return res.redirect("/admin/product/products");
   }
 };
 

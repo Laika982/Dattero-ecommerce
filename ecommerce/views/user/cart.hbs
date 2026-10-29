@@ -10,7 +10,7 @@
 
     <!-- Page Header -->
     <header class="mb-6 sm:mb-stack-lg text-left">
-        <h1 class="font-display-lg text-2xl sm:text-3xl md:text-display-lg text-ink-black mb-1 sm:mb-3 font-bold">
+        <h1 class="text-2xl md:text-3xl font-bold text-on-surface tracking-tight mb-1 sm:mb-3">
             Your Cart
         </h1>
 
@@ -98,18 +98,31 @@
                         </div>
 
 
-                        <!-- Variant Information -->
-                        <span
-                            class="font-label-md text-[11px] sm:text-xs text-ink-black/60 inline-block mb-1 sm:mb-2 truncate max-w-full"
-                        >
-                            {{#if weight}}
-                                {{weight}}
-                            {{/if}}
+                        <!-- Variant Information & Selector -->
+                        <div class="flex items-center flex-wrap gap-2 mb-2">
+                            <label class="sr-only" for="cart-variant-select-{{cartItemId}}">Change Variant</label>
+                            <div class="relative inline-flex items-center">
+                                <select
+                                    id="cart-variant-select-{{cartItemId}}"
+                                    data-change-variant
+                                    data-current-variant-id="{{variantId}}"
+                                    class="appearance-none bg-surface-gray hover:bg-surface-variant text-ink-black font-label-md text-[11px] sm:text-xs font-semibold py-1 sm:py-1.5 pl-2.5 sm:pl-3 pr-7 sm:pr-8 rounded-lg border border-outline-variant/30 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all cursor-pointer"
+                                    aria-label="Change variant"
+                                >
+                                    {{#each availableVariants}}
+                                        <option value="{{this.variantId}}" {{#if this.isCurrent}}selected{{/if}} {{#if this.isOutOfStock}}disabled{{/if}}>
+                                            {{this.weight}} - ₹{{this.price}}{{#if this.isOutOfStock}} (Out of stock){{/if}}
+                                        </option>
+                                    {{/each}}
+                                </select>
+                            </div>
 
                             {{#if sku}}
-                                • SKU: {{sku}}
+                                <span class="font-label-md text-[11px] sm:text-xs text-ink-black/50">
+                                    SKU: {{sku}}
+                                </span>
                             {{/if}}
-                        </span>
+                        </div>
 
 
                         <!-- Price -->
@@ -622,6 +635,51 @@
         } finally {
             if (button.isConnected) {
                 button.disabled = false;
+            }
+        }
+    });
+
+    document.addEventListener("change", async function (event) {
+        const select = event.target.closest("[data-change-variant]");
+        if (!select) return;
+
+        const cartItem = select.closest("[data-cart-item]");
+        const oldVariantId = select.dataset.currentVariantId || cartItem?.dataset.variantId;
+        const newVariantId = select.value;
+
+        if (!oldVariantId || !newVariantId) return;
+        if (oldVariantId === newVariantId) return;
+
+        select.disabled = true;
+
+        try {
+            const response = await fetch(`/cart/${encodeURIComponent(oldVariantId)}/change-variant`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    oldVariantId,
+                    newVariantId,
+                }),
+            });
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                showNotification("error", data.message || "Unable to change variant.");
+                select.value = oldVariantId;
+                return;
+            }
+
+            window.location.reload();
+        } catch (error) {
+            console.error("Cart change variant error:", error);
+            showNotification("error", "Unable to change variant.");
+            select.value = oldVariantId;
+        } finally {
+            if (select.isConnected) {
+                select.disabled = false;
             }
         }
     });

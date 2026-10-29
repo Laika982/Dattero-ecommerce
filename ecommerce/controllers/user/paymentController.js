@@ -15,122 +15,18 @@ import { validateCoupon } from "../../services/couponService.js";
 
 import {
   createRazorpayOrder,
-  verifyRazorpaySignature,
 } from "../../services/paymentService.js";
-
-export const createPaymentOrder = async (req, res) => {
-  try {
-    const userId = req.user._id;
-
-    const { amount } = req.body;
-
-    if (!amount || amount <= 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid payment amount",
-      });
-    }
-
-    /*
-      IMPORTANT:
-      In production, don't trust amount directly from frontend.
-      Calculate it again from cart + coupon + offers.
-    */
-
-    const receipt = `receipt_${Date.now()}`;
-
-    const razorpayOrder = await createRazorpayOrder({
-      amount,
-      receipt,
-    });
-
-    await Payment.create({
-      user_id: userId,
-      razorpay_order_id: razorpayOrder.id,
-      amount,
-      method: "RAZORPAY",
-      status: "PENDING",
-    });
-
-    return res.status(200).json({
-      success: true,
-      order: razorpayOrder,
-      key: process.env.RAZORPAY_KEY_ID,
-    });
-  } catch (error) {
-    console.error("Create payment error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Unable to create payment",
-    });
-  }
-};
-
-export const verifyPayment = async (req, res) => {
-  try {
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-    } = req.body;
-
-    const isValid = verifyRazorpaySignature({
-      razorpayOrderId: razorpay_order_id,
-      razorpayPaymentId: razorpay_payment_id,
-      razorpaySignature: razorpay_signature,
-    });
-
-    if (!isValid) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid payment signature",
-      });
-    }
-
-    const payment = await Payment.findOne({
-      razorpay_order_id,
-    });
-
-    if (!payment) {
-      return res.status(404).json({
-        success: false,
-        message: "Payment record not found",
-      });
-    }
-
-    payment.razorpay_payment_id =
-      razorpay_payment_id;
-
-    payment.razorpay_signature =
-      razorpay_signature;
-
-    payment.status = "SUCCESS";
-
-    await payment.save();
-
-    return res.status(200).json({
-      success: true,
-      message: "Payment verified successfully",
-    });
-  } catch (error) {
-    console.error("Verify payment error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Payment verification failed",
-    });
-  }
-};
 
 export const createCheckoutPaymentOrder = async (req, res) => {
   try {
     const { addressId } = req.body;
-    const couponCode = (
-      typeof req.body.couponCode === "string" && req.body.couponCode.trim()
-        ? req.body.couponCode.trim()
-        : (req.session?.appliedCouponCode || "")
-    );
+    const hasExplicitCouponInBody = typeof req.body.couponCode === "string";
+    const couponCode = hasExplicitCouponInBody
+      ? req.body.couponCode.trim()
+      : (typeof req.session?.appliedCouponCode === "string" ? req.session.appliedCouponCode.trim() : "");
+    if (!couponCode && req.session) {
+      req.session.appliedCouponCode = null;
+    }
     const userId = req.user._id;
 
     if (!mongoose.isValidObjectId(addressId)) {
@@ -164,9 +60,9 @@ export const createCheckoutPaymentOrder = async (req, res) => {
       const price = variant && getOfferedUnitPrice(variant, offerPricing.get(variant._id.toString()));
 
       if (!product || !variant || product.is_blocked || !product.is_listed ||
-          variant.product_id.toString() !== product._id.toString() ||
-          !Number.isInteger(cartItem.quantity) || cartItem.quantity < 1 ||
-          variant.stock_quantity < cartItem.quantity || !Number.isFinite(price) || price <= 0) {
+        variant.product_id.toString() !== product._id.toString() ||
+        !Number.isInteger(cartItem.quantity) || cartItem.quantity < 1 ||
+        variant.stock_quantity < cartItem.quantity || !Number.isFinite(price) || price <= 0) {
         return res.status(400).json({
           success: false,
           message: "Your cart changed or contains an unavailable item. Refresh checkout and try again.",
@@ -270,6 +166,7 @@ export const paymentFailed = async (req, res) => {
     });
   }
 };
-
 export const paymentFailedPage = (req, res) =>
-  res.status(200).render("user/paymentFailed");
+  res.status(200).render("user/paymentFailed", {
+    orderId: req.query.orderId || "",
+  });

@@ -62,7 +62,10 @@ export const getChartDataHelper = async (filter = "monthly") => {
       const month = String(d.getMonth() + 1).padStart(2, "0");
       const day = String(d.getDate()).padStart(2, "0");
       const key = `${year}-${month}-${day}`;
-      const dayLabel = d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric" });
+      const dayLabel = d.toLocaleDateString("en-IN", {
+        weekday: "short",
+        day: "numeric",
+      });
       days.push(key);
       labels.push(dayLabel);
     }
@@ -126,7 +129,20 @@ export const getChartDataHelper = async (filter = "monthly") => {
     { $sort: { _id: 1 } },
   ]);
 
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   const revenueData = [];
   const ordersData = [];
 

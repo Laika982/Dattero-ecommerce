@@ -1,4 +1,6 @@
+import mongoose from "mongoose";
 import Category from "../../models/categorySchema.js";
+import Product from "../../models/productSchema.js";
 import { generateActivePageArray } from "../../utils/pagination.js";
 
 const categoryInfo = async (req, res) => {
@@ -102,13 +104,13 @@ const addCategory = async (req, res) => {
   try {
     const { category_name, description } = req.body;
 
-    if(!category_name && !description){
-      req.session.error = " Both field require"
-      return res.redirect("/admin/category/addCategory")
+    if (!category_name || !description || !category_name.trim() || !description.trim()) {
+      req.session.error = "Both fields are required";
+      return res.redirect("/admin/category/addCategory");
     }
 
     const category = await Category.findOne({
-      category_name: category_name.trim(),
+      category_name: { $regex: new RegExp(`^${category_name.trim()}$`, "i") },
     });
 
     if (category) {
@@ -122,9 +124,9 @@ const addCategory = async (req, res) => {
       description: description.trim(),
       image: req.file
         ? {
-            url: req.file.path,
-            public_id: req.file.filename,
-          }
+          url: req.file.path,
+          public_id: req.file.filename,
+        }
         : {},
       isListed: true,
     });
@@ -144,11 +146,16 @@ const editCategoryInfo = async (req, res) => {
   try {
     const { id } = req.params;
 
+    if (!mongoose.isValidObjectId(id)) {
+      req.session.error = "Invalid category";
+      return res.redirect("/admin/category/categories");
+    }
+
     const category = await Category.findById(id).lean();
 
     if (!category) {
-      req.session.success = "Category Not Found"
-      return res.status(404)
+      req.session.error = "Category Not Found";
+      return res.redirect("/admin/category/categories");
     }
 
     return res.render("admin/editCategory", {
@@ -165,11 +172,16 @@ const editCategory = async (req, res) => {
   try {
     const { id } = req.params;
 
+    if (!mongoose.isValidObjectId(id)) {
+      req.session.error = "Invalid category";
+      return res.redirect("/admin/category/categories");
+    }
+
     const category = await Category.findById(id);
 
     if (!category) {
-      req.session.success = "Category Not Found"
-      return res.status(404)
+      req.session.error = "Category Not Found";
+      return res.redirect("/admin/category/categories");
     }
 
     const updateData = {
@@ -180,7 +192,7 @@ const editCategory = async (req, res) => {
 
       isListed: req.body.isListed === "true",
     };
-    
+
 
     // Remove existing image
     if (req.body.removeImage === "true") {
@@ -216,16 +228,27 @@ const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
 
+    if (!mongoose.isValidObjectId(id)) {
+      req.session.error = "Invalid category";
+      return res.redirect("/admin/category/categories");
+    }
+
     const category = await Category.findById(id);
 
     if (!category) {
-      req.session.error = "Category Not Found"
-      return res.status(404)
+      req.session.error = "Category Not Found";
+      return res.redirect("/admin/category/categories");
+    }
+
+    const productCount = await Product.countDocuments({ category_id: id });
+    if (productCount > 0) {
+      req.session.error = `Cannot delete category. ${productCount} active ${productCount === 1 ? "product depends" : "products depend"} on this category.`;
+      return res.redirect("/admin/category/categories");
     }
 
     await Category.findByIdAndDelete(id);
 
-    req.session.success = "Category Deleted Succssfully"
+    req.session.success = "Category Deleted Successfully";
 
     return res.redirect("/admin/category/categories");
   } catch (error) {

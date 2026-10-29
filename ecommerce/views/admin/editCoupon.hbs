@@ -121,6 +121,7 @@
       display: inline-block;
       line-height: 1;
     }
+    
 
     .apple-shadow {
       box-shadow: 0 40px 40px -40px rgba(0, 0, 0, 0.04);
@@ -201,9 +202,6 @@
                       <option value="PERCENTAGE" {{#if (eq coupon.discount_type "PERCENTAGE")}}selected{{/if}}>Percentage Discount (%)</option>
                       <option value="FIXED" {{#if (eq coupon.discount_type "FIXED")}}selected{{/if}}>Fixed Amount Discount (₹)</option>
                     </select>
-                    <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[20px]">
-                      expand_more
-                    </span>
                   </div>
                 </div>
 
@@ -230,9 +228,6 @@
                       <option value="active" {{#if coupon.is_active}}selected{{/if}}>Active</option>
                       <option value="inactive" {{#unless coupon.is_active}}selected{{/unless}}>Inactive</option>
                     </select>
-                    <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[20px]">
-                      expand_more
-                    </span>
                   </div>
                 </div>
               </div>
@@ -306,9 +301,6 @@
                     <option value="CATEGORY" {{#if (eq coupon.applies_to "CATEGORY")}}selected{{/if}}>Specific Category</option>
                     <option value="PRODUCT" {{#if (eq coupon.applies_to "PRODUCT")}}selected{{/if}}>Specific Product</option>
                   </select>
-                  <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[20px]">
-                    expand_more
-                  </span>
                 </div>
               </div>
 
@@ -339,9 +331,6 @@
                     </option>
                     {{/each}}
                   </select>
-                  <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[20px]">
-                    expand_more
-                  </span>
                 </div>
               </div>
 
@@ -362,9 +351,6 @@
                     </option>
                     {{/each}}
                   </select>
-                  <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[20px]">
-                    expand_more
-                  </span>
                 </div>
               </div>
             </div>

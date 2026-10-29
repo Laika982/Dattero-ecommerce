@@ -121,16 +121,43 @@ const isAdminAuthenticated = (req, res, next) => {
         const token = req.cookies.adminToken;
 
         if (!token) {
+            if (isAjaxOrJson(req)) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Admin authentication required. Please log in.",
+                    redirectTo: "/admin/login",
+                });
+            }
             return res.redirect("/admin/login");
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        if (!decoded || !decoded.isAdmin) {
+            res.clearCookie("adminToken");
+            if (isAjaxOrJson(req)) {
+                return res.status(403).json({
+                    success: false,
+                    message: "Access denied. Admin privileges required.",
+                    redirectTo: "/admin/login",
+                });
+            }
+            return res.redirect("/admin/login");
+        }
 
         req.admin = decoded;
 
         return next();
     } catch (error) {
         res.clearCookie("adminToken");
+
+        if (isAjaxOrJson(req)) {
+            return res.status(401).json({
+                success: false,
+                message: "Session expired or invalid. Please log in again.",
+                redirectTo: "/admin/login",
+            });
+        }
 
         return res.redirect("/admin/login");
     }

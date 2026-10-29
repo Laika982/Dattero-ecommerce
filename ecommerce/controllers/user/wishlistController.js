@@ -1,7 +1,7 @@
+import mongoose from "mongoose";
 import Wishlist from "../../models/wishlistSchema.js";
 import Product from "../../models/productSchema.js";
 import Variant from "../../models/variantSchema.js";
-
 
 export const getWishlist = async (req, res) => {
   try {
@@ -9,11 +9,16 @@ export const getWishlist = async (req, res) => {
 
     const wishlist = await Wishlist.findOne({
       user_id: userId,
-    }).populate("products.product_id").lean();
+    })
+      .populate({
+        path: "products.product_id",
+        populate: { path: "category_id" },
+      })
+      .lean();
 
     const products = (wishlist?.products || [])
       .map((item) => item.product_id)
-      .filter(Boolean);
+      .filter((p) => p && p.is_listed && p.category_id && p.category_id.isListed === true);
 
     const variants = await Variant.find({
       product_id: { $in: products.map((product) => product._id) },
@@ -31,12 +36,14 @@ export const getWishlist = async (req, res) => {
     products.forEach((product) => {
       const availableVariants = variantsByProduct.get(product._id.toString()) || [];
       availableVariants.sort((left, right) => {
-        const leftPrice = left.sale_price != null && left.sale_price < left.regular_price
-          ? left.sale_price
-          : left.regular_price;
-        const rightPrice = right.sale_price != null && right.sale_price < right.regular_price
-          ? right.sale_price
-          : right.regular_price;
+        const leftPrice =
+          left.sale_price != null && left.sale_price < left.regular_price
+            ? left.sale_price
+            : left.regular_price;
+        const rightPrice =
+          right.sale_price != null && right.sale_price < right.regular_price
+            ? right.sale_price
+            : right.regular_price;
         return leftPrice - rightPrice;
       });
       product.defaultVariantId = availableVariants[0]?._id.toString() || "";
@@ -74,12 +81,19 @@ export const addToWishlist = async (req, res) => {
     const userId = req.user._id;
     const { productId } = req.params;
 
+    if (!productId || !mongoose.isValidObjectId(productId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product ID",
+      });
+    }
+
     const product = await Product.findOne({
       _id: productId,
       is_listed: true,
-    });
+    }).populate("category_id");
 
-    if (!product) {
+    if (!product || !product.category_id || product.category_id.isListed === false) {
       return res.status(404).json({
         success: false,
         message: "Product unavailable",
@@ -101,8 +115,7 @@ export const addToWishlist = async (req, res) => {
       });
     } else {
       const exists = wishlist.products.some(
-        (item) =>
-          item.product_id.toString() === productId.toString()
+        (item) => item.product_id.toString() === productId.toString()
       );
 
       if (exists) {
@@ -138,6 +151,13 @@ export const removeFromWishlist = async (req, res) => {
     const userId = req.user._id;
     const { productId } = req.params;
 
+    if (!productId || !mongoose.isValidObjectId(productId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product ID",
+      });
+    }
+
     const wishlist = await Wishlist.findOne({
       user_id: userId,
     });
@@ -150,8 +170,7 @@ export const removeFromWishlist = async (req, res) => {
     }
 
     wishlist.products = wishlist.products.filter(
-      (item) =>
-        item.product_id.toString() !== productId.toString()
+      (item) => item.product_id.toString() !== productId.toString()
     );
 
     await wishlist.save();

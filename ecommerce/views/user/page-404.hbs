@@ -1,0 +1,70 @@
+{{>user/header}}
+<main class="relative min-h-screen bg-background p-container-padding flex items-center justify-center">
+<div class="max-w-max-width mx-auto px-container-padding mt-6">
+    {{> user/notification}}
+</div>
+
+    <div class="flex flex-col w-full">
+        <div
+            class="relative w-full max-w-5xl mx-auto flex flex-col md:flex-row items-stretch gap-grid-gutter rounded-xl bg-surface shadow-xl overflow-hidden p-container-padding group">
+            <!-- Ambient Background Glow -->
+            <div
+                class="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-transparent via-brand-gold/10 to-transparent rounded-full blur-3xl opacity-50 pointer-events-none transition-opacity duration-1000 group-hover:opacity-80">
+            </div>
+            <div
+                class="absolute -bottom-32 -left-32 w-96 h-96 bg-gradient-to-tr from-transparent via-primary-fixed/30 to-transparent rounded-full blur-3xl opacity-50 pointer-events-none">
+            </div>
+            <!-- Left Accent Column -->
+            <div class="relative hidden md:flex w-16 flex-col items-center justify-center">
+                <div
+                    class="[writing-mode:vertical-rl] rotate-180 font-label-sm text-label-sm text-on-surface-variant tracking-[0.2em] uppercase opacity-70">
+                    Not Found
+                </div>
+                <div
+                    class="absolute bottom-0 w-px h-32 bg-gradient-to-t from-transparent via-on-surface-variant/20 to-transparent">
+                </div>
+                <div
+                    class="absolute top-0 w-px h-32 bg-gradient-to-b from-transparent via-on-surface-variant/20 to-transparent">
+                </div>
+            </div>
+            <!-- Main Content Area -->
+            <div class="flex-1 flex flex-col justify-center py-stack-lg relative z-10">
+                <!-- Status Indicator -->
+                <div class="mb-stack-lg flex items-center gap-stack-sm">
+                    <div
+                        class="relative w-8 h-8 flex items-center justify-center rounded-full bg-error-container text-on-error-container shadow-sm">
+                        <span class="material-symbols-outlined text-[16px]">search_off</span>
+                    </div>
+                    <span
+                        class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Error 404</span>
+                </div>
+                <!-- Massive 404 Graphic -->
+                <div class="mb-stack-md w-full max-w-sm">
+                    <svg class="w-full fill-on-surface drop-shadow-md" viewbox="0 0 300 120">
+                        <text font-family="Georgia, serif" font-size="120" font-style="italic" font-weight="300"
+                            letter-spacing="-0.05em" x="-4" y="100">404</text>
+                    </svg>
+                </div>
+                <div class="max-w-md">
+                    <h1 class="font-display-lg text-display-lg text-on-surface mb-stack-sm tracking-tight">
+                        Page Not Found</h1>
+                    <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-stack-lg">
+                        The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+                    <div class="flex flex-col sm:flex-row items-center gap-stack-md">
+                        <a href="/"
+                            class="w-full sm:w-auto bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-full shadow-md hover:-translate-y-1 hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group/btn">
+                            <span class="material-symbols-outlined text-[18px]">home</span>
+                            Back to Home
+                        </a>
+                        <a href="/products"
+                            class="w-full sm:w-auto bg-surface-container text-on-surface font-label-md text-label-md px-6 py-3 rounded-full hover:bg-surface-container-high hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                            Explore Products
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{>user/footer}}

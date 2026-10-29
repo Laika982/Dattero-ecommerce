@@ -4,16 +4,8 @@ import { isAuthenticated } from "../../middleware/authMidilware.js";
 
 const router = express.Router();
 
-router.post(
-  "/apply",
-  isAuthenticated,
-  applyCoupon
-);
+router.post("/apply", isAuthenticated, applyCoupon);
 
-router.post(
-  "/remove",
-  isAuthenticated,
-  removeCoupon
-);
+router.post("/remove", isAuthenticated, removeCoupon);
 
-export default router;
+export default router;

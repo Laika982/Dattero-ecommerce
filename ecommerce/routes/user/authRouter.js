@@ -14,6 +14,8 @@ import {
 import userController from "../../controllers/user/authContoller.js";
 import { followReferralInvite, REFERRAL_COOKIE } from "../../services/referralService.js";
 
+import { isAjaxRequest } from "../../utils/isAjax.js";
+
 const router = express.Router();
 
 // ==================== PUBLIC ====================
@@ -29,6 +31,27 @@ router.get("/about", (req, res) => {
 // Contact
 router.get("/contact", (req, res) => {
   res.render("user/contact");
+});
+
+router.post("/contact", (req, res) => {
+  const { firstName, lastName, email, inquiryType, message } = req.body;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email.trim()) || !message || !message.trim()) {
+    if (isAjaxRequest(req)) {
+      return res.status(400).json({ success: false, message: "Please provide a valid email address and message." });
+    }
+    req.session.error = "Please provide a valid email address and message.";
+    return res.redirect("/contact");
+  }
+
+  req.session.success = "Thank you for reaching out! We've received your message and will get back to you shortly.";
+  if (isAjaxRequest(req)) {
+    return res.status(200).json({
+      success: true,
+      message: "Thank you for reaching out! We've received your message and will get back to you shortly."
+    });
+  }
+  return res.redirect("/contact");
 });
 
 // ingredients
@@ -155,7 +178,10 @@ router.get("/auth/google/callback", (req, res, next) => {
 // ==================== AUTHENTICATED ====================
 
 // Logout
-router.post("/logout", isAuthenticated, userController.logoutUser);
-router.get("/logout", (req, res) => res.redirect("/"));
+router.post("/logout", userController.logoutUser);
+router.get("/logout", userController.logoutUser);
+
+// Orders route alias
+router.get("/orders", (req, res) => res.redirect("/order/orders"));
 
 export default router;

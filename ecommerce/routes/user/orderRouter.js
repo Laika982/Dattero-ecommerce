@@ -8,38 +8,24 @@ const router = express.Router();
 
 router.post("/place", isAuthenticated, orderController.placeOrder);
 
-router.get(
-  "/order-success/:orderId",
-  isAuthenticated,
-  orderController.loadOrderSuccess,
-);
+router.get("/order-success/:orderId", isAuthenticated, orderController.loadOrderSuccess);
 
 router.get("/orders", isAuthenticated, orderController.loadOrders);
-router.get(
-  "/orders/:orderId",
-  isAuthenticated,
-  orderController.loadOrderDetails,
-);
+router.get("/orders/:orderId", isAuthenticated, orderController.loadOrderDetails);
 router.post(
   "/orders/:orderId/return-request",
   isAuthenticated,
-  orderController.requestOrderReturn,
+  orderController.requestOrderReturn
 );
-router.get(
-  "/orders/:orderId/track",
-  isAuthenticated,
-  orderController.loadOrderTracking,
-);
-router.post(
-  "/orders/:orderId/buy-again",
-  isAuthenticated,
-  orderController.buyAgain,
-);
+router.get("/orders/:orderId/track", isAuthenticated, orderController.loadOrderTracking);
+router.post("/orders/:orderId/buy-again", isAuthenticated, orderController.buyAgain);
+router.post("/orders/:orderId/retry-payment", isAuthenticated, orderController.retryOrderPayment);
+router.post("/orders/:orderId/verify-retry-payment", isAuthenticated, orderController.verifyRetryPayment);
 
 router.patch(
   "/orders/:orderId/items/:itemId/cancel",
   isAuthenticated,
-  orderController.cancelOrderItem,
+  orderController.cancelOrderItem
 );
 
 router.patch(
@@ -48,10 +34,6 @@ router.patch(
   orderController.cancelEntireOrder
 );
 
-router.get(
-  "/orders/:orderId/invoice",
-  isAuthenticated,
-  orderController.downloadInvoice
-);
+router.get("/orders/:orderId/invoice", isAuthenticated, orderController.downloadInvoice);
 
 export default router;

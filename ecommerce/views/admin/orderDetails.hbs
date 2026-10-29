@@ -292,8 +292,11 @@ Edit Order
 <div class="bg-surface-container-lowest rounded-xl p-6 sm:p-8 shadow-sm ring-1 ring-black/5">
 <h3 class="font-headline-lg text-xl font-bold mb-6">Customer</h3>
 <div class="flex items-center mb-6">
-<div class="w-14 h-14 rounded-full bg-primary-fixed overflow-hidden mr-4 shrink-0 flex items-center justify-center text-primary font-bold text-lg">
-{{order.user_id.name}}
+<div class="w-14 h-14 rounded-full bg-primary-fixed overflow-hidden mr-4 shrink-0 border border-outline-variant/30 flex items-center justify-center">
+<img class="w-full h-full object-cover"
+     src="{{#if order.user_id.profileImage}}{{order.user_id.profileImage}}{{else}}/images/avathar.jpg{{/if}}"
+     alt="{{order.user_id.name}}"
+     onerror="this.onerror=null; this.src='/images/avathar.jpg';">
 </div>
 <div class="min-w-0 flex-1">
 {{#if order.user_id}}

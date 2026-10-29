@@ -132,6 +132,7 @@
         </button>
 
         <form action="/admin/order/orders" method="GET" class="relative w-full flex items-center admin-search-form" data-base-url="/admin/order/orders">
+            {{#if userId}}<input type="hidden" name="userId" value="{{userId}}">{{/if}}
             {{#if status}}<input type="hidden" name="status" value="{{status}}">{{/if}}
             {{#if sort}}<input type="hidden" name="sort" value="{{sort}}">{{/if}}
 
@@ -212,6 +213,45 @@
 <!-- Filters -->
 <div class="flex items-center gap-stack-sm overflow-x-auto pb-2 md:pb-0"><button id="openOrdersFilter" type="button" class="flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant/30 text-on-surface hover:bg-surface-container-low rounded-xl font-label-md transition-colors"><span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span><span>Filter</span></button><button id="openOrdersSort" type="button" class="flex items-center gap-2 px-4 py-2 bg-surface-container-lowest border border-outline-variant/30 text-on-surface hover:bg-surface-container-low rounded-xl font-label-md transition-colors"><span class="material-symbols-outlined text-[18px]" data-icon="swap_vert">swap_vert</span><span>Sort</span></button></div>
 </div>
+<!-- Customer Filter Indicator (When viewing orders for a specific user) -->
+{{#if filteredCustomer}}
+<div class="mb-8 p-4 sm:p-5 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+    <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest border border-outline-variant/30 shrink-0 flex items-center justify-center">
+            {{#if filteredCustomer.profileImage}}
+                <img src="{{filteredCustomer.profileImage}}" alt="{{filteredCustomer.name}}" class="w-full h-full object-cover">
+            {{else}}
+                <span class="material-symbols-outlined text-primary text-[26px]">person</span>
+            {{/if}}
+        </div>
+        <div class="flex flex-col">
+            <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-label-md text-xs font-semibold uppercase tracking-wider">
+                    Customer Filter Active
+                </span>
+                <span class="font-headline-lg text-base sm:text-lg font-bold text-on-surface">
+                    {{filteredCustomer.name}}
+                </span>
+            </div>
+            <div class="flex items-center gap-2 text-xs sm:text-sm text-on-surface-variant mt-0.5 flex-wrap">
+                <span>{{filteredCustomer.email}}</span>
+                {{#if filteredCustomer.phone}}<span>&bull; {{filteredCustomer.phone}}</span>{{/if}}
+                <span>&bull; <strong class="text-on-surface">{{totalOrders}}</strong> total orders found</span>
+            </div>
+        </div>
+    </div>
+    <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+        <a href="/admin/customer/editCustomer/{{filteredCustomer._id}}" class="px-3.5 py-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container-high text-on-surface font-label-md text-xs sm:text-sm border border-outline-variant/30 flex items-center gap-1.5 transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">person</span>
+            <span>Customer Profile</span>
+        </a>
+        <a href="/admin/order/orders" class="px-3.5 py-2 rounded-xl bg-surface-container-high hover:bg-error-container hover:text-error text-on-surface font-label-md text-xs sm:text-sm flex items-center gap-1.5 transition-colors">
+            <span class="material-symbols-outlined text-[16px]">close</span>
+            <span>View All Customers' Orders</span>
+        </a>
+    </div>
+</div>
+{{/if}}
 <!-- Bento Layout Stats -->
 <div class="grid grid-cols-1 md:grid-cols-4 gap-grid-gutter mb-10">
 {{!-- <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
@@ -286,7 +326,7 @@
 <p class="text-[13px] text-outline font-body-md">Showing {{startIndex}} to {{endIndex}} of {{totalOrders}} orders</p>
 <div class="flex items-center gap-2">
 {{#if (gt currentPage 1)}}
-<a href="/admin/order/orders?page={{subtract currentPage 1}}&amp;search={{search}}&amp;status={{status}}&amp;sort={{sort}}" class="p-2 border border-outline-variant/30 rounded-lg hover:bg-surface-container transition-colors" aria-label="Previous page">
+<a href="/admin/order/orders?page={{subtract currentPage 1}}&amp;search={{search}}&amp;status={{status}}&amp;sort={{sort}}{{#if userId}}&amp;userId={{userId}}{{/if}}" class="p-2 border border-outline-variant/30 rounded-lg hover:bg-surface-container transition-colors" aria-label="Previous page">
 <span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span>
 </a>
 {{else}}
@@ -296,7 +336,7 @@
 {{/if}}
 <span class="px-3 text-sm text-on-surface-variant">Page {{currentPage}} of {{totalPages}}</span>
 {{#if (lt currentPage totalPages)}}
-<a href="/admin/order/orders?page={{add currentPage 1}}&amp;search={{search}}&amp;status={{status}}&amp;sort={{sort}}" class="p-2 border border-outline-variant/30 rounded-lg hover:bg-surface-container transition-colors" aria-label="Next page">
+<a href="/admin/order/orders?page={{add currentPage 1}}&amp;search={{search}}&amp;status={{status}}&amp;sort={{sort}}{{#if userId}}&amp;userId={{userId}}{{/if}}" class="p-2 border border-outline-variant/30 rounded-lg hover:bg-surface-container transition-colors" aria-label="Next page">
 <span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
 </a>
 {{else}}

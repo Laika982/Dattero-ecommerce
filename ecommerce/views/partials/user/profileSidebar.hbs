@@ -1,0 +1,39 @@
+<!-- Desktop / Tablet Sidebar Navigation Area -->
+<aside
+  class="hidden md:flex flex-col w-64 border-r border-outline/10 bg-surface fixed top-20 bottom-0 left-0 z-40 overflow-y-auto custom-scrollbar p-6 justify-between">
+  <div class="space-y-6">
+    <div class="flex items-center gap-3 pb-6 border-b border-outline/10">
+      <div class="w-12 h-12 rounded-full overflow-hidden border border-outline/20 flex-shrink-0">
+        <img
+          src="{{#if @root.userData.profileImage}}{{@root.userData.profileImage}}{{else if @root.user.profileImage}}{{@root.user.profileImage}}{{else if userData.profileImage}}{{userData.profileImage}}{{else if user.profileImage}}{{user.profileImage}}{{else}}/images/avathar.jpg{{/if}}"
+          alt="Profile Avatar" class="w-full h-full object-cover">
+      </div>
+      <div class="min-w-0 flex-1">
+        <h4 class="font-label-md text-label-md text-on-surface font-bold leading-tight truncate">{{#if @root.userData.name}}{{@root.userData.name}}{{else if @root.user.name}}{{@root.user.name}}{{else if userData.name}}{{userData.name}}{{else if user.name}}{{user.name}}{{/if}}
+        </h4>
+      </div>
+    </div>
+    <nav class="space-y-1">
+      <a href="/profile"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl font-label-md text-label-md transition-colors {{#if (eq activeTab "profile")}}bg-on-surface text-surface shadow-sm font-semibold{{else}}text-on-surface-variant hover:bg-surface-container hover:text-on-surface{{/if}}">
+        <span class="material-symbols-outlined text-[20px]">person</span>Profile
+      </a>
+      <a href="/order/orders"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl font-label-md text-label-md transition-colors {{#if (eq activeTab "orders")}}bg-on-surface text-surface shadow-sm font-semibold{{else}}text-on-surface-variant hover:bg-surface-container hover:text-on-surface{{/if}}">
+        <span class="material-symbols-outlined text-[20px]">shopping_bag</span>My Orders
+      </a>
+      <a href="/wallet"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl font-label-md text-label-md transition-colors {{#if (eq activeTab "wallet")}}bg-on-surface text-surface shadow-sm font-semibold{{else}}text-on-surface-variant hover:bg-surface-container hover:text-on-surface{{/if}}">
+        <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>Wallet
+      </a>
+      <a href="/wishlist"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl font-label-md text-label-md transition-colors {{#if (eq activeTab "wishlist")}}bg-on-surface text-surface shadow-sm font-semibold{{else}}text-on-surface-variant hover:bg-surface-container hover:text-on-surface{{/if}}">
+        <span class="material-symbols-outlined text-[20px]">favorite</span>My Favorites
+      </a>
+      <a href="/profile/address"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl font-label-md text-label-md transition-colors {{#if (eq activeTab "address")}}bg-on-surface text-surface shadow-sm font-semibold{{else}}text-on-surface-variant hover:bg-surface-container hover:text-on-surface{{/if}}">
+        <span class="material-symbols-outlined text-[20px]">location_on</span>Address Book
+      </a>
+    </nav>
+  </div>
+</aside>

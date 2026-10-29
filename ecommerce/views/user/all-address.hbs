@@ -1,8 +1,12 @@
 {{>user/header}}
-<main class="min-h-screen px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 pb-16 safe-bottom-padding">
-  <div class="max-w-max-width mx-auto px-2 sm:px-container-padding mt-2 sm:mt-6">
-    {{> user/notification}}
-  </div>
+<div class="flex min-h-screen">
+  {{> user/profileSidebar activeTab="address"}}
+
+  <!-- Main Content Area -->
+  <main class="flex-1 w-full min-w-0 px-4 sm:px-6 md:px-8 pt-20 sm:pt-24 md:pt-28 md:ml-64 pb-16 safe-bottom-padding">
+    <div class="max-w-max-width mx-auto px-2 sm:px-container-padding mt-2 sm:mt-6">
+      {{> user/notification}}
+    </div>
 
   <div class="max-w-max-width mx-auto">
 
@@ -36,7 +40,7 @@
     <!-- Header Section -->
     <header class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-12">
       <div>
-        <h1 class="font-headline-xl text-2xl sm:text-3xl md:text-headline-xl font-bold text-on-surface mb-1.5 tracking-tight">Saved Addresses</h1>
+        <h1 class="text-2xl md:text-3xl font-bold text-on-surface tracking-tight mb-1.5">Saved Addresses</h1>
         <p class="font-body-lg text-xs sm:text-sm md:text-base text-on-surface-variant max-w-xl">Manage your delivery locations for a seamless checkout experience. Set your default shipping and billing preferences below.</p>
       </div>
       <a href="/profile/address/add" class="flex items-center justify-center gap-2 px-6 py-3 bg-on-surface text-white rounded-full font-label-md text-xs sm:text-sm hover:opacity-90 active:scale-95 transition-all shadow-md touch-target w-full sm:w-auto">
@@ -86,7 +90,7 @@
             Primary
           </div>
           {{else}}
-          <form action="/profile/address/make-primary/{{this._id}}?_method=PATCH" method="POST" class="inline">
+          <form action="/profile/address/make-primary/{{this._id}}?_method=PATCH" method="POST" class="inline make-primary-form">
             <button type="submit" class="text-xs sm:text-label-md font-medium text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 group/btn touch-target">
               <span class="material-symbols-outlined text-sm group-hover/btn:scale-110 transition-transform">star</span>
               Set as Primary
@@ -142,8 +146,9 @@
         </div>
       </div>
     </section>
-  </div>
-</main>
+    </div>
+  </main>
+</div>
 
 <script>
   function showConfirmModal({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', icon = 'logout', confirmColorClass = 'bg-primary text-on-primary', iconContainerColor = 'bg-error-container/30', iconColor = 'text-error' }) {
@@ -225,7 +230,55 @@
     });
   }
 
-  // Address deletion confirmation
+  // Make Primary address via AJAX
+  document.querySelectorAll('.make-primary-form').forEach(form => {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      const originalHtml = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> Setting...';
+      }
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+          }
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.success) {
+          if (typeof showNotification === 'function') {
+            showNotification('success', data.message || 'Primary address updated successfully.');
+          }
+          setTimeout(() => {
+            window.location.reload();
+          }, 350);
+        } else {
+          if (typeof showNotification === 'function') {
+            showNotification('error', data.message || 'Failed to update primary address.');
+          }
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+          }
+        }
+      } catch (err) {
+        console.error('Make primary AJAX error:', err);
+        if (typeof showNotification === 'function') {
+          showNotification('error', 'An unexpected error occurred. Please try again.');
+        }
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+        }
+      }
+    });
+  });
+
+  // Address deletion confirmation via AJAX
   document.querySelectorAll('.delete-address-form').forEach(form => {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -238,9 +291,41 @@
         iconContainerColor: 'bg-error-container/30',
         iconColor: 'text-error',
         confirmColorClass: 'bg-error text-white'
-      }).then((confirmed) => {
+      }).then(async (confirmed) => {
         if (confirmed) {
-          form.submit();
+          try {
+            const res = await fetch(form.action, {
+              method: 'POST',
+              headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+              }
+            });
+            const data = await res.json().catch(() => ({}));
+            if (res.ok && data.success) {
+              if (typeof showNotification === 'function') {
+                showNotification('success', data.message || 'Address deleted successfully.');
+              }
+              const card = form.closest('.address-card-hover') || form.closest('.group');
+              if (card) {
+                card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+              }
+              setTimeout(() => {
+                window.location.reload();
+              }, 350);
+            } else {
+              if (typeof showNotification === 'function') {
+                showNotification('error', data.message || 'Failed to delete address.');
+              }
+            }
+          } catch (err) {
+            console.error('Delete address AJAX error:', err);
+            if (typeof showNotification === 'function') {
+              showNotification('error', 'An unexpected error occurred.');
+            }
+          }
         }
       });
     });
@@ -287,5 +372,14 @@
     });
   }
 </script>
+
+<style>
+  @media (min-width: 768px) {
+    footer {
+      margin-left: 16rem;
+      width: calc(100% - 16rem);
+    }
+  }
+</style>
 
 {{>user/footer}}

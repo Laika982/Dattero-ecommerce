@@ -374,11 +374,14 @@
                         <h3 class="font-label-md text-label-md text-outline mb-6 uppercase tracking-widest">Customer
                             Details</h3>
                         <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center">
-                                <span class="font-bold text-primary">{{order.user_id.name}}</span>
+                            <div class="w-12 h-12 rounded-full bg-surface-variant overflow-hidden shrink-0 border border-outline-variant/30 flex items-center justify-center">
+                                <img class="w-full h-full object-cover"
+                                     src="{{#if order.user_id.profileImage}}{{order.user_id.profileImage}}{{else}}/images/avathar.jpg{{/if}}"
+                                     alt="{{order.user_id.name}}"
+                                     onerror="this.onerror=null; this.src='/images/avathar.jpg';">
                             </div>
-                            <div>
-                                <p class="font-label-md text-on-surface">{{order.user_id.name}}</p>
+                            <div class="min-w-0 flex-1">
+                                <p class="font-label-md text-on-surface font-semibold truncate">{{order.user_id.name}}</p>
                                 <p class="text-body-md text-on-surface-variant opacity-60">Order #{{order.order_id}}</p>
                             </div>
                         </div>

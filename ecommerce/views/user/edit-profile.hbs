@@ -40,7 +40,7 @@
                         <div
                             class="w-32 h-32 rounded-full overflow-hidden shadow-md ring-4 ring-surface bg-surface-container-low">
                             <img alt="Profile Avatar" class="w-full h-full object-cover" id="avatar-preview"
-                                src="{{#if userData.profileImage}}{{userData.profileImage}}{{else}}https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E{{/if}}">
+                                src="{{#if userData.profileImage}}{{userData.profileImage}}{{else}}/images/avathar.jpg{{/if}}">
                         </div>
                         <button type="button" id="trigger-upload"
                             class="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg hover:bg-on-surface transition-transform hover:scale-105 active:scale-95 group-hover:-translate-y-1">
@@ -296,7 +296,7 @@
             const removePhotoBtn = document.getElementById('remove-photo-btn');
             const removeProfileImageInput = document.getElementById('removeProfileImage');
 
-            const fallbackAvatarUrl = 'https://lh3.googleusercontent.com/aida-public/AB6AXuCty8qMuZ5gGAKQARweHrfO_082Ys9pgNo1AvqwRtlziJdvJkuMTxM-9OIBZwf2Yq6BDX0Ck9xqUrcihS7H3HvYjqcPH8hngtvqyPENuYXaFLcO3542yTQ2OWaDiSQYYDMODau0yLNzrIjNFyu3vWSbgGYWgRwK0L3Js8mOvXVAvutlfPTs2RZ3N4wfq2dMNiB4X7Qt1hvsLw2zOoKDNPEdw5woP9gjOaTtxTxUoIhfyGvzcSltXpNA0gerOmlXKMnp_8B6JkkbK-E';
+            const fallbackAvatarUrl = '/images/avathar.jpg';
 
             const openUploadDialog = () => {
                 avatarUpload.click();
@@ -326,8 +326,10 @@
                 });
             }
 
-            // Handle form submission visuals and validation
-            form.addEventListener('submit', (e) => {
+            // Handle form submission via AJAX
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
                 touched.name = true;
                 touched.email = true;
                 touched.phone = true;
@@ -337,18 +339,66 @@
                 const isPhoneValid = validatePhone();
 
                 if (!isNameValid || !isEmailValid || !isPhoneValid) {
-                    e.preventDefault();
                     if (!isNameValid) nameInput.focus();
                     else if (!isEmailValid) emailInput.focus();
                     else if (!isPhoneValid) phoneInput.focus();
                     return;
                 }
 
-                // If valid, show loading indicator on buttons
-                submitBtns.forEach(btn => {
+                const originalBtnContents = [];
+                submitBtns.forEach((btn, idx) => {
+                    originalBtnContents[idx] = btn.innerHTML;
+                    btn.disabled = true;
                     btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">sync</span> Saving...';
                     btn.classList.add('opacity-80', 'cursor-wait');
                 });
+
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    });
+
+                    const data = await response.json().catch(() => ({}));
+
+                    if (response.ok && data.success) {
+                        if (window.showNotification) {
+                            window.showNotification('success', data.message || 'Profile updated successfully');
+                        }
+                        setTimeout(() => {
+                            window.location.href = data.redirectTo || '/profile';
+                        }, 800);
+                    } else {
+                        const errMsg = data.message || 'Failed to update profile. Please try again.';
+                        if (window.showNotification) {
+                            window.showNotification('error', errMsg);
+                        } else {
+                            alert(errMsg);
+                        }
+                        submitBtns.forEach((btn, idx) => {
+                            btn.disabled = false;
+                            btn.innerHTML = originalBtnContents[idx] || 'Save Changes';
+                            btn.classList.remove('opacity-80', 'cursor-wait');
+                        });
+                    }
+                } catch (err) {
+                    console.error('Profile update error:', err);
+                    if (window.showNotification) {
+                        window.showNotification('error', 'Network error. Please try again.');
+                    } else {
+                        alert('Network error. Please try again.');
+                    }
+                    submitBtns.forEach((btn, idx) => {
+                        btn.disabled = false;
+                        btn.innerHTML = originalBtnContents[idx] || 'Save Changes';
+                        btn.classList.remove('opacity-80', 'cursor-wait');
+                    });
+                }
             });
         });
     </script>

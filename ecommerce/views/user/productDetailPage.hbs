@@ -212,36 +212,20 @@
 
                 <!-- Rating -->
 
-                <div class="flex items-center gap-stack-sm mb-3 sm:mb-stack-md">
+                <div class="flex items-center gap-2 mb-3 sm:mb-stack-md flex-wrap">
 
-                    <div class="flex text-accent-blue">
-
-                        <span class="material-symbols-outlined text-[18px]" data-weight="fill">
-                            star
+                    <div class="flex text-amber-500" title="{{averageRating}} out of 5 stars">
+                        {{#each ratingStars}}
+                        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' {{#if this.filled}}1{{else}}0{{/if}};">
+                            {{#if this.half}}star_half{{else}}star{{/if}}
                         </span>
-
-                        <span class="material-symbols-outlined text-[18px]" data-weight="fill">
-                            star
-                        </span>
-
-                        <span class="material-symbols-outlined text-[18px]" data-weight="fill">
-                            star
-                        </span>
-
-                        <span class="material-symbols-outlined text-[18px]" data-weight="fill">
-                            star
-                        </span>
-
-                        <span class="material-symbols-outlined text-[18px]" data-weight="fill">
-                            star_half
-                        </span>
-
+                        {{/each}}
                     </div>
 
                     <a class="text-on-surface-variant text-xs sm:text-sm underline hover:text-ink-black transition-colors"
                         href="#reviews">
                         {{averageRating}}
-                        ({{totalReviews}} Reviews)
+                        ({{totalReviews}} Review{{#unless (eq totalReviews 1)}}s{{/unless}})
                     </a>
 
                 </div>
@@ -309,23 +293,38 @@
                             Select Size
                         </label>
 
-                        <span class="text-[11px] sm:text-xs text-on-surface-variant font-medium">
-                            Choose your variant
-                        </span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[11px] sm:text-xs text-on-surface-variant font-medium">
+                                Choose your variant
+                            </span>
+
+                            <div id="variantSlideControls" class="hidden items-center gap-1">
+                                <button type="button" id="slideVariantLeft" onclick="slideVariants(-1)"
+                                    class="w-6 h-6 rounded-full flex items-center justify-center bg-surface border border-outline-variant/40 hover:border-ink-black text-ink-black transition-all cursor-pointer"
+                                    aria-label="Slide left">
+                                    <span class="material-symbols-outlined text-[15px]">chevron_left</span>
+                                </button>
+                                <button type="button" id="slideVariantRight" onclick="slideVariants(1)"
+                                    class="w-6 h-6 rounded-full flex items-center justify-center bg-surface border border-outline-variant/40 hover:border-ink-black text-ink-black transition-all cursor-pointer"
+                                    aria-label="Slide right">
+                                    <span class="material-symbols-outlined text-[15px]">chevron_right</span>
+                                </button>
+                            </div>
+                        </div>
 
                     </div>
 
 
-                    <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                    <div id="variantsSlider" class="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-1.5 pt-0.5 px-0.5 no-scrollbar flex-nowrap scroll-smooth cursor-grab active:cursor-grabbing select-none">
 
                         {{#each variants}}
 
                         <button type="button"
-                            class="variant-button relative flex flex-col items-center justify-center p-2 sm:p-3 rounded-xl sm:rounded-2xl border border-outline-variant/40 bg-surface hover:border-ink-black/40 transition-all text-center group min-w-0"
+                            class="variant-button relative flex flex-col items-center justify-center p-2 sm:p-3 rounded-xl sm:rounded-2xl border border-outline-variant/40 bg-surface hover:border-ink-black/40 transition-all text-center group min-w-[95px] sm:min-w-[115px] flex-shrink-0 cursor-pointer snap-start"
                             data-variant-id="{{this._id}}" data-price="{{this.effectivePrice}}"
                             data-stock="{{this.stock_quantity}}" onclick="selectVariant(this)">
 
-                            <span class="font-label-md text-xs text-ink-black truncate w-full">
+                            <span class="font-label-md text-xs sm:text-sm font-semibold text-ink-black truncate w-full">
                                 {{this.weight}}
                             </span>
 
@@ -333,7 +332,7 @@
                                 {{this.sku}}
                             </span>
 
-                            <span class="text-xs font-semibold text-ink-black mt-1">
+                            <span class="text-xs sm:text-sm font-bold text-ink-black mt-1">
                                 ₹{{this.effectivePrice}}
                             </span>
 
@@ -532,16 +531,6 @@
                 Product Details
             </button>
 
-            <button
-                class="pb-3 border-b-2 border-transparent hover:border-outline-variant font-label-md text-label-md text-on-surface-variant hover:text-ink-black transition-all whitespace-nowrap">
-                Nutritional Facts
-            </button>
-
-            <button
-                class="pb-3 border-b-2 border-transparent hover:border-outline-variant font-label-md text-label-md text-on-surface-variant hover:text-ink-black transition-all whitespace-nowrap">
-                Reviews
-            </button>
-
         </div>
 
 
@@ -672,87 +661,178 @@
          Reviews
     ========================== -->
 
-    <section id="reviews" class="mb-section-gap">
+    <section id="reviews" class="mb-section-gap pt-6 border-t border-outline-variant/20">
 
-        <div class="mb-stack-lg">
-
-            <h2 class="font-headline-lg text-2xl font-semibold text-ink-black">
-                Customer Reviews
-            </h2>
-
-            <p class="text-on-surface-variant text-sm mt-2">
-                {{averageRating}} out of 5
-                ·
-                {{totalReviews}} Reviews
-            </p>
-
-        </div>
-
-
-        {{#if reviews.length}}
-
-        <div class="space-y-6">
-
-            {{#each reviews}}
-
-            <div class="border-b border-outline-variant/30 pb-6">
-
-                <div class="flex items-center justify-between mb-2">
-
-                    <div>
-
-                        <p class="font-label-md text-ink-black">
-                            {{this.user_id.name}}
-                        </p>
-
-                        <div class="flex text-accent-blue mt-1">
-
-                            <span class="material-symbols-outlined text-[16px]">
-                                star
+        <!-- Header + Summary -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div>
+                <span class="font-label-md text-[11px] text-amber-600 tracking-widest font-semibold uppercase block mb-1">
+                    Verified Customer Feedback
+                </span>
+                <h2 class="font-headline-lg text-2xl sm:text-3xl font-bold text-ink-black tracking-tight">
+                    Customer Reviews
+                </h2>
+                <div class="flex items-center gap-3 mt-2 flex-wrap">
+                    <div class="flex items-center text-amber-500">
+                        {{#each ratingStars}}
+                            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' {{#if this.filled}}1{{else}}0{{/if}};">
+                                {{#if this.half}}star_half{{else}}star{{/if}}
                             </span>
-
-                            <span class="material-symbols-outlined text-[16px]">
-                                star
-                            </span>
-
-                            <span class="material-symbols-outlined text-[16px]">
-                                star
-                            </span>
-
-                            <span class="material-symbols-outlined text-[16px]">
-                                star
-                            </span>
-
-                            <span class="material-symbols-outlined text-[16px]">
-                                star
-                            </span>
-
-                        </div>
-
+                        {{/each}}
                     </div>
-
+                    <span class="font-headline-lg text-lg font-bold text-ink-black">{{averageRating}}</span>
+                    <span class="text-on-surface-variant text-sm">based on {{totalReviews}} review{{#unless (eq totalReviews 1)}}s{{/unless}}</span>
                 </div>
-
-                <p class="text-on-surface-variant text-sm">
-                    {{this.review}}
-                </p>
-
             </div>
 
-            {{/each}}
+            <div class="flex items-center gap-3 flex-wrap">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-xs font-semibold shadow-xs">
+                    <span class="material-symbols-outlined text-[16px] text-emerald-600" style="font-variation-settings: 'FILL' 1;">verified</span>
+                    <span>Verified Purchases Only</span>
+                </div>
 
+                <div id="reviewSlideControls" class="hidden items-center gap-1.5">
+                    <button type="button" id="slideReviewLeft" onclick="slideReviews(-1)"
+                        class="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 hover:border-ink-black text-ink-black transition-all cursor-pointer shadow-xs active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
+                        aria-label="Slide reviews left">
+                        <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                    </button>
+                    <button type="button" id="slideReviewRight" onclick="slideReviews(1)"
+                        class="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-outline-variant/40 hover:border-ink-black text-ink-black transition-all cursor-pointer shadow-xs active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
+                        aria-label="Slide reviews right">
+                        <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
+        {{#if totalReviews}}
+        <!-- Rating Breakdown Bento -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 bg-surface-container-low/70 border border-secondary/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 mb-8 shadow-xs">
+            <div class="md:col-span-4 flex flex-col justify-center items-center text-center border-b md:border-b-0 md:border-r border-outline-variant/20 pb-4 md:pb-0 md:pr-6">
+                <span class="font-display-lg text-5xl font-bold text-ink-black">{{averageRating}}</span>
+                <div class="flex text-amber-500 my-2">
+                    {{#each ratingStars}}
+                        <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' {{#if this.filled}}1{{else}}0{{/if}};">
+                            {{#if this.half}}star_half{{else}}star{{/if}}
+                        </span>
+                    {{/each}}
+                </div>
+                <p class="text-xs text-on-surface-variant font-medium">Average Customer Rating</p>
+                <p class="text-[11px] text-on-surface-variant/70 mt-0.5">({{totalReviews}} verified review{{#unless (eq totalReviews 1)}}s{{/unless}})</p>
+            </div>
+
+            <div class="md:col-span-8 flex flex-col justify-center gap-2 pl-0 md:pl-2">
+                {{#each ratingBreakdown}}
+                <div class="flex items-center gap-3 text-xs">
+                    <span class="w-12 text-ink-black font-semibold flex items-center gap-1 shrink-0">
+                        {{this.star}} <span class="material-symbols-outlined text-[14px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </span>
+                    <div class="flex-grow h-2 rounded-full bg-outline-variant/20 overflow-hidden">
+                        <div class="h-full bg-amber-500 rounded-full transition-all duration-500" style="width: {{this.percentage}}%;"></div>
+                    </div>
+                    <span class="w-10 text-right text-on-surface-variant shrink-0 font-medium">{{this.percentage}}%</span>
+                    <span class="w-8 text-right text-on-surface-variant/70 shrink-0 text-[11px]">({{this.count}})</span>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if reviews.length}}
+        <!-- Luxury Review Cards Horizontal Slider -->
+        <div class="relative">
+            <div id="reviewsSlider" class="flex items-stretch gap-4 sm:gap-6 overflow-x-auto pb-4 pt-1 px-1 no-scrollbar flex-nowrap scroll-smooth cursor-grab active:cursor-grabbing select-none snap-x snap-mandatory">
+                {{#each reviews}}
+                <div class="relative bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 border border-secondary/10 shadow-[0_12px_32px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group w-[85vw] sm:w-[420px] md:w-[460px] shrink-0 snap-start">
+                    <!-- Watermark Quote Icon -->
+                    <div class="w-9 h-9 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant/30 group-hover:bg-amber-50 group-hover:text-amber-600 transition-colors shrink-0 absolute top-5 right-5 sm:top-6 sm:right-6">
+                        <span class="material-symbols-outlined text-[20px]">format_quote</span>
+                    </div>
+
+                    <div>
+                        <!-- Reviewer Profile Header -->
+                        <div class="flex items-center gap-3.5 pr-10 mb-4">
+                            <div class="relative shrink-0">
+                                <img src="{{this.userProfileImage}}" alt="{{this.userName}}" 
+                                     class="w-11 h-11 sm:w-12 sm:h-12 rounded-full object-cover ring-2 ring-amber-500/15 border border-secondary/10 shadow-xs bg-surface-container-high"
+                                     onerror="this.onerror=null; this.src='/images/avathar.jpg';">
+                                {{#if this.verifiedPurchase}}
+                                <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center ring-2 ring-white shadow-xs" title="Verified Buyer">
+                                    <span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">check</span>
+                                </span>
+                                {{/if}}
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <h4 class="font-headline-lg text-sm sm:text-base font-bold text-ink-black truncate">
+                                        {{this.userName}}
+                                    </h4>
+                                    {{#if this.verifiedPurchase}}
+                                    <span class="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                                        <span class="material-symbols-outlined text-[11px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                        Verified Buyer
+                                    </span>
+                                    {{/if}}
+                                </div>
+                                <span class="text-[11px] sm:text-xs text-on-surface-variant/70 block mt-0.5">{{this.formattedDate}}</span>
+                            </div>
+                        </div>
+
+                        <!-- Star Rating Badge -->
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="flex text-amber-500">
+                                {{#each this.stars}}
+                                <span class="material-symbols-outlined text-[17px]" style="font-variation-settings: 'FILL' {{#if this.filled}}1{{else}}0{{/if}};">
+                                    star
+                                </span>
+                                {{/each}}
+                            </div>
+                            <span class="text-xs font-bold text-amber-900 px-2 py-0.5 rounded-md bg-amber-50 border border-amber-200/70">
+                                {{this.rating}}.0 / 5.0
+                            </span>
+                        </div>
+
+                        <!-- Review Headline / Title -->
+                        {{#if this.title}}
+                        <h5 class="font-headline-lg text-sm sm:text-base font-bold text-ink-black mb-1.5 leading-snug">
+                            {{this.title}}
+                        </h5>
+                        {{/if}}
+
+                        <!-- Review Body -->
+                        <p class="font-body-md text-xs sm:text-sm text-on-surface-variant leading-relaxed whitespace-pre-line">
+                            {{this.review}}
+                        </p>
+                    </div>
+
+                    <!-- Footer Card Accent -->
+                    <div class="mt-5 pt-3.5 border-t border-secondary/10 flex items-center justify-between text-[11px] text-on-surface-variant/70">
+                        <span class="flex items-center gap-1.5 font-medium">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            Authentic Review
+                        </span>
+                        <span class="text-[11px] text-on-surface-variant/60 font-medium">Delivered Customer</span>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
         {{else}}
-
-        <div class="py-10 text-center">
-
-            <p class="text-on-surface-variant">
-                No reviews yet.
+        <!-- Empty State -->
+        <div class="py-12 sm:py-16 px-6 rounded-2xl sm:rounded-3xl bg-surface-container-low/60 border border-secondary/10 text-center shadow-xs">
+            <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 mx-auto flex items-center justify-center text-amber-600 mb-3 shadow-xs">
+                <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">reviews</span>
+            </div>
+            <h3 class="font-headline-lg text-base sm:text-lg font-bold text-ink-black">No reviews yet for {{product.productName}}</h3>
+            <p class="text-on-surface-variant text-xs sm:text-sm mt-1.5 max-w-md mx-auto leading-relaxed">
+                Reviews are posted by verified customers after receiving their order. Order today to experience the taste and share your review!
             </p>
-
+            <div class="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-on-surface-variant/80 bg-white px-4 py-2 rounded-full border border-secondary/10 shadow-xs">
+                <span class="material-symbols-outlined text-[15px] text-emerald-600">verified_user</span>
+                <span>Verified Customer Feedback</span>
+            </div>
         </div>
-
         {{/if}}
 
     </section>
@@ -775,27 +855,169 @@
         </div>
 
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-grid-gutter">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 items-start">
 
             {{#each relatedProducts}}
 
-            <a href="/products/{{this._id}}" class="group">
+            <!-- ========================= -->
+            <!-- PRODUCT CARD -->
+            <!-- ========================= -->
 
-                <div class="bg-surface-gray rounded-2xl overflow-hidden aspect-square mb-3">
+            <a href="/products/{{_id}}"
+                class="group flex flex-col cursor-pointer bg-white rounded-2xl border border-surface-variant/60 p-2 sm:p-3 hover:shadow-lg transition-all duration-300">
 
-                    {{#if this.images.length}}
+                <!-- ========================= -->
+                <!-- PRODUCT IMAGE -->
+                <!-- ========================= -->
 
-                    <img src="{{this.images.[0].url}}" alt="{{this.productName}}"
-                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="relative w-full aspect-square overflow-hidden rounded-xl bg-surface-gray mb-2.5 sm:mb-3">
+
+                    <!-- WISHLIST -->
+
+                    <div class="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-10">
+
+                        <button type="button" data-product-id="{{_id}}"
+                            data-wishlisted="{{#if isWishlisted}}true{{else}}false{{/if}}"
+                            aria-pressed="{{#if isWishlisted}}true{{else}}false{{/if}}"
+                            onclick="toggleProductWishlist(this, event)"
+                            class="w-7 h-7 sm:w-9 sm:h-9 rounded-full {{#if isWishlisted}}bg-red-500 hover:bg-red-600 shadow-sm{{else}}bg-white/90 hover:bg-white shadow-sm{{/if}} flex items-center justify-center transition-transform active:scale-90">
+
+                            <span
+                                class="material-symbols-outlined text-[15px] sm:text-[18px] {{#if isWishlisted}}text-white{{else}}text-ink-black{{/if}}">
+                                favorite
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                    <!-- IMAGE -->
+
+                    {{#if images.length}}
+
+                    <img src="{{images.[0].url}}" alt="{{productName}}"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+
+                    {{else}}
+
+                    <div class="w-full h-full flex items-center justify-center text-xs text-on-surface-variant">
+                        No Image
+                    </div>
 
                     {{/if}}
 
                 </div>
 
+                <!-- ========================= -->
+                <!-- PRODUCT INFO -->
+                <!-- ========================= -->
 
-                <h3 class="font-label-md text-ink-black">
-                    {{this.productName}}
-                </h3>
+                <div class="flex flex-col flex-grow px-1 pb-1">
+
+                    <!-- PRODUCT NAME -->
+
+                    <div class="mb-1">
+
+                        <h3
+                            class="font-headline-md text-xs sm:text-base font-semibold text-ink-black line-clamp-1 leading-snug">
+                            {{productName}}
+                        </h3>
+
+                    </div>
+
+                    <!-- PRODUCT DESCRIPTION -->
+
+                    <div class="mb-1.5 hidden sm:block">
+
+                        <p class="text-xs text-on-surface-variant line-clamp-2">
+                            {{productDescription}}
+                        </p>
+
+                    </div>
+
+                    <!-- ========================= -->
+                    <!-- CATEGORY NAME -->
+                    <!-- ========================= -->
+
+                    {{#if category_id}}
+
+                    <p class="text-[11px] sm:text-xs text-on-surface-variant/80 mb-1 truncate">
+                        {{category_id.category_name}}
+                    </p>
+
+                    {{/if}}
+
+                    <!-- ========================= -->
+                    <!-- RATING -->
+                    <!-- ========================= -->
+
+                    <div class="flex items-center mb-2 sm:mb-3 text-ink-black">
+
+                        <span class="material-symbols-outlined text-[14px] sm:text-[16px] text-amber-500"
+                            style="font-variation-settings: 'FILL' 1;">
+                            star
+                        </span>
+
+                        <span class="font-body-md text-[11px] sm:text-xs ml-1 text-on-surface-variant">
+
+                            {{#if average_rating}}
+
+                            {{average_rating}}
+
+                            {{else}}
+
+                            4.5
+
+                            {{/if}}
+
+                            {{#if review_count}}
+
+                            ({{review_count}})
+
+                            {{/if}}
+
+                        </span>
+
+                    </div>
+
+                    <!-- ========================= -->
+                    <!-- PRICE -->
+                    <!-- ========================= -->
+
+                    <div
+                        class="mt-auto pt-2 sm:pt-3 border-t border-surface-variant/40 flex items-center justify-between gap-1">
+
+                        <p class="font-headline-lg text-sm sm:text-lg font-bold text-ink-black shrink-0">
+                            ₹{{listPrice}}
+                        </p>
+
+                        <!-- Stock Status & Quantity Badge -->
+                        {{#if isOutOfStock}}
+                        <div class="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium border bg-red-50 text-red-600 border-red-200/80 whitespace-nowrap shrink-0"
+                            title="Status: Out of Stock, Quantity: 0">
+                            <span class="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span>
+                            <span>Out of Stock</span>
+                            <span class="opacity-75 font-semibold">(0)</span>
+                        </div>
+                        {{else if isLowStock}}
+                        <div class="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium border bg-yellow-50 text-yellow-700 border-yellow-200/80 whitespace-nowrap shrink-0"
+                            title="Status: Low Stock, Quantity: {{totalStock}}">
+                            <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 shrink-0"></span>
+                            <span>Low Stock</span>
+                            <span class="opacity-75 font-semibold">({{totalStock}})</span>
+                        </div>
+                        {{else}}
+                        <div class="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium border bg-green-50 text-green-700 border-green-200/80 whitespace-nowrap shrink-0"
+                            title="Status: In Stock, Quantity: {{totalStock}}">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0"></span>
+                            <span>In Stock</span>
+                            <span class="opacity-75 font-semibold">({{totalStock}})</span>
+                        </div>
+                        {{/if}}
+
+                    </div>
+
+                </div>
 
             </a>
 
@@ -806,7 +1028,6 @@
     </section>
 
     {{/if}}
-
 </main>
 
 
@@ -822,49 +1043,49 @@
         if (button.disabled) return;
 
         const isAuthenticated = {{#if user}}true{{else}}false{{/if}};
-        if (!isAuthenticated) {
-            showNotification("error", "Please log in to add items to wishlist.");
+    if (!isAuthenticated) {
+        showNotification("error", "Please log in to add items to wishlist.");
+        setTimeout(() => {
+            window.location.href = "/login";
+        }, 1200);
+        return;
+    }
+
+    const wasWishlisted = button.dataset.wishlisted === "true";
+    button.disabled = true;
+    try {
+        const response = await fetch(`/wishlist/${wasWishlisted ? "remove" : "add"}/${button.dataset.productId}`, {
+            method: wasWishlisted ? "DELETE" : "POST",
+            headers: { "Accept": "application/json" }
+        });
+        const result = await response.json();
+
+        if (response.status === 401 || result.redirectTo) {
+            showNotification("error", result.message || "Please log in to add items to wishlist.");
             setTimeout(() => {
-                window.location.href = "/login";
+                window.location.href = result.redirectTo || "/login";
             }, 1200);
             return;
         }
 
-        const wasWishlisted = button.dataset.wishlisted === "true";
-        button.disabled = true;
-        try {
-            const response = await fetch(`/wishlist/${wasWishlisted ? "remove" : "add"}/${button.dataset.productId}`, {
-                method: wasWishlisted ? "DELETE" : "POST",
-                headers: { "Accept": "application/json" }
-            });
-            const result = await response.json();
-
-            if (response.status === 401 || result.redirectTo) {
-                showNotification("error", result.message || "Please log in to add items to wishlist.");
-                setTimeout(() => {
-                    window.location.href = result.redirectTo || "/login";
-                }, 1200);
-                return;
-            }
-
-            if (!response.ok) {
-                throw new Error(result.message || "Unable to update your wishlist.");
-            }
-
-            const isWishlisted = !wasWishlisted;
-            button.dataset.wishlisted = String(isWishlisted);
-            button.setAttribute("aria-pressed", String(isWishlisted));
-            button.classList.toggle("bg-red-500", isWishlisted);
-            button.classList.toggle("bg-white/90", !isWishlisted);
-            button.classList.toggle("hover:bg-red-600", isWishlisted);
-            button.classList.toggle("hover:bg-white", !isWishlisted);
-            button.querySelector(".material-symbols-outlined").classList.toggle("text-white", isWishlisted);
-            button.querySelector(".material-symbols-outlined").classList.toggle("text-ink-black", !isWishlisted);
-        } catch (error) {
-            window.alert(error.message);
-        } finally {
-            button.disabled = false;
+        if (!response.ok) {
+            throw new Error(result.message || "Unable to update your wishlist.");
         }
+
+        const isWishlisted = !wasWishlisted;
+        button.dataset.wishlisted = String(isWishlisted);
+        button.setAttribute("aria-pressed", String(isWishlisted));
+        button.classList.toggle("bg-red-500", isWishlisted);
+        button.classList.toggle("bg-white/90", !isWishlisted);
+        button.classList.toggle("hover:bg-red-600", isWishlisted);
+        button.classList.toggle("hover:bg-white", !isWishlisted);
+        button.querySelector(".material-symbols-outlined").classList.toggle("text-white", isWishlisted);
+        button.querySelector(".material-symbols-outlined").classList.toggle("text-ink-black", !isWishlisted);
+    } catch (error) {
+        window.alert(error.message);
+    } finally {
+        button.disabled = false;
+    }
     }
 
     // -------------------------------
@@ -956,6 +1177,10 @@
             "border-ink-black"
         );
 
+        if (typeof button.scrollIntoView === "function") {
+            button.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "nearest" });
+        }
+
 
         selectedVariantId =
             button.dataset.variantId;
@@ -994,6 +1219,177 @@
 
         }
 
+    }
+
+    function slideVariants(direction) {
+        const slider = document.getElementById("variantsSlider");
+        if (!slider) return;
+        const scrollAmount = 140 * direction;
+        slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+
+    function initVariantsSlider() {
+        const slider = document.getElementById("variantsSlider");
+        const leftBtn = document.getElementById("slideVariantLeft");
+        const rightBtn = document.getElementById("slideVariantRight");
+        const controls = document.getElementById("variantSlideControls");
+        if (!slider) return;
+
+        function updateSliderControls() {
+            if (!controls || !leftBtn || !rightBtn) return;
+            const canScroll = slider.scrollWidth > slider.clientWidth + 4;
+            controls.style.display = canScroll ? "flex" : "none";
+            leftBtn.disabled = slider.scrollLeft <= 4;
+            rightBtn.disabled = slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 4;
+            leftBtn.classList.toggle("opacity-30", leftBtn.disabled);
+            leftBtn.classList.toggle("cursor-not-allowed", leftBtn.disabled);
+            rightBtn.classList.toggle("opacity-30", rightBtn.disabled);
+            rightBtn.classList.toggle("cursor-not-allowed", rightBtn.disabled);
+        }
+
+        slider.addEventListener("scroll", updateSliderControls, { passive: true });
+        window.addEventListener("resize", updateSliderControls);
+        setTimeout(updateSliderControls, 60);
+
+        // Mouse wheel horizontal scroll support
+        slider.addEventListener("wheel", (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                slider.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
+
+        // Click and drag to slide support
+        let isDown = false;
+        let startX;
+        let scrollLeftStart;
+        let hasDragged = false;
+
+        slider.addEventListener("mousedown", (e) => {
+            isDown = true;
+            hasDragged = false;
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeftStart = slider.scrollLeft;
+        });
+
+        window.addEventListener("mouseup", () => {
+            if (isDown) {
+                isDown = false;
+                setTimeout(() => { hasDragged = false; }, 50);
+            }
+        });
+
+        slider.addEventListener("mousemove", (e) => {
+            if (!isDown) return;
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX);
+            if (Math.abs(walk) > 4) {
+                hasDragged = true;
+                slider.scrollLeft = scrollLeftStart - (walk * 1.2);
+            }
+        });
+
+        slider.addEventListener("click", (e) => {
+            if (hasDragged) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, true);
+    }
+
+    function slideReviews(direction) {
+        const slider = document.getElementById("reviewsSlider");
+        if (!slider) return;
+        const card = slider.querySelector('.shrink-0');
+        const scrollAmount = (card ? card.clientWidth + 24 : 420) * direction;
+        slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+
+    function initReviewsSlider() {
+        const slider = document.getElementById("reviewsSlider");
+        const leftBtn = document.getElementById("slideReviewLeft");
+        const rightBtn = document.getElementById("slideReviewRight");
+        const controls = document.getElementById("reviewSlideControls");
+        if (!slider) return;
+
+        function updateSliderControls() {
+            if (!controls || !leftBtn || !rightBtn) return;
+            const canScroll = slider.scrollWidth > slider.clientWidth + 4;
+            controls.style.display = canScroll ? "flex" : "none";
+            leftBtn.disabled = slider.scrollLeft <= 4;
+            rightBtn.disabled = slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 4;
+            leftBtn.classList.toggle("opacity-30", leftBtn.disabled);
+            leftBtn.classList.toggle("cursor-not-allowed", leftBtn.disabled);
+            rightBtn.classList.toggle("opacity-30", rightBtn.disabled);
+            rightBtn.classList.toggle("cursor-not-allowed", rightBtn.disabled);
+        }
+
+        slider.addEventListener("scroll", updateSliderControls, { passive: true });
+        window.addEventListener("resize", updateSliderControls);
+        setTimeout(updateSliderControls, 60);
+
+        // Mouse wheel horizontal scroll support
+        slider.addEventListener("wheel", (e) => {
+            if (e.deltaY !== 0 && slider.scrollWidth > slider.clientWidth) {
+                e.preventDefault();
+                slider.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
+
+        // Click and drag to slide support
+        let isDown = false;
+        let startX;
+        let scrollLeftStart;
+        let hasDragged = false;
+
+        slider.addEventListener("mousedown", (e) => {
+            isDown = true;
+            hasDragged = false;
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeftStart = slider.scrollLeft;
+        });
+
+        window.addEventListener("mouseup", () => {
+            if (isDown) {
+                isDown = false;
+                setTimeout(() => { hasDragged = false; }, 50);
+            }
+        });
+
+        slider.addEventListener("mousemove", (e) => {
+            if (!isDown) return;
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX);
+            if (Math.abs(walk) > 4) {
+                hasDragged = true;
+                slider.scrollLeft = scrollLeftStart - (walk * 1.2);
+            }
+        });
+
+        slider.addEventListener("click", (e) => {
+            if (hasDragged) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, true);
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+            initVariantsSlider();
+            initReviewsSlider();
+            const firstVariant = document.querySelector(".variant-button");
+            if (firstVariant && !selectedVariantId) {
+                selectVariant(firstVariant);
+            }
+        });
+    } else {
+        initVariantsSlider();
+        initReviewsSlider();
+        const firstVariant = document.querySelector(".variant-button");
+        if (firstVariant && !selectedVariantId) {
+            selectVariant(firstVariant);
+        }
     }
 
 
@@ -1087,196 +1483,196 @@
     async function addProductDetailToCart() {
 
         const isAuthenticated = {{#if user}}true{{else}}false{{/if}};
-        if (!isAuthenticated) {
-            showNotification("error", "Please log in to add items to cart.");
+    if (!isAuthenticated) {
+        showNotification("error", "Please log in to add items to cart.");
+        setTimeout(() => {
+            window.location.href = "/login";
+        }, 1200);
+        return;
+    }
+
+    // -----------------------------------------
+    // Check variant selection
+    // -----------------------------------------
+
+    if (!selectedVariantId) {
+
+        showNotification("error", "Please select a variant first.");
+
+        return;
+    }
+
+
+    // -----------------------------------------
+    // Get product ID
+    // -----------------------------------------
+
+    const productId =
+        "{{product._id}}";
+
+
+    // -----------------------------------------
+    // Get quantity
+    // -----------------------------------------
+
+    const quantityInput =
+        document.getElementById(
+            "quantity"
+        );
+
+
+    const quantity =
+        Number(
+            quantityInput?.value || 1
+        );
+
+
+    // -----------------------------------------
+    // Validate quantity
+    // -----------------------------------------
+
+    if (
+        !Number.isInteger(quantity) ||
+        quantity <= 0
+    ) {
+
+        showNotification("error", "Please enter a valid quantity.");
+
+        return;
+    }
+
+
+    // -----------------------------------------
+    // Prevent multiple clicks
+    // -----------------------------------------
+
+    if (
+        addToCartButton.dataset.loading ===
+        "true"
+    ) {
+        return;
+    }
+
+
+    addToCartButton.dataset.loading =
+        "true";
+
+
+    addToCartButton.disabled = true;
+
+
+    // -----------------------------------------
+    // Save original button
+    // -----------------------------------------
+
+    const originalHTML =
+        addToCartButton.innerHTML;
+
+
+    try {
+
+        // -----------------------------------------
+        // API CALL
+        // -----------------------------------------
+
+        const response =
+            await fetch(
+                `/cart/add?productId=${encodeURIComponent(productId)}&variantId=${encodeURIComponent(selectedVariantId)}&quantity=${quantity}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                        "Accept":
+                            "application/json"
+                    }
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        // -----------------------------------------
+        // REDIRECT GUEST TO LOGIN
+        // -----------------------------------------
+
+        if (response.status === 401 || data.redirectTo) {
+            showNotification("error", data.message || "Please log in to add items to cart.");
+            addToCartButton.innerHTML = originalHTML;
             setTimeout(() => {
-                window.location.href = "/login";
+                window.location.href = data.redirectTo || "/login";
             }, 1200);
             return;
         }
 
-        // -----------------------------------------
-        // Check variant selection
-        // -----------------------------------------
-
-        if (!selectedVariantId) {
-
-            showNotification("error", "Please select a variant first.");
-
-            return;
-        }
-
 
         // -----------------------------------------
-        // Get product ID
-        // -----------------------------------------
-
-        const productId =
-            "{{product._id}}";
-
-
-        // -----------------------------------------
-        // Get quantity
-        // -----------------------------------------
-
-        const quantityInput =
-            document.getElementById(
-                "quantity"
-            );
-
-
-        const quantity =
-            Number(
-                quantityInput?.value || 1
-            );
-
-
-        // -----------------------------------------
-        // Validate quantity
+        // ERROR
         // -----------------------------------------
 
         if (
-            !Number.isInteger(quantity) ||
-            quantity <= 0
+            !response.ok ||
+            !data.success
         ) {
 
-            showNotification("error", "Please enter a valid quantity.");
+            showNotification("error", data.message || "Unable to add product to cart");
+
+            addToCartButton.innerHTML =
+                originalHTML;
 
             return;
         }
 
+        showNotification("success", data.message || "Product added to cart");
+
+        if (typeof window.updateCartBadge === "function" && (data.cartCount !== undefined || data.cart)) {
+            const totalCartCount = data.cartCount !== undefined
+                ? data.cartCount
+                : (data.cart?.items || []).reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+            window.updateCartBadge(totalCartCount);
+        }
+
 
         // -----------------------------------------
-        // Prevent multiple clicks
+        // GET ACTUAL CART QUANTITY
         // -----------------------------------------
+
+        let currentQuantity =
+            quantity;
+
 
         if (
-            addToCartButton.dataset.loading ===
-            "true"
+            data.cart &&
+            data.cart.items
         ) {
-            return;
-        }
 
-
-        addToCartButton.dataset.loading =
-            "true";
-
-
-        addToCartButton.disabled = true;
-
-
-        // -----------------------------------------
-        // Save original button
-        // -----------------------------------------
-
-        const originalHTML =
-            addToCartButton.innerHTML;
-
-
-        try {
-
-            // -----------------------------------------
-            // API CALL
-            // -----------------------------------------
-
-            const response =
-                await fetch(
-                    `/cart/add?productId=${encodeURIComponent(productId)}&variantId=${encodeURIComponent(selectedVariantId)}&quantity=${quantity}`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type":
-                                "application/json",
-                            "Accept":
-                                "application/json"
-                        }
-                    }
+            const cartItem =
+                data.cart.items.find(
+                    item =>
+                        item.variant_id
+                            .toString() ===
+                        selectedVariantId
+                            .toString()
                 );
 
 
-            const data =
-                await response.json();
+            if (cartItem) {
 
-
-            // -----------------------------------------
-            // REDIRECT GUEST TO LOGIN
-            // -----------------------------------------
-
-            if (response.status === 401 || data.redirectTo) {
-                showNotification("error", data.message || "Please log in to add items to cart.");
-                addToCartButton.innerHTML = originalHTML;
-                setTimeout(() => {
-                    window.location.href = data.redirectTo || "/login";
-                }, 1200);
-                return;
-            }
-
-
-            // -----------------------------------------
-            // ERROR
-            // -----------------------------------------
-
-            if (
-                !response.ok ||
-                !data.success
-            ) {
-
-                showNotification("error", data.message || "Unable to add product to cart");
-
-                addToCartButton.innerHTML =
-                    originalHTML;
-
-                return;
-            }
-
-            showNotification("success", data.message || "Product added to cart");
-
-            if (typeof window.updateCartBadge === "function" && (data.cartCount !== undefined || data.cart)) {
-                const totalCartCount = data.cartCount !== undefined
-                    ? data.cartCount
-                    : (data.cart?.items || []).reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
-                window.updateCartBadge(totalCartCount);
-            }
-
-
-            // -----------------------------------------
-            // GET ACTUAL CART QUANTITY
-            // -----------------------------------------
-
-            let currentQuantity =
-                quantity;
-
-
-            if (
-                data.cart &&
-                data.cart.items
-            ) {
-
-                const cartItem =
-                    data.cart.items.find(
-                        item =>
-                            item.variant_id
-                                .toString() ===
-                            selectedVariantId
-                                .toString()
-                    );
-
-
-                if (cartItem) {
-
-                    currentQuantity =
-                        cartItem.quantity;
-
-                }
+                currentQuantity =
+                    cartItem.quantity;
 
             }
 
+        }
 
-            // -----------------------------------------
-            // CHANGE BUTTON
-            // -----------------------------------------
 
-            addToCartButton.innerHTML = `
+        // -----------------------------------------
+        // CHANGE BUTTON
+        // -----------------------------------------
+
+        addToCartButton.innerHTML = `
                 <span
                     class="material-symbols-outlined text-[20px]"
                 >
@@ -1287,37 +1683,36 @@
             `;
 
 
-            // -----------------------------------------
-            // Store quantity
-            // -----------------------------------------
+        // -----------------------------------------
+        // Store quantity
+        // -----------------------------------------
 
-            addToCartButton.dataset.quantity =
-                currentQuantity;
-
-
-        } catch (error) {
-
-            console.error(
-                "Product detail add cart error:",
-                error
-            );
+        addToCartButton.dataset.quantity =
+            currentQuantity;
 
 
-            showNotification("error", "Unable to add product to cart");
+    } catch (error) {
+
+        console.error(
+            "Product detail add cart error:",
+            error
+        );
 
 
-        } finally {
+        showNotification("error", "Unable to add product to cart");
 
-            addToCartButton.disabled =
-                false;
 
-            addToCartButton.dataset.loading =
-                "false";
+    } finally {
 
-        }
+        addToCartButton.disabled =
+            false;
+
+        addToCartButton.dataset.loading =
+            "false";
 
     }
 
+    }
 </script>
 
 

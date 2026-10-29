@@ -306,58 +306,71 @@
 <tbody class="divide-y divide-outline-variant/10">
 <!-- Product Row 1 -->
 {{#each products}}
-{{#each variants}}
 <tr class="group hover:bg-surface-container-low transition-colors">
 <td class="px-6 py-5">
 <div class="flex items-center gap-4">
 <div class="w-16 h-16 rounded-lg bg-surface-variant overflow-hidden border border-outline-variant/20 flex-shrink-0">
-<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A high-resolution product shot of a premium Almond Nutri Burfi set on a minimalist ceramic plate. The lighting is crisp and dramatic with soft shadows, highlighting the artisanal texture of the wellness snack. The color palette is composed of warm nutty browns and creamy whites against a clean, technical grey background, embodying a luxurious and healthy lifestyle choice." src="{{../images.[0].url}}"
-                        alt="{{../productName}}">
+{{#if images.[0].url}}
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="{{images.[0].url}}"
+                        alt="{{productName}}">
+{{else}}
+<div class="w-full h-full flex items-center justify-center text-xs text-outline">No image</div>
+{{/if}}
 </div>
 <div>
- <p class="font-label-md text-on-surface">
-                        {{../productName}}
+ <p class="font-label-md text-on-surface font-semibold">
+                        {{productName}}
                     </p>
-<p class="text-[12px] text-outline">{{this.sku}}</p>
+<p class="text-[12px] text-outline">
+    {{#if variantCount}}
+        {{variantCount}} Variant{{#if (gt variantCount 1)}}s{{/if}}{{#if variantSummary}} ({{variantSummary}}){{/if}}
+    {{else}}
+        <span class="text-error">No variants</span>
+    {{/if}}
+</p>
 </div>
 </div>
 </td>
 <!--category -->
 <td class="px-6 py-5">
     <span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-[12px] font-label-md tracking-wider uppercase">
-        {{../category_id.category_name}}
+        {{#if category_id.category_name}}
+            {{category_id.category_name}}
+        {{else}}
+            Uncategorized
+        {{/if}}
     </span>
 </td>
         <!-- Price -->
         <td class="px-6 py-5">
 
-            <p class="font-label-md text-on-surface">
-                ₹{{this.regular_price}}
+            <p class="font-label-md text-on-surface font-semibold">
+                {{priceDisplay}}
             </p>
 
         </td>
           <!-- Stock -->
 <td class="px-6 py-5">
 
-    {{#if (gt this.stock_quantity 10)}}
+    {{#if isInStock}}
 
         <!-- In Stock -->
         <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-green-500"></span>
 
             <p class="text-body-md text-on-surface">
-                In Stock ({{this.stock_quantity}})
+                In Stock ({{totalStock}})
             </p>
         </div>
 
-    {{else if (gt this.stock_quantity 0)}}
+    {{else if isLowStock}}
 
         <!-- Low Stock -->
         <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
 
-            <p class="text-body-md text-yellow-600">
-                Low Stock ({{this.stock_quantity}})
+            <p class="text-body-md text-yellow-600 font-medium">
+                Low Stock ({{totalStock}})
             </p>
         </div>
 
@@ -367,8 +380,8 @@
         <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-red-500"></span>
 
-            <p class="text-body-md text-red-600">
-                Out of Stock ({{this.stock_quantity}})
+            <p class="text-body-md text-red-600 font-medium">
+                Out of Stock ({{totalStock}})
             </p>
         </div>
 
@@ -378,14 +391,14 @@
 <!-- Product Status -->
 <td class="px-6 py-5">
 
-    {{#if ../is_listed}}
+    {{#if is_listed}}
 
         <!-- Active -->
         <div class="flex items-center gap-2">
 
             <span class="w-2 h-2 rounded-full bg-green-500"></span>
 
-            <p class="text-body-md text-green-600">
+            <p class="text-body-md text-green-600 font-medium">
                 Active
             </p>
 
@@ -398,8 +411,8 @@
 
             <span class="w-2 h-2 rounded-full bg-red-500"></span>
 
-            <p class="text-body-md text-red-600">
-                Deleted
+            <p class="text-body-md text-red-600 font-medium">
+                Unlisted
             </p>
 
         </div>
@@ -412,8 +425,9 @@
 
         <!-- Edit -->
         <a
-            href="/admin/product/editProduct/{{../_id}}"
+            href="/admin/product/editProduct/{{_id}}"
             class="p-2 text-on-surface-variant hover:text-primary transition-colors"
+            title="Edit Product"
         >
             <span class="material-symbols-outlined">
                 edit
@@ -424,7 +438,8 @@
         <button
             type="button"
             class="delete-btn p-2 text-on-surface-variant hover:text-error transition-colors"
-            data-id="{{../_id}}"
+            data-id="{{_id}}"
+            title="Delete Product"
         >
             <span class="material-symbols-outlined">
                 delete
@@ -434,7 +449,18 @@
     </div>
 </td>
 </tr>
-{{/each}}
+{{else}}
+<tr>
+    <td colspan="6" class="px-6 py-12 text-center text-outline">
+        <div class="flex flex-col items-center justify-center">
+            <span class="material-symbols-outlined text-[48px] text-outline-variant/60 mb-2">
+                inventory_2
+            </span>
+            <p class="text-body-lg font-medium text-on-surface">No products found</p>
+            <p class="text-body-sm text-outline">Try adjusting your search or filter</p>
+        </div>
+    </td>
+</tr>
 {{/each}}
 </tbody>
 </table>
@@ -451,23 +477,7 @@
 
         {{#if totalProducts}}
 
-            Showing
-
-            {{add (multiply (subtract currentPage 1) 10) 1}}
-
-            to
-
-            {{#if (lt (multiply currentPage 10) totalProducts)}}
-
-                {{multiply currentPage 10}}
-
-            {{else}}
-
-                {{totalProducts}}
-
-            {{/if}}
-
-            of {{totalProducts}} results
+            Showing {{startIndex}} to {{endIndex}} of {{totalProducts}} results
 
         {{else}}
 
@@ -695,7 +705,7 @@
                     name="productFilter"
                     value=""
                     class="w-4 h-4 accent-primary"
-                    checked
+                    {{#unless filter}}checked{{/unless}}
                 >
 
             </label>
@@ -739,6 +749,7 @@
                     name="productFilter"
                     value="in-stock"
                     class="w-4 h-4 accent-primary"
+                    {{#if (eq filter "in-stock")}}checked{{/if}}
                 >
 
             </label>
@@ -781,6 +792,7 @@
         name="productFilter"
         value="low-stock"
         class="w-4 h-4 accent-primary"
+        {{#if (eq filter "low-stock")}}checked{{/if}}
     >
 
 </label>
@@ -824,6 +836,7 @@
                     name="productFilter"
                     value="out-of-stock"
                     class="w-4 h-4 accent-primary"
+                    {{#if (eq filter "out-of-stock")}}checked{{/if}}
                 >
 
             </label>
@@ -866,6 +879,7 @@
         name="productFilter"
         value="listed"
         class="w-4 h-4 accent-primary"
+        {{#if (eq filter "listed")}}checked{{/if}}
     >
 
 </label>
@@ -909,6 +923,7 @@
         name="productFilter"
         value="unlisted"
         class="w-4 h-4 accent-primary"
+        {{#if (eq filter "unlisted")}}checked{{/if}}
     >
 
 </label>

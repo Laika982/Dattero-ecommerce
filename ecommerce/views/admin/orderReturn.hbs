@@ -199,8 +199,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
                         <!-- Customer -->
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center shrink-0 text-on-surface-variant">
-                                <span class="material-symbols-outlined text-[24px]">person</span>
+                            <div class="w-12 h-12 rounded-full bg-surface-container-high border border-outline-variant/30 overflow-hidden shrink-0 flex items-center justify-center">
+                                <img class="w-full h-full object-cover"
+                                     src="{{#if order.user_id.profileImage}}{{order.user_id.profileImage}}{{else}}/images/avathar.jpg{{/if}}"
+                                     alt="{{order.user_id.name}}"
+                                     onerror="this.onerror=null; this.src='/images/avathar.jpg';">
                             </div>
                             <div class="min-w-0 flex-1">
                                 <p class="text-xs uppercase tracking-wider text-on-surface-variant/70 font-semibold mb-0.5">Customer</p>

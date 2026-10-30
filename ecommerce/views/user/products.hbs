@@ -38,13 +38,13 @@
                 class="w-full bg-transparent border-none py-2 px-1 font-body-md text-sm sm:text-body-md text-ink-black placeholder:text-on-surface-variant/60 focus:ring-0 transition-all duration-300 outline-none"
                 placeholder="Search our collections..." type="text" value="{{search}}">
 
-            <button type="button" id="clearSearchBtn" onclick="clearSearch()"
+            <button type="button" id="clearSearchBtn"
                 class="{{#unless search}}hidden{{/unless}} p-1 text-on-surface-variant/60 hover:text-ink-black transition-colors rounded-full hover:bg-surface-variant/40 shrink-0 flex items-center justify-center active:scale-90"
                 title="Clear search" aria-label="Clear search">
                 <span class="material-symbols-outlined text-[18px]">close</span>
             </button>
 
-            <button type="button" onclick="applySearch()"
+            <button type="button" id="applySearchBtn"
                 class="px-4 sm:px-5 py-2 bg-on-surface text-surface rounded-full font-label-md text-xs sm:text-label-md hover:opacity-90 active:scale-95 transition-all duration-150 flex items-center shrink-0 shadow-sm">
                 Search
             </button>
@@ -62,7 +62,7 @@
                 Sort By:
             </label>
 
-            <select id="sort" onchange="changeSort(this.value)"
+            <select id="sort"
                 class="border border-surface-variant rounded-lg px-4 py-2 bg-white focus:outline-none">
 
                 <option value="" {{#if (eq sort "" )}}selected{{/if}}>
@@ -100,7 +100,7 @@
 
         <!-- FILTER BUTTON -->
 
-        <button type="button" onclick="openFilters()"
+        <button type="button" id="openFiltersBtn"
             class="flex-1 h-11 flex items-center justify-center gap-2 border border-surface-variant rounded-xl bg-white text-ink-black shadow-sm active:scale-95 transition-all">
 
             <span class="material-symbols-outlined text-[18px]">
@@ -116,7 +116,7 @@
 
         <!-- SORT BUTTON -->
 
-        <button type="button" onclick="toggleMobileSort()"
+        <button type="button" id="toggleMobileSortBtn"
             class="flex-1 h-11 flex items-center justify-center gap-2 border border-surface-variant rounded-xl bg-white text-ink-black shadow-sm active:scale-95 transition-all">
 
             <span class="material-symbols-outlined text-[18px]">
@@ -145,27 +145,27 @@
 
         <div class="space-y-1">
 
-            <button type="button" onclick="changeSort('')"
+            <button type="button" data-sort-value=""
                 class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-gray text-sm font-medium">
                 Featured
             </button>
 
-            <button type="button" onclick="changeSort('priceAcc')"
+            <button type="button" data-sort-value="priceAcc"
                 class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-gray text-sm font-medium">
                 Price: Low to High
             </button>
 
-            <button type="button" onclick="changeSort('priceDesc')"
+            <button type="button" data-sort-value="priceDesc"
                 class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-gray text-sm font-medium">
                 Price: High to Low
             </button>
 
-            <button type="button" onclick="changeSort('az')"
+            <button type="button" data-sort-value="az"
                 class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-gray text-sm font-medium">
                 A-Z
             </button>
 
-            <button type="button" onclick="changeSort('za')"
+            <button type="button" data-sort-value="za"
                 class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-surface-gray text-sm font-medium">
                 Z-A
             </button>
@@ -184,14 +184,14 @@
         <!-- Mobile Filter Backdrop -->
         <div id="filterBackdrop"
             class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 md:hidden"
-            onclick="closeFilters()"></div>
+            ></div>
 
         <!-- ========================= -->
         <!-- FILTER SIDEBAR -->
         <!-- ========================= -->
 
         <aside id="filterSidebar"
-            class="fixed top-0 right-0 bottom-0 w-[85%] max-w-xs bg-white z-50 p-6 overflow-y-auto shadow-2xl translate-x-full transition-transform duration-300 md:static md:translate-x-0 md:w-64 md:p-0 md:shadow-none md:bg-transparent md:block flex-shrink-0">
+            class="fixed top-0 right-0 bottom-0 w-[85%] max-w-xs bg-white z-50 p-6 overflow-y-auto shadow-2xl translate-x-full transition-transform duration-300 md:static md:z-auto md:translate-x-0 md:w-64 md:p-0 md:shadow-none md:bg-transparent md:block flex-shrink-0">
 
             <!-- MOBILE HEADER -->
 
@@ -201,7 +201,7 @@
                     Filter Products
                 </h2>
 
-                <button type="button" onclick="closeFilters()" class="p-1 text-on-surface-variant hover:text-ink-black">
+                <button type="button" id="closeFiltersBtn" class="p-1 text-on-surface-variant hover:text-ink-black">
 
                     <span class="material-symbols-outlined">
                         close
@@ -229,7 +229,7 @@
 
                     {{#if category}}
 
-                    <button type="button" onclick="clearCategory()"
+                    <button type="button" id="clearCategoryBtn"
                         class="text-sm text-on-surface-variant hover:text-ink-black underline transition">
                         Clear
                     </button>
@@ -309,7 +309,7 @@
             <!-- APPLY FILTER -->
             <!-- ========================= -->
 
-            <button type="button" onclick="applyFilters(); closeFilters();"
+            <button type="button" id="applyFiltersBtn"
                 class="w-full bg-ink-black text-white rounded-xl px-4 py-3 text-sm font-semibold hover:opacity-90 active:scale-95 transition shadow-sm">
                 Apply Filters
             </button>
@@ -321,7 +321,7 @@
         <!-- PRODUCTS -->
         <!-- ========================= -->
 
-        <div class="flex-grow grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 items-start">
+        <div class="flex-grow grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 items-stretch">
 
             {{#if products.length}}
 
@@ -333,7 +333,7 @@
             <!-- ========================= -->
 
             <a href="/products/{{_id}}"
-                class="group flex flex-col cursor-pointer bg-white rounded-2xl border border-surface-variant/60 p-2 sm:p-3 hover:shadow-lg transition-all duration-300">
+                class="group flex h-full min-w-0 flex-col cursor-pointer bg-white rounded-2xl border border-surface-variant/60 p-2 sm:p-3 hover:shadow-lg transition-all duration-300">
 
 
                 <!-- ========================= -->
@@ -350,7 +350,7 @@
                         <button type="button" data-product-id="{{_id}}"
                             data-wishlisted="{{#if isWishlisted}}true{{else}}false{{/if}}"
                             aria-pressed="{{#if isWishlisted}}true{{else}}false{{/if}}"
-                            onclick="toggleProductWishlist(this, event)"
+                            data-wishlist-button
                             class="w-7 h-7 sm:w-9 sm:h-9 rounded-full {{#if isWishlisted}}bg-red-500 hover:bg-red-600 shadow-sm{{else}}bg-white/90 hover:bg-white shadow-sm{{/if}} flex items-center justify-center transition-transform active:scale-90">
 
                             <span
@@ -385,7 +385,7 @@
                 <!-- PRODUCT INFO -->
                 <!-- ========================= -->
 
-                <div class="flex flex-col flex-grow px-1 pb-1">
+                <div class="flex min-w-0 flex-col flex-grow px-1 pb-1">
 
 
                     <!-- PRODUCT NAME -->
@@ -464,11 +464,15 @@
                     <!-- ========================= -->
 
                     <div
-                        class="mt-auto pt-2 sm:pt-3 border-t border-surface-variant/40 flex items-center justify-between gap-1">
+                        class="mt-auto pt-2 sm:pt-3 border-t border-surface-variant/40 flex flex-col items-start gap-1.5 w-full">
 
-                        <p class="font-headline-lg text-sm sm:text-lg font-bold text-ink-black shrink-0">
+                        <div class="flex flex-nowrap items-baseline gap-x-1 sm:gap-x-2 shrink-0 whitespace-nowrap">
+                        <p class="font-headline-lg text-sm sm:text-lg font-bold text-ink-black">
                             ₹{{listPrice}}
                         </p>
+                        {{#if originalPrice}}<span class="text-[9px] sm:text-xs text-outline line-through">&#8377;{{originalPrice}}</span>{{/if}}
+                        {{#if offerLabel}}<span class="text-[9px] sm:text-xs font-semibold text-green-700">{{offerLabel}}</span>{{/if}}
+                        </div>
 
                         <!-- Stock Status & Quantity Badge -->
                         {{#if isOutOfStock}}
@@ -587,7 +591,7 @@
 
             {{#if (gt page 1)}}
 
-            <button type="button" onclick="goToPage({{subtract page 1}})"
+            <button type="button" data-page-number="{{subtract page 1}}"
                 class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg hover:bg-surface-gray transition">
 
                 <span class="material-symbols-outlined text-[18px]">
@@ -614,7 +618,7 @@
 
             {{#each (range 1 totalPage)}}
 
-            <button type="button" onclick="goToPage({{this}})" class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg text-sm
+            <button type="button" data-page-number="{{this}}" class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg text-sm
 
                             {{#if (eq this ../page)}}
                                 bg-ink-black text-white
@@ -633,7 +637,7 @@
 
             {{#if (lt page totalPage)}}
 
-            <button type="button" onclick="goToPage({{add page 1}})"
+            <button type="button" data-page-number="{{add page 1}}"
                 class="w-10 h-10 flex items-center justify-center border border-surface-variant rounded-lg hover:bg-surface-gray transition">
 
                 <span class="material-symbols-outlined text-[18px]">
@@ -1340,6 +1344,32 @@
             mobileSort.classList.toggle("hidden");
         }
     }
+
+    // CSP blocks inline event attributes, so bind all shop controls here.
+    document.getElementById("clearSearchBtn")?.addEventListener("click", clearSearch);
+    document.getElementById("applySearchBtn")?.addEventListener("click", applySearch);
+    document.getElementById("sort")?.addEventListener("change", (event) => changeSort(event.target.value));
+    document.getElementById("openFiltersBtn")?.addEventListener("click", openFilters);
+    document.getElementById("toggleMobileSortBtn")?.addEventListener("click", toggleMobileSort);
+    document.getElementById("closeFiltersBtn")?.addEventListener("click", closeFilters);
+    document.getElementById("filterBackdrop")?.addEventListener("click", closeFilters);
+    document.getElementById("clearCategoryBtn")?.addEventListener("click", clearCategory);
+    document.getElementById("applyFiltersBtn")?.addEventListener("click", () => {
+        applyFilters();
+        closeFilters();
+    });
+
+    document.querySelectorAll("[data-sort-value]").forEach((button) => {
+        button.addEventListener("click", () => changeSort(button.dataset.sortValue));
+    });
+
+    document.querySelectorAll("[data-page-number]").forEach((button) => {
+        button.addEventListener("click", () => goToPage(button.dataset.pageNumber));
+    });
+
+    document.querySelectorAll("[data-wishlist-button]").forEach((button) => {
+        button.addEventListener("click", (event) => toggleProductWishlist(button, event));
+    });
 
 </script>
 

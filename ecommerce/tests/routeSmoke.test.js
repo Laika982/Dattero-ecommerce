@@ -4,11 +4,18 @@ import { describe, it, before, after } from "node:test";
 import assert from "node:assert/strict";
 import mongoose from "mongoose";
 import app from "../app.js";
+import connectDB from "../config/db.js";
+import RateLimit from "../models/rateLimitSchema.js";
 
 let server;
 let baseUrl;
 
 before(async () => {
+  try {
+    await connectDB();
+    await RateLimit.deleteMany({});
+  } catch (_) {}
+
   await new Promise((resolve) => {
     server = app.listen(0, () => {
       const port = server.address().port;
@@ -41,7 +48,8 @@ describe("Express Server Route Smoke & Security Integration Tests", () => {
     const html = await res.text();
     assert.match(html, /id="searchInput"/);
     assert.match(html, /id="clearSearchBtn"/);
-    assert.match(html, /onclick="clearSearch\(\)"/);
+    assert.match(html, /id="applySearchBtn"/);
+    assert.match(html, /addEventListener\("click", applySearch\)/);
     assert.match(html, /In Stock|Low Stock|Out of Stock/);
     assert.match(html, /bg-(?:green|yellow|red)-500/);
     assert.match(html, /\(\d+\)/);
@@ -144,13 +152,26 @@ describe("Express Server Route Smoke & Security Integration Tests", () => {
     assert.strictEqual(res.headers.get("x-content-type-options"), "nosniff");
   });
 
+  async function getCsrfHeaders() {
+    const res = await fetch(`${baseUrl}/login`);
+    const setCookie = res.headers.get("set-cookie") || "";
+    const match = setCookie.match(/_csrf=([^;]+)/);
+    const token = match ? match[1] : "";
+    return {
+      Cookie: `_csrf=${token}`,
+      "X-CSRF-Token": token,
+    };
+  }
+
   it("AJAX POST /login with invalid credentials returns JSON error without full redirect", async () => {
+    const csrfHeaders = await getCsrfHeaders();
     const res = await fetch(`${baseUrl}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
         Accept: "application/json",
+        ...csrfHeaders,
       },
       body: JSON.stringify({ email: "nonexistent_ajax_user@example.com", password: "WrongPassword123!" }),
     });
@@ -161,12 +182,14 @@ describe("Express Server Route Smoke & Security Integration Tests", () => {
   });
 
   it("AJAX POST /signup with missing fields returns 400 JSON error", async () => {
+    const csrfHeaders = await getCsrfHeaders();
     const res = await fetch(`${baseUrl}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
         Accept: "application/json",
+        ...csrfHeaders,
       },
       body: JSON.stringify({ email: "", password: "" }),
     });
@@ -177,12 +200,14 @@ describe("Express Server Route Smoke & Security Integration Tests", () => {
   });
 
   it("AJAX POST /forgotPassword with invalid email returns 400 JSON error", async () => {
+    const csrfHeaders = await getCsrfHeaders();
     const res = await fetch(`${baseUrl}/forgotPassword`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
         Accept: "application/json",
+        ...csrfHeaders,
       },
       body: JSON.stringify({ email: "invalid-email" }),
     });
@@ -193,12 +218,14 @@ describe("Express Server Route Smoke & Security Integration Tests", () => {
   });
 
   it("AJAX POST /contact with valid data returns 200 JSON success", async () => {
+    const csrfHeaders = await getCsrfHeaders();
     const res = await fetch(`${baseUrl}/contact`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
         Accept: "application/json",
+        ...csrfHeaders,
       },
       body: JSON.stringify({
         firstName: "Test",
@@ -215,12 +242,14 @@ describe("Express Server Route Smoke & Security Integration Tests", () => {
   });
 
   it("AJAX POST /contact with missing message returns 400 JSON error", async () => {
+    const csrfHeaders = await getCsrfHeaders();
     const res = await fetch(`${baseUrl}/contact`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
         Accept: "application/json",
+        ...csrfHeaders,
       },
       body: JSON.stringify({
         email: "customer@example.com",

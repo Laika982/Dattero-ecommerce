@@ -290,6 +290,7 @@ const editCustomer = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
+      if (req.cleanupUploadedFiles) await req.cleanupUploadedFiles();
       req.session.error = "User not found";
       return res.redirect("/admin/customer/customers");
     }
@@ -324,6 +325,7 @@ const editCustomer = async (req, res) => {
 
     res.redirect("/admin/customer/customers");
   } catch (error) {
+    if (req.cleanupUploadedFiles) await req.cleanupUploadedFiles();
     console.error("Error editing customer:", error);
 
     return res.status(500).render("admin/edit-customer", {

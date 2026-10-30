@@ -5,12 +5,14 @@ import { isAuthenticated } from "../../middleware/authMidilware.js";
 
 import profileController from "../../controllers/user/profileController.js";
 import upload from "../../middleware/upload.js";
+import { otpGenLimiter } from "../../middleware/rateLimiter.js";
 
 router.get("/", isAuthenticated, profileController.getProfile);
 router.get("/edit", isAuthenticated, profileController.getEditProfile);
 router.put(
   "/edit",
   isAuthenticated,
+  otpGenLimiter,
   upload.single("profileImage"),
   profileController.updateProfile,
 );

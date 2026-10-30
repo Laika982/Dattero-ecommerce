@@ -40,7 +40,24 @@ const orderItemSchema = new mongoose.Schema(
       min: 1,
     },
 
+    inventory_decremented: {
+      type: Boolean,
+      default: false,
+    },
+
+    restored_quantity: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
     returned_quantity: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    refunded_amount: {
       type: Number,
       default: 0,
       min: 0,
@@ -208,6 +225,17 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
 
+    original_final_amount: {
+      type: Number,
+      default: null,
+    },
+
+    refunded_amount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
     payment_method: {
       type: String,
       enum: ["cod", "upi", "wallet"],
@@ -218,6 +246,11 @@ const orderSchema = new mongoose.Schema(
       type: String,
       enum: ["pending", "paid", "failed", "refunded"],
       default: "pending",
+    },
+
+    inventory_reserved: {
+      type: Boolean,
+      default: false,
     },
 
     order_status: {

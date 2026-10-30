@@ -11,16 +11,23 @@ import {
 
 dotenv.config();
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/auth/google/callback",
-      passReqToCallback: true,
-    },
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const googleCallbackUrl =
+  process.env.GOOGLE_CALLBACK_URL ||
+  "http://localhost:3000/auth/google/callback";
 
-    async (req, accessToken, refreshToken, profile, done) => {
+if (googleClientId && googleClientSecret) {
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: googleClientId,
+        clientSecret: googleClientSecret,
+        callbackURL: googleCallbackUrl,
+        passReqToCallback: true,
+      },
+
+      async (req, accessToken, refreshToken, profile, done) => {
       try {
         const email = profile.emails[0].value?.toLowerCase();
 
@@ -77,5 +84,21 @@ passport.use(
     }
   )
 );
+} else {
+  // Fallback stub strategy so routes don't crash when Google OAuth is not configured
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: "unconfigured_google_client_id",
+        clientSecret: "unconfigured_google_client_secret",
+        callbackURL: googleCallbackUrl,
+        passReqToCallback: true,
+      },
+      (req, accessToken, refreshToken, profile, done) => {
+        done(new Error("Google OAuth credentials are not configured in environment variables."));
+      }
+    )
+  );
+}
 
 export default passport;

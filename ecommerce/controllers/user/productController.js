@@ -116,8 +116,16 @@ const loadProducts = async (req, res) => {
             ? {
               listPrice,
               originalPrice: pricing?.basePrice ?? Number(variant.regular_price),
+              displayOriginalPrice: pricing?.offer
+                ? pricing.basePrice
+                : variant.sale_price != null && Number(variant.sale_price) < Number(variant.regular_price)
+                  ? Number(variant.regular_price)
+                  : null,
               offerPercent: pricing?.discountPercentage || 0,
               offerName: pricing?.offerName || null,
+              offerLabel: pricing?.offerLabel || null,
+              offerDiscount: pricing?.offerDiscount || 0,
+              hasOffer: Boolean(pricing?.offer),
             }
             : null;
         })
@@ -142,9 +150,12 @@ const loadProducts = async (req, res) => {
       return {
         ...product,
         listPrice: cheapest.listPrice,
-        originalPrice: cheapest.offerPercent ? cheapest.originalPrice : null,
+        originalPrice: cheapest.displayOriginalPrice,
         offerPercent: cheapest.offerPercent,
         offerName: cheapest.offerName,
+        offerLabel: cheapest.offerLabel,
+        offerDiscount: cheapest.offerDiscount,
+        hasOffer: cheapest.hasOffer,
         totalStock,
         stockStatus,
         isOutOfStock,
@@ -286,17 +297,24 @@ const loadProduct = async (req, res) => {
 
     const variantsWithPrice = variants.map((variant) => {
       const pricing = offerPricing.get(String(variant._id));
-      const effectivePrice = pricing?.price ?? (
-        variant.sale_price !== null && variant.sale_price !== undefined
+      const basePrice = pricing?.basePrice ?? (
+        variant.sale_price !== null && Number(variant.sale_price) < Number(variant.regular_price)
           ? Number(variant.sale_price)
           : Number(variant.regular_price)
       );
+      const effectivePrice = pricing?.price ?? basePrice;
+      const hasSalePrice = variant.sale_price != null && Number(variant.sale_price) < Number(variant.regular_price);
 
       return {
         ...variant,
+        basePrice,
         effectivePrice,
+        displayOriginalPrice: pricing?.offer ? basePrice : hasSalePrice ? Number(variant.regular_price) : null,
         offerName: pricing?.offerName || null,
         offerPercent: pricing?.discountPercentage || 0,
+        offerLabel: pricing?.offerLabel || null,
+        offerDiscount: pricing?.offerDiscount || 0,
+        hasOffer: Boolean(pricing?.offer),
       };
     });
 
@@ -305,16 +323,8 @@ const loadProduct = async (req, res) => {
     }, variantsWithPrice[0]);
 
     const listingPrice = cheapestVariant.effectivePrice;
-
-    const regularPrice = Number(cheapestVariant.regular_price);
-
-    let discountPercentage = 0;
-
-    if (regularPrice > 0 && listingPrice < regularPrice) {
-      discountPercentage = Math.round(
-        ((regularPrice - listingPrice) / regularPrice) * 100,
-      );
-    }
+    const regularPrice = cheapestVariant.displayOriginalPrice;
+    const discountPercentage = cheapestVariant.offerPercent;
 
     const totalStock = variants.reduce((total, variant) => {
       return total + Number(variant.stock_quantity || 0);
@@ -503,8 +513,16 @@ const loadProduct = async (req, res) => {
             ? {
                 listPrice,
                 originalPrice: pricing?.basePrice ?? Number(variant.regular_price),
+                displayOriginalPrice: pricing?.offer
+                  ? pricing.basePrice
+                  : variant.sale_price != null && Number(variant.sale_price) < Number(variant.regular_price)
+                    ? Number(variant.regular_price)
+                    : null,
                 offerPercent: pricing?.discountPercentage || 0,
                 offerName: pricing?.offerName || null,
+                offerLabel: pricing?.offerLabel || null,
+                offerDiscount: pricing?.offerDiscount || 0,
+                hasOffer: Boolean(pricing?.offer),
               }
             : null;
         })
@@ -519,9 +537,12 @@ const loadProduct = async (req, res) => {
       return {
         ...p,
         listPrice: cheapest ? cheapest.listPrice : null,
-        originalPrice: cheapest?.offerPercent ? cheapest.originalPrice : null,
+        originalPrice: cheapest?.displayOriginalPrice || null,
         offerPercent: cheapest?.offerPercent || 0,
         offerName: cheapest?.offerName || null,
+        offerLabel: cheapest?.offerLabel || null,
+        offerDiscount: cheapest?.offerDiscount || 0,
+        hasOffer: cheapest?.hasOffer || false,
         totalStock,
         stockStatus,
         isOutOfStock,
@@ -545,6 +566,8 @@ const loadProduct = async (req, res) => {
       regularPrice,
 
       discountPercentage,
+      offerLabel: cheapestVariant.offerLabel,
+      offerDiscount: cheapestVariant.offerDiscount,
 
       totalStock,
 

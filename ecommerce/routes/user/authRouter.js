@@ -13,8 +13,15 @@ import {
 
 import userController from "../../controllers/user/authContoller.js";
 import { followReferralInvite, REFERRAL_COOKIE } from "../../services/referralService.js";
-
+import { getCookieOptions, getClearCookieOptions } from "../../config/cookie.js";
 import { isAjaxRequest } from "../../utils/isAjax.js";
+import {
+  loginLimiter,
+  otpGenLimiter,
+  otpResendLimiter,
+  otpVerifyLimiter,
+  contactLimiter,
+} from "../../middleware/rateLimiter.js";
 
 const router = express.Router();
 
@@ -33,7 +40,7 @@ router.get("/contact", (req, res) => {
   res.render("user/contact");
 });
 
-router.post("/contact", (req, res) => {
+router.post("/contact", contactLimiter, (req, res) => {
   const { firstName, lastName, email, inquiryType, message } = req.body;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!email || !emailRegex.test(email.trim()) || !message || !message.trim()) {
@@ -91,28 +98,28 @@ router.get(
 // ==================== SIGNUP + OTP ====================
 
 // Register user
-router.post("/signup", isGuest, userController.registerUser);
+router.post("/signup", otpGenLimiter, isGuest, userController.registerUser);
 
 // Show signup OTP page
 router.get("/verify-otp", isOtpSession, userController.loadVerifyOtp);
 
 // Verify signup OTP
-router.post("/verify-otp", isOtpSession, userController.verifyOtp);
+router.post("/verify-otp", otpVerifyLimiter, isOtpSession, userController.verifyOtp);
 
 // ==================== LOGIN ====================
 
 // Login
-router.post("/login", isGuest, userController.loginUser);
+router.post("/login", loginLimiter, isGuest, userController.loginUser);
 
 // ==================== FORGOT PASSWORD ====================
 
 // Send forgot-password OTP
-router.post("/forgotPassword", isGuest, userController.forgotPassword);
+router.post("/forgotPassword", otpGenLimiter, isGuest, userController.forgotPassword);
 
 // Reset password
-router.post("/resetPassword", isGuest, userController.resetPassword);
+router.post("/resetPassword", otpGenLimiter, isGuest, userController.resetPassword);
 
-router.post("/resend-otp", isOtpSession, userController.resendOtp);
+router.post("/resend-otp", otpResendLimiter, isOtpSession, userController.resendOtp);
 
 // ==================== GOOGLE AUTH ====================
 
@@ -136,7 +143,7 @@ router.get("/auth/google/callback", (req, res, next) => {
     }
 
     if (!user) {
-      res.clearCookie("token");
+      res.clearCookie("token", getClearCookieOptions());
       const message =
         (info && info.message) || "Authentication failed. Please try again.";
       req.session.error = message;
@@ -147,7 +154,7 @@ router.get("/auth/google/callback", (req, res, next) => {
     }
 
     if (user.isBlocked) {
-      res.clearCookie("token");
+      res.clearCookie("token", getClearCookieOptions());
       req.session.error = "Your account has been blocked.";
       return res.redirect("/login?blocked=true");
     }
@@ -162,14 +169,11 @@ router.get("/auth/google/callback", (req, res, next) => {
       },
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+    res.cookie("token", token, getCookieOptions({
       maxAge: 24 * 60 * 60 * 1000,
-    });
+    }));
 
-    res.clearCookie(REFERRAL_COOKIE);
+    res.clearCookie(REFERRAL_COOKIE, getClearCookieOptions());
 
     return res.redirect("/");
   })(req, res, next);

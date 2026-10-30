@@ -1,0 +1,84 @@
+<meta name="csrf-token" content="{{_csrf}}">
+<script>
+  (function() {
+    function getCsrfToken() {
+      const meta = document.querySelector('meta[name="csrf-token"]');
+      if (meta && meta.content) return meta.content;
+      const match = document.cookie.match(/(?:^|;\s*)_csrf=([^;]+)/);
+      return match ? decodeURIComponent(match[1]) : "";
+    }
+
+    // Auto-inject CSRF token into all Fetch requests
+    const origFetch = window.fetch;
+    if (origFetch) {
+      window.fetch = function(url, options) {
+        options = options || {};
+        const method = (options.method || "GET").toUpperCase();
+        if (!["GET", "HEAD", "OPTIONS"].includes(method)) {
+          const token = getCsrfToken();
+          if (token) {
+            if (options.headers instanceof Headers) {
+              if (!options.headers.has("x-csrf-token")) {
+                options.headers.set("x-csrf-token", token);
+              }
+            } else if (Array.isArray(options.headers)) {
+              options.headers.push(["x-csrf-token", token]);
+            } else {
+              options.headers = options.headers || {};
+              if (!options.headers["x-csrf-token"] && !options.headers["X-CSRF-Token"]) {
+                options.headers["x-csrf-token"] = token;
+              }
+            }
+          }
+        }
+        return origFetch.call(this, url, options);
+      };
+    }
+
+    // Auto-inject CSRF token into all XMLHttpRequest calls
+    if (window.XMLHttpRequest) {
+      const origOpen = XMLHttpRequest.prototype.open;
+      const origSend = XMLHttpRequest.prototype.send;
+      XMLHttpRequest.prototype.open = function(method, url) {
+        this._method = (method || "GET").toUpperCase();
+        return origOpen.apply(this, arguments);
+      };
+      XMLHttpRequest.prototype.send = function(body) {
+        if (this._method && !["GET", "HEAD", "OPTIONS"].includes(this._method)) {
+          const token = getCsrfToken();
+          if (token) {
+            try {
+              this.setRequestHeader("x-csrf-token", token);
+            } catch (e) {}
+          }
+        }
+        return origSend.apply(this, arguments);
+      };
+    }
+
+    // Auto-inject CSRF token into all form submissions
+    document.addEventListener("submit", function(e) {
+      const form = e.target;
+      if (form && form.tagName === "FORM") {
+        const method = (form.method || "GET").toUpperCase();
+        if (method !== "GET") {
+          const token = getCsrfToken();
+          if (token) {
+            if (!form.querySelector('input[name="_csrf"]')) {
+              const input = document.createElement("input");
+              input.type = "hidden";
+              input.name = "_csrf";
+              input.value = token;
+              form.appendChild(input);
+            }
+            if (form.enctype === "multipart/form-data" && !form.action.includes("_csrf=")) {
+              const separator = form.action.includes("?") ? "&" : "?";
+              form.action = form.action + separator + "_csrf=" + encodeURIComponent(token);
+            }
+          }
+        }
+      }
+    }, true);
+  })();
+</script>
+

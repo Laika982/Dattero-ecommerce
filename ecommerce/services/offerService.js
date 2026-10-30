@@ -88,6 +88,14 @@ export const getProductOfferPricing = async (products, variants, now = new Date(
       ...pricing,
       offerName: pricing.offer?.name || null,
       offerType: pricing.offer?.offer_type || null,
+      offerDiscountType: pricing.offer?.discount_type || null,
+      offerDiscountValue: pricing.offer ? Number(pricing.offer.discount_value) : 0,
+      offerDiscount: pricing.discount,
+      offerLabel: pricing.offer
+        ? pricing.offer.discount_type === "PERCENTAGE"
+          ? `${pricing.offer.discount_value}% OFF`
+          : `\u20B9${pricing.offer.discount_value} OFF`
+        : null,
       discountPercentage:
         basePrice > 0 ? Math.round((pricing.discount / basePrice) * 100) : 0,
     });

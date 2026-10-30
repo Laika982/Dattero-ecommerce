@@ -1,22 +1,25 @@
 import mongoose from "mongoose";
-import path from "path";
-import dotenv from "dotenv";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-dotenv.config({ path: path.join(__dirname, "..", ".env") });
-
+import "./env.js";
 import { backfillUserReferralCodes } from "../services/referralService.js";
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.DATABASE_URL);
+    const dbUrl = process.env.DATABASE_URL;
+    if (!dbUrl) {
+      if (process.env.NODE_ENV === "production") {
+        throw new Error("DATABASE_URL environment variable is missing.");
+      }
+      console.warn("[DB WARNING] DATABASE_URL is not defined in environment.");
+      return;
+    }
+    await mongoose.connect(dbUrl);
     console.log("DB connected");
     await backfillUserReferralCodes();
   } catch (error) {
-    console.log("DB error", error);
+    console.error("DB error:", error.message || error);
+    if (process.env.NODE_ENV === "production") {
+      throw error;
+    }
   }
 };
 

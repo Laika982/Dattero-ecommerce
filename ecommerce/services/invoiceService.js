@@ -1,5 +1,70 @@
 import PDFDocument from "pdfkit";
 
+/**
+ * Calculates complete, accurate invoice totals using immutable order snapshots.
+ * Preserves original purchase amounts, discounts, shipping, taxes, and refunds.
+ */
+export const calculateInvoiceTotals = (order = {}) => {
+  const items = order.items || [];
+  const rawSubtotal = items.reduce(
+    (acc, it) =>
+      acc +
+      Number(
+        it.item_total != null
+          ? it.item_total
+          : (Number(it.price || 0) * Number(it.quantity || 0)) || 0
+      ),
+    0
+  );
+
+  const subtotal = Number(
+    (order.subtotal != null ? order.subtotal : rawSubtotal).toFixed(2)
+  );
+
+  const couponDiscount = Number(
+    (order.discount != null
+      ? order.discount
+      : (order.coupon_discount || 0)
+    ).toFixed(2)
+  );
+
+  const referralDiscount = Number((order.referral_discount || 0).toFixed(2));
+  const offerDiscount = Number((order.offer_discount || 0).toFixed(2));
+  const totalDiscount = Number(
+    (couponDiscount + referralDiscount + offerDiscount).toFixed(2)
+  );
+
+  const shippingCharge = Number((order.shipping_charge != null ? order.shipping_charge : 0).toFixed(2));
+  const tax = Number((order.tax != null ? order.tax : 0).toFixed(2));
+
+  const originalFinalAmount = Number(
+    (order.original_final_amount != null
+      ? order.original_final_amount
+      : (order.final_amount != null
+          ? order.final_amount
+          : Math.max(0, subtotal - couponDiscount - referralDiscount + shippingCharge + tax))
+    ).toFixed(2)
+  );
+
+  const refundedAmount = Number((order.refunded_amount || 0).toFixed(2));
+  const netPaidAmount = Number(Math.max(0, originalFinalAmount - refundedAmount).toFixed(2));
+
+  return {
+    subtotal,
+    couponDiscount,
+    couponCode: order.coupon_code || null,
+    referralDiscount,
+    offerDiscount,
+    totalDiscount,
+    shippingCharge,
+    tax,
+    finalAmount: originalFinalAmount,
+    originalFinalAmount,
+    refundedAmount,
+    netPaidAmount,
+  };
+};
+
 export const generateInvoicePDF = (order, res) => {
   const doc = new PDFDocument({
     size: "A4",
@@ -7,17 +72,20 @@ export const generateInvoicePDF = (order, res) => {
   });
 
   // --------------------------------------------------
-  // RESPONSE HEADERS
+  // RESPONSE HEADERS & STREAMING
   // --------------------------------------------------
 
-  res.setHeader("Content-Type", "application/pdf");
+  if (res && typeof res.setHeader === "function") {
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${order.order_id || "invoice"}.pdf"`
+    );
+  }
 
-  res.setHeader(
-    "Content-Disposition",
-    `attachment; filename="${order.order_id}.pdf"`
-  );
-
-  doc.pipe(res);
+  if (res && (typeof res.pipe === "function" || typeof res.write === "function")) {
+    doc.pipe(res);
+  }
 
   // --------------------------------------------------
   // CONSTANTS
@@ -25,11 +93,8 @@ export const generateInvoicePDF = (order, res) => {
 
   const pageWidth = doc.page.width;
   const pageHeight = doc.page.height;
-
   const margin = 50;
-
   const contentWidth = pageWidth - margin * 2;
-
   let y = margin;
 
   // --------------------------------------------------
@@ -41,6 +106,7 @@ export const generateInvoicePDF = (order, res) => {
   };
 
   const formatDate = (date) => {
+    if (!date) return "-";
     return new Date(date).toLocaleDateString("en-IN", {
       day: "2-digit",
       month: "short",
@@ -137,7 +203,7 @@ export const generateInvoicePDF = (order, res) => {
 
   drawLabelValue(
     "Order Date:",
-    formatDate(order.createdAt),
+    formatDate(order.createdAt || Date.now()),
     rightColumn,
     y
   );
@@ -146,7 +212,7 @@ export const generateInvoicePDF = (order, res) => {
 
   drawLabelValue(
     "Payment:",
-    order.payment_method,
+    (order.payment_method || "COD").toUpperCase(),
     leftColumn,
     y
   );
@@ -176,7 +242,6 @@ export const generateInvoicePDF = (order, res) => {
   const customer = order.shipping_address || {};
 
   // Customer column
-
   doc
     .font("Helvetica-Bold")
     .fontSize(10)
@@ -192,7 +257,6 @@ export const generateInvoicePDF = (order, res) => {
   y += 16;
 
   // Shipping column
-
   const shippingStartY = y - 32;
 
   doc
@@ -262,7 +326,6 @@ export const generateInvoicePDF = (order, res) => {
   const totalX = priceX + priceWidth;
 
   // Table header background
-
   doc
     .rect(
       tableX,
@@ -333,13 +396,20 @@ export const generateInvoicePDF = (order, res) => {
 
   doc.font("Helvetica").fontSize(9);
 
-  order.items.forEach((item) => {
+  const items = order.items || [];
+  items.forEach((item) => {
     const rowHeight = 35;
 
-    // Product
+    const statusSuffix =
+      item.status === "cancelled"
+        ? " (Cancelled)"
+        : item.status === "returned"
+        ? " (Returned)"
+        : "";
 
+    // Product
     doc.text(
-      item.product_name || "-",
+      `${item.product_name || "-"}${statusSuffix}`,
       productX + 5,
       y,
       {
@@ -348,7 +418,6 @@ export const generateInvoicePDF = (order, res) => {
     );
 
     // SKU
-
     doc.text(
       item.sku || "-",
       skuX,
@@ -359,7 +428,6 @@ export const generateInvoicePDF = (order, res) => {
     );
 
     // Quantity
-
     doc.text(
       String(item.quantity || 0),
       qtyX,
@@ -371,7 +439,6 @@ export const generateInvoicePDF = (order, res) => {
     );
 
     // Price
-
     doc.text(
       formatCurrency(item.price),
       priceX,
@@ -383,9 +450,13 @@ export const generateInvoicePDF = (order, res) => {
     );
 
     // Total
+    const itemTotal =
+      item.item_total != null
+        ? item.item_total
+        : Number(item.price || 0) * Number(item.quantity || 0);
 
     doc.text(
-      formatCurrency(item.item_total),
+      formatCurrency(itemTotal),
       totalX,
       y,
       {
@@ -406,7 +477,6 @@ export const generateInvoicePDF = (order, res) => {
   // --------------------------------------------------
 
   const totalsLabelX = pageWidth - margin - 190;
-
   const totalsValueX = pageWidth - margin - 75;
 
   const drawTotalRow = (
@@ -440,61 +510,74 @@ export const generateInvoicePDF = (order, res) => {
     y += bold ? 22 : 18;
   };
 
-  drawTotalRow(
-    "Subtotal",
-    formatCurrency(order.subtotal)
-  );
+  const totals = calculateInvoiceTotals(order);
 
   drawTotalRow(
-    "Discount",
-    `- ${formatCurrency(order.discount)}`
+    "Subtotal",
+    formatCurrency(totals.subtotal)
   );
+
+  if (totals.couponDiscount > 0) {
+    const couponLabel = totals.couponCode
+      ? `Coupon (${totals.couponCode})`
+      : "Coupon Discount";
+    drawTotalRow(
+      couponLabel,
+      `- ${formatCurrency(totals.couponDiscount)}`
+    );
+  }
+
+  if (totals.referralDiscount > 0) {
+    drawTotalRow(
+      "Referral Discount",
+      `- ${formatCurrency(totals.referralDiscount)}`
+    );
+  }
+
+  if (totals.offerDiscount > 0) {
+    drawTotalRow(
+      "Offer Discount",
+      `- ${formatCurrency(totals.offerDiscount)}`
+    );
+  }
 
   drawTotalRow(
     "Tax",
-    formatCurrency(order.tax)
+    formatCurrency(totals.tax)
   );
 
   drawTotalRow(
     "Shipping",
-    formatCurrency(order.shipping_charge)
+    totals.shippingCharge === 0 ? "Free" : formatCurrency(totals.shippingCharge)
   );
 
   y += 5;
-
   drawLine(y);
-
   y += 15;
 
   // --------------------------------------------------
   // GRAND TOTAL
   // --------------------------------------------------
 
-  doc
-    .font("Helvetica-Bold")
-    .fontSize(14)
-    .text(
-      "GRAND TOTAL",
-      totalsLabelX,
-      y,
-      {
-        width: 110,
-        align: "right",
-      }
-    );
+  drawTotalRow(
+    "GRAND TOTAL",
+    formatCurrency(totals.originalFinalAmount),
+    true
+  );
 
-  doc
-    .font("Helvetica-Bold")
-    .fontSize(14)
-    .text(
-      formatCurrency(order.final_amount),
-      totalsValueX,
-      y,
-      {
-        width: 75,
-        align: "right",
-      }
+  // Partial Return / Refund section if order had refunds
+  if (totals.refundedAmount > 0) {
+    y += 5;
+    drawTotalRow(
+      "Refunded",
+      `- ${formatCurrency(totals.refundedAmount)}`
     );
+    drawTotalRow(
+      "Net Paid",
+      formatCurrency(totals.netPaidAmount),
+      true
+    );
+  }
 
   y += 45;
 
@@ -538,4 +621,10 @@ export const generateInvoicePDF = (order, res) => {
   // --------------------------------------------------
 
   doc.end();
+  return doc;
+};
+
+export default {
+  calculateInvoiceTotals,
+  generateInvoicePDF,
 };

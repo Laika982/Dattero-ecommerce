@@ -189,7 +189,10 @@ const loadAddProduct = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
-  const redirectWithError = (message) => {
+  const redirectWithError = async (message) => {
+    if (req.cleanupUploadedFiles) {
+      await req.cleanupUploadedFiles();
+    }
     req.session.error = message;
     return res.redirect("/admin/product/addProduct");
   };
@@ -364,7 +367,10 @@ const loadEditProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
   const editPath = `/admin/product/editProduct/${req.params.id}`;
-  const redirectWithError = (message, path = editPath) => {
+  const redirectWithError = async (message, path = editPath) => {
+    if (req.cleanupUploadedFiles) {
+      await req.cleanupUploadedFiles();
+    }
     req.session.error = message;
     return res.redirect(path);
   };

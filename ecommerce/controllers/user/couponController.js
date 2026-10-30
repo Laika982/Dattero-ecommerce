@@ -66,6 +66,8 @@ export const applyCoupon = async (req, res) => {
         productId: item.product_id.toString(),
         categoryId: product?.category_id?.toString() || null,
         quantity: item.quantity,
+        itemTotal: price * item.quantity,
+        hasOffer: Boolean(offerPricing.get(variant?._id?.toString())?.offer),
       });
     }
 

@@ -37,39 +37,48 @@ import User from "./models/userSchema.js";
 import Cart from "./models/cartSchema.js";
 import methodOverride from "method-override";
 import helmet from "helmet";
+import { getHelmetConfig } from "./config/securityHeaders.js";
 import rateLimit from "express-rate-limit";
+import validateEnv from "./config/env.js";
+import csrfProtection from "./middleware/csrfProtection.js";
+import { getClearCookieOptions, getCookieOptions } from "./config/cookie.js";
+import MongoRateLimitStore from "./middleware/mongoRateLimitStore.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-dotenv.config();
+// Validate environment variables at application startup
+validateEnv();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Security Headers - configured to allow payment gateway popups & iframes (Razorpay)
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-    crossOriginEmbedderPolicy: false,
-    crossOriginOpenerPolicy: false,
-    crossOriginResourcePolicy: false,
-    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
-  })
-);
+// Express Proxy Trust Configuration
+// In production behind reverse proxies (Nginx, Cloudflare, AWS ALB, Render),
+// trust proxy ensures req.secure is accurately detected from X-Forwarded-Proto: https
+if (process.env.NODE_ENV === "production" || process.env.TRUST_PROXY) {
+  const trustProxySetting = process.env.TRUST_PROXY
+    ? (isNaN(process.env.TRUST_PROXY) ? process.env.TRUST_PROXY : Number(process.env.TRUST_PROXY))
+    : 1;
+  app.set("trust proxy", trustProxySetting);
+}
 
-// Auth Rate Limiting
+// Security Headers - Production-grade Helmet policy with custom CSP, COOP, and clickjacking protection
+app.use(helmet(getHelmetConfig()));
+
+// Auth Rate Limiting (Global fallback shield with distributed MongoStore)
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
+  store: new MongoRateLimitStore({ prefix: "rl:auth-global:", windowMs: 15 * 60 * 1000 }),
   message: {
     success: false,
     message: "Too many authentication attempts. Please try again after 15 minutes.",
   },
 });
-app.use(["/login", "/signup", "/verify-otp", "/forgotPassword", "/admin/login"], authLimiter);
+app.use(["/login", "/signup", "/verify-otp", "/forgotPassword", "/admin/login", "/resend-otp"], authLimiter);
 
 // Database
 connectDB();
@@ -85,15 +94,12 @@ app.use(
 // Session
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "dattero_prod_session_secret_key_safe",
+    secret: process.env.SESSION_SECRET || (process.env.NODE_ENV === "production" ? undefined : "dev_session_secret_only"),
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+    cookie: getCookieOptions({
       maxAge: 24 * 60 * 60 * 1000,
-    },
+    }),
   })
 );
 
@@ -115,13 +121,13 @@ app.use(async (req, res, next) => {
       const user = await User.findById(decoded.userId);
 
       if (!user) {
-        res.clearCookie("token");
+        res.clearCookie("token", getClearCookieOptions());
         delete req.cookies.token;
         req.user = null;
         res.locals.user = null;
         res.locals.cartCount = 0;
       } else if (user.isBlocked) {
-        res.clearCookie("token");
+        res.clearCookie("token", getClearCookieOptions());
         delete req.cookies.token;
         req.user = null;
         res.locals.user = null;
@@ -176,7 +182,7 @@ app.use(async (req, res, next) => {
     }
 
   } catch (error) {
-    res.clearCookie("token");
+    res.clearCookie("token", getClearCookieOptions());
     delete req.cookies.token;
     req.user = null;
     res.locals.user = null;
@@ -247,6 +253,8 @@ app.use((req, res, next) => {
 // Uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// CSRF Protection Middleware
+app.use(csrfProtection);
 
 // Routes
 app.use("/", userRouter);

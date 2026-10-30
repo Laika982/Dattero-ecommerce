@@ -42,14 +42,21 @@ Dattero Team`,
 `
 ) {
   try {
+    const user = process.env.NODEMAILER_EMAIL;
+    const pass = process.env.NODEMAILER_PASSWORD;
+
+    if (!user || !pass) {
+      throw new Error("SMTP credentials (NODEMAILER_EMAIL, NODEMAILER_PASSWORD) are not configured.");
+    }
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       port: 587,
       secure: false,
       requireTLS: true,
       auth: {
-        user: process.env.NODEMAILER_EMAIL,
-        pass: process.env.NODEMAILER_PASSWORD,
+        user,
+        pass,
       },
     });
 
@@ -63,7 +70,7 @@ Dattero Team`,
 
     return info.accepted.length > 0;
   } catch (error) {
-    console.error("Error sending verification email:", error);
+    console.error("Error sending verification email:", error.message || error);
     return false;
   }
 }

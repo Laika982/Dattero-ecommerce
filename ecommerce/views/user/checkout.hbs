@@ -83,7 +83,7 @@
   <div class="flex flex-col gap-6">
     {{#each checkoutItems}}
     <!-- Product  -->
-    <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 pb-6 border-b border-outline-variant/20" data-cart-item data-variant-id="{{this.variantId}}" data-product-id="{{this.productId}}" data-category-id="{{this.categoryId}}" data-price="{{this.price}}">
+    <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 pb-6 border-b border-outline-variant/20" data-cart-item data-variant-id="{{this.variantId}}" data-product-id="{{this.productId}}" data-category-id="{{this.categoryId}}" data-price="{{this.price}}" data-has-offer="{{this.hasOffer}}">
       <!-- Product Image -->
       <div class="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-outline-variant/20 flex-shrink-0 relative">
         <img class="w-full h-full object-cover" data-alt="{{this.product_name}}" src="{{this.image}}" alt="{{this.product_name}}">
@@ -1110,6 +1110,7 @@ document.addEventListener('DOMContentLoaded', () => {
           price,
           quantity: qty,
           itemTotal: price * qty,
+          hasOffer: el.dataset.hasOffer === 'true',
         });
       }
     });
@@ -1129,24 +1130,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const listContainer = document.getElementById('couponOffersList');
     if (!listContainer || !initialCoupons.length) return;
 
-    const currentSubtotal = getDOMSubtotal();
     const currentCartItems = getDOMCartItems();
+    const eligibleCartItems = currentCartItems.filter((item) => !item.hasOffer);
+    const currentSubtotal = eligibleCartItems.reduce((sum, item) => sum + item.itemTotal, 0);
 
     initialCoupons.forEach((coupon) => {
       let eligible = true;
       let reason = null;
 
-      if (coupon.applies_to === 'PRODUCT' && coupon.target_product_id) {
+      if (currentCartItems.length > 0 && eligibleCartItems.length === 0) {
+        eligible = false;
+        reason = 'Coupons cannot be applied to products that already have offers.';
+      }
+
+      if (eligible && coupon.applies_to === 'PRODUCT' && coupon.target_product_id) {
         const hasProduct = currentCartItems.some(
-          (item) => String(item.productId) === String(coupon.target_product_id)
+          (item) => !item.hasOffer && String(item.productId) === String(coupon.target_product_id)
         );
         if (!hasProduct) {
           eligible = false;
           reason = 'Add an eligible product to your cart.';
         }
-      } else if (coupon.applies_to === 'CATEGORY' && coupon.target_category_id) {
+      } else if (eligible && coupon.applies_to === 'CATEGORY' && coupon.target_category_id) {
         const hasCategory = currentCartItems.some(
-          (item) => String(item.categoryId) === String(coupon.target_category_id)
+          (item) => !item.hasOffer && String(item.categoryId) === String(coupon.target_category_id)
         );
         if (!hasCategory) {
           eligible = false;
@@ -1159,9 +1166,24 @@ document.addEventListener('DOMContentLoaded', () => {
         reason = 'Minimum purchase amount not reached.';
       }
 
+      const couponSubtotal = coupon.applies_to === 'PRODUCT' && coupon.target_product_id
+        ? eligibleCartItems
+            .filter((item) => String(item.productId) === String(coupon.target_product_id))
+            .reduce((sum, item) => sum + item.itemTotal, 0)
+        : coupon.applies_to === 'CATEGORY' && coupon.target_category_id
+          ? eligibleCartItems
+              .filter((item) => String(item.categoryId) === String(coupon.target_category_id))
+              .reduce((sum, item) => sum + item.itemTotal, 0)
+          : currentSubtotal;
+
+      if (eligible && couponSubtotal < Number(coupon.rawMinimumPurchase || 0)) {
+        eligible = false;
+        reason = 'Minimum purchase amount not reached.';
+      }
+
       coupon.eligible = eligible;
       coupon.reason = reason;
-      coupon.amountNeeded = Math.max(0, Number(coupon.rawMinimumPurchase || 0) - currentSubtotal).toFixed(2);
+      coupon.amountNeeded = Math.max(0, Number(coupon.rawMinimumPurchase || 0) - couponSubtotal).toFixed(2);
     });
 
     initialCoupons.sort((a, b) => {

@@ -66,6 +66,14 @@ const walletTransactionSchema = new mongoose.Schema(
       default: null,
     },
 
+    idempotency_key: {
+      type: String,
+      default: null,
+      sparse: true,
+      index: true,
+      unique: true,
+    },
+
     balance_before: {
       type: Number,
       required: true,

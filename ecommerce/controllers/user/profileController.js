@@ -1,6 +1,6 @@
 import User from "../../models/userSchema.js";
 import Address from "../../models/addressSchema.js";
-import logger from "../../utils/logger.js";
+import logger, { maskEmail } from "../../utils/logger.js";
 import jwt from "jsonwebtoken";
 import { sendVerificationEmail } from "../../services/emailService.js";
 import { generateOtp } from "../../utils/otp.js";
@@ -12,6 +12,7 @@ import {
   buildReferralShareUrl,
 } from "../../services/referralService.js";
 import { isAjaxRequest } from "../../utils/isAjax.js";
+import { getCookieOptions, getClearCookieOptions } from "../../config/cookie.js";
 
 const getProfile = async (req, res) => {
   try {
@@ -96,7 +97,7 @@ const getProfile = async (req, res) => {
   } catch (error) {
     logger.error("Profile error:", error);
 
-    res.clearCookie("token");
+    res.clearCookie("token", getClearCookieOptions());
 
     return res.redirect("/login");
   }
@@ -119,7 +120,7 @@ const getEditProfile = async (req, res) => {
     });
   } catch (error) {
     logger.error("Get edit profile page error:", error);
-    res.clearCookie("token");
+    res.clearCookie("token", getClearCookieOptions());
     return res.redirect("/login");
   }
 };
@@ -140,7 +141,7 @@ const updateProfile = async (req, res) => {
     const currentUser = await User.findById(userId).lean();
 
     if (!currentUser) {
-      res.clearCookie("token");
+      res.clearCookie("token", getClearCookieOptions());
       return res.redirect("/login");
     }
 
@@ -232,6 +233,36 @@ const updateProfile = async (req, res) => {
         });
       }
 
+      // Check cooldown if an email change OTP was recently requested
+      if (req.cookies.otpToken) {
+        try {
+          const existingOtpData = jwt.verify(req.cookies.otpToken, process.env.JWT_SECRET);
+          if (
+            existingOtpData &&
+            existingOtpData.purpose === "change-email" &&
+            existingOtpData.otpExpiresAt &&
+            Date.now() < existingOtpData.otpExpiresAt
+          ) {
+            const waitSeconds = Math.ceil((existingOtpData.otpExpiresAt - Date.now()) / 1000);
+            if (waitSeconds > 0) {
+              if (isAjaxRequest(req)) {
+                return res.status(429).json({
+                  success: false,
+                  message: `Please wait ${waitSeconds} second(s) before requesting a new verification email.`,
+                  retryAfter: waitSeconds,
+                });
+              }
+              return res.status(429).render("user/edit-profile", {
+                userData: currentUser,
+                error: `Please wait ${waitSeconds} second(s) before requesting a new verification email.`,
+              });
+            }
+          }
+        } catch (_) {
+          // Token expired or invalid, proceed to send new OTP
+        }
+      }
+
       // =========================
       // GENERATE OTP
       // =========================
@@ -250,7 +281,7 @@ const updateProfile = async (req, res) => {
         });
       }
 
-      logger.info(`Email update OTP sent to ${email}: ${otp}`);
+      logger.info(`Email update OTP sent to ${maskEmail(email)}`);
 
       // =========================
       // OTP TOKEN
@@ -276,12 +307,9 @@ const updateProfile = async (req, res) => {
         "10m"
       );
 
-      res.cookie("otpToken", otpToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+      res.cookie("otpToken", otpToken, getCookieOptions({
         maxAge: 10 * 60 * 1000,
-      });
+      }));
 
       req.session.success = `Verification code sent to ${email}`;
       if (isAjaxRequest(req)) {
@@ -333,7 +361,7 @@ const updateProfile = async (req, res) => {
       });
     }
 
-    res.clearCookie("token");
+    res.clearCookie("token", getClearCookieOptions());
 
     return res.redirect("/login");
   }
@@ -349,7 +377,7 @@ const deleteAccount = async (req, res) => {
 
     await User.findByIdAndDelete(userId);
 
-    res.clearCookie("token");
+    res.clearCookie("token", getClearCookieOptions());
 
     req.session.success = "Account Deleted Successfull";
 

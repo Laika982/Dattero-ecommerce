@@ -72,7 +72,6 @@
                 <button 
                     type="button" 
                     id="orderSearchClearBtn" 
-                    onclick="clearOrderSearch()" 
                     class="{{#if search}}flex{{else}}hidden{{/if}} absolute right-3 w-6 h-6 rounded-full items-center justify-center text-on-surface-variant/70 hover:text-on-surface hover:bg-surface-container-high transition-all active:scale-90 cursor-pointer"
                     title="Clear search text"
                     aria-label="Clear search input"
@@ -469,6 +468,10 @@
                 clearOrderSearch();
             }
         });
+    }
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', clearOrderSearch);
     }
 
 

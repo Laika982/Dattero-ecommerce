@@ -187,6 +187,7 @@ export const loadCheckout = async (req, res) => {
 
         offerName: offer?.offerName || null,
         offerDiscount: Number(offer?.discount || 0) * item.quantity,
+        hasOffer: Boolean(offer?.offer),
 
         itemTotal,
         item_total: itemTotal,
@@ -263,6 +264,8 @@ export const loadCheckout = async (req, res) => {
       productId: item.productId,
       categoryId: item.categoryId,
       quantity: item.quantity,
+      itemTotal: item.itemTotal,
+      hasOffer: Boolean(item.hasOffer),
     }));
 
     const orderMatch = {

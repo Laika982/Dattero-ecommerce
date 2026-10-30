@@ -25,20 +25,31 @@ export const recordFailedWalletTransaction = async ({
   try {
     const wallet = await getOrCreateWallet(userId);
     const currentBalance = Number((wallet?.balance || 0).toFixed(2));
+    const failedTransactionKey = paymentId
+      ? `WALLET_TOP_UP_FAILED_PAYMENT:${paymentId.toString()}`
+      : razorpayOrderId
+        ? `WALLET_TOP_UP_FAILED_ORDER:${razorpayOrderId}`
+        : null;
 
-    if (razorpayOrderId) {
+    if (failedTransactionKey || razorpayOrderId || paymentId) {
+      const duplicateConditions = [];
+      if (failedTransactionKey) duplicateConditions.push({ idempotency_key: failedTransactionKey });
+      if (razorpayOrderId) duplicateConditions.push({ razorpay_order_id: razorpayOrderId });
+      if (paymentId) duplicateConditions.push({ payment_id: paymentId });
+
       const existingTxn = await WalletTransaction.findOne({
         user_id: userId,
-        razorpay_order_id: razorpayOrderId,
         status: "FAILED",
+        $or: duplicateConditions,
       });
       if (existingTxn) return existingTxn;
     }
 
-    return await WalletTransaction.create({
+    try {
+      return await WalletTransaction.create({
       user_id: userId,
       type,
-      amount: Math.max(0, Number(amount || 0)),
+      amount: Math.max(0, Number(Number(amount || 0).toFixed(2))),
       reason,
       description,
       status: "FAILED",
@@ -46,9 +57,21 @@ export const recordFailedWalletTransaction = async ({
       razorpay_order_id: razorpayOrderId,
       payment_id: paymentId,
       order_id: orderId,
+      idempotency_key: failedTransactionKey,
       balance_before: currentBalance,
       balance_after: currentBalance,
-    });
+      });
+    } catch (err) {
+      // A concurrent failure callback may win the unique idempotency insert.
+      if (err?.code === 11000 && failedTransactionKey) {
+        return await WalletTransaction.findOne({
+          user_id: userId,
+          status: "FAILED",
+          idempotency_key: failedTransactionKey,
+        });
+      }
+      throw err;
+    }
   } catch (err) {
     console.error("Failed to record failed wallet transaction:", err);
     return null;
@@ -63,9 +86,7 @@ export const ensureFailedTopUpTransactions = async (userId) => {
       status: "FAILED",
     }).lean();
 
-    if (!failedPayments || failedPayments.length === 0) return;
-
-    for (const p of failedPayments) {
+    for (const p of failedPayments || []) {
       await recordFailedWalletTransaction({
         userId,
         amount: p.amount,
@@ -76,6 +97,41 @@ export const ensureFailedTopUpTransactions = async (userId) => {
         paymentId: p._id,
         type: "CREDIT",
       });
+    }
+
+    // Clean up duplicate rows created by older non-atomic failure callbacks.
+    const failedTransactions = await WalletTransaction.find({
+      user_id: userId,
+      reason: "WALLET_TOP_UP",
+      status: "FAILED",
+      $or: [
+        { payment_id: { $exists: true, $ne: null } },
+        { razorpay_order_id: { $exists: true, $ne: null } },
+      ],
+    })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const seenPaymentIds = new Set();
+    const seenOrderIds = new Set();
+    const duplicateIds = [];
+    for (const transaction of failedTransactions) {
+      const paymentId = transaction.payment_id?.toString();
+      const orderId = transaction.razorpay_order_id;
+      const isDuplicate =
+        (paymentId && seenPaymentIds.has(paymentId)) ||
+        (orderId && seenOrderIds.has(orderId));
+
+      if (isDuplicate) {
+        duplicateIds.push(transaction._id);
+      } else {
+        if (paymentId) seenPaymentIds.add(paymentId);
+        if (orderId) seenOrderIds.add(orderId);
+      }
+    }
+
+    if (duplicateIds.length) {
+      await WalletTransaction.deleteMany({ _id: { $in: duplicateIds }, user_id: userId });
     }
   } catch (err) {
     console.error("Error ensuring failed top-up transactions:", err);
@@ -441,7 +497,7 @@ export const verifyWalletTopUp = async (req, res) => {
       method: "RAZORPAY",
     });
 
-    if (!payment || !razorpayPaymentId || !razorpaySignature) {
+    if (!payment || !razorpayPaymentId || !razorpaySignature || Number(payment.amount) <= 0) {
       return res.status(400).json({
         success: false,
         message: "Wallet payment could not be verified.",
@@ -497,6 +553,9 @@ export const verifyWalletTopUp = async (req, res) => {
         userId: req.user._id,
         amount: payment.amount,
         reason: "WALLET_TOP_UP",
+        paymentId: payment._id,
+        razorpayOrderId,
+        idempotencyKey: `WALLET_TOP_UP:${payment._id}`,
       });
       creditedWallet = creditResult?.wallet;
 
@@ -581,11 +640,17 @@ export const walletFailedPage = async (req, res) => {
     const reason = typeof req.query.reason === "string" ? req.query.reason.trim() : "";
 
     if (reason && req.user?._id) {
-      const pendingPayment = await Payment.findOne({
-        user_id: req.user._id,
-        purpose: "WALLET_TOP_UP",
-        status: "PENDING",
-      }).sort({ createdAt: -1 });
+      const requestedOrderId = typeof req.query.orderId === "string"
+        ? req.query.orderId.trim()
+        : "";
+      const pendingPayment = requestedOrderId
+        ? await Payment.findOne({
+          user_id: req.user._id,
+          razorpay_order_id: requestedOrderId,
+          purpose: "WALLET_TOP_UP",
+          status: "PENDING",
+        })
+        : null;
 
       if (pendingPayment) {
         pendingPayment.status = "FAILED";
@@ -600,15 +665,6 @@ export const walletFailedPage = async (req, res) => {
           failureReason: reason,
           razorpayOrderId: pendingPayment.razorpay_order_id,
           paymentId: pendingPayment._id,
-          type: "CREDIT",
-        });
-      } else if (reason.toLowerCase().includes("simulated")) {
-        await recordFailedWalletTransaction({
-          userId: req.user._id,
-          amount: 500,
-          reason: "WALLET_TOP_UP",
-          description: "Wallet top-up failed (Simulated)",
-          failureReason: reason,
           type: "CREDIT",
         });
       }
@@ -758,7 +814,7 @@ export const handleWalletTopUpCallback = async (req, res) => {
       method: "RAZORPAY",
     });
 
-    if (!payment) {
+    if (!payment || Number(payment.amount) <= 0) {
       return res.redirect(`/wallet/failed?reason=${encodeURIComponent("Payment record not found.")}`);
     }
 
@@ -810,6 +866,9 @@ export const handleWalletTopUpCallback = async (req, res) => {
           userId: req.user._id,
           amount: payment.amount,
           reason: "WALLET_TOP_UP",
+          paymentId: payment._id,
+          razorpayOrderId,
+          idempotencyKey: `WALLET_TOP_UP:${payment._id}`,
         });
 
         await Payment.updateOne(

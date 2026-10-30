@@ -1,6 +1,6 @@
 process.env.NODE_ENV = "test";
-process.env.RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || "rzp_test_TlK704UXB6P0aR";
-process.env.RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || "M3xMhELuf1ntSFYK5qjjpM0n";
+process.env.RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || "rzp_test_mock_test_key_id";
+process.env.RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || "mock_test_razorpay_secret_key_32chars";
 
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";

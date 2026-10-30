@@ -2,11 +2,15 @@ import mongoose from "mongoose";
 import Order from "../../models/orderSchema.js";
 import Coupon from "../../models/couponSchema.js";
 import User from "../../models/userSchema.js";
-import { increaseStock } from "../../services/inventoryService.js";
+import { increaseStock, decreaseStock } from "../../services/inventoryService.js";
 import { creditWallet } from "../../services/walletService.js";
 import { processReferralReward } from "../../services/referralService.js";
 import { evaluateOrderCouponEligibility } from "../../services/couponService.js";
 import { calculateOrderShipping } from "../../services/pricingService.js";
+import {
+  calculateItemProportionalPricing,
+  calculateOrderReturnRefund,
+} from "../../services/refundService.js";
 
 const adminListOrders = async (req, res) => {
   try {
@@ -19,6 +23,8 @@ const adminListOrders = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const filter = {};
+
+    filter.payment_status = { $ne: "failed" };
 
     if (status) {
       filter.order_status = status;
@@ -334,6 +340,8 @@ const adminOrderReturn = async (req, res) => {
     }
 
     const adjustedOrder = await calculateOrderAdjustedTotals(order);
+    const itemPricingList = calculateItemProportionalPricing(order);
+    const itemPricingMap = new Map(itemPricingList.map((entry) => [String(entry._id), entry]));
 
     adjustedOrder.items = adjustedOrder.items.map((item) => {
       const returnableQuantity = Math.max(
@@ -348,12 +356,17 @@ const adminOrderReturn = async (req, res) => {
         (orderWasDelivered && item.status === "pending");
 
       const isReturnable = delivered && returnableQuantity > 0 && item.status !== "cancelled";
+      const itemPricing = itemPricingMap.get(String(item._id)) || {};
 
       return {
         ...item,
         item_total: item.item_total != null ? Number(item.item_total) : Number((item.price * item.quantity).toFixed(2)),
         returnable_quantity: returnableQuantity,
         is_returnable: isReturnable,
+        discount_share: itemPricing.discount_share || 0,
+        net_item_paid: itemPricing.net_item_paid != null ? itemPricing.net_item_paid : (item.item_total || item.price * item.quantity),
+        net_unit_price: itemPricing.net_unit_price != null ? itemPricing.net_unit_price : item.price,
+        remaining_item_refundable: itemPricing.remaining_item_refundable != null ? itemPricing.remaining_item_refundable : 0,
       };
     });
 
@@ -388,58 +401,25 @@ const processOrderReturn = async (req, res) => {
       });
     }
 
-    const seenItemIds = new Set();
-    const itemsToReturn = [];
-    const orderWasDelivered = ["delivered", "return_requested"].includes(
-      order.order_status,
-    );
-
-    for (const requestedItem of requestedItems) {
-      const itemId = String(requestedItem.itemId || "");
-      const item = order.items.id(itemId);
-
-      if (!item || seenItemIds.has(itemId)) {
-        return res.status(400).json({
-          success: false,
-          message: "One or more selected products are invalid.",
-        });
-      }
-
-      seenItemIds.add(itemId);
-      const returnableQuantity = item.quantity - (item.returned_quantity || 0);
-      const delivered =
-        item.status === "delivered" ||
-        (orderWasDelivered && item.status === "pending");
-
-      const parsedQty = Number(requestedItem.quantity);
-      const quantity = Number.isInteger(parsedQty) && parsedQty >= 1
-        ? parsedQty
-        : returnableQuantity;
-
-      const reason = String(requestedItem.reason || "").trim() ||
-        String(order.return_request?.reason || "").trim() ||
-        "Return approved by admin";
-
-      if (
-        !delivered ||
-        !Number.isInteger(quantity) ||
-        quantity < 1 ||
-        quantity > returnableQuantity ||
-        item.status === "cancelled"
-      ) {
-        return res.status(400).json({
-          success: false,
-          message: `${item.product_name} is not eligible for the requested return.`,
-        });
-      }
-
-      itemsToReturn.push({ item, quantity, reason });
+    if (order.original_final_amount == null) {
+      order.original_final_amount = Number(order.final_amount || 0);
     }
 
-    const refundAmount = Number(itemsToReturn.reduce(
-      (total, { item, quantity }) => total + Number(item.price) * quantity,
-      0,
-    ).toFixed(2));
+    // Calculate net-paid proportional refund and validate return eligibility
+    let refundCalculation;
+    try {
+      refundCalculation = calculateOrderReturnRefund({
+        order,
+        requestedItems,
+      });
+    } catch (calcError) {
+      return res.status(400).json({
+        success: false,
+        message: calcError.message,
+      });
+    }
+
+    const { refundAmount, itemsToReturn } = refundCalculation;
 
     if (!Number.isFinite(refundAmount) || refundAmount <= 0) {
       return res.status(400).json({
@@ -448,20 +428,49 @@ const processOrderReturn = async (req, res) => {
       });
     }
 
-    for (const { item, quantity } of itemsToReturn) {
-      await increaseStock(item.variant_id, quantity);
+    const orderWasDelivered = ["delivered", "return_requested"].includes(
+      order.order_status,
+    );
+
+    const restoredItems = [];
+    const isInventoryEligible = order.inventory_reserved !== false && order.payment_status !== "failed";
+
+    // Increase stock for returned items only if inventory was previously decremented
+    if (isInventoryEligible) {
+      for (const { itemDoc, quantity } of itemsToReturn) {
+        if (itemDoc.inventory_decremented !== false) {
+          const returnableToRestore = Math.max(0, itemDoc.quantity - (itemDoc.restored_quantity || 0));
+          const actualRestore = Math.min(quantity, returnableToRestore);
+          if (actualRestore > 0) {
+            await increaseStock(itemDoc.variant_id, actualRestore);
+            itemDoc.restored_quantity = (itemDoc.restored_quantity || 0) + actualRestore;
+            restoredItems.push({ variant_id: itemDoc.variant_id, quantity: actualRestore });
+          }
+        }
+      }
     }
 
-    for (const { item, quantity, reason } of itemsToReturn) {
-      if (item.status === "pending" && orderWasDelivered) {
-        item.status = "delivered";
+    // Apply item-level updates
+    for (const { itemDoc, quantity, itemRefund, reason } of itemsToReturn) {
+      if (itemDoc.status === "pending" && orderWasDelivered) {
+        itemDoc.status = "delivered";
       }
-      item.returned_quantity = (item.returned_quantity || 0) + quantity;
-      item.return_reason = reason;
+      itemDoc.returned_quantity = (itemDoc.returned_quantity || 0) + quantity;
+      itemDoc.refunded_amount = Number(((itemDoc.refunded_amount || 0) + itemRefund).toFixed(2));
+      itemDoc.return_reason = reason;
 
-      if (item.returned_quantity >= item.quantity) {
-        item.status = "returned";
+      if (itemDoc.returned_quantity >= itemDoc.quantity) {
+        itemDoc.status = "returned";
       }
+    }
+
+    // Update order-level refunded amount
+    const previousOrderRefunded = Number(order.refunded_amount || 0);
+    order.refunded_amount = Number((previousOrderRefunded + refundAmount).toFixed(2));
+
+    const originalFinal = Number(order.original_final_amount != null ? order.original_final_amount : order.final_amount);
+    if (order.refunded_amount >= originalFinal) {
+      order.payment_status = "refunded";
     }
 
     const allItemsClosed = order.items.every(
@@ -488,6 +497,7 @@ const processOrderReturn = async (req, res) => {
       amount: refundAmount,
       reason: "ORDER_RETURN",
       orderId: order._id,
+      idempotencyKey: `ORDER_RETURN:${order._id}`,
     });
 
     return res.json({
@@ -496,6 +506,15 @@ const processOrderReturn = async (req, res) => {
       refundAmount,
     });
   } catch (error) {
+    if (Array.isArray(restoredItems) && restoredItems.length > 0) {
+      for (const r of restoredItems) {
+        try {
+          await decreaseStock(r.variant_id, r.quantity);
+        } catch (compErr) {
+          console.error("Compensating decrement failed on approveReturn:", compErr);
+        }
+      }
+    }
     console.error("Process order return error:", error);
     return res.status(500).json({
       success: false,
@@ -574,22 +593,41 @@ const updateOrderStatus = async (req, res) => {
 
     order.order_status = newStatus;
 
+    const restoredItems = [];
+
     // If entire order is cancelled
     if (newStatus === "cancelled") {
+      const isInventoryEligible = order.inventory_reserved !== false && order.payment_status !== "failed";
+
       for (const item of order.items) {
         if (item.status !== "cancelled") {
-          await increaseStock(item.variant_id, item.quantity);
+          if (isInventoryEligible && item.inventory_decremented !== false && (item.restored_quantity || 0) < item.quantity) {
+            const restoreQty = item.quantity - (item.restored_quantity || 0);
+            if (restoreQty > 0) {
+              await increaseStock(item.variant_id, restoreQty);
+              item.restored_quantity = item.quantity;
+              restoredItems.push({ variant_id: item.variant_id, quantity: restoreQty });
+            }
+          }
           item.status = "cancelled";
         }
       }
 
-      if (order.payment_status === "paid" && order.final_amount > 0) {
+      const originalFinal = order.original_final_amount != null
+        ? Number(order.original_final_amount)
+        : Number(order.final_amount || 0);
+      const alreadyRefunded = Number(order.refunded_amount || 0);
+      const remainingToRefund = Math.max(0, Number((originalFinal - alreadyRefunded).toFixed(2)));
+
+      if (order.payment_status === "paid" && remainingToRefund > 0) {
         await creditWallet({
           userId: order.user_id,
-          amount: order.final_amount,
+          amount: remainingToRefund,
           reason: "ORDER_CANCELLATION",
           orderId: order._id,
+          idempotencyKey: `ADMIN_ORDER_CANCEL:${order._id}`,
         });
+        order.refunded_amount = Number((alreadyRefunded + remainingToRefund).toFixed(2));
         order.payment_status = "refunded";
       }
 
@@ -647,6 +685,15 @@ const updateOrderStatus = async (req, res) => {
       message: "Order status updated",
     });
   } catch (error) {
+    if (Array.isArray(restoredItems) && restoredItems.length > 0) {
+      for (const r of restoredItems) {
+        try {
+          await decreaseStock(r.variant_id, r.quantity);
+        } catch (compErr) {
+          console.error("Compensating decrement failed on updateOrderStatus:", compErr);
+        }
+      }
+    }
     console.error("Update order status error:", error);
 
     return res.status(500).json({

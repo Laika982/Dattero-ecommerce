@@ -1,5 +1,5 @@
 import User from "../../models/userSchema.js";
-import logger from "../../utils/logger.js";
+import logger, { maskEmail } from "../../utils/logger.js";
 import dotenv from "dotenv";
 dotenv.config();
 import jwt from "jsonwebtoken";
@@ -7,6 +7,7 @@ import { sendVerificationEmail } from "../../services/emailService.js";
 import { generateOtp } from "../../utils/otp.js";
 import { generateToken } from "../../utils/token.js";
 import { hashPassword, verifyPassword } from "../../utils/password.js";
+import { getCookieOptions, getClearCookieOptions } from "../../config/cookie.js";
 import {
   REFERRAL_COOKIE,
   buildReferralAttribution,
@@ -178,7 +179,7 @@ const registerUser = async (req, res) => {
         statusCode: 500,
       });
     }
-    console.log(`Sign up OTP is ${otp}`);
+    logger.info(`Verification OTP sent for signup to ${maskEmail(email)}`);
 
     const signupToken = generateToken(
       {
@@ -191,12 +192,9 @@ const registerUser = async (req, res) => {
       "10m",
     );
 
-    res.cookie("signupToken", signupToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+    res.cookie("signupToken", signupToken, getCookieOptions({
       maxAge: 10 * 60 * 1000,
-    });
+    }));
 
     const otpToken = generateToken(
       {
@@ -209,13 +207,10 @@ const registerUser = async (req, res) => {
       "10m",
     );
 
-    res.cookie("otpToken", otpToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+    res.cookie("otpToken", otpToken, getCookieOptions({
       // OTP session valid for 10 minutes
       maxAge: 10 * 60 * 1000,
-    });
+    }));
 
     return sendAuthResponse(req, res, {
       isSuccess: true,
@@ -288,9 +283,35 @@ const verifyOtp = async (req, res) => {
     }
 
     if (otp !== String(otpData.otp)) {
+      const failedAttempts = (Number(otpData.failedAttempts) || 0) + 1;
+      const MAX_VERIFY_ATTEMPTS = 5;
+
+      if (failedAttempts >= MAX_VERIFY_ATTEMPTS) {
+        res.clearCookie("otpToken", getClearCookieOptions());
+        return sendAuthResponse(req, res, {
+          isSuccess: false,
+          message: "Too many failed OTP attempts. This OTP has been invalidated for security. Please request a new one.",
+          redirectUrl: "/verify-otp",
+          statusCode: 429,
+        });
+      }
+
+      // Re-sign token with incremented failedAttempts
+      const updatedOtpToken = generateToken(
+        {
+          ...otpData,
+          failedAttempts,
+        },
+        "10m"
+      );
+      res.cookie("otpToken", updatedOtpToken, getCookieOptions({
+        maxAge: 10 * 60 * 1000,
+      }));
+
+      const remaining = MAX_VERIFY_ATTEMPTS - failedAttempts;
       return sendAuthResponse(req, res, {
         isSuccess: false,
-        message: "Enter a valid OTP.",
+        message: `Enter a valid OTP. ${remaining} attempt(s) remaining.`,
         redirectUrl: "/verify-otp",
         statusCode: 400,
       });
@@ -317,8 +338,8 @@ const verifyOtp = async (req, res) => {
       });
 
       if (existingUser) {
-        res.clearCookie("otpToken");
-        res.clearCookie("signupToken");
+        res.clearCookie("otpToken", getClearCookieOptions());
+        res.clearCookie("signupToken", getClearCookieOptions());
 
         return sendAuthResponse(req, res, {
           isSuccess: false,
@@ -344,8 +365,8 @@ const verifyOtp = async (req, res) => {
 
       await saveUser.save();
 
-      res.clearCookie("otpToken");
-      res.clearCookie("signupToken");
+      res.clearCookie("otpToken", getClearCookieOptions());
+      res.clearCookie("signupToken", getClearCookieOptions());
       clearReferralCookie(res);
 
       // LOGIN USER
@@ -354,12 +375,9 @@ const verifyOtp = async (req, res) => {
         userId: saveUser._id,
       });
 
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+      res.cookie("token", token, getCookieOptions({
         maxAge: 24 * 60 * 60 * 1000,
-      });
+      }));
 
       return sendAuthResponse(req, res, {
         isSuccess: true,
@@ -381,15 +399,12 @@ const verifyOtp = async (req, res) => {
       );
 
       // Clear OTP token
-      res.clearCookie("otpToken");
+      res.clearCookie("otpToken", getClearCookieOptions());
 
       // Store reset session
-      res.cookie("resetEmail", resetToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+      res.cookie("resetEmail", resetToken, getCookieOptions({
         maxAge: 10 * 60 * 1000,
-      });
+      }));
 
       return sendAuthResponse(req, res, {
         isSuccess: true,
@@ -411,7 +426,7 @@ const verifyOtp = async (req, res) => {
       });
 
       if (existingUser) {
-        res.clearCookie("otpToken");
+        res.clearCookie("otpToken", getClearCookieOptions());
 
         return sendAuthResponse(req, res, {
           isSuccess: false,
@@ -428,7 +443,7 @@ const verifyOtp = async (req, res) => {
         profileImage: otpData.profileImage || null,
       });
 
-      res.clearCookie("otpToken");
+      res.clearCookie("otpToken", getClearCookieOptions());
 
       return sendAuthResponse(req, res, {
         isSuccess: true,
@@ -438,7 +453,7 @@ const verifyOtp = async (req, res) => {
       });
     }
 
-    res.clearCookie("otpToken");
+    res.clearCookie("otpToken", getClearCookieOptions());
 
     return sendAuthResponse(req, res, {
       isSuccess: false,
@@ -504,7 +519,7 @@ const loginUser = async (req, res) => {
     if (!user) {
       return sendAuthResponse(req, res, {
         isSuccess: false,
-        message: "User does not exist",
+        message: "Invalid email or password",
         redirectUrl: "/login",
         statusCode: 400,
       });
@@ -530,7 +545,7 @@ const loginUser = async (req, res) => {
     if (!matchPassword) {
       return sendAuthResponse(req, res, {
         isSuccess: false,
-        message: "Incorrect password",
+        message: "Invalid email or password",
         redirectUrl: "/login",
         statusCode: 400,
       });
@@ -542,11 +557,9 @@ const loginUser = async (req, res) => {
     });
 
     // Store JWT in cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false, // true in production with HTTPS
+    res.cookie("token", token, getCookieOptions({
       maxAge: 24 * 60 * 60 * 1000,
-    });
+    }));
 
     // Successful login
     return sendAuthResponse(req, res, {
@@ -627,7 +640,7 @@ const forgotPassword = async (req, res) => {
       });
     }
 
-    logger.info(`Forgot password OTP: ${otp}`);
+    logger.info(`Verification OTP sent for password reset to ${maskEmail(email)} ${otp}`);
 
     const otpToken = generateToken(
       {
@@ -641,14 +654,10 @@ const forgotPassword = async (req, res) => {
       "10m",
     );
 
-    res.cookie("otpToken", otpToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-
+    res.cookie("otpToken", otpToken, getCookieOptions({
       // OTP session valid for 10 minutes
       maxAge: 10 * 60 * 1000,
-    });
+    }));
 
     return sendAuthResponse(req, res, {
       isSuccess: true,
@@ -731,7 +740,7 @@ const resetPassword = async (req, res) => {
       });
     }
 
-    res.clearCookie("resetEmail");
+    res.clearCookie("resetEmail", getClearCookieOptions());
 
     return sendAuthResponse(req, res, {
       isSuccess: true,
@@ -743,7 +752,7 @@ const resetPassword = async (req, res) => {
     logger.error(error);
 
     if (error.name === "TokenExpiredError") {
-      res.clearCookie("resetEmail");
+      res.clearCookie("resetEmail", getClearCookieOptions());
 
       return sendAuthResponse(req, res, {
         isSuccess: false,
@@ -754,7 +763,7 @@ const resetPassword = async (req, res) => {
     }
 
     if (error.name === "JsonWebTokenError") {
-      res.clearCookie("resetEmail");
+      res.clearCookie("resetEmail", getClearCookieOptions());
 
       return sendAuthResponse(req, res, {
         isSuccess: false,
@@ -823,9 +832,29 @@ const resendOtp = async (req, res) => {
       });
     }
 
+    // Cooldown verification: enforce remaining seconds if OTP is still active
+    if (decoded.otpExpiresAt && Date.now() < decoded.otpExpiresAt) {
+      const waitSeconds = Math.ceil((decoded.otpExpiresAt - Date.now()) / 1000);
+      if (waitSeconds > 0) {
+        return res.status(429).json({
+          success: false,
+          message: `Please wait ${waitSeconds} second(s) before requesting a new OTP.`,
+          retryAfter: waitSeconds,
+        });
+      }
+    }
 
-
-    console.log(`Resend OTP: ${otp}`);
+    // Limit maximum resend attempts per OTP session (default max: 3 resends)
+    const currentResends = Number(decoded.resendCount) || 0;
+    const MAX_RESENDS = 3;
+    if (currentResends >= MAX_RESENDS) {
+      res.clearCookie("otpToken", getClearCookieOptions());
+      return res.status(429).json({
+        success: false,
+        message: "Maximum OTP resend attempts reached. Please start again.",
+        redirectUrl: decoded.purpose === "signup" ? "/signup" : "/forgotPassword",
+      });
+    }
 
     const emailSent = await sendVerificationEmail(email, otp);
 
@@ -836,13 +865,11 @@ const resendOtp = async (req, res) => {
       });
     }
 
-
-
     const newTokenData = {
       purpose: decoded.purpose,
       otp,
       email,
-
+      resendCount: currentResends + 1,
       // New OTP gets a fresh 60 seconds
       otpExpiresAt: Date.now() + 60 * 1000,
     };
@@ -853,23 +880,19 @@ const resendOtp = async (req, res) => {
       newTokenData.newEmail = decoded.newEmail;
     }
 
-
-
     const newOtpToken = generateToken(newTokenData, "10m");
 
-    res.cookie("otpToken", newOtpToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+    res.cookie("otpToken", newOtpToken, getCookieOptions({
       maxAge: 10 * 60 * 1000,
-    });
+    }));
 
-    logger.info(`OTP resent for ${decoded.purpose}`);
+    logger.info(`Verification OTP resent for ${decoded.purpose} to ${maskEmail(email)}`);
 
     req.session.success = "Resend OTP successfully";
     return res.status(200).json({
       success: true,
       message: "OTP resent successfully",
+      otpExpiresAt: newTokenData.otpExpiresAt,
     });
   } catch (error) {
     logger.error(error);
@@ -890,7 +913,7 @@ const resendOtp = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("token", getClearCookieOptions());
     req.session.success = "Logout success";
     if (isAjaxRequest(req)) {
       return res.status(200).json({

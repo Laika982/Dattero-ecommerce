@@ -442,6 +442,26 @@
       let paymentSuccessful = false;
       let paymentFailed = false;
       let lastFailReason = "Wallet top-up payment failed";
+      let failureRedirectStarted = false;
+
+      const recordFailureAndRedirect = async (reason, razorpayOrderId) => {
+        if (failureRedirectStarted) return;
+        failureRedirectStarted = true;
+        try {
+          await fetch("/wallet/failed", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify({
+              razorpay_order_id: razorpayOrderId,
+              reason,
+            })
+          });
+        } catch (error) {
+          console.warn("Unable to record wallet payment failure before redirect.", error);
+        } finally {
+          window.location.href = `/wallet/failed?orderId=${encodeURIComponent(razorpayOrderId || "")}&reason=${encodeURIComponent(reason)}`;
+        }
+      };
 
       const checkout = new RazorpayClass({
         key: orderResult.key,
@@ -472,36 +492,29 @@
             window.location.reload();
           } catch (error) {
             paymentFailed = true;
-            window.location.href = `/wallet/failed?reason=${encodeURIComponent(error.message || "Payment verification failed")}`;
+            await recordFailureAndRedirect(
+              error.message || "Payment verification failed",
+              orderResult.order.id
+            );
           }
         },
         modal: {
           confirm_close: false,
           ondismiss: () => {
             topupSubmit.disabled = false;
-            if (paymentFailed) {
-              window.location.href = `/wallet/failed?reason=${encodeURIComponent(lastFailReason)}`;
-            }
+            if (paymentFailed) recordFailureAndRedirect(lastFailReason, orderResult.order.id);
           }
         }
       });
 
-      checkout.on("payment.failed", (event) => {
+      checkout.on("payment.failed", async (event) => {
         paymentFailed = true;
         const failReason = event.error?.description || event.error?.reason || "Wallet top-up payment failed";
         lastFailReason = failReason;
-        try {
-          fetch("/wallet/failed", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "Accept": "application/json" },
-            body: JSON.stringify({
-              razorpay_order_id: event.error?.metadata?.order_id || orderResult.order.id,
-              reason: failReason,
-            }),
-            keepalive: true
-          }).catch(() => { });
-        } catch (e) { }
-        window.location.href = `/wallet/failed?reason=${encodeURIComponent(failReason)}`;
+        await recordFailureAndRedirect(
+          failReason,
+          event.error?.metadata?.order_id || orderResult.order.id
+        );
       });
 
       topupDialog.close();

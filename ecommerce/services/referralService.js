@@ -3,6 +3,7 @@ import User from "../models/userSchema.js";
 import Offer from "../models/offerSchema.js";
 import ReferralReward from "../models/referralRewardSchema.js";
 import { creditWallet } from "./walletService.js";
+import { getCookieOptions, getClearCookieOptions } from "../config/cookie.js";
 
 export const REFERRAL_COOKIE = "referralInvite";
 
@@ -15,21 +16,18 @@ const activeReferralQuery = (now) => ({
 
 export const setReferralCookie = (res, token) => {
   if (!res || !token) return;
-  res.cookie(REFERRAL_COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-  });
+  res.cookie(
+    REFERRAL_COOKIE,
+    token,
+    getCookieOptions({
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    })
+  );
 };
 
 export const clearReferralCookie = (res) => {
   if (!res) return;
-  res.clearCookie(REFERRAL_COOKIE, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-  });
+  res.clearCookie(REFERRAL_COOKIE, getClearCookieOptions());
 };
 
 export const generateUniqueReferralCode = async () => {
@@ -313,6 +311,7 @@ export const processReferralReward = async ({ order, user, session = null }) => 
       reason: "REFERRAL_REWARD",
       description: referrerDescription,
       orderId: order._id,
+      idempotencyKey: `REFERRAL_REWARD_REFERRER:${order._id}`,
       session,
     });
 
@@ -325,6 +324,7 @@ export const processReferralReward = async ({ order, user, session = null }) => 
         reason: "REFERRAL_REWARD",
         description: referredDescription,
         orderId: order._id,
+        idempotencyKey: `REFERRAL_REWARD_REFERRED:${order._id}`,
         session,
       });
     }

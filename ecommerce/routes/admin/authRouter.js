@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 
 import adminController from "../../controllers/admin/adminController.js";
+import { loginLimiter } from "../../middleware/rateLimiter.js";
 
 import {
   isAdminAuthenticated,
@@ -14,7 +15,7 @@ router.get("/login", noCache, isAdminLoggedIn, adminController.loadLogin);
 //loadAdminDashboard
 router.get("/", isAdminAuthenticated, adminController.loadAdminDashboard);
 router.get("/dashboard/chart-data", isAdminAuthenticated, adminController.getChartData);
-router.post("/login", adminController.adminLogin);
+router.post("/login", loginLimiter, adminController.adminLogin);
 
 //logout
 router.post("/logout", adminController.logout);

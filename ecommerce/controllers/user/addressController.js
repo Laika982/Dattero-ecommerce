@@ -2,6 +2,7 @@ import User from "../../models/userSchema.js";
 import Address from "../../models/addressSchema.js";
 import jwt from "jsonwebtoken";
 import { isAjaxRequest } from "../../utils/isAjax.js";
+import { getClearCookieOptions } from "../../config/cookie.js";
 
 const sendAddressResponse = (req, res, { isSuccess, message, redirectUrl, statusCode = 200, renderView = null, renderData = {} }) => {
   if (isSuccess) {
@@ -41,12 +42,12 @@ const loadAddress = async (req, res) => {
     const userData = await User.findById(decoded.userId).lean();
 
     if (!userData) {
-      res.clearCookie("token");
+      res.clearCookie("token", getClearCookieOptions());
       return res.redirect("/login");
     }
 
     if (userData.isBlocked) {
-      res.clearCookie("token");
+      res.clearCookie("token", getClearCookieOptions());
       delete req.cookies.token;
       req.session.error = "Your account has been blocked.";
       return res.redirect("/login?blocked=true");
@@ -64,7 +65,7 @@ const loadAddress = async (req, res) => {
   } catch (error) {
     console.error("Load saved addresses error:", error);
 
-    res.clearCookie("token");
+    res.clearCookie("token", getClearCookieOptions());
 
     return res.redirect("/login");
   }
@@ -86,7 +87,7 @@ const addAddress = async (req, res) => {
     }).lean();
 
     if (!userData) {
-      res.clearCookie("token");
+      res.clearCookie("token", getClearCookieOptions());
       return res.redirect("/login");
     }
 
@@ -94,7 +95,7 @@ const addAddress = async (req, res) => {
   } catch (error) {
     console.error("Load add address page error:", error);
 
-    res.clearCookie("token");
+    res.clearCookie("token", getClearCookieOptions());
     return res.redirect("/login");
   }
 };
@@ -116,7 +117,7 @@ const addAddressPost = async (req, res) => {
     }).lean();
 
     if (!user) {
-      res.clearCookie("token");
+      res.clearCookie("token", getClearCookieOptions());
       return res.redirect("/login");
     }
 
@@ -345,7 +346,7 @@ const makePrimary = async (req, res) => {
     });
 
     if (!user) {
-      res.clearCookie("token");
+      res.clearCookie("token", getClearCookieOptions());
       return res.redirect("/login");
     }
 
@@ -424,7 +425,7 @@ const deleteAddress = async (req, res) => {
     });
 
     if (!user) {
-      res.clearCookie("token");
+      res.clearCookie("token", getClearCookieOptions());
       return res.redirect("/login");
     }
 
@@ -507,7 +508,7 @@ const editAddress = async (req, res) => {
     }).lean();
 
     if (!user) {
-      res.clearCookie("token");
+      res.clearCookie("token", getClearCookieOptions());
       return res.redirect("/login");
     }
 
@@ -527,7 +528,7 @@ const editAddress = async (req, res) => {
   } catch (error) {
     console.error("Load edit address page error:", error);
 
-    res.clearCookie("token");
+    res.clearCookie("token", getClearCookieOptions());
 
     return res.redirect("/profile/address");
   }

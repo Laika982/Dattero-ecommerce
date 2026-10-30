@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Admin Login | Nutri Luxe</title>
+    {{> csrf}}
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
@@ -190,8 +191,8 @@
                             <label
                                 class="font-label-md text-label-md text-on-surface uppercase tracking-widest text-[10px]"
                                 for="password">Password</label>
-                            <a class="font-label-md text-label-md text-primary hover:text-on-surface transition-colors"
-                                href="#">Forgot?</a>
+                            {{!-- <a class="font-label-md text-label-md text-primary hover:text-on-surface transition-colors"
+                                href="#">Forgot?</a> --}}
                         </div>
                         <div class="relative group">
                             <span
@@ -201,7 +202,7 @@
                                 id="password" name="password" placeholder="••••••••" required="" type="password">
                             <button
                                 class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors"
-                                onclick="togglePasswordVisibility('password')" type="button">
+                                data-password-toggle="password" type="button">
                                 <span class="material-symbols-outlined text-xl" id="passwordIcon">visibility</span>
                             </button>
                         </div>
@@ -264,6 +265,12 @@
             }
         }
         window.togglePasswordVisibility = togglePasswordVisibility;
+        document.querySelectorAll("[data-password-toggle]").forEach((button) => {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                togglePasswordVisibility(button.dataset.passwordToggle);
+            });
+        });
 
         // Input focus animation
         const inputs = document.querySelectorAll("input");

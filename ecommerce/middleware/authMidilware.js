@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/userSchema.js";
+import { getClearCookieOptions } from "../config/cookie.js";
 
 const isAjaxOrJson = (req) =>
     Boolean(
@@ -31,7 +32,7 @@ const isAuthenticated = async (req, res, next) => {
         const user = await User.findById(decoded.userId);
 
         if (!user) {
-            res.clearCookie("token");
+            res.clearCookie("token", getClearCookieOptions());
             delete req.cookies.token;
 
             if (isAjaxOrJson(req)) {
@@ -45,7 +46,7 @@ const isAuthenticated = async (req, res, next) => {
         }
 
         if (user.isBlocked === true) {
-            res.clearCookie("token");
+            res.clearCookie("token", getClearCookieOptions());
             delete req.cookies.token;
             req.session.error = "Your account has been blocked.";
 
@@ -67,7 +68,7 @@ const isAuthenticated = async (req, res, next) => {
     } catch (error) {
         console.error("Authentication error:", error);
 
-        res.clearCookie("token");
+        res.clearCookie("token", getClearCookieOptions());
         delete req.cookies.token;
 
         if (isAjaxOrJson(req)) {
@@ -97,7 +98,7 @@ const isGuest = async (req, res, next) => {
         const user = await User.findById(decoded.userId);
 
         if (!user || user.isBlocked) {
-            res.clearCookie("token");
+            res.clearCookie("token", getClearCookieOptions());
             delete req.cookies.token;
             return next();
         }
@@ -106,7 +107,7 @@ const isGuest = async (req, res, next) => {
         return res.redirect("/");
     } catch (error) {
         // Token is invalid or expired
-        res.clearCookie("token");
+        res.clearCookie("token", getClearCookieOptions());
         delete req.cookies.token;
 
         return next();
@@ -134,7 +135,7 @@ const isAdminAuthenticated = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         if (!decoded || !decoded.isAdmin) {
-            res.clearCookie("adminToken");
+            res.clearCookie("adminToken", getClearCookieOptions());
             if (isAjaxOrJson(req)) {
                 return res.status(403).json({
                     success: false,
@@ -149,7 +150,7 @@ const isAdminAuthenticated = (req, res, next) => {
 
         return next();
     } catch (error) {
-        res.clearCookie("adminToken");
+        res.clearCookie("adminToken", getClearCookieOptions());
 
         if (isAjaxOrJson(req)) {
             return res.status(401).json({
@@ -177,13 +178,13 @@ const isAdminLoggedIn = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         if (!decoded.isAdmin) {
-            res.clearCookie("adminToken");
+            res.clearCookie("adminToken", getClearCookieOptions());
             return next();
         }
 
         return res.redirect("/admin");
     } catch (error) {
-        res.clearCookie("adminToken");
+        res.clearCookie("adminToken", getClearCookieOptions());
         return next();
     }
 };
@@ -209,7 +210,7 @@ export const isOtpSession = (req, res, next) => {
         const validPurposes = ["signup", "forgot-password", "change-email"];
 
         if (!validPurposes.includes(decoded.purpose)) {
-            res.clearCookie("otpToken");
+            res.clearCookie("otpToken", getClearCookieOptions());
 
             return res.redirect("/login");
         }
@@ -220,7 +221,7 @@ export const isOtpSession = (req, res, next) => {
     } catch (error) {
         console.error("OTP session error:", error);
 
-        res.clearCookie("otpToken");
+        res.clearCookie("otpToken", getClearCookieOptions());
 
         return res.redirect("/login");
     }
@@ -249,7 +250,7 @@ export const isResetSession = (req, res, next) => {
         const decoded = jwt.verify(resetToken, process.env.JWT_SECRET);
 
         if (decoded.purpose !== "reset-password") {
-            res.clearCookie("resetEmail");
+            res.clearCookie("resetEmail", getClearCookieOptions());
 
             return res.redirect("/forgotPassword");
         }
@@ -258,7 +259,7 @@ export const isResetSession = (req, res, next) => {
 
         next();
     } catch (error) {
-        res.clearCookie("resetEmail");
+        res.clearCookie("resetEmail", getClearCookieOptions());
 
         return res.redirect("/forgotPassword");
     }

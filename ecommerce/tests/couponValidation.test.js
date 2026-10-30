@@ -157,4 +157,48 @@ describe("Coupon Eligibility & Discount Business Logic Tests", () => {
     assert.strictEqual(invalid.eligible, false);
     assert.match(invalid.reason, /eligible product/i);
   });
+
+  it("rejects coupons when every cart item already has an offer", () => {
+    const result = evaluateCouponEligibility(
+      {
+        is_active: true,
+        code: "SAVE10",
+        discount_type: "PERCENTAGE",
+        discount_value: 10,
+      },
+      {
+        subtotal: 500,
+        cartItems: [
+          { productId: "offered-1", quantity: 1, hasOffer: true },
+          { productId: "offered-2", quantity: 1, hasOffer: true },
+        ],
+      },
+    );
+
+    assert.strictEqual(result.eligible, false);
+    assert.strictEqual(
+      result.reason,
+      "Coupons cannot be applied to products that already have offers.",
+    );
+  });
+
+  it("allows a coupon when at least one cart item has no offer", () => {
+    const result = evaluateCouponEligibility(
+      {
+        is_active: true,
+        code: "SAVE10",
+        discount_type: "PERCENTAGE",
+        discount_value: 10,
+      },
+      {
+        subtotal: 300,
+        cartItems: [
+          { productId: "offered", quantity: 1, hasOffer: true },
+          { productId: "eligible", quantity: 1, hasOffer: false },
+        ],
+      },
+    );
+
+    assert.strictEqual(result.eligible, true);
+  });
 });

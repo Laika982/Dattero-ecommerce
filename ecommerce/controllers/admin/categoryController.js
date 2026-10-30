@@ -3,32 +3,41 @@ import Category from "../../models/categorySchema.js";
 import Product from "../../models/productSchema.js";
 import { generateActivePageArray } from "../../utils/pagination.js";
 
+const escapeRegex = (string) => {
+  if (typeof string !== "string") return "";
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+};
+
 const categoryInfo = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 3;
     const skip = (page - 1) * limit;
 
-    const search = req.query.search || "";
+    const rawSearch = typeof req.query.search === "string" ? req.query.search : "";
+    const search = rawSearch.trim().slice(0, 100);
     const isListed = req.query.isListed || "";
 
-    // Search condition
-    const query = {
-      $or: [
+    // Search condition: use regex only when a search term is provided, with all regex metacharacters escaped
+    const query = {};
+
+    if (search.length > 0) {
+      const escapedSearch = escapeRegex(search);
+      query.$or = [
         {
           category_name: {
-            $regex: search,
+            $regex: escapedSearch,
             $options: "i",
           },
         },
         {
           description: {
-            $regex: search,
+            $regex: escapedSearch,
             $options: "i",
           },
         },
-      ],
-    };
+      ];
+    }
 
     // Category status filter
     if (isListed === "true") {
@@ -105,15 +114,18 @@ const addCategory = async (req, res) => {
     const { category_name, description } = req.body;
 
     if (!category_name || !description || !category_name.trim() || !description.trim()) {
+      if (req.cleanupUploadedFiles) await req.cleanupUploadedFiles();
       req.session.error = "Both fields are required";
       return res.redirect("/admin/category/addCategory");
     }
 
+    const escapedName = escapeRegex(category_name.trim());
     const category = await Category.findOne({
-      category_name: { $regex: new RegExp(`^${category_name.trim()}$`, "i") },
+      category_name: { $regex: new RegExp(`^${escapedName}$`, "i") },
     });
 
     if (category) {
+      if (req.cleanupUploadedFiles) await req.cleanupUploadedFiles();
       return res.render("admin/addCategory", {
         error: "Category already exists",
       });
@@ -137,6 +149,7 @@ const addCategory = async (req, res) => {
 
     return res.redirect("/admin/category/categories");
   } catch (error) {
+    if (req.cleanupUploadedFiles) await req.cleanupUploadedFiles();
     console.error("Error adding category:", error);
     return res.status(500).send("Internal Server Error");
   }
@@ -218,6 +231,7 @@ const editCategory = async (req, res) => {
     req.session.success = "Category Edited Successfully"
     return res.redirect("/admin/category/categories");
   } catch (error) {
+    if (req.cleanupUploadedFiles) await req.cleanupUploadedFiles();
     console.error("Error editing category:", error);
 
     return res.status(500).send("Internal Server Error");
@@ -264,6 +278,7 @@ export {
   editCategoryInfo,
   editCategory,
   deleteCategory,
+  escapeRegex,
 };
 
 export default {
@@ -273,4 +288,5 @@ export default {
   editCategoryInfo,
   editCategory,
   deleteCategory,
+  escapeRegex,
 };

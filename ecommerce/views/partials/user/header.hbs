@@ -6,6 +6,7 @@
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0" name="viewport" />
   <title>Nutri Burfi - Premium Protein Sweets</title>
+  {{> csrf}}
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;1,300&amp;display=swap"
@@ -211,7 +212,7 @@
   class="bg-surface text-on-surface antialiased overflow-x-hidden selection:bg-secondary/30 selection:text-primary safe-bottom-padding">
   <!-- TopNavBar Component -->
   <nav
-    class="fixed top-0 w-full z-40 bg-surface/95 backdrop-blur-md border-b border-secondary/10 shadow-sm transition-all duration-300"
+    class="fixed top-0 w-full z-40 bg-surface border-b border-secondary/10 shadow-sm transition-all duration-300"
     id="main-nav">
     <div class="flex justify-between items-center w-full px-4 sm:px-6 md:px-8 max-w-max-width mx-auto h-16 sm:h-20">
       <!-- Brand Logo -->
@@ -566,6 +567,13 @@
       }
     }
     window.togglePasswordVisibility = togglePasswordVisibility;
+
+    document.addEventListener("click", function (event) {
+      const toggle = event.target.closest("[data-password-toggle]");
+      if (!toggle) return;
+      event.preventDefault();
+      togglePasswordVisibility(toggle.dataset.passwordToggle);
+    });
 
     function updateCartBadge(count) {
       const num = Number(count) || 0;

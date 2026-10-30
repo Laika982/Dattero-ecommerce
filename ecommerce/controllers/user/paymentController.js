@@ -75,10 +75,15 @@ export const createCheckoutPaymentOrder = async (req, res) => {
     const totals = calculateCartTotals(items);
     const cartItems = cart.items.map((cartItem) => {
       const prod = productMap.get(cartItem.product_id.toString());
+      const itemVariant = variantMap.get(cartItem.variant_id.toString());
+      const itemOffer = offerPricing.get(cartItem.variant_id.toString());
+      const itemPrice = getOfferedUnitPrice(itemVariant, itemOffer);
       return {
         productId: cartItem.product_id.toString(),
         categoryId: prod?.category_id ? prod.category_id.toString() : null,
         quantity: cartItem.quantity,
+        itemTotal: itemPrice * cartItem.quantity,
+        hasOffer: Boolean(itemOffer?.offer),
       };
     });
 

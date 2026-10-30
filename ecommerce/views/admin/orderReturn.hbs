@@ -292,7 +292,8 @@
                                     {{#each order.items}}
                                     <tr class="hover:bg-surface-container-low/40 transition-colors {{#if this.is_cancelled}}opacity-60 bg-surface-variant/10{{/if}}">
                                         <td class="px-5 py-4 text-center align-middle">
-                                            <input data-return-item data-unit-price="{{this.price}}"
+                                            <input data-return-item data-unit-price="{{#if this.net_unit_price}}{{this.net_unit_price}}{{else}}{{this.price}}{{/if}}"
+                                                data-return-refund="{{this.remaining_item_refundable}}"
                                                 data-return-quantity="{{this.returnable_quantity}}"
                                                 class="rounded border-outline-variant/50 text-on-surface focus:ring-primary cursor-pointer w-4 h-4 disabled:opacity-40 disabled:cursor-not-allowed"
                                                 type="checkbox" value="{{this._id}}" {{#unless this.is_returnable}}disabled{{/unless}}>
@@ -330,10 +331,12 @@
                                             <span class="block text-xs font-normal text-on-surface-variant/60">₹{{this.price}} × {{this.quantity}}</span>
                                             {{/if}}
                                             {{else}}
-                                            <span>₹{{this.item_total}}</span>
-                                            {{#if (gt this.quantity 1)}}
+                                            <span>₹{{#if this.net_item_paid}}{{this.net_item_paid}}{{else}}{{this.item_total}}{{/if}}</span>
+                                            {{#if this.discount_share}}
+                                            <span class="block text-xs font-normal text-emerald-600">Net paid (₹{{this.discount_share}} discount deducted)</span>
+                                            {{else}}{{#if (gt this.quantity 1)}}
                                             <span class="block text-xs font-normal text-on-surface-variant/60">₹{{this.price}} × {{this.quantity}}</span>
-                                            {{/if}}
+                                            {{/if}}{{/if}}
                                             {{/if}}
                                         </td>
                                     </tr>
@@ -435,11 +438,15 @@
             return returnItems.filter((checkbox) => checkbox.checked).map((checkbox) => {
                 const quantity = Number(checkbox.dataset.returnQuantity) || 1;
                 const unitPrice = Number(checkbox.dataset.unitPrice) || 0;
+                const refundAmount = Number(checkbox.dataset.returnRefund);
                 return {
                     itemId: checkbox.value,
                     quantity: quantity,
                     reason: customerReason,
                     unitPrice: unitPrice,
+                    refundAmount: Number.isFinite(refundAmount)
+                        ? Math.max(0, Number(refundAmount.toFixed(2)))
+                        : Number((quantity * unitPrice).toFixed(2)),
                 };
             });
         }
@@ -447,7 +454,11 @@
         function updateReturnEstimate() {
             const selectedItems = getSelectedReturnItems();
             const quantity = selectedItems.reduce((sum, item) => sum + item.quantity, 0);
-            const amount = selectedItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+            // Use the exact remaining line refund calculated by the backend. The
+            // rounded per-unit price can be off by ₹0.01 when quantities are split.
+            const amount = Number(selectedItems
+                .reduce((sum, item) => sum + item.refundAmount, 0)
+                .toFixed(2));
             if (selectedReturnCount) selectedReturnCount.textContent = String(quantity);
             if (estimatedReturnRefund) estimatedReturnRefund.textContent = `₹${amount.toFixed(2)}`;
         }

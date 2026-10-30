@@ -1,8 +1,18 @@
 import Coupon from "../models/couponSchema.js";
 import Cart from "../models/cartSchema.js";
 import Product from "../models/productSchema.js";
+import Variant from "../models/variantSchema.js";
+import { getProductOfferPricing } from "./offerService.js";
 
 import Order from "../models/orderSchema.js";
+
+const itemSubtotal = (item) => Number(
+  item.itemTotal ?? item.item_total ?? ((item.price || 0) * (item.quantity || 0))
+) || 0;
+
+const itemHasOffer = (item) => item.hasOffer === true || Boolean(item.offer);
+
+const offeredProductsMessage = "Coupons cannot be applied to products that already have offers.";
 
 export const evaluateCouponEligibility = (
   coupon,
@@ -17,6 +27,12 @@ export const evaluateCouponEligibility = (
   if (!coupon) {
     return { eligible: false, reason: "Invalid coupon" };
   }
+
+  if (cartItems.length > 0 && cartItems.every(itemHasOffer)) {
+    return { eligible: false, reason: offeredProductsMessage };
+  }
+
+  const couponItems = cartItems.filter((item) => !itemHasOffer(item));
 
   if (coupon.is_active === false) {
     return { eligible: false, reason: "This coupon is inactive." };
@@ -71,7 +87,7 @@ export const evaluateCouponEligibility = (
       };
     }
 
-    const hasProduct = (cartItems || []).some((item) => {
+    const hasProduct = couponItems.some((item) => {
       const pid = item.productId?._id
         ? item.productId._id.toString()
         : item.productId?.toString() || item.product_id?.toString();
@@ -96,7 +112,7 @@ export const evaluateCouponEligibility = (
       };
     }
 
-    const hasCategory = (cartItems || []).some((item) => {
+    const hasCategory = couponItems.some((item) => {
       const cid = item.categoryId?._id
         ? item.categoryId._id.toString()
         : item.categoryId?.toString() || item.category_id?.toString();
@@ -139,16 +155,20 @@ export const validateCoupon = async ({ code, userId, subtotal, cartItems, exclud
   if (!items && userId) {
     const cart = await Cart.findOne({ user_id: userId }).lean();
     if (cart?.items?.length) {
-      const products = await Product.find({
+      const [products, variants] = await Promise.all([Product.find({
         _id: { $in: cart.items.map((i) => i.product_id) },
-      }).lean();
+      }).lean(), Variant.find({ _id: { $in: cart.items.map((i) => i.variant_id) } }).lean()]);
       const productMap = new Map(products.map((p) => [p._id.toString(), p]));
+      const offerPricing = await getProductOfferPricing(products, variants);
+      const variantMap = new Map(variants.map((v) => [v._id.toString(), v]));
       items = cart.items.map((i) => ({
         productId: i.product_id.toString(),
         categoryId:
           productMap.get(i.product_id.toString())?.category_id?.toString() ||
           null,
         quantity: i.quantity,
+        price: getProductPrice(variantMap.get(i.variant_id.toString()), offerPricing),
+        hasOffer: Boolean(offerPricing.get(i.variant_id.toString())?.offer),
       }));
     } else {
       items = [];
@@ -169,9 +189,36 @@ export const validateCoupon = async ({ code, userId, subtotal, cartItems, exclud
     userUsageCount = await Order.countDocuments(orderQuery).catch(() => 0);
   }
 
+  const allItems = items || [];
+  const eligibleItems = allItems.filter((item) => !itemHasOffer(item));
+  if (allItems.length > 0 && eligibleItems.length === 0) {
+    throw new Error(offeredProductsMessage);
+  }
+
+  const appliesTo = coupon.applies_to ||
+    (coupon.product_id ? "PRODUCT" : coupon.category_id ? "CATEGORY" : "ALL");
+  const targetProductId = coupon.product_id?._id
+    ? coupon.product_id._id.toString()
+    : coupon.product_id?.toString();
+  const targetCategoryId = coupon.category_id?._id
+    ? coupon.category_id._id.toString()
+    : coupon.category_id?.toString();
+  const couponItems = eligibleItems.filter((item) => {
+    const productId = item.productId?._id
+      ? item.productId._id.toString()
+      : item.productId?.toString() || item.product_id?.toString();
+    const categoryId = item.categoryId?._id
+      ? item.categoryId._id.toString()
+      : item.categoryId?.toString() || item.category_id?.toString();
+    if (appliesTo === "PRODUCT") return productId === targetProductId;
+    if (appliesTo === "CATEGORY") return categoryId === targetCategoryId;
+    return true;
+  });
+  const couponSubtotal = couponItems.reduce((sum, item) => sum + itemSubtotal(item), 0);
+
   const eligibility = evaluateCouponEligibility(coupon, {
-    subtotal,
-    cartItems: items || [],
+    subtotal: couponSubtotal,
+    cartItems: eligibleItems,
     userId,
     userUsageCount,
   });
@@ -183,7 +230,7 @@ export const validateCoupon = async ({ code, userId, subtotal, cartItems, exclud
   let discount = 0;
 
   if (coupon.discount_type === "PERCENTAGE") {
-    discount = (subtotal * coupon.discount_value) / 100;
+    discount = (couponSubtotal * coupon.discount_value) / 100;
 
     if (
       coupon.max_discount !== null &&
@@ -199,14 +246,23 @@ export const validateCoupon = async ({ code, userId, subtotal, cartItems, exclud
     discount = coupon.discount_value;
   }
 
-  if (discount > subtotal) {
-    discount = subtotal;
+  if (discount > couponSubtotal) {
+    discount = couponSubtotal;
   }
 
   return {
     coupon,
     discount,
   };
+};
+
+const getProductPrice = (variant, offerPricing) => {
+  if (!variant) return 0;
+  if (offerPricing?.price != null) return Number(offerPricing.price);
+  if (variant.sale_price != null && Number(variant.sale_price) < Number(variant.regular_price)) {
+    return Number(variant.sale_price);
+  }
+  return Number(variant.regular_price);
 };
 
 export const evaluateOrderCouponEligibility = async (order, activeItems = []) => {

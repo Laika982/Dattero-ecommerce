@@ -5,6 +5,7 @@ import Category from "../../models/categorySchema.js";
 import { verifyPassword } from "../../utils/password.js";
 import { generateToken } from "../../utils/token.js";
 import { getChartDataHelper } from "../../utils/chartHelper.js";
+import { getCookieOptions, getClearCookieOptions } from "../../config/cookie.js";
 
 const loadLogin = async (req, res) => {
   try {
@@ -30,17 +31,16 @@ const adminLogin = async (req, res) => {
     const admin = await User.findOne({ email, isAdmin: true });
 
     if (!admin) {
-      req.session.error = "Admin not found"
-      return res.status(404).render("admin/login");
+      req.session.error = "Invalid admin credentials";
+      return res.status(401).render("admin/login");
     }
 
     // Check password
     const matchPassword = await verifyPassword(password, admin.password);
 
     if (!matchPassword) {
-      req.session.error = "Incorrect password"
-      return res.status(400).render("admin/login", {
-      });
+      req.session.error = "Invalid admin credentials";
+      return res.status(401).render("admin/login");
     }
 
     // Create JWT
@@ -50,12 +50,9 @@ const adminLogin = async (req, res) => {
     });
 
     // Store JWT in cookie
-    res.cookie("adminToken", token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+    res.cookie("adminToken", token, getCookieOptions({
       maxAge: 24 * 60 * 60 * 1000,
-    });
+    }));
 
     // Redirect to dashboard
     req.session.success = "Login Successfull"
@@ -257,7 +254,7 @@ const loadAdminDashboard = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    res.clearCookie("adminToken");
+    res.clearCookie("adminToken", getClearCookieOptions());
 
     req.session.success = "Logout success";
 

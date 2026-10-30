@@ -56,7 +56,7 @@
                         <input
                             class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border border-outline-variant/30 focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-all py-3 px-4 pr-12 rounded-xl"
                             id="password" placeholder="••••••••" type="password" name="password" autocomplete="new-password">
-                        <button type="button" onclick="togglePasswordVisibility('password')"
+                        <button type="button" data-password-toggle="password"
                             class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-ink-black transition-colors" aria-label="Toggle password visibility">
                             <span class="material-symbols-outlined text-xl">visibility</span>
                         </button>
@@ -74,7 +74,7 @@
                         <input
                             class="font-body-md text-body-md text-on-surface w-full bg-surface-gray border border-outline-variant/30 focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-all py-3 px-4 pr-12 rounded-xl"
                             id="confirmPassword" placeholder="••••••••" type="password" name="confirmpassword" autocomplete="new-password">
-                        <button type="button" onclick="togglePasswordVisibility('confirmPassword')"
+                        <button type="button" data-password-toggle="confirmPassword"
                             class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-ink-black transition-colors" aria-label="Toggle confirm password visibility">
                             <span class="material-symbols-outlined text-xl">visibility</span>
                         </button>

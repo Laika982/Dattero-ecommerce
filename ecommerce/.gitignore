@@ -1,16 +1,10 @@
 # ==========================================
-# Environment Files
+# Environment Variables
 # ==========================================
 .env
 .env.*
 !.env.example
 !.env.*.example
-
-# Frontend/backend subproject environment files
-ecommerce/.env
-ecommerce/.env.*
-!ecommerce/.env.example
-!ecommerce/.env.*.example
 
 # ==========================================
 # Node Dependencies
@@ -18,14 +12,14 @@ ecommerce/.env.*
 node_modules/
 
 # ==========================================
-# Build Outputs and Test Coverage
+# Build Outputs
 # ==========================================
 dist/
 build/
 coverage/
 
 # ==========================================
-# Application Logs
+# Logs
 # ==========================================
 *.log
 logs/
@@ -39,11 +33,8 @@ yarn-error.log*
 uploads/*
 !uploads/.gitkeep
 
-ecommerce/uploads/*
-!ecommerce/uploads/.gitkeep
-
 # ==========================================
-# Operating System & IDE Files
+# Operating System & IDE
 # ==========================================
 .DS_Store
 Thumbs.db
